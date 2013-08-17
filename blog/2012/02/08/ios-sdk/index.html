@@ -1,0 +1,226 @@
+
+<!DOCTYPE HTML>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>"なんちゃら iOS SDK" でありそうな被害例 - OAuth.jp</title>
+    <meta name="author" content="Nov Matake">
+    
+	<meta name="description" content="昨日の続き。「ソーシャルゲームなんて3000万人の特殊な人しかやってない」という意見もあるようなので、今日は iOS アプリ版。 登場人物 iOS SDK 出してるプラットフォーム
+iOS SDK と連携するプラットフォームの公式 iOS アプリ
+プラットフォーム上で “まっとうな” &hellip;">
+	
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+	<link href="/atom.xml" rel="alternate" title="OAuth.jp" type="application/atom+xml">
+	<link rel="canonical" href="">
+	<link href="/favicon.ico" rel="shortcut icon">
+    <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+
+    <link href='http://fonts.googleapis.com/css?family=Slackey' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Fjalla+One' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Amethysta' rel='stylesheet' type='text/css'>
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+    <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+
+    <script type="text/javascript" src="/javascripts/jquery-tapir.js"></script>
+
+    <!-- remove or comment it to disable ajaxification -->
+    <!-- <script src="/javascripts/ajaxify.js"></script> -->
+
+    
+    
+
+</head>
+
+
+<body>
+    <div id="wrapper">
+    <header id="header" class="inner"><!-- for more effects see _animate.scss -->
+<h1 class="animated bounceInDown">
+  <a href='/'>
+    <div id="headerbg">
+      OAuth.jp
+    </div>
+  </a>
+</h1>
+<br>
+
+<ul id="social-links" style="text-align:center">
+  
+  <!-- GitHub -->
+  <li>
+  <a href="https://github.com/oauthjp" class="github" title="Github"></a>
+  </li>
+  
+  
+  
+  
+  <!-- Twitter -->
+  <li>
+  <a href="http://www.twitter.com/oauthjp" class="twitter" title="Twitter"></a>
+  </li>
+  
+  
+  
+  
+  
+</ul>
+
+
+<!-- use full url including 'index.html' for navigation bar if you are using ajax -->
+<ul id="nav">
+	<li id="ajax"><a href="/index.html">Home</a></li>
+	<li id="ajax"><a href="/blog/archives/index.html">Archives</a></li>
+    <li><a href="/atom.xml">RSS</a></li>
+        
+</ul>
+
+
+
+
+</header>
+
+<div id="toload">
+<!-- begin toload --> 
+    <div id="content" class="inner">
+        <article class="post">
+	<h2 class="title">"なんちゃら iOS SDK" でありそうな被害例</h2>
+	<div class="entry-content"><p><a href="http://oauth.jp/2012/02/07/oauth-20-implicit-flow.html">昨日の</a>続き。「ソーシャルゲームなんて3000万人の特殊な人しかやってない」という意見もあるようなので、今日は iOS アプリ版。</p>
+
+
+<h3>登場人物</h3>
+
+
+<ul><li>iOS SDK 出してるプラットフォーム</li>
+<li>iOS SDK と連携するプラットフォームの公式 iOS アプリ</li>
+<li>プラットフォーム上で “まっとうな” アプリを運営してる攻撃者</li>
+<li>攻撃者が自作した攻撃用アプリ</li>
+<li>iOS SDK 使って開発された被害アプリ</li>
+<li>あいかわらず無邪気な被害ユーザ</li>
+</ul>
+
+
+<h3>前提</h3>
+
+
+<p>プラットフォームが提供する iOS SDK は、</p>
+
+
+<ol><li>プラットフォームが指定するカスタムスキーマ (ex. “xyz-connect://”) で始まる URI にアクセスすることで</li>
+<li>プラットフォーム公式 iOS アプリに access token 取得のフローを delegate し</li>
+<li>公式アプリが被害アプリの指定するカスタムスキーマ (ex. “foobar-rowial://”) で始まる URI にユーザーを戻すことで、アプリに access token を返す。</li>
+</ol>
+
+
+<p>被害アプリは、</p>
+
+
+<ol><li>iOS SDK から受け取った access token を自身のバックエンドサーバに送り</li>
+<li>バックエンドサーバはプラットフォームが提供する Profile API (GET /me とか) にアクセスして</li>
+<li>レスポンスに含まれる user_id をもとにユーザを認証する。</li>
+</ol>
+
+
+<h3>シナリオ</h3>
+
+
+<ol><li>攻撃者はプラットフォームが指定するのと同じカスタムスキーマで delegate を受け取る攻撃用アプリを自作する (なり誰かから買うなり..)</li>
+<li>攻撃者は自分の iPhone/iPad に攻撃用アプリをインストール (xcode 経由だと、Apple の承認必要ないんですよね、たしか？)</li>
+<li>攻撃者は自分が運営する “まっとうな” なアプリの DB から被害ユーザのアクセストークンを取って来て攻撃用アプリに埋め込む</li>
+<li>攻撃者は被害アプリを起動して “なんちゃら ID でログイン” とかいうボタンを押す</li>
+<li>被害アプリはプラットフォーム攻撃者が自作した攻撃用アプリに delegate 開始</li>
+<li>攻撃用アプリは被害ユーザのアクセストークンを被害アプリに返す</li>
+<li>攻撃者は被害ユーザのアカウントで被害アプリを使う</li>
+</ol>
+
+
+<h3>対策方法</h3>
+
+
+<p>プラットフォームの iOS SDK は “response_type=token code” に対応する。</p>
+
+
+<p>被害アプリは、”response_type=token code” を使い、サーバーサイドへは access token ではなく authorization code を送る。(そしてサーバーサイドでは client authentication して code を token と交換する)</p>
+
+
+<p>ただいかんせんプラットフォーム側の iOS SDK が対応してくれなかったり、既にアプリを公開していて古いバージョンもサポートしなければならなかったりすることもあるので、そういう場合はバックエンドサーバーで対応。</p>
+
+
+<p>被害アプリのバックエンドサーバは、どうしてもアプリ側から access token を受け取らざるを得ないのであれば、<a href="http://oauth.jp/2012/02/07/oauth-20-implicit-flow.html">昨日の記事</a>と同様に access token 発行先アプリが自身であることを確認する。</p>
+
+
+<h3>追記</h3>
+
+
+<p>いくつか気になるtweetがあったので、載せときます。</p>
+
+
+<blockquote class="twitter-tweet">
+<p>@<a href="https://twitter.com/7032">7032</a> 「そもそもそれ認証関係お任せライブラリでは無いから、勘違いするとこういう目にあうよ。」という話です。</p>
+<div><a href="https://twitter.com/oauthjp/status/167406152261443584">February 9, 2012</a></div>
+</blockquote>
+
+
+<blockquote class="twitter-tweet">
+<p>@<a href="https://twitter.com/7032">7032</a> コンポーネントというのがiOS SDKのことを指してるなら、それはちゃんと認可リクエストも送ってるしそのレスポンスも受け取ってるので、OAuthの仕様の範囲内では正常に動作しています。受け取ったトークンが、そもそも認証のために使えるものである保証が無いというだけです。</p>
+<div><a href="https://twitter.com/oauthjp/status/167439399196426240">February 9, 2012</a></div>
+</blockquote>
+
+</div>
+
+<div class="meta">
+	
+</div>
+</article>
+
+	<div class="share">
+	<div class="addthis_toolbox addthis_default_style ">
+	
+	
+	<a class="addthis_button_tweet"></a>
+	
+	
+	<a class="addthis_counter addthis_pill_style"></a>
+	</div>
+  <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid="></script>
+</div>
+
+
+
+    </div>
+    <footer id="footer">
+    <div style="display:inline">
+    Copyright &copy; 2013
+
+    Nov Matake
+. Powered by <a href="http://octopress.org">Octopress</a> | 
+    Theme <a href="http://github.com/panks/fabric">fabric</a> by <a href="http://panks.me">Pankaj Kumar</a>
+</div>
+
+
+    </footer>
+    <script src="/javascripts/fabric.js"></script>
+<script src="/javascripts/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+	$('.fancybox').fancybox();
+})(jQuery);
+</script> <!-- Delete or comment this line to disable Fancybox -->
+
+
+
+
+
+
+<!-- end toload --> 
+</div>
+</div>
+<script src="/javascripts/jquery.ui.totop.js" type="text/javascript"></script>
+<script type="text/javascript">
+/*<![CDATA[*/
+;(function($){$().UItoTop({easingType:'easeOutCirc'});})(jQuery); 
+/*]]>*/
+</script><!-- remove it to remove the scroll to top button -->
+</body>
+</html>

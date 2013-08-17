@@ -1,0 +1,172 @@
+
+<!DOCTYPE HTML>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Facebook の OAuth Migration で大混乱が起こる前に。 - OAuth.jp</title>
+    <meta name="author" content="Nov Matake">
+    
+	<meta name="description" content="2011/10/01、Facebook が認証まわりの API 仕様を変更します。結構大きな変更点の為、Developer としても、FB Canvas アプリもしくは Facebook Connect サイトの1ユーザーとしても、いろいろ混乱を経験する可能性もあるでしょう。
+この記事では、 &hellip;">
+	
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+	<link href="/atom.xml" rel="alternate" title="OAuth.jp" type="application/atom+xml">
+	<link rel="canonical" href="">
+	<link href="/favicon.ico" rel="shortcut icon">
+    <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+
+    <link href='http://fonts.googleapis.com/css?family=Slackey' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Fjalla+One' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Amethysta' rel='stylesheet' type='text/css'>
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+    <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+
+    <script type="text/javascript" src="/javascripts/jquery-tapir.js"></script>
+
+    <!-- remove or comment it to disable ajaxification -->
+    <!-- <script src="/javascripts/ajaxify.js"></script> -->
+
+    
+    
+
+</head>
+
+
+<body>
+    <div id="wrapper">
+    <header id="header" class="inner"><!-- for more effects see _animate.scss -->
+<h1 class="animated bounceInDown">
+  <a href='/'>
+    <div id="headerbg">
+      OAuth.jp
+    </div>
+  </a>
+</h1>
+<br>
+
+<ul id="social-links" style="text-align:center">
+  
+  <!-- GitHub -->
+  <li>
+  <a href="https://github.com/oauthjp" class="github" title="Github"></a>
+  </li>
+  
+  
+  
+  
+  <!-- Twitter -->
+  <li>
+  <a href="http://www.twitter.com/oauthjp" class="twitter" title="Twitter"></a>
+  </li>
+  
+  
+  
+  
+  
+</ul>
+
+
+<!-- use full url including 'index.html' for navigation bar if you are using ajax -->
+<ul id="nav">
+	<li id="ajax"><a href="/index.html">Home</a></li>
+	<li id="ajax"><a href="/blog/archives/index.html">Archives</a></li>
+    <li><a href="/atom.xml">RSS</a></li>
+        
+</ul>
+
+
+
+
+</header>
+
+<div id="toload">
+<!-- begin toload --> 
+    <div id="content" class="inner">
+        <article class="post">
+	<h2 class="title">Facebook の OAuth Migration で大混乱が起こる前に。</h2>
+	<div class="entry-content"><p>2011/10/01、Facebook が認証まわりの API 仕様を変更します。結構大きな変更点の為、Developer としても、FB Canvas アプリもしくは Facebook Connect サイトの1ユーザーとしても、いろいろ混乱を経験する可能性もあるでしょう。
+この記事では、大混乱が起こる前に、実際の変更点とDeveloper としてできることをまとめます。</p>
+
+<h3>変更点1</h3>
+
+<p>Graph API 以前に使われていた “fb_sig” や “fb_sig_session_key” といったパラメーターを使った認証方式が、一切使えなくなります。これにより、古い認証方式を使っている Facebook Canvas アプリおよび「Facebook ID でログイン」対応サイトで、ユーザーの認証ができなくなります。</p>
+
+<p>これらのアプリは Graph API 以降に登場した OAuth 2.0 ベースの認証方式に切り替える必要があります。Canvas アプリなら Signed Request、Facebook Connect サイトであれば Facebook JS SDK の最新版を使うようにしてください。</p>
+
+<h3>変更点2</h3>
+
+<p>Graph API 以後のOAuth 2.0ベースでの「Facebook ID でログイン」に対応していたサイトでも、JS SDK がセットする Cookie に含まれる Access Token を利用しているサイトでは、Cookie に Access Token が含まれなくなるため、不具合がでる可能性があります。</p>
+
+<p>&lt;fb:login-button> もしくは Facebook JS SDK の FB.login() を使っているサイトはこれに該当するため、サーバーサイドでのライブラリアップデートやコード変更などが必要になるでしょう。</p>
+
+<h3>Developer としてできること</h3>
+
+<p>日本国内では Graph API 以前の Facebook API を利用していた方は多くないと思いますが、もしいた場合は、お使いのライブラリが既にメンテナンスされていない可能性が高いです。Ruby でも Facebooker というライブラリが古い Facebook API 用に存在しますが、既に1年以上アップデートがありません。そのようなライブラリを使っている場合は、違うライブラリに移行するべきでしょう。DEADLINE が 2011/10/01 なので、いますぐ対応を開始することをお勧めします。</p>
+
+<p>Graph API 以降の認証方式を使っていた場合は、コードの変更が必要かどうかは実装依存のため、ひとまず Facebook Developer Apps から該当アプリ（もちろんテスト環境用のやつね）を選択し、Advanced タブの Migrations の（たぶん）一番下にある「OAuth Migration」を Enabled にしてみてください（スクリーンショット参考）。すると該当アプリでは 2011/10/01 以降と同様の動作を確認できるので、不具合の有無を調べましょう。不具合があれば、ライブラリのアップデートなどが必要になるでしょう。</p>
+
+<h3>Developer じゃなかったら？</h3>
+
+<p>例えば僕は Ustream にログインするのには Facebook アカウントを使っています。Slideshare もそうです。さすがにこれらのサイトは混乱無く OAuth Migration を終えてくれると信じたいですが、万が一のこともありますよね。</p>
+
+<p>そういう場合、もしそのサイトが「Twitter ID でログイン」とか「OpenID でログイン」に対応していれば、Facebook ID 以外でもログインできるようにしておくことをおすすめします。</p>
+
+<p>まぁ古くから Facebook と連携していて、最近アップデートされてなさそうなサービスの場合は … 人生あきらめも重要です。</p>
+</div>
+
+<div class="meta">
+	
+</div>
+</article>
+
+	<div class="share">
+	<div class="addthis_toolbox addthis_default_style ">
+	
+	
+	<a class="addthis_button_tweet"></a>
+	
+	
+	<a class="addthis_counter addthis_pill_style"></a>
+	</div>
+  <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid="></script>
+</div>
+
+
+
+    </div>
+    <footer id="footer">
+    <div style="display:inline">
+    Copyright &copy; 2013
+
+    Nov Matake
+. Powered by <a href="http://octopress.org">Octopress</a> | 
+    Theme <a href="http://github.com/panks/fabric">fabric</a> by <a href="http://panks.me">Pankaj Kumar</a>
+</div>
+
+
+    </footer>
+    <script src="/javascripts/fabric.js"></script>
+<script src="/javascripts/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+	$('.fancybox').fancybox();
+})(jQuery);
+</script> <!-- Delete or comment this line to disable Fancybox -->
+
+
+
+
+
+
+<!-- end toload --> 
+</div>
+</div>
+<script src="/javascripts/jquery.ui.totop.js" type="text/javascript"></script>
+<script type="text/javascript">
+/*<![CDATA[*/
+;(function($){$().UItoTop({easingType:'easeOutCirc'});})(jQuery); 
+/*]]>*/
+</script><!-- remove it to remove the scroll to top button -->
+</body>
+</html>

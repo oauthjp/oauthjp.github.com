@@ -1,0 +1,210 @@
+
+<!DOCTYPE HTML>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Hello OAuth 2.0, Good-bye OAuth 1.0! - OAuth.jp</title>
+    <meta name="author" content="Nov Matake">
+    
+	<meta name="description" content="おっす、おらOAuthおにーさん！ ついにOAuth 2.0 CoreとBearerがそれぞれRFCに！！！ RFC 6749 - The OAuth 2.0 Authorization Framework RFC 6750 - The OAuth 2.0 Authorization &hellip;">
+	
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+	<link href="/atom.xml" rel="alternate" title="OAuth.jp" type="application/atom+xml">
+	<link rel="canonical" href="">
+	<link href="/favicon.ico" rel="shortcut icon">
+    <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+
+    <link href='http://fonts.googleapis.com/css?family=Slackey' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Fjalla+One' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Amethysta' rel='stylesheet' type='text/css'>
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+    <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+
+    <script type="text/javascript" src="/javascripts/jquery-tapir.js"></script>
+
+    <!-- remove or comment it to disable ajaxification -->
+    <!-- <script src="/javascripts/ajaxify.js"></script> -->
+
+    
+    
+
+</head>
+
+
+<body>
+    <div id="wrapper">
+    <header id="header" class="inner"><!-- for more effects see _animate.scss -->
+<h1 class="animated bounceInDown">
+  <a href='/'>
+    <div id="headerbg">
+      OAuth.jp
+    </div>
+  </a>
+</h1>
+<br>
+
+<ul id="social-links" style="text-align:center">
+  
+  <!-- GitHub -->
+  <li>
+  <a href="https://github.com/oauthjp" class="github" title="Github"></a>
+  </li>
+  
+  
+  
+  
+  <!-- Twitter -->
+  <li>
+  <a href="http://www.twitter.com/oauthjp" class="twitter" title="Twitter"></a>
+  </li>
+  
+  
+  
+  
+  
+</ul>
+
+
+<!-- use full url including 'index.html' for navigation bar if you are using ajax -->
+<ul id="nav">
+	<li id="ajax"><a href="/index.html">Home</a></li>
+	<li id="ajax"><a href="/blog/archives/index.html">Archives</a></li>
+    <li><a href="/atom.xml">RSS</a></li>
+        
+</ul>
+
+
+
+
+</header>
+
+<div id="toload">
+<!-- begin toload --> 
+    <div id="content" class="inner">
+        <article class="post">
+	<h2 class="title">Hello OAuth 2.0, Good-bye OAuth 1.0!</h2>
+	<div class="entry-content"><p>おっす、おらOAuthおにーさん！</p>
+
+
+<h3>ついにOAuth 2.0 CoreとBearerがそれぞれRFCに！！！</h3>
+
+
+<p><a href="http://tools.ietf.org/html/rfc6749">RFC 6749 - The OAuth 2.0 Authorization Framework</a></p>
+
+
+<p><a href="http://tools.ietf.org/html/rfc6750">RFC 6750 - The OAuth 2.0 Authorization Framework: Bearer Token Usage</a></p>
+
+
+<p>このブログができたころには既にOAuth 2.0のdraftが出てたのですが、そういえばOAuth.jpっていつできたんだっけ？と思ってみて見ると…</p>
+
+
+<p><a href="http://oauth.jp/2010/07/04/oauthjp.html">OAuth.jpを立ち上げました。 - OAuth.jp</a></p>
+
+
+<p>2010年7月！</p>
+
+
+<p>そんな長い間やってたのか。。</p>
+
+
+<p>FB Graph APIが出たのが2010年4月なので、OAuth 2.0の実装がでてからかれこれ2年半ほどでようやくRFCになった訳ですね。</p>
+
+
+<h3>さて、RFC化された直後の国内の反応ですが..</h3>
+
+
+<blockquote class="twitter-tweet">
+<p>「Twitterさん、もう、OAuth 1.0古いっすよ。」って誰か言え！オレは言わない！</p>
+<div><a href="https://twitter.com/ritou/status/256932933263294464">October 13, 2012</a></div>
+</blockquote>
+
+
+<blockquote class="twitter-tweet">
+<p>twitterさん、もう OAuth 1.0 古いですよ。正式に deprecate されました。 RT @<a href="https://twitter.com/ritou">ritou</a>: 「Twitterさん、もう、OAuth 1.0古いっすよ。」って誰か言え！オレは言わない！</p>
+<div><a href="https://twitter.com/_nat/status/256945174251442176">October 13, 2012</a></div>
+</blockquote>
+
+
+<blockquote class="twitter-tweet">
+<p>OAuth 1.0はもぅ古いので、Twitterの関係者は至急おっおーっす学会長の私に連絡してください。日本語の分からない本国のバカどもは話にならないので、Twitter Japanの関係者に限ります。キリッ！ノブッ！</p>
+<div><a href="https://twitter.com/IdentityNobuwo/status/256951736630132736">October 13, 2012</a></div>
+</blockquote>
+
+
+<p>そうなんです。OAuth 2.0 Coreには、こう書いてあるんですね。</p>
+
+
+<blockquote class="posterous_short_quote">
+<div>This specification replaces and obsoletes the OAuth 1.0 protocol described in RFC 5849.</div>
+</blockquote>
+
+
+<p>OAuth 1.0サポートしてるTwitter APIとかOpenSocial採用してるプラットフォーム各社とか、どうなるんでしょうね？</p>
+
+
+<p>そういえばそれ以外にも @ritou がまたブログ記事書いてましたね。</p>
+
+
+<p><a href="http://d.hatena.ne.jp/ritou/20121013/1350128492">RFCになったOAuth 2.0を使ってGoogleはどれだけパスワード入力を減らせるのか - r-weblife</a></p>
+
+
+<p>OAuthおねーさんの次回作が気になるところです。</p>
+
+</div>
+
+<div class="meta">
+	
+</div>
+</article>
+
+	<div class="share">
+	<div class="addthis_toolbox addthis_default_style ">
+	
+	
+	<a class="addthis_button_tweet"></a>
+	
+	
+	<a class="addthis_counter addthis_pill_style"></a>
+	</div>
+  <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid="></script>
+</div>
+
+
+
+    </div>
+    <footer id="footer">
+    <div style="display:inline">
+    Copyright &copy; 2013
+
+    Nov Matake
+. Powered by <a href="http://octopress.org">Octopress</a> | 
+    Theme <a href="http://github.com/panks/fabric">fabric</a> by <a href="http://panks.me">Pankaj Kumar</a>
+</div>
+
+
+    </footer>
+    <script src="/javascripts/fabric.js"></script>
+<script src="/javascripts/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+	$('.fancybox').fancybox();
+})(jQuery);
+</script> <!-- Delete or comment this line to disable Fancybox -->
+
+
+
+
+
+
+<!-- end toload --> 
+</div>
+</div>
+<script src="/javascripts/jquery.ui.totop.js" type="text/javascript"></script>
+<script type="text/javascript">
+/*<![CDATA[*/
+;(function($){$().UItoTop({easingType:'easeOutCirc'});})(jQuery); 
+/*]]>*/
+</script><!-- remove it to remove the scroll to top button -->
+</body>
+</html>

@@ -1,0 +1,177 @@
+
+<!DOCTYPE HTML>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>OAuth 2.0 Core & Bearer が IETF Last Call に！ - OAuth.jp</title>
+    <meta name="author" content="Nov Matake">
+    
+	<meta name="description" content="昨晩、IETF OAuth WG ML で、OAuth 2.0 Core &amp; Bearer の2つの仕様が IETF Last Call に入ったことが通知されました。 http://www.ietf.org/mail-archive/web/oauth/current/msg08285. &hellip;">
+	
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+	<link href="/atom.xml" rel="alternate" title="OAuth.jp" type="application/atom+xml">
+	<link rel="canonical" href="">
+	<link href="/favicon.ico" rel="shortcut icon">
+    <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+
+    <link href='http://fonts.googleapis.com/css?family=Slackey' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Fjalla+One' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Amethysta' rel='stylesheet' type='text/css'>
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+    <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+
+    <script type="text/javascript" src="/javascripts/jquery-tapir.js"></script>
+
+    <!-- remove or comment it to disable ajaxification -->
+    <!-- <script src="/javascripts/ajaxify.js"></script> -->
+
+    
+    
+
+</head>
+
+
+<body>
+    <div id="wrapper">
+    <header id="header" class="inner"><!-- for more effects see _animate.scss -->
+<h1 class="animated bounceInDown">
+  <a href='/'>
+    <div id="headerbg">
+      OAuth.jp
+    </div>
+  </a>
+</h1>
+<br>
+
+<ul id="social-links" style="text-align:center">
+  
+  <!-- GitHub -->
+  <li>
+  <a href="https://github.com/oauthjp" class="github" title="Github"></a>
+  </li>
+  
+  
+  
+  
+  <!-- Twitter -->
+  <li>
+  <a href="http://www.twitter.com/oauthjp" class="twitter" title="Twitter"></a>
+  </li>
+  
+  
+  
+  
+  
+</ul>
+
+
+<!-- use full url including 'index.html' for navigation bar if you are using ajax -->
+<ul id="nav">
+	<li id="ajax"><a href="/index.html">Home</a></li>
+	<li id="ajax"><a href="/blog/archives/index.html">Archives</a></li>
+    <li><a href="/atom.xml">RSS</a></li>
+        
+</ul>
+
+
+
+
+</header>
+
+<div id="toload">
+<!-- begin toload --> 
+    <div id="content" class="inner">
+        <article class="post">
+	<h2 class="title">OAuth 2.0 Core & Bearer が IETF Last Call に！</h2>
+	<div class="entry-content"><p>昨晩、IETF OAuth WG ML で、OAuth 2.0 Core &amp; Bearer の2つの仕様が IETF Last Call に入ったことが通知されました。</p>
+
+
+<p><a href="http://www.ietf.org/mail-archive/web/oauth/current/msg08285.html"><a href="http://www.ietf.org/mail-archive/web/oauth/current/msg08285.html">http://www.ietf.org/mail-archive/web/oauth/current/msg08285.html</a></a></p>
+
+
+<p><a href="http://www.ietf.org/mail-archive/web/oauth/current/msg08286.html"><a href="http://www.ietf.org/mail-archive/web/oauth/current/msg08286.html">http://www.ietf.org/mail-archive/web/oauth/current/msg08286.html</a></a></p>
+
+
+<p>今後は IETF のルールに乗っ取って、RFC 化までの作業が進められます。</p>
+
+
+<p>ちょうど以下のメールで IETF Last Call から RFC 化までの流れが説明されていたので、翻訳しておきます。</p>
+
+
+<p><a href="http://www.ietf.org/mail-archive/web/oauth/current/msg08292.html"><a href="http://www.ietf.org/mail-archive/web/oauth/current/msg08292.html">http://www.ietf.org/mail-archive/web/oauth/current/msg08292.html</a></a></p>
+
+
+<blockquote>
+<p>1. IETF Last Call, which lasts two weeks. This is essentially your last opportunity to provide feedback!</p>
+<p>IETF Last Call では、2週間で結論が出る。本質的にこの期間がフィードバックを行う最後のチャンスである。</p>
+<p>2. During IETF Last Call, the documents will be reviewed by several cross-area teams within the IETF, including folks like the &#8220;GEN-ART&#8221; review team and the AppsDir. We&#8217;ll expect at least some feedback from those teams. And at this stage anyone in the Internet community can provide feedback, too.</p>
+<p>IETF Last Call 期間中、仕様書は &#8220;GEN-ART&#8221; レビューチームや AppsDir を含む IETF 内の複数エリアのチームにレビューされる。少なくともこれらのチームからは何らかのフィードバックが得られるであろう。もちろんこのステージでも Internet community の全員にフィードバックを行う権利がある。</p>
+<p>3. After IETF Last Call, this WG&#8217;s document editors will work to address any feedback we&#8217;ve received.</p>
+<p>IETF Last Call 後、Working Group 仕様書編集者は受け取ったすべてのフィードバックに対応する。</p>
+<p>4. The documents will then be scheduled for disussion during an IESG telechat. Before the telechat, all the members of the Internet Engineering Steering Group will review the specs and also provide feedback. If there are &#8220;DISCUSSES&#8221; and &#8220;COMMENTS&#8221; lodged then the document editors will need to address those (often in concert with the WG chairs). If some of those issues are substantive, the editors and chairs might bring those issues back to the WG for more discussion.</p>
+<p>その後、仕様書は IESG の電話会議でのディスカッションにまわされる。この会議の前に、全 IESG メンバーがレビューおよびフィードバックを行う。&#8221;DISCUSSES&#8221; もしくは &#8220;COMMENTS&#8221; が発生した場合は、エディターが (おそらく WG チェアと共に) これらに対応する必要がある。もし問題が大量に発生した場合は、エディターとチェアは再び仕様を WG に差し戻し、WG 内でさらなる議論を行うこともある。</p>
+<p>5. Assuming the documents are approved by the IESG, they will then be handed off to the RFC Editor team for final copy editing, proofreading, reference checking, etc.</p>
+<p>仕様書が IESG に認可されると、RFC Editor チームの手によって最終的な編集、校正、リファレンスチェックなどが行われる。</p>
+</blockquote>
+
+
+<p>脱デルデル詐欺！</p>
+
+</div>
+
+<div class="meta">
+	
+</div>
+</article>
+
+	<div class="share">
+	<div class="addthis_toolbox addthis_default_style ">
+	
+	
+	<a class="addthis_button_tweet"></a>
+	
+	
+	<a class="addthis_counter addthis_pill_style"></a>
+	</div>
+  <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid="></script>
+</div>
+
+
+
+    </div>
+    <footer id="footer">
+    <div style="display:inline">
+    Copyright &copy; 2013
+
+    Nov Matake
+. Powered by <a href="http://octopress.org">Octopress</a> | 
+    Theme <a href="http://github.com/panks/fabric">fabric</a> by <a href="http://panks.me">Pankaj Kumar</a>
+</div>
+
+
+    </footer>
+    <script src="/javascripts/fabric.js"></script>
+<script src="/javascripts/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+	$('.fancybox').fancybox();
+})(jQuery);
+</script> <!-- Delete or comment this line to disable Fancybox -->
+
+
+
+
+
+
+<!-- end toload --> 
+</div>
+</div>
+<script src="/javascripts/jquery.ui.totop.js" type="text/javascript"></script>
+<script type="text/javascript">
+/*<![CDATA[*/
+;(function($){$().UItoTop({easingType:'easeOutCirc'});})(jQuery); 
+/*]]>*/
+</script><!-- remove it to remove the scroll to top button -->
+</body>
+</html>
