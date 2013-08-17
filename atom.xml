@@ -4,7 +4,7 @@
   <title><![CDATA[OAuth.jp]]></title>
   <link href="http://oauthjp.github.io/atom.xml" rel="self"/>
   <link href="http://oauthjp.github.io/"/>
-  <updated>2013-08-17T16:07:10+09:00</updated>
+  <updated>2013-08-17T16:09:28+09:00</updated>
   <id>http://oauthjp.github.io/</id>
   <author>
     <name><![CDATA[Nov Matake]]></name>
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Octopress x GitHub Pagesに移行]]></title>
-    <link href="http://oauthjp.github.io/blog/archives/20130817-migration-to-octopress-x-github-pages/"/>
+    <link href="http://oauthjp.github.io/blog/2013/08/17/migration-to-octopress-x-github-pages/"/>
     <updated>2013-08-17T16:00:00+09:00</updated>
-    <id>http://oauthjp.github.io/blog/archives/migration-to-octopress-x-github-pages</id>
+    <id>http://oauthjp.github.io/blog/2013/08/17/migration-to-octopress-x-github-pages</id>
     <content type="html"><![CDATA[<p>どうもTumblrをブログとして使うの辛いので、Octopressに移行します。</p>
 
 <p>またURL変わっちゃうのは&hellip;直せそうではあるけどちとメンドイ&hellip;</p>
@@ -26,9 +26,9 @@
   
   <entry>
     <title type="html"><![CDATA[Login with Amazon、もう使っても大丈夫！]]></title>
-    <link href="http://oauthjp.github.io/blog/archives/20130604-login-with-amazon/"/>
+    <link href="http://oauthjp.github.io/blog/2013/06/04/login-with-amazon/"/>
     <updated>2013-06-04T00:00:00+09:00</updated>
-    <id>http://oauthjp.github.io/blog/archives/login-with-amazon</id>
+    <id>http://oauthjp.github.io/blog/2013/06/04/login-with-amazon</id>
     <content type="html"><![CDATA[<p>先日以下のような記事を書きました。</p>
 
 
@@ -57,9 +57,9 @@
   
   <entry>
     <title type="html"><![CDATA[Login with Amazonを使うと、あなたのサイトのユーザーがアカウントハイジャックされる。]]></title>
-    <link href="http://oauthjp.github.io/blog/archives/20130530-login-with-amazon/"/>
+    <link href="http://oauthjp.github.io/blog/2013/05/30/login-with-amazon/"/>
     <updated>2013-05-30T00:00:00+09:00</updated>
-    <id>http://oauthjp.github.io/blog/archives/login-with-amazon</id>
+    <id>http://oauthjp.github.io/blog/2013/05/30/login-with-amazon</id>
     <content type="html"><![CDATA[<p>Amazon が、<a href="http://login.amazon.com">Login with Amazon</a> というAPIおよびそれに付随する JS / iOS / Android SDKs を出してきました。</p>
 
 
@@ -115,9 +115,9 @@
   
   <entry>
     <title type="html"><![CDATA[OAuth 2.0 Core & Bearer Spec (RFC 6749 & RFC 6750) 翻訳公開！]]></title>
-    <link href="http://oauthjp.github.io/blog/archives/20130123-oauth-20-core-bearer-spec-rfc-rfc-6749-rfc-67/"/>
+    <link href="http://oauthjp.github.io/blog/2013/01/23/oauth-20-core-bearer-spec-rfc-rfc-6749-rfc-67/"/>
     <updated>2013-01-23T00:00:00+09:00</updated>
-    <id>http://oauthjp.github.io/blog/archives/oauth-20-core-bearer-spec-rfc-rfc-6749-rfc-67</id>
+    <id>http://oauthjp.github.io/blog/2013/01/23/oauth-20-core-bearer-spec-rfc-rfc-6749-rfc-67</id>
     <content type="html"><![CDATA[<p>ずいぶん前に「<a href="http://oauth.jp/2011/11/29/oauth-20-core-bearer-spec-76993.html">OAuth 2.0 Core &amp; Bearer Spec 翻訳公開！</a>」で紹介したように、OAuth 2.0 Core &amp; Bearerは、OpenID Foundation Japanの翻訳WGで翻訳を公開していましたが、2012年に両specがRFC化されたのを受け、今回RFC版も翻訳しました。</p>
 
 
@@ -147,9 +147,9 @@
   
   <entry>
     <title type="html"><![CDATA[Yahoo! JapanがOAuth 2.0 & OpenID Connectに対応]]></title>
-    <link href="http://oauthjp.github.io/blog/archives/20121108-yahoo-japanoauth-20-openid-connect/"/>
+    <link href="http://oauthjp.github.io/blog/2012/11/08/yahoo-japanoauth-20-openid-connect/"/>
     <updated>2012-11-08T00:00:00+09:00</updated>
-    <id>http://oauthjp.github.io/blog/archives/yahoo-japanoauth-20-openid-connect</id>
+    <id>http://oauthjp.github.io/blog/2012/11/08/yahoo-japanoauth-20-openid-connect</id>
     <content type="html"><![CDATA[<p>2011年12月のOpenID Summit Tokyoで、2012年中のOpenID Connect対応を宣言したYahoo! Japanが、本日ついに宣言通りOpenID Connectをサポート開始しました。</p>
 
 
@@ -198,9 +198,9 @@
   
   <entry>
     <title type="html"><![CDATA[JSON Web Token (JWT)]]></title>
-    <link href="http://oauthjp.github.io/blog/archives/20121026-json-web-token-jwt/"/>
+    <link href="http://oauthjp.github.io/blog/2012/10/26/json-web-token-jwt/"/>
     <updated>2012-10-26T00:00:00+09:00</updated>
-    <id>http://oauthjp.github.io/blog/archives/json-web-token-jwt</id>
+    <id>http://oauthjp.github.io/blog/2012/10/26/json-web-token-jwt</id>
     <content type="html"><![CDATA[<p>@novです。</p>
 
 
@@ -320,9 +320,9 @@
   
   <entry>
     <title type="html"><![CDATA[Facebookが新たなAccess Token Introspection APIを出したようです]]></title>
-    <link href="http://oauthjp.github.io/blog/archives/20121016-facebookaccess-token-introspection-api/"/>
+    <link href="http://oauthjp.github.io/blog/2012/10/16/facebookaccess-token-introspection-api/"/>
     <updated>2012-10-16T00:00:00+09:00</updated>
-    <id>http://oauthjp.github.io/blog/archives/facebookaccess-token-introspection-api</id>
+    <id>http://oauthjp.github.io/blog/2012/10/16/facebookaccess-token-introspection-api</id>
     <content type="html"><![CDATA[<p>今朝fb_graphにこんな要望が来てて知ったのですが、Facebookが新たなAccess Token Introspection APIを出したようです。</p>
 
 
@@ -357,9 +357,9 @@
   
   <entry>
     <title type="html"><![CDATA[Hello OAuth 2.0, Good-bye OAuth 1.0!]]></title>
-    <link href="http://oauthjp.github.io/blog/archives/20121013-hello-oauth-20-good-bye-oauth-10/"/>
+    <link href="http://oauthjp.github.io/blog/2012/10/13/hello-oauth-20-good-bye-oauth-10/"/>
     <updated>2012-10-13T00:00:00+09:00</updated>
-    <id>http://oauthjp.github.io/blog/archives/hello-oauth-20-good-bye-oauth-10</id>
+    <id>http://oauthjp.github.io/blog/2012/10/13/hello-oauth-20-good-bye-oauth-10</id>
     <content type="html"><![CDATA[<p>おっす、おらOAuthおにーさん！</p>
 
 
@@ -432,9 +432,9 @@
   
   <entry>
     <title type="html"><![CDATA[@IT連載 - デジタル・アイデンティティ技術最新動向]]></title>
-    <link href="http://oauthjp.github.io/blog/archives/20121012-it/"/>
+    <link href="http://oauthjp.github.io/blog/2012/10/12/it/"/>
     <updated>2012-10-12T00:00:00+09:00</updated>
-    <id>http://oauthjp.github.io/blog/archives/it</id>
+    <id>http://oauthjp.github.io/blog/2012/10/12/it</id>
     <content type="html"><![CDATA[<p><a href="http://kyomichi.tumblr.com/post/33428806421/it" class="tumblr_blog">kyomichi</a>:</p>
 
 
@@ -453,9 +453,9 @@
   
   <entry>
     <title type="html"><![CDATA[OAuthのoffline_accessについて]]></title>
-    <link href="http://oauthjp.github.io/blog/archives/20121001-oauthofflineaccess/"/>
+    <link href="http://oauthjp.github.io/blog/2012/10/01/oauthofflineaccess/"/>
     <updated>2012-10-01T00:00:00+09:00</updated>
-    <id>http://oauthjp.github.io/blog/archives/oauthofflineaccess</id>
+    <id>http://oauthjp.github.io/blog/2012/10/01/oauthofflineaccess</id>
     <content type="html"><![CDATA[<p>少し前ですが、OpenID Connectのbitbuckeetで<a href="https://bitbucket.org/openid/connect/issue/539/messages-0-add-scope-for-offline-access">offline_accessについての議論</a>がされていたので、まとめておきます。</p>
 
 
@@ -517,9 +517,9 @@
   
   <entry>
     <title type="html"><![CDATA[WebSocketでOAuth 2.0を使ってみた]]></title>
-    <link href="http://oauthjp.github.io/blog/archives/20120809-websocketoauth-20/"/>
+    <link href="http://oauthjp.github.io/blog/2012/08/09/websocketoauth-20/"/>
     <updated>2012-08-09T00:00:00+09:00</updated>
-    <id>http://oauthjp.github.io/blog/archives/websocketoauth-20</id>
+    <id>http://oauthjp.github.io/blog/2012/08/09/websocketoauth-20</id>
     <content type="html"><![CDATA[<p>WebSocket Serverでユーザー認証とか、WebSocket Serverの裏にRailsなりのAPIがあってNode.jsからそのAPI叩く見たいなのはそれなりにありそうなのに、あんまサンプルコード的なものが見当たらなかったので、自分で書いてみたのをここに公開することにします。</p>
 
 
@@ -539,9 +539,9 @@
   
   <entry>
     <title type="html"><![CDATA[Re: OAuth 2.0のclient_secretって本当に秘密鍵ですか？]]></title>
-    <link href="http://oauthjp.github.io/blog/archives/20120803-re-oauth-20clientsecret/"/>
+    <link href="http://oauthjp.github.io/blog/2012/08/03/re-oauth-20clientsecret/"/>
     <updated>2012-08-03T00:00:00+09:00</updated>
-    <id>http://oauthjp.github.io/blog/archives/re-oauth-20clientsecret</id>
+    <id>http://oauthjp.github.io/blog/2012/08/03/re-oauth-20clientsecret</id>
     <content type="html"><![CDATA[<p>昨日こんな記事を見かけたので、記事にまとめることにします。</p>
 
 
@@ -675,9 +675,9 @@
   
   <entry>
     <title type="html"><![CDATA[OAuth 2.0 Implicit Flow で認証の問題点、再び。]]></title>
-    <link href="http://oauthjp.github.io/blog/archives/20120629-oauth-20-implicit-flow-78852/"/>
+    <link href="http://oauthjp.github.io/blog/2012/06/29/oauth-20-implicit-flow-78852/"/>
     <updated>2012-06-29T00:00:00+09:00</updated>
-    <id>http://oauthjp.github.io/blog/archives/oauth-20-implicit-flow-78852</id>
+    <id>http://oauthjp.github.io/blog/2012/06/29/oauth-20-implicit-flow-78852</id>
     <content type="html"><![CDATA[<p>おひさしぶりです、@novです。</p>
 
 
@@ -751,9 +751,9 @@
   
   <entry>
     <title type="html"><![CDATA[Debugging OAuth2 SSL Connections]]></title>
-    <link href="http://oauthjp.github.io/blog/archives/20120504-debugging-oauth2-ssl-connections/"/>
+    <link href="http://oauthjp.github.io/blog/2012/05/04/debugging-oauth2-ssl-connections/"/>
     <updated>2012-05-04T00:00:00+09:00</updated>
-    <id>http://oauthjp.github.io/blog/archives/debugging-oauth2-ssl-connections</id>
+    <id>http://oauthjp.github.io/blog/2012/05/04/debugging-oauth2-ssl-connections</id>
     <content type="html"><![CDATA[<blockquote>Debugging OAuth2 SSL Connections</blockquote>
 
 
@@ -766,9 +766,9 @@
   
   <entry>
     <title type="html"><![CDATA[Important: OAuth 1.0 has been officially deprecated as of April 20, 2012. It will continue to work as per our deprecation policy, but we encourage you to migrate to OAuth 2.0 as soon as possible.]]></title>
-    <link href="http://oauthjp.github.io/blog/archives/20120422-important-oauth-1-0-has-been-officially/"/>
+    <link href="http://oauthjp.github.io/blog/2012/04/22/important-oauth-1-0-has-been-officially/"/>
     <updated>2012-04-22T00:00:00+09:00</updated>
-    <id>http://oauthjp.github.io/blog/archives/important-oauth-1-0-has-been-officially</id>
+    <id>http://oauthjp.github.io/blog/2012/04/22/important-oauth-1-0-has-been-officially</id>
     <content type="html"><![CDATA[<blockquote>Important: OAuth 1.0 has been officially deprecated as of April 20, 2012. It will continue to work as per our deprecation policy, but we encourage you to migrate to OAuth 2.0 as soon as possible.</blockquote>
 
 
@@ -778,9 +778,9 @@
   
   <entry>
     <title type="html"><![CDATA[WebIntent x OpenID Connect (en)]]></title>
-    <link href="http://oauthjp.github.io/blog/archives/20120409-when-you-access-to-an-openid-relying-party-rp/"/>
+    <link href="http://oauthjp.github.io/blog/2012/04/09/when-you-access-to-an-openid-relying-party-rp/"/>
     <updated>2012-04-09T00:00:00+09:00</updated>
-    <id>http://oauthjp.github.io/blog/archives/when-you-access-to-an-openid-relying-party-rp</id>
+    <id>http://oauthjp.github.io/blog/2012/04/09/when-you-access-to-an-openid-relying-party-rp</id>
     <content type="html"><![CDATA[<iframe src="http://www.slideshare.net/slideshow/embed_code/12296336" width="400" height="334" frameborder="0" marginwidth="0" marginheight="0" scrolling="no"></iframe>
 
 
@@ -838,9 +838,9 @@ For some reason, this demo works only on Safari.
   
   <entry>
     <title type="html"><![CDATA[WebIntent x OpenID Connect]]></title>
-    <link href="http://oauthjp.github.io/blog/archives/20120409-webintents-openid-connect-discovery/"/>
+    <link href="http://oauthjp.github.io/blog/2012/04/09/webintents-openid-connect-discovery/"/>
     <updated>2012-04-09T00:00:00+09:00</updated>
-    <id>http://oauthjp.github.io/blog/archives/webintents-openid-connect-discovery</id>
+    <id>http://oauthjp.github.io/blog/2012/04/09/webintents-openid-connect-discovery</id>
     <content type="html"><![CDATA[<iframe src="http://www.slideshare.net/slideshow/embed_code/12296336" width="400" height="334" frameborder="0" marginwidth="0" marginheight="0" scrolling="no"></iframe>
 
 
@@ -873,9 +873,9 @@ webintents.orgのJSの問題なのか、なぜかSafariでしか動きません�
   
   <entry>
     <title type="html"><![CDATA[The AS->RS work is probably simpler and more useful at this point.]]></title>
-    <link href="http://oauthjp.github.io/blog/archives/20120316-the-as-rs-work-is-probably-simpler-and-more/"/>
+    <link href="http://oauthjp.github.io/blog/2012/03/16/the-as-rs-work-is-probably-simpler-and-more/"/>
     <updated>2012-03-16T00:00:00+09:00</updated>
-    <id>http://oauthjp.github.io/blog/archives/the-as-rs-work-is-probably-simpler-and-more</id>
+    <id>http://oauthjp.github.io/blog/2012/03/16/the-as-rs-work-is-probably-simpler-and-more</id>
     <content type="html"><![CDATA[<blockquote><pre>The AS-&gt;RS work is probably simpler and more useful at this point.</pre></blockquote>
 
 
@@ -893,9 +893,9 @@ webintents.orgのJSの問題なのか、なぜかSafariでしか動きません�
   
   <entry>
     <title type="html"><![CDATA[OAuth 2.0でユーザーが認可をする”アプリケーション”とはサービス全体のことではない - r-weblife]]></title>
-    <link href="http://oauthjp.github.io/blog/archives/20120311-response-type-code/"/>
+    <link href="http://oauthjp.github.io/blog/2012/03/11/response-type-code/"/>
     <updated>2012-03-11T00:00:00+09:00</updated>
-    <id>http://oauthjp.github.io/blog/archives/response-type-code</id>
+    <id>http://oauthjp.github.io/blog/2012/03/11/response-type-code</id>
     <content type="html"><![CDATA[<blockquote><p>response_type=code tokenとかあるので仕様曖昧だよな～と思っていたのですが、普通に書いてありました。</p>
 
 <p>A client application consisting of multiple components, each with its
@@ -926,9 +926,9 @@ ConfidentialならAuthZ Code, PublicなのはImplicit使え。
     <title type="html"><![CDATA[kyomichi:
 
 (via OAuth 2.0って知ってますかぁ？その2 - くらラボ研究記録)]]></title>
-    <link href="http://oauthjp.github.io/blog/archives/20120311-kyomichi-via-oauth-2-0-2/"/>
+    <link href="http://oauthjp.github.io/blog/2012/03/11/kyomichi-via-oauth-2-0-2/"/>
     <updated>2012-03-11T00:00:00+09:00</updated>
-    <id>http://oauthjp.github.io/blog/archives/kyomichi-via-oauth-2-0-2</id>
+    <id>http://oauthjp.github.io/blog/2012/03/11/kyomichi-via-oauth-2-0-2</id>
     <content type="html"><![CDATA[<p><img src="http://oauthjp.github.io/tumblr_files/tumblr_m0o7oc4Th71rn7kcvo1_1280.png"/></p>
 ]]></content>
   </entry>
