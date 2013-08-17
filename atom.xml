@@ -4,7 +4,7 @@
   <title><![CDATA[OAuth.jp]]></title>
   <link href="http://oauthjp.github.io/atom.xml" rel="self"/>
   <link href="http://oauthjp.github.io/"/>
-  <updated>2013-08-17T16:10:37+09:00</updated>
+  <updated>2013-08-17T16:13:51+09:00</updated>
   <id>http://oauthjp.github.io/</id>
   <author>
     <name><![CDATA[Nov Matake]]></name>
@@ -32,7 +32,7 @@
     <content type="html"><![CDATA[<p>先日以下のような記事を書きました。</p>
 
 
-<p><a href="http://oauth.jp/2013/05/30/login-with-amazon.html">Login with Amazonを使うと、あなたのサイトのユーザーがアカウントハイジャックされる。</a></p>
+<p><a href="http://oauthjp.github.io/blog/archives/login-with-amazon">Login with Amazonを使うと、あなたのサイトのユーザーがアカウントハイジャックされる。</a></p>
 
 
 <p>Login with Amazon 危険ですよ！という記事だったのですが、その後 Login with Amazon のドキュメントに、Token Info API が追加されました。</p>
@@ -81,13 +81,13 @@
 <p>@IT の記事からのリンクは OAuth.jp の Posterous -&gt; Tumblr 移行に伴いリンク切れになってしまっているので、ここにも OAuth 2.0 Implicit Flow を認証連携に使うことの危険性を説明するエントリーをリンクしておきます。</p>
 
 
-<p><a href="http://oauth.jp/2012/02/08/ios-sdk.html">&#8220;なんちゃら iOS SDK&#8221; でありそうな被害例</a></p>
+<p><a href="http://oauthjp.github.io/blog/archives/ios-sdk">&#8220;なんちゃら iOS SDK&#8221; でありそうな被害例</a></p>
 
 
 <p>Facebook の場合は、上の記事にあるような response_type=code+token を iOS / Android アプリでは使えないので、以下の記事末尾にあるような対処法も用意されています。</p>
 
 
-<p><a href="http://oauth.jp/2012/02/07/oauth-20-implicit-flow.html">「OAuth 2.0 (Implicit Flow) でログイン」の被害例</a></p>
+<p><a href="http://oauthjp.github.io/blog/archives/oauth-20-implicit-flow">「OAuth 2.0 (Implicit Flow) でログイン」の被害例</a></p>
 
 
 <p>が、ざっと Login with Amazon のドキュメントを読んだ限り、そのような対処法が一切用意されていない。</p>
@@ -108,7 +108,7 @@
 <p>Login with Amazon の問題点、解決されました。詳しくは以下の記事を。</p>
 
 
-<p><a href="http://oauth.jp/2013/06/04/login-with-amazon.html">Login with Amazon、もう使っても大丈夫！</a></p>
+<p><a href="http://oauthjp.github.io/blog/archives/login-with-amazon">Login with Amazon、もう使っても大丈夫！</a></p>
 
 ]]></content>
   </entry>
@@ -118,7 +118,7 @@
     <link href="http://oauthjp.github.io/blog/archives/oauth-20-core-bearer-spec-rfc-rfc-6749-rfc-67/"/>
     <updated>2013-01-23T00:00:00+09:00</updated>
     <id>http://oauthjp.github.io/blog/archives/oauth-20-core-bearer-spec-rfc-rfc-6749-rfc-67</id>
-    <content type="html"><![CDATA[<p>ずいぶん前に「<a href="http://oauth.jp/2011/11/29/oauth-20-core-bearer-spec-76993.html">OAuth 2.0 Core &amp; Bearer Spec 翻訳公開！</a>」で紹介したように、OAuth 2.0 Core &amp; Bearerは、OpenID Foundation Japanの翻訳WGで翻訳を公開していましたが、2012年に両specがRFC化されたのを受け、今回RFC版も翻訳しました。</p>
+    <content type="html"><![CDATA[<p>ずいぶん前に「<a href="http://oauthjp.github.io/blog/archives/oauth-20-core-bearer-spec-76993">OAuth 2.0 Core &amp; Bearer Spec 翻訳公開！</a>」で紹介したように、OAuth 2.0 Core &amp; Bearerは、OpenID Foundation Japanの翻訳WGで翻訳を公開していましたが、2012年に両specがRFC化されたのを受け、今回RFC版も翻訳しました。</p>
 
 
 <ul><li><a href="http://openid-foundation-japan.github.com/rfc6749.ja.html">The OAuth 2.0 Authorization Framework (RFC 6749)</a></li>
@@ -375,7 +375,7 @@
 <p>このブログができたころには既にOAuth 2.0のdraftが出てたのですが、そういえばOAuth.jpっていつできたんだっけ？と思ってみて見ると…</p>
 
 
-<p><a href="http://oauth.jp/2010/07/04/oauthjp.html">OAuth.jpを立ち上げました。 - OAuth.jp</a></p>
+<p><a href="http://oauthjp.github.io/blog/archives/oauthjp">OAuth.jpを立ち上げました。 - OAuth.jp</a></p>
 
 
 <p>2010年7月！</p>
@@ -681,7 +681,7 @@
     <content type="html"><![CDATA[<p>おひさしぶりです、@novです。</p>
 
 
-<p>最近は、新しいFacebook iOS SDK使ってるアプリを見つけるとまず<a href="http://oauth.jp/2012/02/08/ios-sdk.html">Token置換攻撃</a>を試みていますが、結構高い確率でこの攻撃に対して脆弱なアプリがみつかります。困ったものです。。</p>
+<p>最近は、新しいFacebook iOS SDK使ってるアプリを見つけるとまず<a href="http://oauthjp.github.io/blog/archives/ios-sdk">Token置換攻撃</a>を試みていますが、結構高い確率でこの攻撃に対して脆弱なアプリがみつかります。困ったものです。。</p>
 
 
 <p>そんななか、2週間ほど前に、Micosoft Researchの人がIETF OAuth WGのメーリングリストに<a href="http://www.ietf.org/mail-archive/web/oauth/current/msg09270.html">同じ問題を提起していました</a>。該当Threadでは少し話題が脱線している部分もありますが、もともと最初にこの問題を提起したJohn BradleyがOAuth 2.0 CoreにSecurity Considerationsを追加する流れのようです。</p>
