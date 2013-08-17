@@ -1,0 +1,213 @@
+
+<!DOCTYPE HTML>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>OAuth 2.0 Implicit Flow で認証の問題点、再び。 - OAuth.jp</title>
+    <meta name="author" content="Nov Matake">
+    
+	<meta name="description" content="おひさしぶりです、@novです。 最近は、新しいFacebook iOS SDK使ってるアプリを見つけるとまずToken置換攻撃を試みていますが、結構高い確率でこの攻撃に対して脆弱なアプリがみつかります。困ったものです。。 そんななか、2週間ほど前に、Micosoft &hellip;">
+	
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+	<link href="/atom.xml" rel="alternate" title="OAuth.jp" type="application/atom+xml">
+	<link rel="canonical" href="">
+	<link href="/favicon.ico" rel="shortcut icon">
+    <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+
+    <link href='http://fonts.googleapis.com/css?family=Slackey' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Fjalla+One' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Amethysta' rel='stylesheet' type='text/css'>
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+    <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+
+    <script type="text/javascript" src="/javascripts/jquery-tapir.js"></script>
+
+    <!-- remove or comment it to disable ajaxification -->
+    <!-- <script src="/javascripts/ajaxify.js"></script> -->
+
+    
+    
+
+</head>
+
+
+<body>
+    <div id="wrapper">
+    <header id="header" class="inner"><!-- for more effects see _animate.scss -->
+<h1 class="animated bounceInDown">
+  <a href='/'>
+    <div id="headerbg">
+      OAuth.jp
+    </div>
+  </a>
+</h1>
+<br>
+
+<ul id="social-links" style="text-align:center">
+  
+  <!-- Facebook -->
+  <li>
+  <a href="http://www.facebook.com/oauth.jp" class="facebook" title="Facebook"></a>
+  </li>
+  
+  
+  <!-- Twitter -->
+  <li>
+  <a href="http://www.twitter.com/oauthjp" class="twitter" title="Twitter"></a>
+  </li>
+  
+  
+  <!-- GitHub -->
+  <li>
+  <a href="https://github.com/oauthjp" class="github" title="Github"></a>
+  </li>
+  
+  
+  
+  
+  
+  
+</ul>
+
+
+<!-- use full url including 'index.html' for navigation bar if you are using ajax -->
+<ul id="nav">
+  
+</ul>
+
+
+
+
+</header>
+
+<div id="toload">
+<!-- begin toload --> 
+    <div id="content" class="inner">
+        <article class="post">
+	<h2 class="title">OAuth 2.0 Implicit Flow で認証の問題点、再び。</h2>
+	<div class="entry-content"><p>おひさしぶりです、@novです。</p>
+
+
+<p>最近は、新しいFacebook iOS SDK使ってるアプリを見つけるとまず<a href="/blog/2012/02/08/ios-sdk">Token置換攻撃</a>を試みていますが、結構高い確率でこの攻撃に対して脆弱なアプリがみつかります。困ったものです。。</p>
+
+
+<p>そんななか、2週間ほど前に、Micosoft Researchの人がIETF OAuth WGのメーリングリストに<a href="http://www.ietf.org/mail-archive/web/oauth/current/msg09270.html">同じ問題を提起していました</a>。該当Threadでは少し話題が脱線している部分もありますが、もともと最初にこの問題を提起したJohn BradleyがOAuth 2.0 CoreにSecurity Considerationsを追加する流れのようです。</p>
+
+
+<p>これが現状の改善につながれば良いのですが、そう簡単に行かないかもなとも思います。というのも、この問題、<strong>なかなかデベロッパーにとって理解されない</strong>傾向があります。</p>
+
+
+<p>そこで今日は、これまでいくつかのアプリデベロッパーに対して脆弱性報告をしたときの反応をまとめてみたいと思います。</p>
+
+
+<h3>反応1: そもそも置換攻撃に使うためのaccess token奪われてる時点でアウトじゃね？</h3>
+
+
+<p>確かにFacebookのaccess tokenを悪用されると、困ります。勝手にFacebookに変なリンクを投稿されたり、プロフィール情報を抜かれたりすることもあるでしょう。が、そういったFacebookアカウントに対する攻撃と、Facebook以外のサービスでもアカウントが乗っ取られるということは別問題です。</p>
+
+
+<p>あるFacebook連携を行っているサービスからFacebookのaccess tokenが漏洩した時に、Facebookの自分のタイムラインを荒らされることと、いままで自分がFacebookと連携したさまざまなサービスでアカウントが乗っ取られることは、別でしょう？</p>
+
+
+<h3>反応2: 攻撃用アプリをインストールしなきゃ被害にあわないでしょ？</h3>
+
+
+<p>攻撃用アプリはどうせAppleの審査を通らないから、被害者がそれをインストールする可能性はきわめて低い、という主張をする人もいました。</p>
+
+
+<p>が、攻撃用アプリは、攻撃者自身がXcode経由で自分のiPhoneにインストールすればいいだけなので、AppStoreに並ぶ必要もないですし、Appleの審査を通る必要もなく、Jailbreakすらいりません。</p>
+
+
+<p>さらに言うと、攻撃用アプリは、Objective-C初心者の僕が数時間で作れる程度のものです。</p>
+
+
+<h3>反応3: access token受け取った側がそれ検証するのは当然。Facebook側は問題ない。</h3>
+
+
+<p>確かにFacebook側はtokenの発行先検証のためのAPIも用意しているし、Facebook iOS SDKにバグがあるというわけでも無いです。が、FB iOS SDKを使って同じあやまちを犯しているアプリがあまりに多く、僕が調べた5つのiOSアプリ中、4つが同じ過ちを犯していました。この状況では、さすがにFacebook側もドキュメントにこの脆弱性に対する注意および解決策を明記したり、FB iOS SDKのサンプルコードを修正したりする必要があるのではないかと思います。</p>
+
+
+<h3>反応4: OAuth 2.0のImplicit Flowを認証に使うのがまず誤り。OpenID Connect使うべき。</h3>
+
+
+<p>正論ではあると思うのですが、API提供者側がOpenID Connectに対応できていない状況では、API利用者を混乱させるだけなような気もします。現状の仕組みで解決できる方法もあるので、まずはそちらを伝えることが先決ではないでしょうか。</p>
+
+
+<h3>反応5: パスワード忘れちゃったの？ここに登録したメールアドレス入力したら、パスワードリセットできるよ。</h3>
+
+
+<p>この反応にはさすがにびっくりしました。</p>
+
+
+<p>とまぁ、混乱する理由も理解できるものからまったくとんちんかんなものまで、様々な反応がありましたが、</p>
+
+
+<ul><li>みなさんのアプリは外部APIを使って認証していますか？</li>
+<li>そのAPIはOAuthベースですか？</li>
+<li>アプリからaccess tokenを受け取った時、Web API側では毎回token発行先が自分のアプリかどうか確認していますか？</li>
+</ul>
+
+
+<p>もし上記の質問に答えられない場合、自分のアプリが安全かどうか分からない場合は、お気軽にこのブログのコメント欄に質問していただければと思います。もちろんOAuth.jpのFacebook PageやTwitterアカウントに質問投げかけてくれても構いません。（Twitterの場合は、@oauthjp より @nov に質問してくれた方が気がつきやすいと思います）</p>
+
+
+<p>ではでは！</p>
+
+</div>
+
+<div class="meta">
+	
+</div>
+</article>
+
+	<div class="share">
+	<div class="addthis_toolbox addthis_default_style ">
+	
+	
+	<a class="addthis_button_tweet"></a>
+	
+	
+	<a class="addthis_counter addthis_pill_style"></a>
+	</div>
+  <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid="></script>
+</div>
+
+
+
+    </div>
+    <footer id="footer">
+    <div style="display:inline">
+    Copyright &copy; 2013
+
+    Nov Matake
+. Powered by <a href="http://octopress.org">Octopress</a> | 
+    Theme <a href="http://github.com/panks/fabric">fabric</a> by <a href="http://panks.me">Pankaj Kumar</a>
+</div>
+
+
+    </footer>
+    <script src="/javascripts/fabric.js"></script>
+<script src="/javascripts/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+	$('.fancybox').fancybox();
+})(jQuery);
+</script> <!-- Delete or comment this line to disable Fancybox -->
+
+
+
+
+
+
+<!-- end toload --> 
+</div>
+</div>
+<script src="/javascripts/jquery.ui.totop.js" type="text/javascript"></script>
+<script type="text/javascript">
+/*<![CDATA[*/
+;(function($){$().UItoTop({easingType:'easeOutCirc'});})(jQuery); 
+/*]]>*/
+</script><!-- remove it to remove the scroll to top button -->
+</body>
+</html>
