@@ -4,7 +4,7 @@
   <title><![CDATA[OAuth.jp]]></title>
   <link href="http://oauthjp.github.io/atom.xml" rel="self"/>
   <link href="http://oauthjp.github.io/"/>
-  <updated>2013-08-17T18:53:54+09:00</updated>
+  <updated>2013-08-17T19:34:04+09:00</updated>
   <id>http://oauthjp.github.io/</id>
   <author>
     <name><![CDATA[Nov Matake]]></name>
@@ -12,6 +12,31 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[JWT & JWS 翻訳プロジェクトスタート & イベント紹介]]></title>
+    <link href="http://oauthjp.github.io/blog/2013/08/17/jwt-jws-trans/"/>
+    <updated>2013-08-17T19:15:00+09:00</updated>
+    <id>http://oauthjp.github.io/blog/2013/08/17/jwt-jws-trans</id>
+    <content type="html"><![CDATA[<p>先週から, JWxファミリーの以下の3つの仕様書の翻訳を始めています.</p>
+
+<ul>
+<li><a href="http://tools.ietf.org/html/draft-ietf-oauth-json-web-token-11">JSON Web Token (JWT)</a></li>
+<li><a href="http://tools.ietf.org/html/draft-ietf-jose-json-web-signature-14">JSON Web Signature (JWS)</a></li>
+<li><a href="http://tools.ietf.org/html/draft-ietf-jose-use-cases-03">JOSE UseCases</a></li>
+</ul>
+
+
+<p>翻訳資料の公開は <a href="http://openid.doorkeeper.jp/events/5373">OpenID TechNight Vol.10</a> のある 9/4 に予定してます.
+<a href="http://openid.doorkeeper.jp/events/5373">OpenID TechNight Vol.10</a> では僕から簡単にこれら各仕様の概要についてもご紹介しますので, 興味ある方はぜひご参加を.</p>
+
+<p>また <a href="https://github.com/openid-foundation-japan/draft-ietf-jose">JWx 翻訳プロジェクト GitHub レポジトリ</a>にはこの他にも JSON Web Encryption や JWT Bearer といった関連仕様も含まれていて, これらも同様に翻訳予定です.
+これらの翻訳公開時期はまだ未定ですが, 9/20 の <a href="http://nosurrender.jp/idit2013/">ID &amp; IT 2013</a> に合わせて公開できればなと考えています.
+こちらのカンファレンスもエンタープライズ業界で Identity に携わっている人には必見です!</p>
+
+<p><strong>要するに, 9月がアツイ!</strong></p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Octopress x GitHub Pagesに移行]]></title>
@@ -919,17 +944,6 @@ ConfidentialならAuthZ Code, PublicなのはImplicit使え。
 
 <p>(via <a href="http://kyomichi.tumblr.com/" class="tumblr_blog">kyomichi</a>)</p>
 
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[kyomichi:
-
-(via OAuth 2.0って知ってますかぁ？その2 - くらラボ研究記録)]]></title>
-    <link href="http://oauthjp.github.io/blog/2012/03/11/kyomichi-via-oauth-2-0-2/"/>
-    <updated>2012-03-11T00:00:00+09:00</updated>
-    <id>http://oauthjp.github.io/blog/2012/03/11/kyomichi-via-oauth-2-0-2</id>
-    <content type="html"><![CDATA[<p><img src="http://oauthjp.github.io/tumblr_files/tumblr_m0o7oc4Th71rn7kcvo1_1280.png"/></p>
 ]]></content>
   </entry>
   

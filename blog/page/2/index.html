@@ -6,7 +6,7 @@
 	<title>OAuth.jp</title>
     <meta name="author" content="Nov Matake">
     
-	<meta name="description" content="Published on: Oct 26th, 2012 Tags: @novです。 個人的に最近OAuth 2.0よりJWT (というかJWS) を利用するシーンが多く、毎回同じ説明するのもめんどくさいのでブログにまとめるかと思い、どうせならOAuth.jpに書くかということで、 &hellip;">
+	<meta name="description" content="Published on: Nov 8th, 2012 Tags: 2011年12月のOpenID Summit Tokyoで、2012年中のOpenID Connect対応を宣言したYahoo! Japanが、本日ついに宣言通りOpenID Connectをサポート開始しました。 &hellip;">
 	
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
@@ -85,6 +85,86 @@
 <!-- begin toload --> 
     <div id="content" class="inner">
         
+
+
+    <article class="post">
+	<h2 class="title">
+		
+		<a href="/blog/2012/11/08/yahoo-japanoauth-20-openid-connect/">
+		
+			Yahoo! JapanがOAuth 2.0 & OpenID Connectに対応</a>
+	</h2>
+    <div class="entry-content">
+    <div class="meta">
+      <div class="date">Published on: 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-11-08T00:00:00+09:00" pubdate data-updated="true">Nov 8<span>th</span>, 2012</time></div>
+      <div class="tags">Tags: 
+
+</div>
+    </div>
+		<p>2011年12月のOpenID Summit Tokyoで、2012年中のOpenID Connect対応を宣言したYahoo! Japanが、本日ついに宣言通りOpenID Connectをサポート開始しました。</p>
+
+
+<p>もともとOAuth 2.0も対応していなかった（よね？）ので、OAuth 2.0対応も同時リリースです。</p>
+
+
+<p>まだバグとかあるっぽいけど、何はともあれ世界の大手IdPの中で一番最初にproduction環境でOpenID Connect対応できたのはすばらしい！</p>
+
+
+<p><iframe scrolling="no" margin src="http://www.slideshare.net/slideshow/embed_code/10433061" frameborder="0"> </iframe></p>
+
+
+<div style="margin-bottom: 5px;"><strong> <a href="http://www.slideshare.net/tzmtk/openid-summit-tokyo-2011" title="OpenID Summit Tokyo 2011" target="_blank">OpenID Summit Tokyo 2011</a> </strong> from <strong><a href="http://www.slideshare.net/tzmtk" target="_blank">Taizo Matsuoka</a></strong></div>
+
+
+<p>まだOpenID ConnectのDiscoveryとDynamic Registrationには対応していないので、<a href="https://connect-rp.heroku.com">Nov RP</a>に &#8220;yahoo.co.jp&#8221; とか入力しても使えない状態ですが、それは今後に期待です。</p>
+
+
+<p>YConnectをちょこっと触ってみて思った要望とかは以下のgistにまとめていってます。</p>
+
+
+<script src="https://gist.github.com/4031074.js?file=gistfile1.textile"></script>
+
+
+<p>scopeにopenidが指定されてるのにtoken responseにid_tokenが含まれてないとか、response_type=code+id_tokenの時にcodeとid_tokenがredirect_uriのfragmentではなくqueryについているなどの問題は、ただのバグとして修正すれば良いでしょう。</p>
+
+
+<p>それ以外でいま気になってる点としては、以下の2点です。</p>
+
+
+<ul><li>response_type=code+tokenサポートしてもらわないとserver-side componentを持つmobile appから使おうとしたときにいろいろめんどくさいことになっちゃうのはFBとか見てたら明らですが、現状のYConnectは「サーバーサイド」アプリとして登録した場合response_typeにcodeかcode+id_tokenしか指定できないみたいです。これはちょっとやめた方が良い気がします。</li>
+<li>あと、id_tokenのsignature algorithmはdefault RS256ということで進んでいるので、YConnectだけがHS256だとまたYAuthとか言われちゃったりしそうですね。</li>
+</ul>
+
+
+<p>それ以外にも、なぜかyahoo.co.jp以外のドメインのメアドはverfiedじゃなくても返してくれる (試しに <a href="mailto:hoge@hoge.com">hoge@hoge.com</a> というメアドを登録してみたらそれ返してきたw）のにyahoo.co.jpのメアドは返してくれないというのも不思議といえば不思議ですが、まぁ社内調整とかいろいろめんどくさいことありそうですし、それが原因でOpenID Connect対応のスケジュールが遅れるくらいならとりあえずそれでもいいのかなとも思います。</p>
+
+
+<p>Implicitの方でscopeにopenidが指定された時にnonceが必須になってるかとかもチェックしたかったのですが、なんかいま「クライアントサイド」のアプリを登録しようとするとエラーになっちゃうバグがあるようなので、そちらはまた明日にでも。覚えてれば。</p>
+
+
+<p>OAuth 2.0 draft 0の時点で対応してきたFacebookのように、これからOpenID Connectのbreaking changesに追随するのは大変だと思いますが、引き続きがんばってください！あと、OpenID Connectにbreaking changeがある時に一番大きな声で文句言える立場にいるので、ぜひOpenID Connect Interopにも積極的に参加していただければ :)</p>
+
+
+		
+		
+	</div>
+
+<div class="meta">
+	
+</div>
+</article>
 
 
     <article class="post">
@@ -457,99 +537,6 @@
 </div>
 </article>
 
-
-    <article class="post">
-	<h2 class="title">
-		
-		<a href="/blog/2012/10/01/oauthofflineaccess/">
-		
-			OAuthのoffline_accessについて</a>
-	</h2>
-    <div class="entry-content">
-    <div class="meta">
-      <div class="date">Published on: 
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-10-01T00:00:00+09:00" pubdate data-updated="true">Oct 1<span>st</span>, 2012</time></div>
-      <div class="tags">Tags: 
-
-</div>
-    </div>
-		<p>少し前ですが、OpenID Connectのbitbuckeetで<a href="https://bitbucket.org/openid/connect/issue/539/messages-0-add-scope-for-offline-access">offline_accessについての議論</a>がされていたので、まとめておきます。</p>
-
-
-<h3>Googleの場合</h3>
-
-
-<h4>offline access の定義</h4>
-
-
-<ul><li>refresh tokenが発行されるのがoffline。</li>
-<li>特にoffline accessを要求しない限り、デフォルトではonline accessを要求したものと見なされる。</li>
-<li>online accessの場合はrefresh tokenは発行されない。</li>
-<li>refresh tokenはユーザーがrevokeするまで有効。</li>
-</ul>
-
-
-<h4>auto approval</h4>
-
-
-<ul><li>一度ApproveされたClientに対しては、accessがrevokeされるまでは次回以降のAuthorization Request時の同意画面はスキップされる。</li>
-<li>同意画面がスキップされる場合、refresh tokenは発行されない。</li>
-</ul>
-
-
-<h4>promptとaccess_type</h4>
-
-
-<ul><li>Authorization Request時にprompt=trueというパラメーターを指定すると、auto approvalを無効化し、ユーザーに同意画面を見せることができる。</li>
-<li>同様にaccess_type=offlineを指定すると、offline accessを要求できる。</li>
-<li>access_type=offlineを指定した場合、初回同意時にのみrefresh tokenが発行される。</li>
-<li>それ以降もrefresh tokenが必要な場合は、prompt=trueとaccess_type=offlineを同時に指定すること。</li>
-</ul>
-
-
-<h3>AOLの場合</h3>
-
-
-<h4>offline accessの定義</h4>
-
-
-<ul><li>デフォルトではcode flowでは常にrefresh tokenが返される。</li>
-<li>refresh tokenはユーザーがログアウトするまで有効。</li>
-<li>ユーザーがログアウトしても有効なrefresh tokenが欲しい場合は、scopeにoffline_accessを指定する。</li>
-</ul>
-
-
-<h4>auto approval</h4>
-
-
-<ul><li>ユーザーが明示的にチェックボックスにチェックを入れた場合のみ、次回以降の同意画面がスキップされる。</li>
-<li>同意画面がスキップされるケースでも、offline_accessを要求することができる。</li>
-</ul>
-
-
-<p>ところで<a href="https://bitbucket.org/openid/connect/issue/539/messages-0-add-scope-for-offline-access">このIssue</a>、まだopenですね。</p>
-
-
-		
-		
-	</div>
-
-<div class="meta">
-	
-</div>
-</article>
-
 <nav id="pagenavi">
     
         <a href="/" class="prev">Prev</a>
@@ -580,6 +567,19 @@
 })(jQuery);
 </script> <!-- Delete or comment this line to disable Fancybox -->
 
+
+<script type="text/javascript">
+      var disqus_shortname = 'oauthjp';
+      
+        
+        var disqus_script = 'count.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
 
 
 

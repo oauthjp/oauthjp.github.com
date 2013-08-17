@@ -6,7 +6,7 @@
 	<title>OAuth.jp</title>
     <meta name="author" content="Nov Matake">
     
-	<meta name="description" content="Published on: Aug 9th, 2012 Tags: WebSocket Serverでユーザー認証とか、WebSocket Serverの裏にRailsなりのAPIがあってNode.jsからそのAPI叩く見たいなのはそれなりにありそうなのに、 &hellip;">
+	<meta name="description" content="Published on: Oct 1st, 2012 Tags: 少し前ですが、OpenID Connectのbitbuckeetでoffline_accessについての議論がされていたので、まとめておきます。 Googleの場合 offline access の定義 refresh &hellip;">
 	
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
@@ -85,6 +85,99 @@
 <!-- begin toload --> 
     <div id="content" class="inner">
         
+
+
+    <article class="post">
+	<h2 class="title">
+		
+		<a href="/blog/2012/10/01/oauthofflineaccess/">
+		
+			OAuthのoffline_accessについて</a>
+	</h2>
+    <div class="entry-content">
+    <div class="meta">
+      <div class="date">Published on: 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-10-01T00:00:00+09:00" pubdate data-updated="true">Oct 1<span>st</span>, 2012</time></div>
+      <div class="tags">Tags: 
+
+</div>
+    </div>
+		<p>少し前ですが、OpenID Connectのbitbuckeetで<a href="https://bitbucket.org/openid/connect/issue/539/messages-0-add-scope-for-offline-access">offline_accessについての議論</a>がされていたので、まとめておきます。</p>
+
+
+<h3>Googleの場合</h3>
+
+
+<h4>offline access の定義</h4>
+
+
+<ul><li>refresh tokenが発行されるのがoffline。</li>
+<li>特にoffline accessを要求しない限り、デフォルトではonline accessを要求したものと見なされる。</li>
+<li>online accessの場合はrefresh tokenは発行されない。</li>
+<li>refresh tokenはユーザーがrevokeするまで有効。</li>
+</ul>
+
+
+<h4>auto approval</h4>
+
+
+<ul><li>一度ApproveされたClientに対しては、accessがrevokeされるまでは次回以降のAuthorization Request時の同意画面はスキップされる。</li>
+<li>同意画面がスキップされる場合、refresh tokenは発行されない。</li>
+</ul>
+
+
+<h4>promptとaccess_type</h4>
+
+
+<ul><li>Authorization Request時にprompt=trueというパラメーターを指定すると、auto approvalを無効化し、ユーザーに同意画面を見せることができる。</li>
+<li>同様にaccess_type=offlineを指定すると、offline accessを要求できる。</li>
+<li>access_type=offlineを指定した場合、初回同意時にのみrefresh tokenが発行される。</li>
+<li>それ以降もrefresh tokenが必要な場合は、prompt=trueとaccess_type=offlineを同時に指定すること。</li>
+</ul>
+
+
+<h3>AOLの場合</h3>
+
+
+<h4>offline accessの定義</h4>
+
+
+<ul><li>デフォルトではcode flowでは常にrefresh tokenが返される。</li>
+<li>refresh tokenはユーザーがログアウトするまで有効。</li>
+<li>ユーザーがログアウトしても有効なrefresh tokenが欲しい場合は、scopeにoffline_accessを指定する。</li>
+</ul>
+
+
+<h4>auto approval</h4>
+
+
+<ul><li>ユーザーが明示的にチェックボックスにチェックを入れた場合のみ、次回以降の同意画面がスキップされる。</li>
+<li>同意画面がスキップされるケースでも、offline_accessを要求することができる。</li>
+</ul>
+
+
+<p>ところで<a href="https://bitbucket.org/openid/connect/issue/539/messages-0-add-scope-for-offline-access">このIssue</a>、まだopenですね。</p>
+
+
+		
+		
+	</div>
+
+<div class="meta">
+	
+</div>
+</article>
 
 
     <article class="post">
@@ -451,47 +544,6 @@
 </div>
 </article>
 
-
-    <article class="post">
-	<h2 class="title">
-		
-		<a href="/blog/2012/04/22/important-oauth-1-0-has-been-officially/">
-		
-			Important: OAuth 1.0 Has Been Officially Deprecated as of April 20, 2012. It Will Continue to Work as Per Our Deprecation Policy, but We Encourage You to Migrate to OAuth 2.0 as Soon as Possible.</a>
-	</h2>
-    <div class="entry-content">
-    <div class="meta">
-      <div class="date">Published on: 
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-04-22T00:00:00+09:00" pubdate data-updated="true">Apr 22<span>nd</span>, 2012</time></div>
-      <div class="tags">Tags: 
-
-</div>
-    </div>
-		<blockquote>Important: OAuth 1.0 has been officially deprecated as of April 20, 2012. It will continue to work as per our deprecation policy, but we encourage you to migrate to OAuth 2.0 as soon as possible.</blockquote>
-
-
-<p>&#8212;<a href="https://developers.google.com/accounts/docs/OAuth">OAuth 1.0 for Web Applications &ndash; Google Accounts Authentication and Authorization — Google Developers</a></p>
-
-		
-		
-	</div>
-
-<div class="meta">
-	
-</div>
-</article>
-
 <nav id="pagenavi">
     
         <a href="/blog/page/2/" class="prev">Prev</a>
@@ -522,6 +574,19 @@
 })(jQuery);
 </script> <!-- Delete or comment this line to disable Fancybox -->
 
+
+<script type="text/javascript">
+      var disqus_shortname = 'oauthjp';
+      
+        
+        var disqus_script = 'count.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
 
 
 
