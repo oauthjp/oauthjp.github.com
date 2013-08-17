@@ -1,235 +1,243 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <urlset xmlns='http://www.sitemaps.org/schemas/sitemap/0.9'>
     <url>
-        <loc>http://oauth.jp/articles/githuborganization/</loc>
+        <loc>http://oauthjp.github.io/articles/githuborganization/</loc>
         <lastmod>2013-08-17T15:33:46+09:00</lastmod>
     </url>
     <url>
-        <loc>http://oauth.jp/articles/oauthjp/</loc>
+        <loc>http://oauthjp.github.io/articles/oauthjp/</loc>
         <lastmod>2013-08-17T15:34:35+09:00</lastmod>
     </url>
     <url>
-        <loc>http://oauth.jp/articles/oauthjp-96284/</loc>
+        <loc>http://oauthjp.github.io/articles/oauthjp-96284/</loc>
         <lastmod>2013-08-17T15:22:58+09:00</lastmod>
     </url>
     <url>
-        <loc>http://oauth.jp/articles/facebookoauth-rails/</loc>
+        <loc>http://oauthjp.github.io/articles/facebookoauth-rails/</loc>
         <lastmod>2013-08-17T15:22:58+09:00</lastmod>
     </url>
     <url>
-        <loc>http://oauth.jp/articles/socialweb-conference-vol6-oauth-night/</loc>
+        <loc>http://oauthjp.github.io/articles/socialweb-conference-vol6-oauth-night/</loc>
         <lastmod>2013-08-17T15:22:58+09:00</lastmod>
     </url>
     <url>
-        <loc>http://oauth.jp/articles/the-oauth-10-protocol-draft-hammer-oauth-10/</loc>
+        <loc>http://oauthjp.github.io/articles/the-oauth-10-protocol-draft-hammer-oauth-10/</loc>
         <lastmod>2013-08-17T15:22:58+09:00</lastmod>
     </url>
     <url>
-        <loc>http://oauth.jp/articles/rack-openidopenidoauth-hybrid/</loc>
+        <loc>http://oauthjp.github.io/articles/rack-openidopenidoauth-hybrid/</loc>
         <lastmod>2013-08-17T15:22:58+09:00</lastmod>
     </url>
     <url>
-        <loc>http://oauth.jp/articles/rack-oauth2oauth-20server/</loc>
+        <loc>http://oauthjp.github.io/articles/rack-oauth2oauth-20server/</loc>
         <lastmod>2013-08-17T15:22:58+09:00</lastmod>
     </url>
     <url>
-        <loc>http://oauth.jp/articles/live-apioauth-10/</loc>
+        <loc>http://oauthjp.github.io/articles/live-apioauth-10/</loc>
         <lastmod>2013-08-17T15:22:58+09:00</lastmod>
     </url>
     <url>
-        <loc>http://oauth.jp/articles/oauth-20openid-connect/</loc>
+        <loc>http://oauthjp.github.io/articles/oauth-20openid-connect/</loc>
         <lastmod>2013-08-17T15:22:58+09:00</lastmod>
     </url>
     <url>
-        <loc>http://oauth.jp/articles/oauth-20/</loc>
+        <loc>http://oauthjp.github.io/articles/oauth-20/</loc>
         <lastmod>2013-08-17T15:22:58+09:00</lastmod>
     </url>
     <url>
-        <loc>http://oauth.jp/articles/oauth/</loc>
+        <loc>http://oauthjp.github.io/articles/oauth/</loc>
         <lastmod>2013-08-17T15:22:58+09:00</lastmod>
     </url>
     <url>
-        <loc>http://oauth.jp/articles/oauth-hatena-developer-center/</loc>
+        <loc>http://oauthjp.github.io/articles/oauth-hatena-developer-center/</loc>
         <lastmod>2013-08-17T15:22:58+09:00</lastmod>
     </url>
     <url>
-        <loc>http://oauth.jp/articles/oauth2-gemmixi-graph-api/</loc>
+        <loc>http://oauthjp.github.io/articles/oauth2-gemmixi-graph-api/</loc>
         <lastmod>2013-08-17T15:22:58+09:00</lastmod>
     </url>
     <url>
-        <loc>http://oauth.jp/articles/rackoauth2-sample-server/</loc>
+        <loc>http://oauthjp.github.io/articles/rackoauth2-sample-server/</loc>
         <lastmod>2013-08-17T15:22:58+09:00</lastmod>
     </url>
     <url>
-        <loc>http://oauth.jp/articles/rackoauth2tokentypemac/</loc>
+        <loc>http://oauthjp.github.io/articles/rackoauth2tokentypemac/</loc>
         <lastmod>2013-08-17T15:22:58+09:00</lastmod>
     </url>
     <url>
-        <loc>http://oauth.jp/articles/openid-connect-rubygem/</loc>
+        <loc>http://oauthjp.github.io/articles/openid-connect-rubygem/</loc>
         <lastmod>2013-08-17T15:32:22+09:00</lastmod>
     </url>
     <url>
-        <loc>http://oauth.jp/articles/facebook-oauth-migration/</loc>
+        <loc>http://oauthjp.github.io/articles/facebook-oauth-migration/</loc>
         <lastmod>2013-08-17T15:37:19+09:00</lastmod>
     </url>
     <url>
-        <loc>http://oauth.jp/articles/oauth-20-openid-connect-ma7/</loc>
+        <loc>http://oauthjp.github.io/articles/oauth-20-openid-connect-ma7/</loc>
         <lastmod>2013-08-17T15:22:58+09:00</lastmod>
     </url>
     <url>
-        <loc>http://oauth.jp/articles/openid-foundation-japan-evangelist/</loc>
+        <loc>http://oauthjp.github.io/articles/openid-foundation-japan-evangelist/</loc>
         <lastmod>2013-08-17T15:22:58+09:00</lastmod>
     </url>
     <url>
-        <loc>http://oauth.jp/articles/oauth-20-core-bearer-spec/</loc>
+        <loc>http://oauthjp.github.io/articles/oauth-20-core-bearer-spec/</loc>
         <lastmod>2013-08-17T15:22:58+09:00</lastmod>
     </url>
     <url>
-        <loc>http://oauth.jp/articles/oauth-20-core-bearer-spec-73921/</loc>
+        <loc>http://oauthjp.github.io/articles/oauth-20-core-bearer-spec-73921/</loc>
         <lastmod>2013-08-17T15:22:58+09:00</lastmod>
     </url>
     <url>
-        <loc>http://oauth.jp/articles/oauth-20-core-bearer-spec-76993/</loc>
+        <loc>http://oauthjp.github.io/articles/oauth-20-core-bearer-spec-76993/</loc>
         <lastmod>2013-08-17T15:22:58+09:00</lastmod>
     </url>
     <url>
-        <loc>http://oauth.jp/articles/oauth-20-core-bearer-ietf-last-call/</loc>
+        <loc>http://oauthjp.github.io/articles/oauth-20-core-bearer-ietf-last-call/</loc>
         <lastmod>2013-08-17T15:22:58+09:00</lastmod>
     </url>
     <url>
-        <loc>http://oauth.jp/articles/oauth-20-implicit-flow/</loc>
+        <loc>http://oauthjp.github.io/articles/oauth-20-implicit-flow/</loc>
         <lastmod>2013-08-17T15:22:58+09:00</lastmod>
     </url>
     <url>
-        <loc>http://oauth.jp/articles/ios-sdk/</loc>
+        <loc>http://oauthjp.github.io/articles/ios-sdk/</loc>
         <lastmod>2013-08-17T15:22:58+09:00</lastmod>
     </url>
     <url>
-        <loc>http://oauth.jp/articles/</loc>
+        <loc>http://oauthjp.github.io/articles/</loc>
         <lastmod>2013-08-17T15:22:58+09:00</lastmod>
     </url>
     <url>
-        <loc>http://oauth.jp/articles/gist/</loc>
+        <loc>http://oauthjp.github.io/articles/gist/</loc>
         <lastmod>2013-08-17T15:22:58+09:00</lastmod>
     </url>
     <url>
-        <loc>http://oauth.jp/articles/oauth/</loc>
+        <loc>http://oauthjp.github.io/articles/oauth/</loc>
         <lastmod>2013-08-17T15:22:58+09:00</lastmod>
     </url>
     <url>
-        <loc>http://oauth.jp/articles/openid-openid-connect/</loc>
+        <loc>http://oauthjp.github.io/articles/openid-openid-connect/</loc>
         <lastmod>2013-08-17T15:22:58+09:00</lastmod>
     </url>
     <url>
-        <loc>http://oauth.jp/articles/tumblr/</loc>
+        <loc>http://oauthjp.github.io/articles/tumblr/</loc>
         <lastmod>2013-08-17T15:22:58+09:00</lastmod>
     </url>
     <url>
-        <loc>http://oauth.jp/articles/via-amazon-co-jp-getting-started-with-oauth-2/</loc>
+        <loc>
+            http://oauthjp.github.io/articles/via-amazon-co-jp-getting-started-with-oauth-2/
+        </loc>
         <lastmod>2013-08-17T15:22:58+09:00</lastmod>
     </url>
     <url>
-        <loc>http://oauth.jp/articles/here-is-a-table-that-describes-this-relationship/</loc>
+        <loc>
+            http://oauthjp.github.io/articles/here-is-a-table-that-describes-this-relationship/
+        </loc>
         <lastmod>2013-08-17T15:22:58+09:00</lastmod>
     </url>
     <url>
-        <loc>http://oauth.jp/articles/oauth/</loc>
+        <loc>http://oauthjp.github.io/articles/oauth/</loc>
         <lastmod>2013-08-17T15:22:58+09:00</lastmod>
     </url>
     <url>
-        <loc>http://oauth.jp/articles/id-student-identity/</loc>
+        <loc>http://oauthjp.github.io/articles/id-student-identity/</loc>
         <lastmod>2013-08-17T15:38:34+09:00</lastmod>
     </url>
     <url>
-        <loc>http://oauth.jp/articles/jso-a-javascript-oauth-library/</loc>
+        <loc>http://oauthjp.github.io/articles/jso-a-javascript-oauth-library/</loc>
         <lastmod>2013-08-17T15:22:58+09:00</lastmod>
     </url>
     <url>
-        <loc>http://oauth.jp/articles/kyomichi-via-oauth-2-0-2/</loc>
+        <loc>http://oauthjp.github.io/articles/kyomichi-via-oauth-2-0-2/</loc>
         <lastmod>2013-08-17T15:22:58+09:00</lastmod>
     </url>
     <url>
-        <loc>http://oauth.jp/articles/response-type-code/</loc>
+        <loc>http://oauthjp.github.io/articles/response-type-code/</loc>
         <lastmod>2013-08-17T15:39:09+09:00</lastmod>
     </url>
     <url>
-        <loc>http://oauth.jp/articles/the-as-rs-work-is-probably-simpler-and-more/</loc>
+        <loc>http://oauthjp.github.io/articles/the-as-rs-work-is-probably-simpler-and-more/</loc>
         <lastmod>2013-08-17T15:22:58+09:00</lastmod>
     </url>
     <url>
-        <loc>http://oauth.jp/articles/webintents-openid-connect-discovery/</loc>
+        <loc>http://oauthjp.github.io/articles/webintents-openid-connect-discovery/</loc>
         <lastmod>2013-08-17T15:39:59+09:00</lastmod>
     </url>
     <url>
-        <loc>http://oauth.jp/articles/when-you-access-to-an-openid-relying-party-rp/</loc>
+        <loc>
+            http://oauthjp.github.io/articles/when-you-access-to-an-openid-relying-party-rp/
+        </loc>
         <lastmod>2013-08-17T15:41:40+09:00</lastmod>
     </url>
     <url>
-        <loc>http://oauth.jp/articles/important-oauth-1-0-has-been-officially/</loc>
+        <loc>http://oauthjp.github.io/articles/important-oauth-1-0-has-been-officially/</loc>
         <lastmod>2013-08-17T15:22:58+09:00</lastmod>
     </url>
     <url>
-        <loc>http://oauth.jp/articles/debugging-oauth2-ssl-connections/</loc>
+        <loc>http://oauthjp.github.io/articles/debugging-oauth2-ssl-connections/</loc>
         <lastmod>2013-08-17T15:22:58+09:00</lastmod>
     </url>
     <url>
-        <loc>http://oauth.jp/articles/oauth-20-implicit-flow-78852/</loc>
+        <loc>http://oauthjp.github.io/articles/oauth-20-implicit-flow-78852/</loc>
         <lastmod>2013-08-17T15:22:58+09:00</lastmod>
     </url>
     <url>
-        <loc>http://oauth.jp/articles/re-oauth-20clientsecret/</loc>
+        <loc>http://oauthjp.github.io/articles/re-oauth-20clientsecret/</loc>
         <lastmod>2013-08-17T15:22:58+09:00</lastmod>
     </url>
     <url>
-        <loc>http://oauth.jp/articles/websocketoauth-20/</loc>
+        <loc>http://oauthjp.github.io/articles/websocketoauth-20/</loc>
         <lastmod>2013-08-17T15:22:58+09:00</lastmod>
     </url>
     <url>
-        <loc>http://oauth.jp/articles/oauthofflineaccess/</loc>
+        <loc>http://oauthjp.github.io/articles/oauthofflineaccess/</loc>
         <lastmod>2013-08-17T15:22:58+09:00</lastmod>
     </url>
     <url>
-        <loc>http://oauth.jp/articles/it/</loc>
+        <loc>http://oauthjp.github.io/articles/it/</loc>
         <lastmod>2013-08-17T15:22:58+09:00</lastmod>
     </url>
     <url>
-        <loc>http://oauth.jp/articles/hello-oauth-20-good-bye-oauth-10/</loc>
+        <loc>http://oauthjp.github.io/articles/hello-oauth-20-good-bye-oauth-10/</loc>
         <lastmod>2013-08-17T15:22:58+09:00</lastmod>
     </url>
     <url>
-        <loc>http://oauth.jp/articles/facebookaccess-token-introspection-api/</loc>
+        <loc>http://oauthjp.github.io/articles/facebookaccess-token-introspection-api/</loc>
         <lastmod>2013-08-17T15:22:58+09:00</lastmod>
     </url>
     <url>
-        <loc>http://oauth.jp/articles/json-web-token-jwt/</loc>
+        <loc>http://oauthjp.github.io/articles/json-web-token-jwt/</loc>
         <lastmod>2013-08-17T15:22:58+09:00</lastmod>
     </url>
     <url>
-        <loc>http://oauth.jp/articles/yahoo-japanoauth-20-openid-connect/</loc>
+        <loc>http://oauthjp.github.io/articles/yahoo-japanoauth-20-openid-connect/</loc>
         <lastmod>2013-08-17T15:22:58+09:00</lastmod>
     </url>
     <url>
-        <loc>http://oauth.jp/articles/oauth-20-core-bearer-spec-rfc-rfc-6749-rfc-67/</loc>
+        <loc>
+            http://oauthjp.github.io/articles/oauth-20-core-bearer-spec-rfc-rfc-6749-rfc-67/
+        </loc>
         <lastmod>2013-08-17T15:22:58+09:00</lastmod>
     </url>
     <url>
-        <loc>http://oauth.jp/articles/login-with-amazon/</loc>
+        <loc>http://oauthjp.github.io/articles/login-with-amazon/</loc>
         <lastmod>2013-08-17T15:22:58+09:00</lastmod>
     </url>
     <url>
-        <loc>http://oauth.jp/articles/login-with-amazon/</loc>
+        <loc>http://oauthjp.github.io/articles/login-with-amazon/</loc>
         <lastmod>2013-08-17T15:22:58+09:00</lastmod>
     </url>
     <url>
-        <loc>http://oauth.jp/blog/archives/</loc>
+        <loc>http://oauthjp.github.io/blog/archives/</loc>
         <lastmod>2013-08-17T15:41:40+09:00</lastmod>
     </url>
     <url>
-        <loc>http://oauth.jp/</loc>
+        <loc>http://oauthjp.github.io/</loc>
         <lastmod>2013-08-17T15:41:40+09:00</lastmod>
     </url>
     <url>
-        <loc>http://oauth.jp/search.html</loc>
+        <loc>http://oauthjp.github.io/search.html</loc>
         <lastmod>2013-08-17T15:21:56+09:00</lastmod>
     </url>
 </urlset>
