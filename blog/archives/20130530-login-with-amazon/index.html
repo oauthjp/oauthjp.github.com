@@ -1,0 +1,195 @@
+
+<!DOCTYPE HTML>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Login with Amazonを使うと、あなたのサイトのユーザーがアカウントハイジャックされる。 - OAuth.jp</title>
+    <meta name="author" content="Nov Matake">
+    
+	<meta name="description" content="Amazon が、Login with Amazon というAPIおよびそれに付随する JS / iOS / Android SDKs を出してきました。 以下の記事にあるように、OAuth 2.0 ベースで認証連携を行う仕組みです。 Amazonアカウントでアプリやサイトにログイン、「Login &hellip;">
+	
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+	<link href="/atom.xml" rel="alternate" title="OAuth.jp" type="application/atom+xml">
+	<link rel="canonical" href="">
+	<link href="/favicon.ico" rel="shortcut icon">
+    <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+
+    <link href='http://fonts.googleapis.com/css?family=Slackey' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Fjalla+One' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Amethysta' rel='stylesheet' type='text/css'>
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+    <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+
+    <script type="text/javascript" src="/javascripts/jquery-tapir.js"></script>
+
+    <!-- remove or comment it to disable ajaxification -->
+    <!-- <script src="/javascripts/ajaxify.js"></script> -->
+
+    
+    
+
+</head>
+
+
+<body>
+    <div id="wrapper">
+    <header id="header" class="inner"><!-- for more effects see _animate.scss -->
+<h1 class="animated bounceInDown">
+  <a href='/'>
+    <div id="headerbg">
+      OAuth.jp
+    </div>
+  </a>
+</h1>
+<br>
+
+<ul id="social-links" style="text-align:center">
+  
+  <!-- Facebook -->
+  <li>
+  <a href="http://www.facebook.com/oauth.jp" class="facebook" title="Facebook"></a>
+  </li>
+  
+  
+  <!-- Twitter -->
+  <li>
+  <a href="http://www.twitter.com/oauthjp" class="twitter" title="Twitter"></a>
+  </li>
+  
+  
+  <!-- GitHub -->
+  <li>
+  <a href="https://github.com/oauthjp" class="github" title="Github"></a>
+  </li>
+  
+  
+  
+  
+  
+  
+</ul>
+
+
+<!-- use full url including 'index.html' for navigation bar if you are using ajax -->
+<ul id="nav">
+  
+</ul>
+
+
+
+
+</header>
+
+<div id="toload">
+<!-- begin toload --> 
+    <div id="content" class="inner">
+        <article class="post">
+	<h2 class="title">Login With Amazonを使うと、あなたのサイトのユーザーがアカウントハイジャックされる。</h2>
+	<div class="entry-content"><p>Amazon が、<a href="http://login.amazon.com">Login with Amazon</a> というAPIおよびそれに付随する JS / iOS / Android SDKs を出してきました。</p>
+
+
+<p>以下の記事にあるように、OAuth 2.0 ベースで認証連携を行う仕組みです。</p>
+
+
+<p><a href="http://itpro.nikkeibp.co.jp/article/NEWS/20130530/480782/">Amazonアカウントでアプリやサイトにログイン、「Login with Amazon」を提供開始：ITpro</a></p>
+
+
+<p>しかし、この Login with Amazon、まさに僕が以前以下の記事で紹介した「Facebook ID でログイン」の間違った実装方法を、公式ドキュメントで推奨してしまっています。</p>
+
+
+<p><a href="http://www.atmarkit.co.jp/ait/articles/1209/10/news105_2.html">デジタル・アイデンティティ技術最新動向（2）：RFCとなった「OAuth 2.0」――その要点は？ (2/2) - ＠IT</a></p>
+
+
+<p>この Amazon のドキュメントを読んで (or 「Facebook ID でログイン」を実装した経験を元に) Login with Amazon を自身の Web Site や iOS / Android アプリに導入すると、まず確実にあなたのサイト / アプリのアカウントがハイジャックされるような脆弱性を生むことになります。</p>
+
+
+<p>@IT の記事からのリンクは OAuth.jp の Posterous -&gt; Tumblr 移行に伴いリンク切れになってしまっているので、ここにも OAuth 2.0 Implicit Flow を認証連携に使うことの危険性を説明するエントリーをリンクしておきます。</p>
+
+
+<p><a href="/blog/archives/20120208-ios-sdk">&#8220;なんちゃら iOS SDK&#8221; でありそうな被害例</a></p>
+
+
+<p>Facebook の場合は、上の記事にあるような response_type=code+token を iOS / Android アプリでは使えないので、以下の記事末尾にあるような対処法も用意されています。</p>
+
+
+<p><a href="/blog/archives/20120207-oauth-20-implicit-flow">「OAuth 2.0 (Implicit Flow) でログイン」の被害例</a></p>
+
+
+<p>が、ざっと Login with Amazon のドキュメントを読んだ限り、そのような対処法が一切用意されていない。</p>
+
+
+<p>これはもう、Login with Amazon を導入した時点で、Amazon 側の対応無しではあなたのサイト / サービスの脆弱性を止めることができないということです。</p>
+
+
+<p>既に一部有識者より Amazon 側に連絡が行っているようなので、さすがにこのまま Amazon が何の対応も取らないということは考えにくいですが、Amazon が何らかのアップデートを出してくるまで、Login with Amazon を使ってはいけません。</p>
+
+
+<p>ご注意を。</p>
+
+
+<p>[追記 2013.06.04]</p>
+
+
+<p>Login with Amazon の問題点、解決されました。詳しくは以下の記事を。</p>
+
+
+<p><a href="/blog/archives/20130604-login-with-amazon">Login with Amazon、もう使っても大丈夫！</a></p>
+
+</div>
+
+<div class="meta">
+	
+</div>
+</article>
+
+	<div class="share">
+	<div class="addthis_toolbox addthis_default_style ">
+	
+	
+	<a class="addthis_button_tweet"></a>
+	
+	
+	<a class="addthis_counter addthis_pill_style"></a>
+	</div>
+  <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid="></script>
+</div>
+
+
+
+    </div>
+    <footer id="footer">
+    <div style="display:inline">
+    Copyright &copy; 2013
+
+    Nov Matake
+. Powered by <a href="http://octopress.org">Octopress</a> | 
+    Theme <a href="http://github.com/panks/fabric">fabric</a> by <a href="http://panks.me">Pankaj Kumar</a>
+</div>
+
+
+    </footer>
+    <script src="/javascripts/fabric.js"></script>
+<script src="/javascripts/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+	$('.fancybox').fancybox();
+})(jQuery);
+</script> <!-- Delete or comment this line to disable Fancybox -->
+
+
+
+
+
+
+<!-- end toload --> 
+</div>
+</div>
+<script src="/javascripts/jquery.ui.totop.js" type="text/javascript"></script>
+<script type="text/javascript">
+/*<![CDATA[*/
+;(function($){$().UItoTop({easingType:'easeOutCirc'});})(jQuery); 
+/*]]>*/
+</script><!-- remove it to remove the scroll to top button -->
+</body>
+</html>

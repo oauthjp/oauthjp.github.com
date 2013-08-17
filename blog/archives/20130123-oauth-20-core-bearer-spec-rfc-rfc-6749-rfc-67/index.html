@@ -3,10 +3,10 @@
 <html>
 <head>
 	<meta charset="utf-8">
-	<title>Login with Amazon、もう使っても大丈夫！ - OAuth.jp</title>
+	<title>OAuth 2.0 Core & Bearer Spec (RFC 6749 & RFC 6750) 翻訳公開！ - OAuth.jp</title>
     <meta name="author" content="Nov Matake">
     
-	<meta name="description" content="先日以下のような記事を書きました。 Login with Amazonを使うと、あなたのサイトのユーザーがアカウントハイジャックされる。 Login with Amazon 危険ですよ！という記事だったのですが、その後 Login with Amazon のドキュメントに、Token Info &hellip;">
+	<meta name="description" content="ずいぶん前に「OAuth 2.0 Core &amp; Bearer Spec 翻訳公開！」で紹介したように、OAuth 2.0 Core &amp; Bearerは、OpenID Foundation Japanの翻訳WGで翻訳を公開していましたが、2012年に両specがRFC化されたのを受け &hellip;">
 	
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
@@ -85,29 +85,30 @@
 <!-- begin toload --> 
     <div id="content" class="inner">
         <article class="post">
-	<h2 class="title">Login With Amazon、もう使っても大丈夫！</h2>
-	<div class="entry-content"><p>先日以下のような記事を書きました。</p>
+	<h2 class="title">OAuth 2.0 Core & Bearer Spec (RFC 6749 & RFC 6750) 翻訳公開！</h2>
+	<div class="entry-content"><p>ずいぶん前に「<a href="/blog/archives/20111129-oauth-20-core-bearer-spec-76993">OAuth 2.0 Core &amp; Bearer Spec 翻訳公開！</a>」で紹介したように、OAuth 2.0 Core &amp; Bearerは、OpenID Foundation Japanの翻訳WGで翻訳を公開していましたが、2012年に両specがRFC化されたのを受け、今回RFC版も翻訳しました。</p>
 
 
-<p><a href="/blog/archives/login-with-amazon">Login with Amazonを使うと、あなたのサイトのユーザーがアカウントハイジャックされる。</a></p>
+<ul><li><a href="http://openid-foundation-japan.github.com/rfc6749.ja.html">The OAuth 2.0 Authorization Framework (RFC 6749)</a></li>
+<li><a href="http://openid-foundation-japan.github.com/rfc6750.ja.html">The OAuth 2.0 Authorization Framework: Bearer Token Usage (RFC 6750)</a></li>
+</ul>
 
 
-<p>Login with Amazon 危険ですよ！という記事だったのですが、その後 Login with Amazon のドキュメントに、Token Info API が追加されました。</p>
+<p>前回翻訳したdraft版から仕様自体に大きな変更はありませんが、特に</p>
 
 
-<p>こちらの Step4 Obtain Profile Information のサンプルコードで、Profile API を叩く前に Token 発行先の Client ID が自身の Client ID と一致することを確認する処理が追加されています。</p>
+<ul><li>まだdraft版も読んだことが無い人</li>
+<li>自社のAPIドキュメントからdraft版の翻訳にリンクしている人</li>
+</ul>
 
 
-<p><a href="http://login.amazon.com/website">Web - Login with Amazon Developer Center</a></p>
+<p>などは、RFC版を参照していただければと思います。</p>
 
 
-<p>こちらのより詳細なドキュメントには、Security Considerations の &#8220;Impersonating a Resource Owner in Implicit Flow&#8221; という節で、Token Info API を使わない場合の攻撃例が述べられています。</p>
+<p>いまこれらとは別に、”<a href="http://openid-foundation-japan.github.com/rfc6819.ja.html">OAuth 2.0 Threat Model and Security Considerations (RFC 6819)</a>” という、OAuth 2.0の利用に際して注意すべきセキュリティ上の特徴・注意点などについてまとめたドキュメントを翻訳中です。こちらも翻訳完了次第公開予定。(追記: 2013.01.25 翻訳公開済)</p>
 
 
-<p><a href="https://images-na.ssl-images-amazon.com/images/G/01/lwa/dev/docs/website-developer-guide._TTH_.pdf">Login with Amazon - Developer Guide for Websites (PDF)</a></p>
-
-
-<p>というわけで、Login with Amazon、ドキュメント通り実装すれば安全です :)</p>
+<p>最後に、2/1に東京ミッドタウンのYahoo! Japanオフィスで <a href="http://idcon.doorkeeper.jp/events/2448">#idcon 15th ~ YConnect &amp; Future of Authentication ~</a> というイベントをやります。OAuth 2.0ベースのOpenID次世代仕様であるOpenID Connectについて、世界で初めてOpenID Connect対応API (YConnect) を一般公開したYahoo! Japanの担当者の方の話も聞けるので、興味あったら参加してください :)</p>
 
 </div>
 
