@@ -1,0 +1,176 @@
+
+<!DOCTYPE HTML>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Yahoo! JapanがOAuth 2.0 & OpenID Connectに対応 - OAuth.jp</title>
+    <meta name="author" content="Nov Matake">
+    
+	<meta name="description" content="2011年12月のOpenID Summit Tokyoで、2012年中のOpenID Connect対応を宣言したYahoo! Japanが、本日ついに宣言通りOpenID Connectをサポート開始しました。 もともとOAuth 2.0も対応していなかった（よね？）ので、OAuth 2. &hellip;">
+	
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+	<link href="/atom.xml" rel="alternate" title="OAuth.jp" type="application/atom+xml">
+	<link rel="canonical" href="">
+	<link href="/favicon.ico" rel="shortcut icon">
+    <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+
+    <link href='http://fonts.googleapis.com/css?family=Slackey' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Fjalla+One' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Amethysta' rel='stylesheet' type='text/css'>
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+    <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+
+    <script type="text/javascript" src="/javascripts/jquery-tapir.js"></script>
+
+    <!-- remove or comment it to disable ajaxification -->   
+    <script src="/javascripts/ajaxify.js"></script>
+   
+    
+    
+
+</head>
+
+
+<body>
+    <div id="wrapper">
+    <header id="header" class="inner"><!-- for more effects see _animate.scss -->
+<h1 class="animated bounceInDown">
+  <a href='/'>
+    <div id="headerbg">
+      OAuth.jp
+    </div>
+  </a>
+</h1>
+<br>
+
+<ul id="social-links" style="text-align:center">
+  
+  
+  
+  
+  
+  
+  
+  
+</ul>
+
+
+<!-- use full url including 'index.html' for navigation bar if you are using ajax -->
+<ul id="nav">
+	<li id="ajax"><a href="/index.html">Home</a></li>
+	<li id="ajax"><a href="/blog/archives/index.html">Archives</a></li>
+    <li><a href="/atom.xml">RSS</a></li>
+        
+</ul>
+
+
+
+
+</header>
+
+<div id="toload">
+<!-- begin toload --> 
+    <div id="content" class="inner">
+        <article class="post">
+	<h2 class="title">Yahoo! JapanがOAuth 2.0 & OpenID Connectに対応</h2>
+	<div class="entry-content"><p>2011年12月のOpenID Summit Tokyoで、2012年中のOpenID Connect対応を宣言したYahoo! Japanが、本日ついに宣言通りOpenID Connectをサポート開始しました。</p>
+
+
+<p>もともとOAuth 2.0も対応していなかった（よね？）ので、OAuth 2.0対応も同時リリースです。</p>
+
+
+<p>まだバグとかあるっぽいけど、何はともあれ世界の大手IdPの中で一番最初にproduction環境でOpenID Connect対応できたのはすばらしい！</p>
+
+
+<p><iframe scrolling="no" margin src="http://www.slideshare.net/slideshow/embed_code/10433061" frameborder="0"> </iframe></p>
+
+
+<div style="margin-bottom: 5px;"><strong> <a href="http://www.slideshare.net/tzmtk/openid-summit-tokyo-2011" title="OpenID Summit Tokyo 2011" target="_blank">OpenID Summit Tokyo 2011</a> </strong> from <strong><a href="http://www.slideshare.net/tzmtk" target="_blank">Taizo Matsuoka</a></strong></div>
+
+
+<p>まだOpenID ConnectのDiscoveryとDynamic Registrationには対応していないので、<a href="https://connect-rp.heroku.com">Nov RP</a>に &#8220;yahoo.co.jp&#8221; とか入力しても使えない状態ですが、それは今後に期待です。</p>
+
+
+<p>YConnectをちょこっと触ってみて思った要望とかは以下のgistにまとめていってます。</p>
+
+
+<script src="https://gist.github.com/4031074.js?file=gistfile1.textile"></script>
+
+
+<p>scopeにopenidが指定されてるのにtoken responseにid_tokenが含まれてないとか、response_type=code+id_tokenの時にcodeとid_tokenがredirect_uriのfragmentではなくqueryについているなどの問題は、ただのバグとして修正すれば良いでしょう。</p>
+
+
+<p>それ以外でいま気になってる点としては、以下の2点です。</p>
+
+
+<ul><li>response_type=code+tokenサポートしてもらわないとserver-side componentを持つmobile appから使おうとしたときにいろいろめんどくさいことになっちゃうのはFBとか見てたら明らですが、現状のYConnectは「サーバーサイド」アプリとして登録した場合response_typeにcodeかcode+id_tokenしか指定できないみたいです。これはちょっとやめた方が良い気がします。</li>
+<li>あと、id_tokenのsignature algorithmはdefault RS256ということで進んでいるので、YConnectだけがHS256だとまたYAuthとか言われちゃったりしそうですね。</li>
+</ul>
+
+
+<p>それ以外にも、なぜかyahoo.co.jp以外のドメインのメアドはverfiedじゃなくても返してくれる (試しに <a href="mailto:hoge@hoge.com">hoge@hoge.com</a> というメアドを登録してみたらそれ返してきたw）のにyahoo.co.jpのメアドは返してくれないというのも不思議といえば不思議ですが、まぁ社内調整とかいろいろめんどくさいことありそうですし、それが原因でOpenID Connect対応のスケジュールが遅れるくらいならとりあえずそれでもいいのかなとも思います。</p>
+
+
+<p>Implicitの方でscopeにopenidが指定された時にnonceが必須になってるかとかもチェックしたかったのですが、なんかいま「クライアントサイド」のアプリを登録しようとするとエラーになっちゃうバグがあるようなので、そちらはまた明日にでも。覚えてれば。</p>
+
+
+<p>OAuth 2.0 draft 0の時点で対応してきたFacebookのように、これからOpenID Connectのbreaking changesに追随するのは大変だと思いますが、引き続きがんばってください！あと、OpenID Connectにbreaking changeがある時に一番大きな声で文句言える立場にいるので、ぜひOpenID Connect Interopにも積極的に参加していただければ :)</p>
+
+</div>
+
+<div class="meta">
+	
+</div>
+</article>
+
+	<div class="share">
+	<div class="addthis_toolbox addthis_default_style ">
+	
+	
+	<a class="addthis_button_tweet"></a>
+	
+	
+	<a class="addthis_counter addthis_pill_style"></a>
+	</div>
+  <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid="></script>
+</div>
+
+
+
+    </div>
+    <footer id="footer">
+    <div style="display:inline">
+    Copyright &copy; 2013
+
+    Nov Matake
+. Powered by <a href="http://octopress.org">Octopress</a> | 
+    Theme <a href="http://github.com/panks/fabric">fabric</a> by <a href="http://panks.me">Pankaj Kumar</a>
+</div>
+
+
+    </footer>
+    <script src="/javascripts/fabric.js"></script>
+<script src="/javascripts/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+	$('.fancybox').fancybox();
+})(jQuery);
+</script> <!-- Delete or comment this line to disable Fancybox -->
+
+
+
+
+
+
+<!-- end toload --> 
+</div>
+</div>
+<script src="/javascripts/jquery.ui.totop.js" type="text/javascript"></script>
+<script type="text/javascript">
+/*<![CDATA[*/
+;(function($){$().UItoTop({easingType:'easeOutCirc'});})(jQuery); 
+/*]]>*/
+</script><!-- remove it to remove the scroll to top button -->
+</body>
+</html>

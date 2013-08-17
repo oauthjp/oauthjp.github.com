@@ -1,0 +1,818 @@
+
+<!DOCTYPE HTML>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>OAuth.jp</title>
+    <meta name="author" content="Nov Matake">
+    
+	<meta name="description" content="Published on: Aug 3rd, 2012 Tags: 昨日こんな記事を見かけたので、記事にまとめることにします。 OAuth2.0のclient_secretって本当に秘密鍵ですか？ 元記事にあるとおり、現状Native AppでのOAuth 2.0の実装は、API提供者・ &hellip;">
+	
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+	<link href="/atom.xml" rel="alternate" title="OAuth.jp" type="application/atom+xml">
+	<link rel="canonical" href="">
+	<link href="/favicon.ico" rel="shortcut icon">
+    <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+
+    <link href='http://fonts.googleapis.com/css?family=Slackey' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Fjalla+One' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Amethysta' rel='stylesheet' type='text/css'>
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+    <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+
+    <script type="text/javascript" src="/javascripts/jquery-tapir.js"></script>
+
+    <!-- remove or comment it to disable ajaxification -->   
+    <script src="/javascripts/ajaxify.js"></script>
+   
+    
+    
+
+</head>
+
+
+<body>
+    <div id="wrapper">
+    <header id="header" class="inner"><!-- for more effects see _animate.scss -->
+<h1 class="animated bounceInDown">
+  <a href='/'>
+    <div id="headerbg">
+      OAuth.jp
+    </div>
+  </a>
+</h1>
+<br>
+
+<ul id="social-links" style="text-align:center">
+  
+  
+  
+  
+  
+  
+  
+  
+</ul>
+
+
+<!-- use full url including 'index.html' for navigation bar if you are using ajax -->
+<ul id="nav">
+	<li id="ajax"><a href="/index.html">Home</a></li>
+	<li id="ajax"><a href="/blog/archives/index.html">Archives</a></li>
+    <li><a href="/atom.xml">RSS</a></li>
+        
+</ul>
+
+
+
+
+</header>
+
+<div id="toload">
+<!-- begin toload --> 
+    <div id="content" class="inner">
+        
+
+
+    <article class="post">
+	<h2 class="title">
+		
+		<a href="/articles/re-oauth-20clientsecret/">
+		
+			Re: OAuth 2.0のclient_secretって本当に秘密鍵ですか？</a>
+	</h2>
+    <div class="entry-content">
+    <div class="meta">
+      <div class="date">Published on: 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-08-03T00:00:00+09:00" pubdate data-updated="true">Aug 3<span>rd</span>, 2012</time></div>
+      <div class="tags">Tags: 
+
+</div>
+    </div>
+		<p>昨日こんな記事を見かけたので、記事にまとめることにします。</p>
+
+
+<p><a href="http://koduki.hatenablog.com/entry/2012/07/16/113204">OAuth2.0のclient_secretって本当に秘密鍵ですか？</a></p>
+
+
+<p>元記事にあるとおり、現状Native AppでのOAuth 2.0の実装は、API提供者・利用者ともにポリシーがバラバラで、混乱の元になっていると思います。</p>
+
+
+<blockquote class="posterous_medium_quote">
+<p>Googleのドキュメントにも「the client_secret is obviously not treated as a secret.」とあるわけだけど、そのくせclient_secretを使ってるし、ネットで調べても少なくない数の人がアプリに埋め込んでるので、client_secretを公開したときの問題を考えてみる。</p>
+</blockquote>
+
+
+<h3>&#8220;offline&#8221; アクセスと &#8220;online&#8221; アクセス</h3>
+
+
+<p>Googleは、<strong>&#8220;offline access&#8221;</strong> に対して以下のようなポリシーを持っています。</p>
+
+
+<p><a href="http://googleappsdeveloper.blogspot.jp/2011/10/upcoming-changes-to-oauth-20-endpoint.html">Upcoming changes to OAuth 2.0 endpoint - Google Apps Developer Blog</a></p>
+
+
+<p><a href="https://bitbucket.org/openid/connect/issue/539/messages-0-add-scope-for-offline-access">openid / connect / issues / #539 - Messages - 0. Add scope for offline access - Bitbucket</a></p>
+
+
+<p>上の記事では議論が長くてかつ英語なので、簡単に要約すると、</p>
+
+
+<ul><li>access tokenが無効化されると、clientは新しいaccess tokenを取得しなければならない。</li>
+<li>新しいaccess tokenを受け取るには、ユーザーがその場にいる必要がある。<strong>ユーザーが既にclientのアクセスに同意している場合は、同意画面をスキップさせることができる</strong>ので、ユーザーが毎回Googleの同意画面を見る必要は無い。</li>
+<li>JS Appなど、ブラウザ内で動作していて常にユーザーとインタラクションしているclientは、同意画面さえスキップできればリダイレクトベースで必要に応じて毎回access tokenを取得すればよい。</li>
+<li>スマホ上のNative Appの場合は、UX的に毎回ブラウザ経由してaccess tokenを取得するのはつらいので、<strong>ユーザーから明示的に &#8220;offline&#8221; アクセスへの同意を得て</strong>、次回以降はrefresh tokenを使って新しいaccess tokenを取得すればよい。</li>
+</ul>
+
+
+<p>そして、Googleは、refresh tokenを伴う場合を &#8220;offline&#8221; アクセス、伴わない場合を &#8220;online&#8221; と定義しています。詳細は異なるものの、似たような定義はFacebookやAOLなども行っています。</p>
+
+
+<h3>Native Appに埋め込まれたclient_secretは簡単に漏洩する</h3>
+
+
+<p>このご時世 <a href="http://www.charlesproxy.com">Charles</a> などを使えば、自分のデバイス上で行われているSSLリクエストなら簡単に覗き見ることができます。</p>
+
+
+<p>OAuth 2.0では、authorization codeとaccess tokenを交換する時とrefresh tokenをaccess tokenと交換する時に、client_secretを平文でAuthorization Server (この場合はGoogle) に送信します。</p>
+
+
+<p>そのため、上記2つのいずれかのリクエストがiPhone上のNative Appから発行されるなら、Jailbreakや逆コンパイルなどせずともエンドユーザーなら誰でも、そのアプリに埋め込まれたclient_secretを知ることができます。</p>
+
+
+<p>OAuth 2.0のclient_secretをアプリに埋め込んで配布するというのは、client_secretが漏洩する前提でそれを扱っているということです。そしてその場合、当然以下のような疑問がでてきます。</p>
+
+
+
+
+<h3>client_secretが漏洩してはいけないのか？</h3>
+
+
+<p>これに関しては、例えばFacebook Graph APIの場合であれば、client_secretが漏洩すると以下のようなリスクがあります。(個人的にGoogle APIは使ってないので、Googleに関しては僕はよく把握していません)</p>
+
+
+<blockquote class="twitter-tweet">
+<p><a href="https://twitter.com/gabunomi_">@<strong>gabunomi_</strong></a> FB Graph APIなら、client_secretさえあれば、任意のユーザーをそのアプリからBanしたり、Banを解除できたりするはずです。まぁ4sqユーザーを全員Banすれば、FBがそれを検知してなんらか対応してくるとは思いますが。</p>
+— nov matakeさん (@nov) <a href="https://twitter.com/nov/status/230990719257559040">8月 2, 2012</a></blockquote>
+
+
+
+
+<p>client_secretが漏洩した場合のリスクはAPI提供者側のポリシーに依存するため、Generalな解答をするとすれば以下のようになるでしょう。(ちなみに、いまClient Credentials Flowがサポートされていないからといって、将来にわたってその状態が維持される保証があるわけではないです。その場合はclient_secretを発行しなおしたりするんでしょうかね？ &gt; だれとなく)</p>
+
+
+<blockquote class="twitter-tweet">
+<p><a href="https://twitter.com/gabunomi_">@<strong>gabunomi_</strong></a> API提供者側に「なんでここでclient_secret埋め込ませてんの？」って問い合わせて、明確な回答が返ってくるなら、1 clientとしてはそれでOKかと。「いろいろあってしょうがなく」とか言われたら危険です。被害受けるとしたらユーザーじゃないあなた。</p>
+— nov matakeさん (@nov) <a href="https://twitter.com/nov/status/230997139705188352">8月 2, 2012</a></blockquote>
+
+
+
+
+<p>全てのAPI提供者がNative Appに埋め込まれたclient_secretが漏洩することを前提としたアクセスコントロールを実施しているわけでも無いようですし、そもそもNative Appにclient_secretを埋め込むことを禁止しているFacebookのようなOAuth Serverも存在する (=&gt; 本来こっちの方が一般的であるべき) ので、Developerにとっては混乱の元でしょうね。</p>
+
+
+<p>Native Appにclient_secretを埋め込む前提で、その漏洩の可能性という点で見れば、OAuth 1.0を使った方が良い場合もあるでしょう。OAuth 1.0では、Native Appにclient_secretを埋め込んでもそれは署名計算に使われるだけで直接OAuth Serverに送信されることはありません。かといっていまからOAuth 1.0を採用するというのは、時代の流れ的にどうなんだということもありますが。</p>
+
+
+<blockquote class="twitter-tweet">
+<p><a href="https://twitter.com/gabunomi_">@<strong>gabunomi_</strong></a> OAuth 2.0では（JWT assertionなどを使わない限り）token endpointにclient secretを平文で送るので、埋め込まれたsecretは逆コンパイル無しでも容易にsecretは漏洩します。そこはOAuth 1.0のがまし。</p>
+— nov matakeさん (@nov) <a href="https://twitter.com/nov/status/231186384424157184">8月 3, 2012</a></blockquote>
+
+
+<h3>GoogleとFacebookのスタンスの違い</h3>
+
+
+<p>GoogleがNative App (= Installed Application) 用のフローを用意してNative Appにclient_secretを埋め込むように案内する一方、Native AppにはFB Official Appと連携したフローを用意してclient_secretを不要にしているFacebookの存在は、対照的です。</p>
+
+
+<p>Googleの場合は、Client登録時にClientがWeb AppなのかNative Appなのかといった分類をさせているはずで、そのclient typeによってclient_secretを使ってできることに差を付けているのかもしれません。(<strong>要確認</strong>: Google APIよく知らないので、この辺詳しい人いたら教えてほしい)</p>
+
+
+<p>Facebookの場合は、Native AppとWeb App、Facebook iFrame Appといった複数の種類のClientを、提供者が同一であれば同じclient_id (&amp; client_secret) を使い回せるようにして、cross-platformな環境でアプリを提供しやすくしているため、client typeによってclient_secretの価値を変えるということはやりづらいのかも知れません。(じゃあGoogleはcross-platformなClientに対してどう考えてるの？ってのは、Googlerに直接聞いてみたいかも)</p>
+
+
+<h3>client_secretが漏洩した時に被害を受けるのは誰？</h3>
+
+
+<p>これもまた各OAuth ServerがどんなAPIを提供していて、OAuth 2.0のClient Credentials Flowを使って得たaccess tokenで何ができるのかに依存するので、一概には言えないのですが、よくあるケースとしてはAPI利用状況のAnalytics情報を取得したりするAPIが考えられるので、被害を受けるのはエンドユーザーというよりはClient Developer自身であることの方が多いでしょう。</p>
+
+
+<p>client_secretを埋め込む実装をしているOAuth Client Developerは、一度利用しているAPIがClient Credentials Flowをサポートしているのか、Client Credentials Flowで得たaccess tokenでは何ができるのか、一度APIドキュメントを確認したりAPI提供者に問い合わせてみた方が良いかも知れません。</p>
+
+
+<p>Facebookの用にclient_secretさえあれば任意のユーザーをBanできてしまったりする場合は、client_secretが漏洩することでClient Developerとエンドユーザー両方が被害を受けることもありえます。</p>
+
+
+<h3>蛇足: オレはこう思う！（だっけ？）</h3>
+
+
+<p>まぁこの辺りはOAuth 1.0からOAuth 2.0になってServer / Client双方にいろいろ選択肢が増えたので、各社バラバラな仕様になってしまって</p>
+
+
+<blockquote>
+<p>When compared with OAuth 1.0, the 2.0 specification is more complex, less interoperable, less useful, more incomplete, and most importantly, less secure.</p>
+<p><a href="http://hueniverse.com/2012/07/oauth-2-0-and-the-road-to-hell/">OAuth 2.0 and the Road to Hell</a></p>
+</blockquote>
+
+
+<p>っていう前OAuth 2.0 Authorの彼の意見も、あながち無視できないところではある。</p>
+
+
+		
+		
+	</div>
+
+<div class="meta">
+	
+</div>
+</article>
+
+
+    <article class="post">
+	<h2 class="title">
+		
+		<a href="/articles/oauth-20-implicit-flow-78852/">
+		
+			OAuth 2.0 Implicit Flow で認証の問題点、再び。</a>
+	</h2>
+    <div class="entry-content">
+    <div class="meta">
+      <div class="date">Published on: 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-06-29T00:00:00+09:00" pubdate data-updated="true">Jun 29<span>th</span>, 2012</time></div>
+      <div class="tags">Tags: 
+
+</div>
+    </div>
+		<p>おひさしぶりです、@novです。</p>
+
+
+<p>最近は、新しいFacebook iOS SDK使ってるアプリを見つけるとまず<a href="http://oauth.jp/2012/02/08/ios-sdk.html">Token置換攻撃</a>を試みていますが、結構高い確率でこの攻撃に対して脆弱なアプリがみつかります。困ったものです。。</p>
+
+
+<p>そんななか、2週間ほど前に、Micosoft Researchの人がIETF OAuth WGのメーリングリストに<a href="http://www.ietf.org/mail-archive/web/oauth/current/msg09270.html">同じ問題を提起していました</a>。該当Threadでは少し話題が脱線している部分もありますが、もともと最初にこの問題を提起したJohn BradleyがOAuth 2.0 CoreにSecurity Considerationsを追加する流れのようです。</p>
+
+
+<p>これが現状の改善につながれば良いのですが、そう簡単に行かないかもなとも思います。というのも、この問題、<strong>なかなかデベロッパーにとって理解されない</strong>傾向があります。</p>
+
+
+<p>そこで今日は、これまでいくつかのアプリデベロッパーに対して脆弱性報告をしたときの反応をまとめてみたいと思います。</p>
+
+
+<h3>反応1: そもそも置換攻撃に使うためのaccess token奪われてる時点でアウトじゃね？</h3>
+
+
+<p>確かにFacebookのaccess tokenを悪用されると、困ります。勝手にFacebookに変なリンクを投稿されたり、プロフィール情報を抜かれたりすることもあるでしょう。が、そういったFacebookアカウントに対する攻撃と、Facebook以外のサービスでもアカウントが乗っ取られるということは別問題です。</p>
+
+
+<p>あるFacebook連携を行っているサービスからFacebookのaccess tokenが漏洩した時に、Facebookの自分のタイムラインを荒らされることと、いままで自分がFacebookと連携したさまざまなサービスでアカウントが乗っ取られることは、別でしょう？</p>
+
+
+<h3>反応2: 攻撃用アプリをインストールしなきゃ被害にあわないでしょ？</h3>
+
+
+<p>攻撃用アプリはどうせAppleの審査を通らないから、被害者がそれをインストールする可能性はきわめて低い、という主張をする人もいました。</p>
+
+
+<p>が、攻撃用アプリは、攻撃者自身がXcode経由で自分のiPhoneにインストールすればいいだけなので、AppStoreに並ぶ必要もないですし、Appleの審査を通る必要もなく、Jailbreakすらいりません。</p>
+
+
+<p>さらに言うと、攻撃用アプリは、Objective-C初心者の僕が数時間で作れる程度のものです。</p>
+
+
+<h3>反応3: access token受け取った側がそれ検証するのは当然。Facebook側は問題ない。</h3>
+
+
+<p>確かにFacebook側はtokenの発行先検証のためのAPIも用意しているし、Facebook iOS SDKにバグがあるというわけでも無いです。が、FB iOS SDKを使って同じあやまちを犯しているアプリがあまりに多く、僕が調べた5つのiOSアプリ中、4つが同じ過ちを犯していました。この状況では、さすがにFacebook側もドキュメントにこの脆弱性に対する注意および解決策を明記したり、FB iOS SDKのサンプルコードを修正したりする必要があるのではないかと思います。</p>
+
+
+<h3>反応4: OAuth 2.0のImplicit Flowを認証に使うのがまず誤り。OpenID Connect使うべき。</h3>
+
+
+<p>正論ではあると思うのですが、API提供者側がOpenID Connectに対応できていない状況では、API利用者を混乱させるだけなような気もします。現状の仕組みで解決できる方法もあるので、まずはそちらを伝えることが先決ではないでしょうか。</p>
+
+
+<h3>反応5: パスワード忘れちゃったの？ここに登録したメールアドレス入力したら、パスワードリセットできるよ。</h3>
+
+
+<p>この反応にはさすがにびっくりしました。</p>
+
+
+<p>とまぁ、混乱する理由も理解できるものからまったくとんちんかんなものまで、様々な反応がありましたが、</p>
+
+
+<ul><li>みなさんのアプリは外部APIを使って認証していますか？</li>
+<li>そのAPIはOAuthベースですか？</li>
+<li>アプリからaccess tokenを受け取った時、Web API側では毎回token発行先が自分のアプリかどうか確認していますか？</li>
+</ul>
+
+
+<p>もし上記の質問に答えられない場合、自分のアプリが安全かどうか分からない場合は、お気軽にこのブログのコメント欄に質問していただければと思います。もちろんOAuth.jpのFacebook PageやTwitterアカウントに質問投げかけてくれても構いません。（Twitterの場合は、@oauthjp より @nov に質問してくれた方が気がつきやすいと思います）</p>
+
+
+<p>ではでは！</p>
+
+
+		
+		
+	</div>
+
+<div class="meta">
+	
+</div>
+</article>
+
+
+    <article class="post">
+	<h2 class="title">
+		
+		<a href="/articles/debugging-oauth2-ssl-connections/">
+		
+			Debugging OAuth2 SSL Connections</a>
+	</h2>
+    <div class="entry-content">
+    <div class="meta">
+      <div class="date">Published on: 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-05-04T00:00:00+09:00" pubdate data-updated="true">May 4<span>th</span>, 2012</time></div>
+      <div class="tags">Tags: 
+
+</div>
+    </div>
+		<blockquote>Debugging OAuth2 SSL Connections</blockquote>
+
+
+<p>&#8212;<p><a href="http://ignisvulpis.blogspot.jp/2012/05/debugging-oauth2-ssl-connections.html?m=1"><a href="http://ignisvulpis.blogspot.jp/2012/05/debugging-oauth2-ssl-connections.html?m=1"><a href="http://ignisvulpis.blogspot.jp/2012/05/debugging-oauth2-ssl-connections.html?m=1">http://ignisvulpis.blogspot.jp/2012/05/debugging-oauth2-ssl-connections.html?m=1</a></a></a> (via <a href="http://eidentity.tumblr.com/" class="tumblr_blog">eidentity</a>)</p></p>
+
+<p>Too long. Just use Charles.</p>
+
+
+		
+		
+	</div>
+
+<div class="meta">
+	
+</div>
+</article>
+
+
+    <article class="post">
+	<h2 class="title">
+		
+		<a href="/articles/important-oauth-1-0-has-been-officially/">
+		
+			Important: OAuth 1.0 Has Been Officially Deprecated as of April 20, 2012. It Will Continue to Work as Per Our Deprecation Policy, but We Encourage You to Migrate to OAuth 2.0 as Soon as Possible.</a>
+	</h2>
+    <div class="entry-content">
+    <div class="meta">
+      <div class="date">Published on: 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-04-22T00:00:00+09:00" pubdate data-updated="true">Apr 22<span>nd</span>, 2012</time></div>
+      <div class="tags">Tags: 
+
+</div>
+    </div>
+		<blockquote>Important: OAuth 1.0 has been officially deprecated as of April 20, 2012. It will continue to work as per our deprecation policy, but we encourage you to migrate to OAuth 2.0 as soon as possible.</blockquote>
+
+
+<p>&#8212;<a href="https://developers.google.com/accounts/docs/OAuth">OAuth 1.0 for Web Applications &ndash; Google Accounts Authentication and Authorization — Google Developers</a></p>
+
+		
+		
+	</div>
+
+<div class="meta">
+	
+</div>
+</article>
+
+
+    <article class="post">
+	<h2 class="title">
+		
+		<a href="/articles/when-you-access-to-an-openid-relying-party-rp/">
+		
+			WebIntent X OpenID Connect (En)</a>
+	</h2>
+    <div class="entry-content">
+    <div class="meta">
+      <div class="date">Published on: 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-04-09T00:00:00+09:00" pubdate data-updated="true">Apr 9<span>th</span>, 2012</time></div>
+      <div class="tags">Tags: 
+
+</div>
+    </div>
+		<iframe src="http://www.slideshare.net/slideshow/embed_code/12296336" width="400" height="334" frameborder="0" marginwidth="0" marginheight="0" scrolling="no"></iframe>
+
+
+<br/><p>When you access to an OpenID Relying Party (RP), you&#8217;ll see 5 or more OpenID Provider (OP) logos at its login page. At worst, you can see 10+ OP logos, even though more than half of them are totally unknown for you. It&#8217;s called &#8220;NASCAR Problem&#8221;.</p>
+
+
+
+
+<p>OpenID community had been trying to solve the problem for a long time, but not much progress on it.</p>
+
+
+
+
+<p>Now, it&#8217;s the era of HTML5, and browsers-side functionality is improving very much.
+I found <a href="http://webintents.org/">HTML5&#8217;s WebIntents</a> [<a href="http://dvcs.w3.org/hg/web-intents/raw-file/tip/spec/Overview.html">W3C draft spec</a>] as a browser-based &#8220;discovery&#8221; protocol, which can be a solution for OpenID&#8217;s NASCAR problem.</p>
+
+
+
+
+<p>So that I made an OpenID Connect Provider &amp; Relying Party which relying on the discovery part to WebIntents.</p>
+
+
+
+
+<p>You can play my demo following the below steps.</p>
+
+
+
+
+<ol><li>Access to <a href="https://connect-op.heroku.com/">Nov OP</a> which has <intent> tag in its HTML  tag. Your browser will automatically register this site as a service provider of &#8220;OpenID Connect Discovery&#8221;.</intent></li>
+<li>Access to <a href="https://connect-rp.heroku.com/">Nov RP</a>.</li>
+<li>Click “Or Try WebIntents?” button, which initiate WebIntents-based OpenID Connect Discovery flow.</li>
+</ol>
+
+
+<p>Then you&#8217;ll see a small popup which let you choose an OP.
+After you choose Nov OP, you will go back to Nov OP and see an alert popup which shows raw OpenID Connect discovery result.
+Once RP received the response, it does normal OpenID Connect login flow.</p>
+
+
+
+
+<p>One of my friends, Ryo, made his <a href="https://openidconnect.info/">sample OP</a> &#8220;WebIntent-able&#8221;, so once you access to Ryo&#8217;s OP, you can see 2 OPs at the popup window of intent candidates.</p>
+
+
+
+
+<p><br/>
+ps.<br/>
+For some reason, this demo works only on Safari.
+(probably because of webintents.org&#8217;s JS shim issue?)</p>
+
+
+		
+		
+	</div>
+
+<div class="meta">
+	
+</div>
+</article>
+
+
+    <article class="post">
+	<h2 class="title">
+		
+		<a href="/articles/webintents-openid-connect-discovery/">
+		
+			WebIntent X OpenID Connect</a>
+	</h2>
+    <div class="entry-content">
+    <div class="meta">
+      <div class="date">Published on: 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-04-09T00:00:00+09:00" pubdate data-updated="true">Apr 9<span>th</span>, 2012</time></div>
+      <div class="tags">Tags: 
+
+</div>
+    </div>
+		<iframe src="http://www.slideshare.net/slideshow/embed_code/12296336" width="400" height="334" frameborder="0" marginwidth="0" marginheight="0" scrolling="no"></iframe>
+
+
+<br/><p>WebIntentsを使ってOpenID ConnectのDiscoveryをやってみました。</p>
+
+
+
+
+<p>試すには、以下のステップを踏んでください。</p>
+
+
+
+
+<ol><li><a href="https://connect-op.heroku.com/">https://connect-op.heroku.com/</a> にアクセス (ここにintentタグが仕込まれてます)</li>
+<li><a href="https://connect-rp.heroku.com/">https://connect-rp.heroku.com/</a> にアクセス</li>
+<li>&#8220;Or Try WebIntents?&#8221; というボタンをクリック</li>
+</ol>
+
+
+<p>するとPopupが開いて、Step1で登録されたNov OPが選択肢に現れるので、それを選択するとNov RPに戻ってDiscovery結果がAlertで表示され、その後通常のOpenID Connectのログインフローに進みます。</p>
+
+
+
+
+<p>ps.
+webintents.orgのJSの問題なのか、なぜかSafariでしか動きません。</p>
+
+
+		
+		
+	</div>
+
+<div class="meta">
+	
+</div>
+</article>
+
+
+    <article class="post">
+	<h2 class="title">
+		
+		<a href="/articles/the-as-rs-work-is-probably-simpler-and-more/">
+		
+			The AS->RS Work Is Probably Simpler and More Useful at This Point.</a>
+	</h2>
+    <div class="entry-content">
+    <div class="meta">
+      <div class="date">Published on: 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-03-16T00:00:00+09:00" pubdate data-updated="true">Mar 16<span>th</span>, 2012</time></div>
+      <div class="tags">Tags: 
+
+</div>
+    </div>
+		<blockquote><pre>The AS-&gt;RS work is probably simpler and more useful at this point.</pre></blockquote>
+
+
+<p>&#8212;<p><a href="https://www.ietf.org/mail-archive/web/oauth/current/msg08620.html">Re: [OAUTH-WG] OAuth WG Re-Chartering</a></p></p>
+
+<p>リソースサーバーと認可サーバーとの間のトークン検証のやりとりの仕様策定が、今後の OAuth WG のお題に入りそうな感じ</p>
+
+
+
+
+<p>(via <a href="http://tkudo.tumblr.com/" class="tumblr_blog">tkudo</a>)</p>
+
+
+		
+		
+	</div>
+
+<div class="meta">
+	
+</div>
+</article>
+
+
+    <article class="post">
+	<h2 class="title">
+		
+		<a href="/articles/response-type-code/">
+		
+			OAuth 2.0でユーザーが認可をする”アプリケーション”とはサービス全体のことではない - R-weblife</a>
+	</h2>
+    <div class="entry-content">
+    <div class="meta">
+      <div class="date">Published on: 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-03-11T00:00:00+09:00" pubdate data-updated="true">Mar 11<span>th</span>, 2012</time></div>
+      <div class="tags">Tags: 
+
+</div>
+    </div>
+		<blockquote><p>response_type=code tokenとかあるので仕様曖昧だよな～と思っていたのですが、普通に書いてありました。</p>
+
+<p>A client application consisting of multiple components, each with its
+own client type (e.g. a distributed client with both a confidential
+server-based component and a public browser-based component), MUST
+register each component separately as a different client to ensure
+proper handling by the authorization server.</p>
+
+<p>Clientはユーザーに代わって保護リソースにアクセスするアプリケーション。
+Client Typesとして、秘密鍵を安全に管理できるconfidential、クライアントサイドで動いて管理できないのはpublic。
+ConfidentialならAuthZ Code, PublicなのはImplicit使え。
+サーバーサイドとクライアントサイドの両方のComponentから構成されている場合、別々で登録しろ！</p></blockquote>
+
+
+<p>&#8212;<p><a href="http://d.hatena.ne.jp/ritou/20120311/1331444771">OAuth 2.0でユーザーが認可をする”アプリケーション”とはサービス全体のことではない &ndash; r-weblife</a></p></p>
+
+<p>で、そういう状況でどうやって効率的に同意を取るかは、AuthZ Serverの実装依存、か。。。</p>
+
+
+
+
+<p>(via <a href="http://kyomichi.tumblr.com/" class="tumblr_blog">kyomichi</a>)</p>
+
+
+		
+		
+	</div>
+
+<div class="meta">
+	
+</div>
+</article>
+
+
+    <article class="post">
+	<h2 class="title">
+		
+		<a href="/articles/kyomichi-via-oauth-2-0-2/">
+		
+			Kyomichi: (via OAuth 2.0って知ってますかぁ？その2 - くらラボ研究記録)</a>
+	</h2>
+    <div class="entry-content">
+    <div class="meta">
+      <div class="date">Published on: 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-03-11T00:00:00+09:00" pubdate data-updated="true">Mar 11<span>th</span>, 2012</time></div>
+      <div class="tags">Tags: 
+
+</div>
+    </div>
+		<p><img src="/tumblr_files/tumblr_m0o7oc4Th71rn7kcvo1_1280.png"/></p>
+
+		
+		
+	</div>
+
+<div class="meta">
+	
+</div>
+</article>
+
+
+    <article class="post">
+	<h2 class="title">
+		
+		<a href="/articles/jso-a-javascript-oauth-library/">
+		
+			JSO - a Javascript OAuth Library</a>
+	</h2>
+    <div class="entry-content">
+    <div class="meta">
+      <div class="date">Published on: 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-03-09T00:00:00+09:00" pubdate data-updated="true">Mar 9<span>th</span>, 2012</time></div>
+      <div class="tags">Tags: 
+
+</div>
+    </div>
+		<blockquote>JSO - a Javascript OAuth Library</blockquote>
+
+
+<p>&#8212;<a href="https://github.com/andreassolberg/jso">andreassolberg/jso</a></p>
+
+		
+		
+	</div>
+
+<div class="meta">
+	
+</div>
+</article>
+
+<nav id="pagenavi">
+    
+        <a href="/" class="prev">Prev</a>
+    
+    
+        <a href="/blog/page/3/" class="next">Next</a>
+    
+    <div class="center"><a href="/blog/archives">Blog Archives</a></div>
+</nav>
+
+    </div>
+    <footer id="footer">
+    <div style="display:inline">
+    Copyright &copy; 2013
+
+    Nov Matake
+. Powered by <a href="http://octopress.org">Octopress</a> | 
+    Theme <a href="http://github.com/panks/fabric">fabric</a> by <a href="http://panks.me">Pankaj Kumar</a>
+</div>
+
+
+    </footer>
+    <script src="/javascripts/fabric.js"></script>
+<script src="/javascripts/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+	$('.fancybox').fancybox();
+})(jQuery);
+</script> <!-- Delete or comment this line to disable Fancybox -->
+
+
+
+
+
+
+<!-- end toload --> 
+</div>
+</div>
+<script src="/javascripts/jquery.ui.totop.js" type="text/javascript"></script>
+<script type="text/javascript">
+/*<![CDATA[*/
+;(function($){$().UItoTop({easingType:'easeOutCirc'});})(jQuery); 
+/*]]>*/
+</script><!-- remove it to remove the scroll to top button -->
+</body>
+</html>

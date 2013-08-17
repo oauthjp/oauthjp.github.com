@@ -1,0 +1,937 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[OAuth.jp]]></title>
+  <link href="http://oauth.jp/atom.xml" rel="self"/>
+  <link href="http://oauth.jp/"/>
+  <updated>2013-08-17T15:41:45+09:00</updated>
+  <id>http://oauth.jp/</id>
+  <author>
+    <name><![CDATA[Nov Matake]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Login with Amazon、もう使っても大丈夫！]]></title>
+    <link href="http://oauth.jp/articles/login-with-amazon/"/>
+    <updated>2013-06-04T00:00:00+09:00</updated>
+    <id>http://oauth.jp/articles/login-with-amazon</id>
+    <content type="html"><![CDATA[<p>先日以下のような記事を書きました。</p>
+
+
+<p><a href="http://oauth.jp/2013/05/30/login-with-amazon.html">Login with Amazonを使うと、あなたのサイトのユーザーがアカウントハイジャックされる。</a></p>
+
+
+<p>Login with Amazon 危険ですよ！という記事だったのですが、その後 Login with Amazon のドキュメントに、Token Info API が追加されました。</p>
+
+
+<p>こちらの Step4 Obtain Profile Information のサンプルコードで、Profile API を叩く前に Token 発行先の Client ID が自身の Client ID と一致することを確認する処理が追加されています。</p>
+
+
+<p><a href="http://login.amazon.com/website">Web - Login with Amazon Developer Center</a></p>
+
+
+<p>こちらのより詳細なドキュメントには、Security Considerations の &#8220;Impersonating a Resource Owner in Implicit Flow&#8221; という節で、Token Info API を使わない場合の攻撃例が述べられています。</p>
+
+
+<p><a href="https://images-na.ssl-images-amazon.com/images/G/01/lwa/dev/docs/website-developer-guide._TTH_.pdf">Login with Amazon - Developer Guide for Websites (PDF)</a></p>
+
+
+<p>というわけで、Login with Amazon、ドキュメント通り実装すれば安全です :)</p>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Login with Amazonを使うと、あなたのサイトのユーザーがアカウントハイジャックされる。]]></title>
+    <link href="http://oauth.jp/articles/login-with-amazon/"/>
+    <updated>2013-05-30T00:00:00+09:00</updated>
+    <id>http://oauth.jp/articles/login-with-amazon</id>
+    <content type="html"><![CDATA[<p>Amazon が、<a href="http://login.amazon.com">Login with Amazon</a> というAPIおよびそれに付随する JS / iOS / Android SDKs を出してきました。</p>
+
+
+<p>以下の記事にあるように、OAuth 2.0 ベースで認証連携を行う仕組みです。</p>
+
+
+<p><a href="http://itpro.nikkeibp.co.jp/article/NEWS/20130530/480782/">Amazonアカウントでアプリやサイトにログイン、「Login with Amazon」を提供開始：ITpro</a></p>
+
+
+<p>しかし、この Login with Amazon、まさに僕が以前以下の記事で紹介した「Facebook ID でログイン」の間違った実装方法を、公式ドキュメントで推奨してしまっています。</p>
+
+
+<p><a href="http://www.atmarkit.co.jp/ait/articles/1209/10/news105_2.html">デジタル・アイデンティティ技術最新動向（2）：RFCとなった「OAuth 2.0」――その要点は？ (2/2) - ＠IT</a></p>
+
+
+<p>この Amazon のドキュメントを読んで (or 「Facebook ID でログイン」を実装した経験を元に) Login with Amazon を自身の Web Site や iOS / Android アプリに導入すると、まず確実にあなたのサイト / アプリのアカウントがハイジャックされるような脆弱性を生むことになります。</p>
+
+
+<p>@IT の記事からのリンクは OAuth.jp の Posterous -&gt; Tumblr 移行に伴いリンク切れになってしまっているので、ここにも OAuth 2.0 Implicit Flow を認証連携に使うことの危険性を説明するエントリーをリンクしておきます。</p>
+
+
+<p><a href="http://oauth.jp/2012/02/08/ios-sdk.html">&#8220;なんちゃら iOS SDK&#8221; でありそうな被害例</a></p>
+
+
+<p>Facebook の場合は、上の記事にあるような response_type=code+token を iOS / Android アプリでは使えないので、以下の記事末尾にあるような対処法も用意されています。</p>
+
+
+<p><a href="http://oauth.jp/2012/02/07/oauth-20-implicit-flow.html">「OAuth 2.0 (Implicit Flow) でログイン」の被害例</a></p>
+
+
+<p>が、ざっと Login with Amazon のドキュメントを読んだ限り、そのような対処法が一切用意されていない。</p>
+
+
+<p>これはもう、Login with Amazon を導入した時点で、Amazon 側の対応無しではあなたのサイト / サービスの脆弱性を止めることができないということです。</p>
+
+
+<p>既に一部有識者より Amazon 側に連絡が行っているようなので、さすがにこのまま Amazon が何の対応も取らないということは考えにくいですが、Amazon が何らかのアップデートを出してくるまで、Login with Amazon を使ってはいけません。</p>
+
+
+<p>ご注意を。</p>
+
+
+<p>[追記 2013.06.04]</p>
+
+
+<p>Login with Amazon の問題点、解決されました。詳しくは以下の記事を。</p>
+
+
+<p><a href="http://oauth.jp/2013/06/04/login-with-amazon.html">Login with Amazon、もう使っても大丈夫！</a></p>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[OAuth 2.0 Core & Bearer Spec (RFC 6749 & RFC 6750) 翻訳公開！]]></title>
+    <link href="http://oauth.jp/articles/oauth-20-core-bearer-spec-rfc-rfc-6749-rfc-67/"/>
+    <updated>2013-01-23T00:00:00+09:00</updated>
+    <id>http://oauth.jp/articles/oauth-20-core-bearer-spec-rfc-rfc-6749-rfc-67</id>
+    <content type="html"><![CDATA[<p>ずいぶん前に「<a href="http://oauth.jp/2011/11/29/oauth-20-core-bearer-spec-76993.html">OAuth 2.0 Core &amp; Bearer Spec 翻訳公開！</a>」で紹介したように、OAuth 2.0 Core &amp; Bearerは、OpenID Foundation Japanの翻訳WGで翻訳を公開していましたが、2012年に両specがRFC化されたのを受け、今回RFC版も翻訳しました。</p>
+
+
+<ul><li><a href="http://openid-foundation-japan.github.com/rfc6749.ja.html">The OAuth 2.0 Authorization Framework (RFC 6749)</a></li>
+<li><a href="http://openid-foundation-japan.github.com/rfc6750.ja.html">The OAuth 2.0 Authorization Framework: Bearer Token Usage (RFC 6750)</a></li>
+</ul>
+
+
+<p>前回翻訳したdraft版から仕様自体に大きな変更はありませんが、特に</p>
+
+
+<ul><li>まだdraft版も読んだことが無い人</li>
+<li>自社のAPIドキュメントからdraft版の翻訳にリンクしている人</li>
+</ul>
+
+
+<p>などは、RFC版を参照していただければと思います。</p>
+
+
+<p>いまこれらとは別に、”<a href="http://openid-foundation-japan.github.com/rfc6819.ja.html">OAuth 2.0 Threat Model and Security Considerations (RFC 6819)</a>” という、OAuth 2.0の利用に際して注意すべきセキュリティ上の特徴・注意点などについてまとめたドキュメントを翻訳中です。こちらも翻訳完了次第公開予定。(追記: 2013.01.25 翻訳公開済)</p>
+
+
+<p>最後に、2/1に東京ミッドタウンのYahoo! Japanオフィスで <a href="http://idcon.doorkeeper.jp/events/2448">#idcon 15th ~ YConnect &amp; Future of Authentication ~</a> というイベントをやります。OAuth 2.0ベースのOpenID次世代仕様であるOpenID Connectについて、世界で初めてOpenID Connect対応API (YConnect) を一般公開したYahoo! Japanの担当者の方の話も聞けるので、興味あったら参加してください :)</p>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Yahoo! JapanがOAuth 2.0 & OpenID Connectに対応]]></title>
+    <link href="http://oauth.jp/articles/yahoo-japanoauth-20-openid-connect/"/>
+    <updated>2012-11-08T00:00:00+09:00</updated>
+    <id>http://oauth.jp/articles/yahoo-japanoauth-20-openid-connect</id>
+    <content type="html"><![CDATA[<p>2011年12月のOpenID Summit Tokyoで、2012年中のOpenID Connect対応を宣言したYahoo! Japanが、本日ついに宣言通りOpenID Connectをサポート開始しました。</p>
+
+
+<p>もともとOAuth 2.0も対応していなかった（よね？）ので、OAuth 2.0対応も同時リリースです。</p>
+
+
+<p>まだバグとかあるっぽいけど、何はともあれ世界の大手IdPの中で一番最初にproduction環境でOpenID Connect対応できたのはすばらしい！</p>
+
+
+<p><iframe scrolling="no" margin src="http://www.slideshare.net/slideshow/embed_code/10433061" frameborder="0"> </iframe></p>
+
+
+<div style="margin-bottom: 5px;"><strong> <a href="http://www.slideshare.net/tzmtk/openid-summit-tokyo-2011" title="OpenID Summit Tokyo 2011" target="_blank">OpenID Summit Tokyo 2011</a> </strong> from <strong><a href="http://www.slideshare.net/tzmtk" target="_blank">Taizo Matsuoka</a></strong></div>
+
+
+<p>まだOpenID ConnectのDiscoveryとDynamic Registrationには対応していないので、<a href="https://connect-rp.heroku.com">Nov RP</a>に &#8220;yahoo.co.jp&#8221; とか入力しても使えない状態ですが、それは今後に期待です。</p>
+
+
+<p>YConnectをちょこっと触ってみて思った要望とかは以下のgistにまとめていってます。</p>
+
+
+<script src="https://gist.github.com/4031074.js?file=gistfile1.textile"></script>
+
+
+<p>scopeにopenidが指定されてるのにtoken responseにid_tokenが含まれてないとか、response_type=code+id_tokenの時にcodeとid_tokenがredirect_uriのfragmentではなくqueryについているなどの問題は、ただのバグとして修正すれば良いでしょう。</p>
+
+
+<p>それ以外でいま気になってる点としては、以下の2点です。</p>
+
+
+<ul><li>response_type=code+tokenサポートしてもらわないとserver-side componentを持つmobile appから使おうとしたときにいろいろめんどくさいことになっちゃうのはFBとか見てたら明らですが、現状のYConnectは「サーバーサイド」アプリとして登録した場合response_typeにcodeかcode+id_tokenしか指定できないみたいです。これはちょっとやめた方が良い気がします。</li>
+<li>あと、id_tokenのsignature algorithmはdefault RS256ということで進んでいるので、YConnectだけがHS256だとまたYAuthとか言われちゃったりしそうですね。</li>
+</ul>
+
+
+<p>それ以外にも、なぜかyahoo.co.jp以外のドメインのメアドはverfiedじゃなくても返してくれる (試しに <a href="mailto:hoge@hoge.com">hoge@hoge.com</a> というメアドを登録してみたらそれ返してきたw）のにyahoo.co.jpのメアドは返してくれないというのも不思議といえば不思議ですが、まぁ社内調整とかいろいろめんどくさいことありそうですし、それが原因でOpenID Connect対応のスケジュールが遅れるくらいならとりあえずそれでもいいのかなとも思います。</p>
+
+
+<p>Implicitの方でscopeにopenidが指定された時にnonceが必須になってるかとかもチェックしたかったのですが、なんかいま「クライアントサイド」のアプリを登録しようとするとエラーになっちゃうバグがあるようなので、そちらはまた明日にでも。覚えてれば。</p>
+
+
+<p>OAuth 2.0 draft 0の時点で対応してきたFacebookのように、これからOpenID Connectのbreaking changesに追随するのは大変だと思いますが、引き続きがんばってください！あと、OpenID Connectにbreaking changeがある時に一番大きな声で文句言える立場にいるので、ぜひOpenID Connect Interopにも積極的に参加していただければ :)</p>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[JSON Web Token (JWT)]]></title>
+    <link href="http://oauth.jp/articles/json-web-token-jwt/"/>
+    <updated>2012-10-26T00:00:00+09:00</updated>
+    <id>http://oauth.jp/articles/json-web-token-jwt</id>
+    <content type="html"><![CDATA[<p>@novです。</p>
+
+
+<p>個人的に最近OAuth 2.0よりJWT (というかJWS) を利用するシーンが多く、毎回同じ説明するのもめんどくさいのでブログにまとめるかと思い、どうせならOAuth.jpに書くかということで、こんな記事を書いております。</p>
+
+
+<p>（そろそろJWTとJWSは、OpenID Foundation Japanの翻訳WGで翻訳するべき？）</p>
+
+
+<h3>JSON Web Token (JWT) とは、JSONをトークン化する仕組み。</h3>
+
+
+<p>元々はJSONデータにSignatureをつけたりEncryptionする仕組みとして考えられたものの、Signature部分がJSON Web Signatue (JWS)、Encryption部分がJSON Web Encryption (JWE) という仕様に分割された。</p>
+
+
+<p>それぞれ2012年10月26日現在の最新仕様はこちら。</p>
+
+
+<p>（JWTとJWSは既にだいぶ仕様が固まってきているものの、まだIETFのInternet-Draftなので注意）</p>
+
+
+<ul><li><a href="http://tools.ietf.org/html/draft-ietf-oauth-json-web-token-04">JSON Web Token (JWT, draft 04)</a></li>
+<li><a href="http://tools.ietf.org/html/draft-ietf-jose-json-web-signature-06">JSON Web Signature (JWS, draft 06)</a></li>
+<li><a href="http://tools.ietf.org/html/draft-ietf-jose-json-web-encryption-06">JSON Web Encryption (JWE, draft 06)</a></li>
+</ul>
+
+
+<p>JWEはまだ実際に使うケースが無いので、ここでは説明しない。</p>
+
+
+<h3>Signed JWT</h3>
+
+
+<p>JWS使ってSignatureつけられたJWT。</p>
+
+
+<p>HeaderとPayloadとSignatureという3つのセグメントから構成される。</p>
+
+
+<p>Headerは署名アルゴリズムなどを含むJSONを、URL-safe Base64 Encodingした文字列。</p>
+
+
+<p>Payloadは実際に送信したいJSONデータそのものを、URL-safe Base64 Encodingした文字列。</p>
+
+
+<p>Signatureは、HeaderとPayloadを &#8220;.&#8221; で連結した文字列に対して、Headerに指定されたアルゴリズムで署名をして、その署名をURL-safe Base64 Encodingした文字列。</p>
+
+
+<p>サンプルは<a href="http://tools.ietf.org/html/draft-ietf-oauth-json-web-token-04#section-3.1">JWT Spec Section 3.1</a> (draft 04の場合) を読むこと。</p>
+
+
+<h3>Signature Algorithms</h3>
+
+
+<p>サポートされているアルゴリズムは、これまた別仕様のJSON Web Algorithm (JWA) で規定されている。</p>
+
+
+<ul><li><a href="http://tools.ietf.org/html/draft-ietf-jose-json-web-algorithms-06">JSON Web Algorithm (JWA, draft 06)</a></li>
+</ul>
+
+
+<p>JWA Section 3 (draft 06 現在) では、JWSの署名アルゴリズムとして以下のアルゴリズムがサポートされている。</p>
+
+
+<ul><li>HMAC-SHA256</li>
+<li>HMAC-SHA384</li>
+<li>HMAC-SHA512</li>
+<li>RSA-SHA256</li>
+<li>RSA-SHA384</li>
+<li>RSA-SHA512</li>
+<li>ECDSA-SHA256</li>
+<li>ECDSA-SHA384</li>
+<li>ECDSA-SHA512</li>
+</ul>
+
+
+<p>正直ECDSA (楕円曲線暗号) ってのは僕もよく理解していなし、Ruby以外で使いたい場合にどう書けばいいかとかさっぱりなので、個人的には共通鍵使う場合はHMAC、公開鍵使う場合はRSAを使っている。</p>
+
+
+<p>例えば、こんな感じ。</p>
+
+
+<ol><li>認証サーバーからiOSアプリに渡すデータには (認証サーバーの秘密鍵を使って) RSA-SHA256使って署名</li>
+<li>iOSアプリからリソースサーバー (認証サーバーとは別) に渡すJSONには、Step 1で認証サーバーに署名されたJWSに入ってる共通鍵を利用してHMAC-SHA256使って署名</li>
+<li>リソースサーバーはiOSアプリからStep 1で発行されたJWSとStep 2で発行されたJWSを同時に受け取って、Step 1のJWSを検証した後そこに含まれてる共通鍵でStep 2のJWSを検証</li>
+<li>リソースサーバーはレスポンスに (リソースサーバーの秘密鍵を使って) RSA-SHA256使って署名</li>
+</ol>
+
+
+<p>（iOSではSHA256よりSHA1の方が使いやすいらしく、HMAC-SHA1とRSA-SHA1使ってたりすることもあるが..）</p>
+
+
+<h3>各言語のライブラリ (情報求む！)</h3>
+
+
+<ul><li><span>Ruby </span><a href="https://github.com/nov/json-jwt">json-jwt</a></li>
+<li><span>Python </span><a href="https://github.com/rohe/pyjwkest">pyjwkest</a></li>
+<li><span>Java </span><a href="https://bitbucket.org/nimbusds/nimbus-jose-jwt/wiki/Home">Nimbus JOSE+JWT</a></li>
+<li><span>PHP </span><a href="https://github.com/ritou/php-Akita_JOSE">PHP Akita JOSE</a><span>,</span><span> </span><a href="https://github.com/nov/jose-php">JOSE</a></li>
+<li><span>Perl </span><a href="https://github.com/xaicron/p5-JSON-WebToken">JSON::WebToken</a></li>
+</ul>
+
+
+<p>Rubyのjson-jwtとPHPのJOSE (2番目の方) は僕が作ってるので、README (希望としてはSpecも) とか読んでも使い方分からない場合は僕に直接聞いていただければと思います。</p>
+
+
+<p>それ以外はあんまり詳しく使い方知らないので、使い方についてはドキュメント (あれば) 読むなりそれぞれの作者に直接聞いてください。それぞれの作者に紹介するくらいならできます。</p>
+
+
+<p>node.jsとかObjective-CにもJSON Web Tokenのライブラリは見かけるのですが、HMACしかサポートしてなかったりしていまいち使えそうなの見つけられてません。（多分Google Wallet APIでHMACなJWSが使われてるので、それだけサポートしたライブラリがあるんだと予想）</p>
+
+
+<p>ここにない言語でRSAもサポートしてるライブラリご存知でしたらお教えいただけるとうれしいです。</p>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Facebookが新たなAccess Token Introspection APIを出したようです]]></title>
+    <link href="http://oauth.jp/articles/facebookaccess-token-introspection-api/"/>
+    <updated>2012-10-16T00:00:00+09:00</updated>
+    <id>http://oauth.jp/articles/facebookaccess-token-introspection-api</id>
+    <content type="html"><![CDATA[<p>今朝fb_graphにこんな要望が来てて知ったのですが、Facebookが新たなAccess Token Introspection APIを出したようです。</p>
+
+
+<p><a href="https://github.com/nov/fb_graph/issues/269">Adding support for /debug_token endpoint · Issue #269 · nov/fb_graph</a></p>
+
+
+<p>こんなリクエストを送ると</p>
+
+
+<p><a href="https://gist.github.com/3896829"><a href="https://gist.github.com/3896829">https://gist.github.com/3896829</a></a></p>
+
+
+<p>こんなレスポンスが帰ってくる、と。</p>
+
+
+<p><a href="https://gist.github.com/3896826"><a href="https://gist.github.com/3896826">https://gist.github.com/3896826</a></a></p>
+
+
+<p>&#8220;data&#8221; ってなんやろとかApp Token無いと使えへんのメンドイなとか思ったりはしますが、ちゃんと別のClientに発行されたAccess Tokenを<code>input_token</code>として送るとエラーが帰ってくるし、Success Responseにはscopeとかissued_atとかも付いてくるので、いろいろと使い勝手は良さそうですね。まぁ例のごとく完全に独自仕様ですが。</p>
+
+
+<p>って実際にGraph API Explorerで試したら、issued_at返ってこないですが（謎</p>
+
+
+<p>オフィシャルドキュメントはこちら。</p>
+
+
+<p><a href="https://developers.facebook.com/docs/howtos/login/debugging-access-tokens/">Debugging Access Tokens and Handling Errors</a></p>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Hello OAuth 2.0, Good-bye OAuth 1.0!]]></title>
+    <link href="http://oauth.jp/articles/hello-oauth-20-good-bye-oauth-10/"/>
+    <updated>2012-10-13T00:00:00+09:00</updated>
+    <id>http://oauth.jp/articles/hello-oauth-20-good-bye-oauth-10</id>
+    <content type="html"><![CDATA[<p>おっす、おらOAuthおにーさん！</p>
+
+
+<h3>ついにOAuth 2.0 CoreとBearerがそれぞれRFCに！！！</h3>
+
+
+<p><a href="http://tools.ietf.org/html/rfc6749">RFC 6749 - The OAuth 2.0 Authorization Framework</a></p>
+
+
+<p><a href="http://tools.ietf.org/html/rfc6750">RFC 6750 - The OAuth 2.0 Authorization Framework: Bearer Token Usage</a></p>
+
+
+<p>このブログができたころには既にOAuth 2.0のdraftが出てたのですが、そういえばOAuth.jpっていつできたんだっけ？と思ってみて見ると…</p>
+
+
+<p><a href="http://oauth.jp/2010/07/04/oauthjp.html">OAuth.jpを立ち上げました。 - OAuth.jp</a></p>
+
+
+<p>2010年7月！</p>
+
+
+<p>そんな長い間やってたのか。。</p>
+
+
+<p>FB Graph APIが出たのが2010年4月なので、OAuth 2.0の実装がでてからかれこれ2年半ほどでようやくRFCになった訳ですね。</p>
+
+
+<h3>さて、RFC化された直後の国内の反応ですが..</h3>
+
+
+<blockquote class="twitter-tweet">
+<p>「Twitterさん、もう、OAuth 1.0古いっすよ。」って誰か言え！オレは言わない！</p>
+<div><a href="https://twitter.com/ritou/status/256932933263294464">October 13, 2012</a></div>
+</blockquote>
+
+
+<blockquote class="twitter-tweet">
+<p>twitterさん、もう OAuth 1.0 古いですよ。正式に deprecate されました。 RT @<a href="https://twitter.com/ritou">ritou</a>: 「Twitterさん、もう、OAuth 1.0古いっすよ。」って誰か言え！オレは言わない！</p>
+<div><a href="https://twitter.com/_nat/status/256945174251442176">October 13, 2012</a></div>
+</blockquote>
+
+
+<blockquote class="twitter-tweet">
+<p>OAuth 1.0はもぅ古いので、Twitterの関係者は至急おっおーっす学会長の私に連絡してください。日本語の分からない本国のバカどもは話にならないので、Twitter Japanの関係者に限ります。キリッ！ノブッ！</p>
+<div><a href="https://twitter.com/IdentityNobuwo/status/256951736630132736">October 13, 2012</a></div>
+</blockquote>
+
+
+<p>そうなんです。OAuth 2.0 Coreには、こう書いてあるんですね。</p>
+
+
+<blockquote class="posterous_short_quote">
+<div>This specification replaces and obsoletes the OAuth 1.0 protocol described in RFC 5849.</div>
+</blockquote>
+
+
+<p>OAuth 1.0サポートしてるTwitter APIとかOpenSocial採用してるプラットフォーム各社とか、どうなるんでしょうね？</p>
+
+
+<p>そういえばそれ以外にも @ritou がまたブログ記事書いてましたね。</p>
+
+
+<p><a href="http://d.hatena.ne.jp/ritou/20121013/1350128492">RFCになったOAuth 2.0を使ってGoogleはどれだけパスワード入力を減らせるのか - r-weblife</a></p>
+
+
+<p>OAuthおねーさんの次回作が気になるところです。</p>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[@IT連載 - デジタル・アイデンティティ技術最新動向]]></title>
+    <link href="http://oauth.jp/articles/it/"/>
+    <updated>2012-10-12T00:00:00+09:00</updated>
+    <id>http://oauth.jp/articles/it</id>
+    <content type="html"><![CDATA[<p><a href="http://kyomichi.tumblr.com/post/33428806421/it" class="tumblr_blog">kyomichi</a>:</p>
+
+
+
+
+<blockquote><p>第1回 <a href="http://www.atmarkit.co.jp/fsecurity/rensai/digid01/01.html">「OAuth」の基本動作を知る</a></p>
+
+<p>第2回 <a href="http://www.atmarkit.co.jp/ait/articles/1209/10/news105.html">RFCとなった「OAuth 2.0」――その要点は？</a></p>
+
+<p>第3回 <a href="http://www.atmarkit.co.jp/ait/articles/1209/20/news140.html">OpenIDが果たす役割を知る</a></p>
+
+<p>第4回 <a href="http://www.atmarkit.co.jp/ait/articles/1209/27/news138.html">「OpenID Connect」を理解する</a></p></blockquote>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[OAuthのoffline_accessについて]]></title>
+    <link href="http://oauth.jp/articles/oauthofflineaccess/"/>
+    <updated>2012-10-01T00:00:00+09:00</updated>
+    <id>http://oauth.jp/articles/oauthofflineaccess</id>
+    <content type="html"><![CDATA[<p>少し前ですが、OpenID Connectのbitbuckeetで<a href="https://bitbucket.org/openid/connect/issue/539/messages-0-add-scope-for-offline-access">offline_accessについての議論</a>がされていたので、まとめておきます。</p>
+
+
+<h3>Googleの場合</h3>
+
+
+<h4>offline access の定義</h4>
+
+
+<ul><li>refresh tokenが発行されるのがoffline。</li>
+<li>特にoffline accessを要求しない限り、デフォルトではonline accessを要求したものと見なされる。</li>
+<li>online accessの場合はrefresh tokenは発行されない。</li>
+<li>refresh tokenはユーザーがrevokeするまで有効。</li>
+</ul>
+
+
+<h4>auto approval</h4>
+
+
+<ul><li>一度ApproveされたClientに対しては、accessがrevokeされるまでは次回以降のAuthorization Request時の同意画面はスキップされる。</li>
+<li>同意画面がスキップされる場合、refresh tokenは発行されない。</li>
+</ul>
+
+
+<h4>promptとaccess_type</h4>
+
+
+<ul><li>Authorization Request時にprompt=trueというパラメーターを指定すると、auto approvalを無効化し、ユーザーに同意画面を見せることができる。</li>
+<li>同様にaccess_type=offlineを指定すると、offline accessを要求できる。</li>
+<li>access_type=offlineを指定した場合、初回同意時にのみrefresh tokenが発行される。</li>
+<li>それ以降もrefresh tokenが必要な場合は、prompt=trueとaccess_type=offlineを同時に指定すること。</li>
+</ul>
+
+
+<h3>AOLの場合</h3>
+
+
+<h4>offline accessの定義</h4>
+
+
+<ul><li>デフォルトではcode flowでは常にrefresh tokenが返される。</li>
+<li>refresh tokenはユーザーがログアウトするまで有効。</li>
+<li>ユーザーがログアウトしても有効なrefresh tokenが欲しい場合は、scopeにoffline_accessを指定する。</li>
+</ul>
+
+
+<h4>auto approval</h4>
+
+
+<ul><li>ユーザーが明示的にチェックボックスにチェックを入れた場合のみ、次回以降の同意画面がスキップされる。</li>
+<li>同意画面がスキップされるケースでも、offline_accessを要求することができる。</li>
+</ul>
+
+
+<p>ところで<a href="https://bitbucket.org/openid/connect/issue/539/messages-0-add-scope-for-offline-access">このIssue</a>、まだopenですね。</p>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[WebSocketでOAuth 2.0を使ってみた]]></title>
+    <link href="http://oauth.jp/articles/websocketoauth-20/"/>
+    <updated>2012-08-09T00:00:00+09:00</updated>
+    <id>http://oauth.jp/articles/websocketoauth-20</id>
+    <content type="html"><![CDATA[<p>WebSocket Serverでユーザー認証とか、WebSocket Serverの裏にRailsなりのAPIがあってNode.jsからそのAPI叩く見たいなのはそれなりにありそうなのに、あんまサンプルコード的なものが見当たらなかったので、自分で書いてみたのをここに公開することにします。</p>
+
+
+<p>ClientがWebSocket Serverにつなぐ時、<em><a href="http://socket.example.com/?access_token="><a href="http://socket.example.com/?access_token=">http://socket.example.com/?access_token=</a></a>***</em> みたいなURLにアクセスして、ServerはそのToken元にユーザーを認証して、その後socketがつながってる間はNode.jsがそのtoken使って裏のRails APIにアクセスする、という使い方をしてます。</p>
+
+
+<p>Access Tokenの保存先にMySQL使ってるのはあくまでRails側でそっちのが手っ取り早かったからで、ここはRedisでもMongoDBでもなんでもいいです。この例ではNode.js側ではAccess Tokenに紐づいたClientとかScopeとかを検証してないし。</p>
+
+
+<p><a href="https://gist.github.com/3300227"><a href="https://gist.github.com/3300227">https://gist.github.com/3300227</a></a></p>
+
+
+<p>ところで、WebSocketではCookieベースの認証方式が主流なんですかね？</p>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Re: OAuth 2.0のclient_secretって本当に秘密鍵ですか？]]></title>
+    <link href="http://oauth.jp/articles/re-oauth-20clientsecret/"/>
+    <updated>2012-08-03T00:00:00+09:00</updated>
+    <id>http://oauth.jp/articles/re-oauth-20clientsecret</id>
+    <content type="html"><![CDATA[<p>昨日こんな記事を見かけたので、記事にまとめることにします。</p>
+
+
+<p><a href="http://koduki.hatenablog.com/entry/2012/07/16/113204">OAuth2.0のclient_secretって本当に秘密鍵ですか？</a></p>
+
+
+<p>元記事にあるとおり、現状Native AppでのOAuth 2.0の実装は、API提供者・利用者ともにポリシーがバラバラで、混乱の元になっていると思います。</p>
+
+
+<blockquote class="posterous_medium_quote">
+<p>Googleのドキュメントにも「the client_secret is obviously not treated as a secret.」とあるわけだけど、そのくせclient_secretを使ってるし、ネットで調べても少なくない数の人がアプリに埋め込んでるので、client_secretを公開したときの問題を考えてみる。</p>
+</blockquote>
+
+
+<h3>&#8220;offline&#8221; アクセスと &#8220;online&#8221; アクセス</h3>
+
+
+<p>Googleは、<strong>&#8220;offline access&#8221;</strong> に対して以下のようなポリシーを持っています。</p>
+
+
+<p><a href="http://googleappsdeveloper.blogspot.jp/2011/10/upcoming-changes-to-oauth-20-endpoint.html">Upcoming changes to OAuth 2.0 endpoint - Google Apps Developer Blog</a></p>
+
+
+<p><a href="https://bitbucket.org/openid/connect/issue/539/messages-0-add-scope-for-offline-access">openid / connect / issues / #539 - Messages - 0. Add scope for offline access - Bitbucket</a></p>
+
+
+<p>上の記事では議論が長くてかつ英語なので、簡単に要約すると、</p>
+
+
+<ul><li>access tokenが無効化されると、clientは新しいaccess tokenを取得しなければならない。</li>
+<li>新しいaccess tokenを受け取るには、ユーザーがその場にいる必要がある。<strong>ユーザーが既にclientのアクセスに同意している場合は、同意画面をスキップさせることができる</strong>ので、ユーザーが毎回Googleの同意画面を見る必要は無い。</li>
+<li>JS Appなど、ブラウザ内で動作していて常にユーザーとインタラクションしているclientは、同意画面さえスキップできればリダイレクトベースで必要に応じて毎回access tokenを取得すればよい。</li>
+<li>スマホ上のNative Appの場合は、UX的に毎回ブラウザ経由してaccess tokenを取得するのはつらいので、<strong>ユーザーから明示的に &#8220;offline&#8221; アクセスへの同意を得て</strong>、次回以降はrefresh tokenを使って新しいaccess tokenを取得すればよい。</li>
+</ul>
+
+
+<p>そして、Googleは、refresh tokenを伴う場合を &#8220;offline&#8221; アクセス、伴わない場合を &#8220;online&#8221; と定義しています。詳細は異なるものの、似たような定義はFacebookやAOLなども行っています。</p>
+
+
+<h3>Native Appに埋め込まれたclient_secretは簡単に漏洩する</h3>
+
+
+<p>このご時世 <a href="http://www.charlesproxy.com">Charles</a> などを使えば、自分のデバイス上で行われているSSLリクエストなら簡単に覗き見ることができます。</p>
+
+
+<p>OAuth 2.0では、authorization codeとaccess tokenを交換する時とrefresh tokenをaccess tokenと交換する時に、client_secretを平文でAuthorization Server (この場合はGoogle) に送信します。</p>
+
+
+<p>そのため、上記2つのいずれかのリクエストがiPhone上のNative Appから発行されるなら、Jailbreakや逆コンパイルなどせずともエンドユーザーなら誰でも、そのアプリに埋め込まれたclient_secretを知ることができます。</p>
+
+
+<p>OAuth 2.0のclient_secretをアプリに埋め込んで配布するというのは、client_secretが漏洩する前提でそれを扱っているということです。そしてその場合、当然以下のような疑問がでてきます。</p>
+
+
+
+
+<h3>client_secretが漏洩してはいけないのか？</h3>
+
+
+<p>これに関しては、例えばFacebook Graph APIの場合であれば、client_secretが漏洩すると以下のようなリスクがあります。(個人的にGoogle APIは使ってないので、Googleに関しては僕はよく把握していません)</p>
+
+
+<blockquote class="twitter-tweet">
+<p><a href="https://twitter.com/gabunomi_">@<strong>gabunomi_</strong></a> FB Graph APIなら、client_secretさえあれば、任意のユーザーをそのアプリからBanしたり、Banを解除できたりするはずです。まぁ4sqユーザーを全員Banすれば、FBがそれを検知してなんらか対応してくるとは思いますが。</p>
+— nov matakeさん (@nov) <a href="https://twitter.com/nov/status/230990719257559040">8月 2, 2012</a></blockquote>
+
+
+
+
+<p>client_secretが漏洩した場合のリスクはAPI提供者側のポリシーに依存するため、Generalな解答をするとすれば以下のようになるでしょう。(ちなみに、いまClient Credentials Flowがサポートされていないからといって、将来にわたってその状態が維持される保証があるわけではないです。その場合はclient_secretを発行しなおしたりするんでしょうかね？ &gt; だれとなく)</p>
+
+
+<blockquote class="twitter-tweet">
+<p><a href="https://twitter.com/gabunomi_">@<strong>gabunomi_</strong></a> API提供者側に「なんでここでclient_secret埋め込ませてんの？」って問い合わせて、明確な回答が返ってくるなら、1 clientとしてはそれでOKかと。「いろいろあってしょうがなく」とか言われたら危険です。被害受けるとしたらユーザーじゃないあなた。</p>
+— nov matakeさん (@nov) <a href="https://twitter.com/nov/status/230997139705188352">8月 2, 2012</a></blockquote>
+
+
+
+
+<p>全てのAPI提供者がNative Appに埋め込まれたclient_secretが漏洩することを前提としたアクセスコントロールを実施しているわけでも無いようですし、そもそもNative Appにclient_secretを埋め込むことを禁止しているFacebookのようなOAuth Serverも存在する (=&gt; 本来こっちの方が一般的であるべき) ので、Developerにとっては混乱の元でしょうね。</p>
+
+
+<p>Native Appにclient_secretを埋め込む前提で、その漏洩の可能性という点で見れば、OAuth 1.0を使った方が良い場合もあるでしょう。OAuth 1.0では、Native Appにclient_secretを埋め込んでもそれは署名計算に使われるだけで直接OAuth Serverに送信されることはありません。かといっていまからOAuth 1.0を採用するというのは、時代の流れ的にどうなんだということもありますが。</p>
+
+
+<blockquote class="twitter-tweet">
+<p><a href="https://twitter.com/gabunomi_">@<strong>gabunomi_</strong></a> OAuth 2.0では（JWT assertionなどを使わない限り）token endpointにclient secretを平文で送るので、埋め込まれたsecretは逆コンパイル無しでも容易にsecretは漏洩します。そこはOAuth 1.0のがまし。</p>
+— nov matakeさん (@nov) <a href="https://twitter.com/nov/status/231186384424157184">8月 3, 2012</a></blockquote>
+
+
+<h3>GoogleとFacebookのスタンスの違い</h3>
+
+
+<p>GoogleがNative App (= Installed Application) 用のフローを用意してNative Appにclient_secretを埋め込むように案内する一方、Native AppにはFB Official Appと連携したフローを用意してclient_secretを不要にしているFacebookの存在は、対照的です。</p>
+
+
+<p>Googleの場合は、Client登録時にClientがWeb AppなのかNative Appなのかといった分類をさせているはずで、そのclient typeによってclient_secretを使ってできることに差を付けているのかもしれません。(<strong>要確認</strong>: Google APIよく知らないので、この辺詳しい人いたら教えてほしい)</p>
+
+
+<p>Facebookの場合は、Native AppとWeb App、Facebook iFrame Appといった複数の種類のClientを、提供者が同一であれば同じclient_id (&amp; client_secret) を使い回せるようにして、cross-platformな環境でアプリを提供しやすくしているため、client typeによってclient_secretの価値を変えるということはやりづらいのかも知れません。(じゃあGoogleはcross-platformなClientに対してどう考えてるの？ってのは、Googlerに直接聞いてみたいかも)</p>
+
+
+<h3>client_secretが漏洩した時に被害を受けるのは誰？</h3>
+
+
+<p>これもまた各OAuth ServerがどんなAPIを提供していて、OAuth 2.0のClient Credentials Flowを使って得たaccess tokenで何ができるのかに依存するので、一概には言えないのですが、よくあるケースとしてはAPI利用状況のAnalytics情報を取得したりするAPIが考えられるので、被害を受けるのはエンドユーザーというよりはClient Developer自身であることの方が多いでしょう。</p>
+
+
+<p>client_secretを埋め込む実装をしているOAuth Client Developerは、一度利用しているAPIがClient Credentials Flowをサポートしているのか、Client Credentials Flowで得たaccess tokenでは何ができるのか、一度APIドキュメントを確認したりAPI提供者に問い合わせてみた方が良いかも知れません。</p>
+
+
+<p>Facebookの用にclient_secretさえあれば任意のユーザーをBanできてしまったりする場合は、client_secretが漏洩することでClient Developerとエンドユーザー両方が被害を受けることもありえます。</p>
+
+
+<h3>蛇足: オレはこう思う！（だっけ？）</h3>
+
+
+<p>まぁこの辺りはOAuth 1.0からOAuth 2.0になってServer / Client双方にいろいろ選択肢が増えたので、各社バラバラな仕様になってしまって</p>
+
+
+<blockquote>
+<p>When compared with OAuth 1.0, the 2.0 specification is more complex, less interoperable, less useful, more incomplete, and most importantly, less secure.</p>
+<p><a href="http://hueniverse.com/2012/07/oauth-2-0-and-the-road-to-hell/">OAuth 2.0 and the Road to Hell</a></p>
+</blockquote>
+
+
+<p>っていう前OAuth 2.0 Authorの彼の意見も、あながち無視できないところではある。</p>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[OAuth 2.0 Implicit Flow で認証の問題点、再び。]]></title>
+    <link href="http://oauth.jp/articles/oauth-20-implicit-flow-78852/"/>
+    <updated>2012-06-29T00:00:00+09:00</updated>
+    <id>http://oauth.jp/articles/oauth-20-implicit-flow-78852</id>
+    <content type="html"><![CDATA[<p>おひさしぶりです、@novです。</p>
+
+
+<p>最近は、新しいFacebook iOS SDK使ってるアプリを見つけるとまず<a href="http://oauth.jp/2012/02/08/ios-sdk.html">Token置換攻撃</a>を試みていますが、結構高い確率でこの攻撃に対して脆弱なアプリがみつかります。困ったものです。。</p>
+
+
+<p>そんななか、2週間ほど前に、Micosoft Researchの人がIETF OAuth WGのメーリングリストに<a href="http://www.ietf.org/mail-archive/web/oauth/current/msg09270.html">同じ問題を提起していました</a>。該当Threadでは少し話題が脱線している部分もありますが、もともと最初にこの問題を提起したJohn BradleyがOAuth 2.0 CoreにSecurity Considerationsを追加する流れのようです。</p>
+
+
+<p>これが現状の改善につながれば良いのですが、そう簡単に行かないかもなとも思います。というのも、この問題、<strong>なかなかデベロッパーにとって理解されない</strong>傾向があります。</p>
+
+
+<p>そこで今日は、これまでいくつかのアプリデベロッパーに対して脆弱性報告をしたときの反応をまとめてみたいと思います。</p>
+
+
+<h3>反応1: そもそも置換攻撃に使うためのaccess token奪われてる時点でアウトじゃね？</h3>
+
+
+<p>確かにFacebookのaccess tokenを悪用されると、困ります。勝手にFacebookに変なリンクを投稿されたり、プロフィール情報を抜かれたりすることもあるでしょう。が、そういったFacebookアカウントに対する攻撃と、Facebook以外のサービスでもアカウントが乗っ取られるということは別問題です。</p>
+
+
+<p>あるFacebook連携を行っているサービスからFacebookのaccess tokenが漏洩した時に、Facebookの自分のタイムラインを荒らされることと、いままで自分がFacebookと連携したさまざまなサービスでアカウントが乗っ取られることは、別でしょう？</p>
+
+
+<h3>反応2: 攻撃用アプリをインストールしなきゃ被害にあわないでしょ？</h3>
+
+
+<p>攻撃用アプリはどうせAppleの審査を通らないから、被害者がそれをインストールする可能性はきわめて低い、という主張をする人もいました。</p>
+
+
+<p>が、攻撃用アプリは、攻撃者自身がXcode経由で自分のiPhoneにインストールすればいいだけなので、AppStoreに並ぶ必要もないですし、Appleの審査を通る必要もなく、Jailbreakすらいりません。</p>
+
+
+<p>さらに言うと、攻撃用アプリは、Objective-C初心者の僕が数時間で作れる程度のものです。</p>
+
+
+<h3>反応3: access token受け取った側がそれ検証するのは当然。Facebook側は問題ない。</h3>
+
+
+<p>確かにFacebook側はtokenの発行先検証のためのAPIも用意しているし、Facebook iOS SDKにバグがあるというわけでも無いです。が、FB iOS SDKを使って同じあやまちを犯しているアプリがあまりに多く、僕が調べた5つのiOSアプリ中、4つが同じ過ちを犯していました。この状況では、さすがにFacebook側もドキュメントにこの脆弱性に対する注意および解決策を明記したり、FB iOS SDKのサンプルコードを修正したりする必要があるのではないかと思います。</p>
+
+
+<h3>反応4: OAuth 2.0のImplicit Flowを認証に使うのがまず誤り。OpenID Connect使うべき。</h3>
+
+
+<p>正論ではあると思うのですが、API提供者側がOpenID Connectに対応できていない状況では、API利用者を混乱させるだけなような気もします。現状の仕組みで解決できる方法もあるので、まずはそちらを伝えることが先決ではないでしょうか。</p>
+
+
+<h3>反応5: パスワード忘れちゃったの？ここに登録したメールアドレス入力したら、パスワードリセットできるよ。</h3>
+
+
+<p>この反応にはさすがにびっくりしました。</p>
+
+
+<p>とまぁ、混乱する理由も理解できるものからまったくとんちんかんなものまで、様々な反応がありましたが、</p>
+
+
+<ul><li>みなさんのアプリは外部APIを使って認証していますか？</li>
+<li>そのAPIはOAuthベースですか？</li>
+<li>アプリからaccess tokenを受け取った時、Web API側では毎回token発行先が自分のアプリかどうか確認していますか？</li>
+</ul>
+
+
+<p>もし上記の質問に答えられない場合、自分のアプリが安全かどうか分からない場合は、お気軽にこのブログのコメント欄に質問していただければと思います。もちろんOAuth.jpのFacebook PageやTwitterアカウントに質問投げかけてくれても構いません。（Twitterの場合は、@oauthjp より @nov に質問してくれた方が気がつきやすいと思います）</p>
+
+
+<p>ではでは！</p>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Debugging OAuth2 SSL Connections]]></title>
+    <link href="http://oauth.jp/articles/debugging-oauth2-ssl-connections/"/>
+    <updated>2012-05-04T00:00:00+09:00</updated>
+    <id>http://oauth.jp/articles/debugging-oauth2-ssl-connections</id>
+    <content type="html"><![CDATA[<blockquote>Debugging OAuth2 SSL Connections</blockquote>
+
+
+<p>&#8212;<p><a href="http://ignisvulpis.blogspot.jp/2012/05/debugging-oauth2-ssl-connections.html?m=1"><a href="http://ignisvulpis.blogspot.jp/2012/05/debugging-oauth2-ssl-connections.html?m=1"><a href="http://ignisvulpis.blogspot.jp/2012/05/debugging-oauth2-ssl-connections.html?m=1">http://ignisvulpis.blogspot.jp/2012/05/debugging-oauth2-ssl-connections.html?m=1</a></a></a> (via <a href="http://eidentity.tumblr.com/" class="tumblr_blog">eidentity</a>)</p></p>
+
+<p>Too long. Just use Charles.</p>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Important: OAuth 1.0 has been officially deprecated as of April 20, 2012. It will continue to work as per our deprecation policy, but we encourage you to migrate to OAuth 2.0 as soon as possible.]]></title>
+    <link href="http://oauth.jp/articles/important-oauth-1-0-has-been-officially/"/>
+    <updated>2012-04-22T00:00:00+09:00</updated>
+    <id>http://oauth.jp/articles/important-oauth-1-0-has-been-officially</id>
+    <content type="html"><![CDATA[<blockquote>Important: OAuth 1.0 has been officially deprecated as of April 20, 2012. It will continue to work as per our deprecation policy, but we encourage you to migrate to OAuth 2.0 as soon as possible.</blockquote>
+
+
+<p>&#8212;<a href="https://developers.google.com/accounts/docs/OAuth">OAuth 1.0 for Web Applications &ndash; Google Accounts Authentication and Authorization — Google Developers</a></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[WebIntent x OpenID Connect (en)]]></title>
+    <link href="http://oauth.jp/articles/when-you-access-to-an-openid-relying-party-rp/"/>
+    <updated>2012-04-09T00:00:00+09:00</updated>
+    <id>http://oauth.jp/articles/when-you-access-to-an-openid-relying-party-rp</id>
+    <content type="html"><![CDATA[<iframe src="http://www.slideshare.net/slideshow/embed_code/12296336" width="400" height="334" frameborder="0" marginwidth="0" marginheight="0" scrolling="no"></iframe>
+
+
+<br/><p>When you access to an OpenID Relying Party (RP), you&#8217;ll see 5 or more OpenID Provider (OP) logos at its login page. At worst, you can see 10+ OP logos, even though more than half of them are totally unknown for you. It&#8217;s called &#8220;NASCAR Problem&#8221;.</p>
+
+
+
+
+<p>OpenID community had been trying to solve the problem for a long time, but not much progress on it.</p>
+
+
+
+
+<p>Now, it&#8217;s the era of HTML5, and browsers-side functionality is improving very much.
+I found <a href="http://webintents.org/">HTML5&#8217;s WebIntents</a> [<a href="http://dvcs.w3.org/hg/web-intents/raw-file/tip/spec/Overview.html">W3C draft spec</a>] as a browser-based &#8220;discovery&#8221; protocol, which can be a solution for OpenID&#8217;s NASCAR problem.</p>
+
+
+
+
+<p>So that I made an OpenID Connect Provider &amp; Relying Party which relying on the discovery part to WebIntents.</p>
+
+
+
+
+<p>You can play my demo following the below steps.</p>
+
+
+
+
+<ol><li>Access to <a href="https://connect-op.heroku.com/">Nov OP</a> which has <intent> tag in its HTML  tag. Your browser will automatically register this site as a service provider of &#8220;OpenID Connect Discovery&#8221;.</intent></li>
+<li>Access to <a href="https://connect-rp.heroku.com/">Nov RP</a>.</li>
+<li>Click “Or Try WebIntents?” button, which initiate WebIntents-based OpenID Connect Discovery flow.</li>
+</ol>
+
+
+<p>Then you&#8217;ll see a small popup which let you choose an OP.
+After you choose Nov OP, you will go back to Nov OP and see an alert popup which shows raw OpenID Connect discovery result.
+Once RP received the response, it does normal OpenID Connect login flow.</p>
+
+
+
+
+<p>One of my friends, Ryo, made his <a href="https://openidconnect.info/">sample OP</a> &#8220;WebIntent-able&#8221;, so once you access to Ryo&#8217;s OP, you can see 2 OPs at the popup window of intent candidates.</p>
+
+
+
+
+<p><br/>
+ps.<br/>
+For some reason, this demo works only on Safari.
+(probably because of webintents.org&#8217;s JS shim issue?)</p>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[WebIntent x OpenID Connect]]></title>
+    <link href="http://oauth.jp/articles/webintents-openid-connect-discovery/"/>
+    <updated>2012-04-09T00:00:00+09:00</updated>
+    <id>http://oauth.jp/articles/webintents-openid-connect-discovery</id>
+    <content type="html"><![CDATA[<iframe src="http://www.slideshare.net/slideshow/embed_code/12296336" width="400" height="334" frameborder="0" marginwidth="0" marginheight="0" scrolling="no"></iframe>
+
+
+<br/><p>WebIntentsを使ってOpenID ConnectのDiscoveryをやってみました。</p>
+
+
+
+
+<p>試すには、以下のステップを踏んでください。</p>
+
+
+
+
+<ol><li><a href="https://connect-op.heroku.com/">https://connect-op.heroku.com/</a> にアクセス (ここにintentタグが仕込まれてます)</li>
+<li><a href="https://connect-rp.heroku.com/">https://connect-rp.heroku.com/</a> にアクセス</li>
+<li>&#8220;Or Try WebIntents?&#8221; というボタンをクリック</li>
+</ol>
+
+
+<p>するとPopupが開いて、Step1で登録されたNov OPが選択肢に現れるので、それを選択するとNov RPに戻ってDiscovery結果がAlertで表示され、その後通常のOpenID Connectのログインフローに進みます。</p>
+
+
+
+
+<p>ps.
+webintents.orgのJSの問題なのか、なぜかSafariでしか動きません。</p>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[The AS->RS work is probably simpler and more useful at this point.]]></title>
+    <link href="http://oauth.jp/articles/the-as-rs-work-is-probably-simpler-and-more/"/>
+    <updated>2012-03-16T00:00:00+09:00</updated>
+    <id>http://oauth.jp/articles/the-as-rs-work-is-probably-simpler-and-more</id>
+    <content type="html"><![CDATA[<blockquote><pre>The AS-&gt;RS work is probably simpler and more useful at this point.</pre></blockquote>
+
+
+<p>&#8212;<p><a href="https://www.ietf.org/mail-archive/web/oauth/current/msg08620.html">Re: [OAUTH-WG] OAuth WG Re-Chartering</a></p></p>
+
+<p>リソースサーバーと認可サーバーとの間のトークン検証のやりとりの仕様策定が、今後の OAuth WG のお題に入りそうな感じ</p>
+
+
+
+
+<p>(via <a href="http://tkudo.tumblr.com/" class="tumblr_blog">tkudo</a>)</p>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[OAuth 2.0でユーザーが認可をする”アプリケーション”とはサービス全体のことではない - r-weblife]]></title>
+    <link href="http://oauth.jp/articles/response-type-code/"/>
+    <updated>2012-03-11T00:00:00+09:00</updated>
+    <id>http://oauth.jp/articles/response-type-code</id>
+    <content type="html"><![CDATA[<blockquote><p>response_type=code tokenとかあるので仕様曖昧だよな～と思っていたのですが、普通に書いてありました。</p>
+
+<p>A client application consisting of multiple components, each with its
+own client type (e.g. a distributed client with both a confidential
+server-based component and a public browser-based component), MUST
+register each component separately as a different client to ensure
+proper handling by the authorization server.</p>
+
+<p>Clientはユーザーに代わって保護リソースにアクセスするアプリケーション。
+Client Typesとして、秘密鍵を安全に管理できるconfidential、クライアントサイドで動いて管理できないのはpublic。
+ConfidentialならAuthZ Code, PublicなのはImplicit使え。
+サーバーサイドとクライアントサイドの両方のComponentから構成されている場合、別々で登録しろ！</p></blockquote>
+
+
+<p>&#8212;<p><a href="http://d.hatena.ne.jp/ritou/20120311/1331444771">OAuth 2.0でユーザーが認可をする”アプリケーション”とはサービス全体のことではない &ndash; r-weblife</a></p></p>
+
+<p>で、そういう状況でどうやって効率的に同意を取るかは、AuthZ Serverの実装依存、か。。。</p>
+
+
+
+
+<p>(via <a href="http://kyomichi.tumblr.com/" class="tumblr_blog">kyomichi</a>)</p>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[kyomichi:
+
+(via OAuth 2.0って知ってますかぁ？その2 - くらラボ研究記録)]]></title>
+    <link href="http://oauth.jp/articles/kyomichi-via-oauth-2-0-2/"/>
+    <updated>2012-03-11T00:00:00+09:00</updated>
+    <id>http://oauth.jp/articles/kyomichi-via-oauth-2-0-2</id>
+    <content type="html"><![CDATA[<p><img src="http://oauth.jp/tumblr_files/tumblr_m0o7oc4Th71rn7kcvo1_1280.png"/></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[JSO - a Javascript OAuth Library]]></title>
+    <link href="http://oauth.jp/articles/jso-a-javascript-oauth-library/"/>
+    <updated>2012-03-09T00:00:00+09:00</updated>
+    <id>http://oauth.jp/articles/jso-a-javascript-oauth-library</id>
+    <content type="html"><![CDATA[<blockquote>JSO - a Javascript OAuth Library</blockquote>
+
+
+<p>&#8212;<a href="https://github.com/andreassolberg/jso">andreassolberg/jso</a></p>
+]]></content>
+  </entry>
+  
+</feed>
