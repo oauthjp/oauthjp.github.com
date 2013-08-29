@@ -4,7 +4,7 @@
   <title><![CDATA[OAuth.jp]]></title>
   <link href="http://oauthjp.github.io/atom.xml" rel="self"/>
   <link href="http://oauthjp.github.io/"/>
-  <updated>2013-08-18T11:28:58+09:00</updated>
+  <updated>2013-08-30T00:52:19+09:00</updated>
   <id>http://oauthjp.github.io/</id>
   <author>
     <name><![CDATA[Nov Matake]]></name>
@@ -12,6 +12,49 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[エンプラグレード OAuth 2.0]]></title>
+    <link href="http://oauthjp.github.io/blog/2013/08/30/enterprise-grade-oauth2/"/>
+    <updated>2013-08-30T00:27:00+09:00</updated>
+    <id>http://oauthjp.github.io/blog/2013/08/30/enterprise-grade-oauth2</id>
+    <content type="html"><![CDATA[<p>エンプラ、よく分かりません。</p>
+
+<p>エンプラグレード、逆に不安です。</p>
+
+<p>と、まぁそんな内輪ネタはさておき、最近はエンプラで OAuth 2.0 使う事例も増えてるようです。</p>
+
+<p>Google Apps とか導入してたら、OAuth 2.0 とか G+ Sign-in (= OpenID Connect) も使うでしょうし、そんな時にエンプラだと特定のアプリにだけ特定の API へのアクセスを許可したい、なんてこともあるんでしょう。</p>
+
+<p>で、今日それっぽい事例をちょっと見かけたので、response_type=code ってなってるとこを response_type=token に書き換えてやったんですが&hellip;</p>
+
+<p>しっかり access_token 取れて、自分で書いたスクリプトからも API アクセスできましたよ！</p>
+
+<p>特定アプリに限定したつもりでも、別に自分のアカウントと紐づいた access_token 取るだけなら client_secret いらなかったりするのは、当然っちゃ当然なのですが、これがエンプラの世界では許容されるのかされないのかがよく分かんないです。</p>
+
+<p>もし許容されないのだとしたら、特定のアプリに限定するってなら response_typ=code に限定するとかもしないとダメなんでしょうねぇ。</p>
+
+<p>と、Octopress に移行して断然ブログ書きやすくなったので、つらつら書いてみました。</p>
+
+<p>== 以下ステマ ==</p>
+
+<p>ん？「エンプラで OAuth 2.0」ってのに興味湧きました？</p>
+
+<p>そんなあなたに <a href="http://openid.doorkeeper.jp/events/5373">OpenID TechNight vol.10</a>！</p>
+
+<p>今回の TechNight は日本最先端のエンプラ ID 厨たちが集うエンプラ特集。</p>
+
+<p>先日アメリカで開催された世界のエンプラ ID 厨が集う <a href="http://www.cloudidentitysummit.com">Cloud Identity Summit (CIS) 2013</a> に参加した日本のエンプラ ID 厨たちが、CIS で感じた世界のエンプラ ID ビジネス／テクノロジーの動向を熱く語ります。たぶん。</p>
+
+<p>てかなんだここ最近のエンプラ ID 厨の盛り上がりは！</p>
+
+<p>エンプラ ID 厨向けの TechNight に既に申し込み100名超えてるとか (((((( ;ﾟДﾟ)))))ｶﾞｸｶﾞｸﾌﾞﾙﾌﾞﾙ</p>
+
+<p>ps.</p>
+
+<p>関西在住でさすがにそんな気軽に関東に来れないって方には、<a href="http://nosurrender.jp/idit2013/">ID &amp; IT 2013</a> の大阪会場に参加するという手も。</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[JWT & JWS 翻訳プロジェクトスタート & イベント紹介]]></title>
@@ -912,37 +955,6 @@ webintents.orgのJSの問題なのか、なぜかSafariでしか動きません�
 
 
 <p>(via <a href="http://tkudo.tumblr.com/" class="tumblr_blog">tkudo</a>)</p>
-
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[OAuth 2.0でユーザーが認可をする”アプリケーション”とはサービス全体のことではない - r-weblife]]></title>
-    <link href="http://oauthjp.github.io/blog/2012/03/11/response-type-code/"/>
-    <updated>2012-03-11T00:00:00+09:00</updated>
-    <id>http://oauthjp.github.io/blog/2012/03/11/response-type-code</id>
-    <content type="html"><![CDATA[<blockquote><p>response_type=code tokenとかあるので仕様曖昧だよな～と思っていたのですが、普通に書いてありました。</p>
-
-<p>A client application consisting of multiple components, each with its
-own client type (e.g. a distributed client with both a confidential
-server-based component and a public browser-based component), MUST
-register each component separately as a different client to ensure
-proper handling by the authorization server.</p>
-
-<p>Clientはユーザーに代わって保護リソースにアクセスするアプリケーション。
-Client Typesとして、秘密鍵を安全に管理できるconfidential、クライアントサイドで動いて管理できないのはpublic。
-ConfidentialならAuthZ Code, PublicなのはImplicit使え。
-サーバーサイドとクライアントサイドの両方のComponentから構成されている場合、別々で登録しろ！</p></blockquote>
-
-
-<p>&#8212;<p><a href="http://d.hatena.ne.jp/ritou/20120311/1331444771">OAuth 2.0でユーザーが認可をする”アプリケーション”とはサービス全体のことではない &ndash; r-weblife</a></p></p>
-
-<p>で、そういう状況でどうやって効率的に同意を取るかは、AuthZ Serverの実装依存、か。。。</p>
-
-
-
-
-<p>(via <a href="http://kyomichi.tumblr.com/" class="tumblr_blog">kyomichi</a>)</p>
 
 ]]></content>
   </entry>
