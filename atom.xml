@@ -4,7 +4,7 @@
   <title><![CDATA[OAuth.jp]]></title>
   <link href="http://oauthjp.github.io/atom.xml" rel="self"/>
   <link href="http://oauthjp.github.io/"/>
-  <updated>2013-08-30T01:11:36+09:00</updated>
+  <updated>2013-08-30T01:13:07+09:00</updated>
   <id>http://oauthjp.github.io/</id>
   <author>
     <name><![CDATA[Nov Matake]]></name>
@@ -35,6 +35,9 @@
 <p>もし許容されないのだとしたら、特定のアプリに限定するってなら response_typ=code に限定するとかもしないとダメなんでしょうねぇ。</p>
 
 <p>と、Octopress に移行して断然ブログ書きやすくなったので、つらつら書いてみました。</p>
+
+<!-- more -->
+
 
 <p>== 以下ステマ ==</p>
 
