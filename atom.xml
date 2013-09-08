@@ -4,7 +4,7 @@
   <title><![CDATA[OAuth.jp]]></title>
   <link href="http://oauthjp.github.io/atom.xml" rel="self"/>
   <link href="http://oauthjp.github.io/"/>
-  <updated>2013-08-30T01:13:07+09:00</updated>
+  <updated>2013-09-08T15:42:26+09:00</updated>
   <id>http://oauthjp.github.io/</id>
   <author>
     <name><![CDATA[Nov Matake]]></name>
@@ -12,6 +12,33 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[JWT & JWS 翻訳第一弾リリース]]></title>
+    <link href="http://oauthjp.github.io/blog/2013/09/08/jwt-jws-trans-phase1-released/"/>
+    <updated>2013-09-08T15:30:00+09:00</updated>
+    <id>http://oauthjp.github.io/blog/2013/09/08/jwt-jws-trans-phase1-released</id>
+    <content type="html"><![CDATA[<p>先日 <a href="http://oauthjp.github.io/blog/2013/08/17/jwt-jws-trans/">JWT &amp; JWS 翻訳プロジェクトスタート &amp; イベント紹介</a> でお伝えした JWT &amp; JWS 翻訳プロジェクトですが、無事翻訳をリリースできました。</p>
+
+<ul>
+<li><a href="http://openid-foundation-japan.github.io/draft-ietf-oauth-json-web-token-11.ja.html">JSON Web Token (JWT)</a></li>
+<li><a href="http://openid-foundation-japan.github.io/draft-ietf-jose-json-web-signature-14.ja.html">JSON Web Signature (JWS)</a></li>
+<li><a href="http://openid-foundation-japan.github.io/draft-ietf-jose-use-cases-03.ja.html">JOSE UseCases</a></li>
+</ul>
+
+
+<p>OpenID TechNight Vol.10 ではこれらの仕様の概要説明も行いましたので、そこでのスライドもここに挙げておきます。
+(なぜかいま現在僕の環境ではこちら404 Not Foundになってしまいますが&hellip;)</p>
+
+<ul>
+<li><a href="http://slideshare.net/matake/jwt-trans">JWT &amp; JOSE 翻訳</a></li>
+</ul>
+
+
+<p>引き続き JSON Web Encryption (JWE) および OAuth2 JWT Bearer Token Profile も翻訳予定です。(スケジュール未定)
+翻訳にご協力いただける方は、<a href="http://twitter.com/nov">@nov</a> まで :)</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[エンプラグレード OAuth 2.0]]></title>
@@ -938,26 +965,6 @@ For some reason, this demo works only on Safari.
 
 <p>ps.
 webintents.orgのJSの問題なのか、なぜかSafariでしか動きません。</p>
-
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[The AS->RS work is probably simpler and more useful at this point.]]></title>
-    <link href="http://oauthjp.github.io/blog/2012/03/16/the-as-rs-work-is-probably-simpler-and-more/"/>
-    <updated>2012-03-16T00:00:00+09:00</updated>
-    <id>http://oauthjp.github.io/blog/2012/03/16/the-as-rs-work-is-probably-simpler-and-more</id>
-    <content type="html"><![CDATA[<blockquote><pre>The AS-&gt;RS work is probably simpler and more useful at this point.</pre></blockquote>
-
-
-<p>&#8212;<p><a href="https://www.ietf.org/mail-archive/web/oauth/current/msg08620.html">Re: [OAUTH-WG] OAuth WG Re-Chartering</a></p></p>
-
-<p>リソースサーバーと認可サーバーとの間のトークン検証のやりとりの仕様策定が、今後の OAuth WG のお題に入りそうな感じ</p>
-
-
-
-
-<p>(via <a href="http://tkudo.tumblr.com/" class="tumblr_blog">tkudo</a>)</p>
 
 ]]></content>
   </entry>

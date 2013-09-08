@@ -6,7 +6,7 @@
 	<title>OAuth.jp</title>
     <meta name="author" content="Nov Matake">
     
-	<meta name="description" content="Published on: Aug 30th, 2013 Tags: エンプラ、よく分かりません。 エンプラグレード、逆に不安です。 と、まぁそんな内輪ネタはさておき、最近はエンプラで OAuth 2.0 使う事例も増えてるようです。 Google Apps とか導入してたら、OAuth 2.0 &hellip;">
+	<meta name="description" content="Published on: Sep 8th, 2013 Tags: 先日 JWT &amp; JWS 翻訳プロジェクトスタート &amp; イベント紹介 でお伝えした JWT &amp; JWS 翻訳プロジェクトですが、無事翻訳をリリースできました。 JSON Web Token (JWT) &hellip;">
 	
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
@@ -85,6 +85,62 @@
 <!-- begin toload --> 
     <div id="content" class="inner">
         
+
+
+    <article class="post">
+	<h2 class="title">
+		
+		<a href="/blog/2013/09/08/jwt-jws-trans-phase1-released/">
+		
+			JWT & JWS 翻訳第一弾リリース</a>
+	</h2>
+    <div class="entry-content">
+    <div class="meta">
+      <div class="date">Published on: 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-09-08T15:30:00+09:00" pubdate data-updated="true">Sep 8<span>th</span>, 2013</time></div>
+      <div class="tags">Tags: 
+
+</div>
+    </div>
+		<p>先日 <a href="/blog/2013/08/17/jwt-jws-trans/">JWT &amp; JWS 翻訳プロジェクトスタート &amp; イベント紹介</a> でお伝えした JWT &amp; JWS 翻訳プロジェクトですが、無事翻訳をリリースできました。</p>
+
+<ul>
+<li><a href="http://openid-foundation-japan.github.io/draft-ietf-oauth-json-web-token-11.ja.html">JSON Web Token (JWT)</a></li>
+<li><a href="http://openid-foundation-japan.github.io/draft-ietf-jose-json-web-signature-14.ja.html">JSON Web Signature (JWS)</a></li>
+<li><a href="http://openid-foundation-japan.github.io/draft-ietf-jose-use-cases-03.ja.html">JOSE UseCases</a></li>
+</ul>
+
+
+<p>OpenID TechNight Vol.10 ではこれらの仕様の概要説明も行いましたので、そこでのスライドもここに挙げておきます。
+(なぜかいま現在僕の環境ではこちら404 Not Foundになってしまいますが&hellip;)</p>
+
+<ul>
+<li><a href="http://slideshare.net/matake/jwt-trans">JWT &amp; JOSE 翻訳</a></li>
+</ul>
+
+
+<p>引き続き JSON Web Encryption (JWE) および OAuth2 JWT Bearer Token Profile も翻訳予定です。(スケジュール未定)
+翻訳にご協力いただける方は、<a href="http://twitter.com/nov">@nov</a> まで :)</p>
+
+		
+		
+	</div>
+
+<div class="meta">
+	
+</div>
+</article>
 
 
     <article class="post">
@@ -284,93 +340,6 @@
 
 
 <p>というわけで、Login with Amazon、ドキュメント通り実装すれば安全です :)</p>
-
-
-		
-		
-	</div>
-
-<div class="meta">
-	
-</div>
-</article>
-
-
-    <article class="post">
-	<h2 class="title">
-		
-		<a href="/blog/2013/05/30/login-with-amazon/">
-		
-			Login With Amazonを使うと、あなたのサイトのユーザーがアカウントハイジャックされる。</a>
-	</h2>
-    <div class="entry-content">
-    <div class="meta">
-      <div class="date">Published on: 
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-05-30T00:00:00+09:00" pubdate data-updated="true">May 30<span>th</span>, 2013</time></div>
-      <div class="tags">Tags: 
-
-</div>
-    </div>
-		<p>Amazon が、<a href="http://login.amazon.com">Login with Amazon</a> というAPIおよびそれに付随する JS / iOS / Android SDKs を出してきました。</p>
-
-
-<p>以下の記事にあるように、OAuth 2.0 ベースで認証連携を行う仕組みです。</p>
-
-
-<p><a href="http://itpro.nikkeibp.co.jp/article/NEWS/20130530/480782/">Amazonアカウントでアプリやサイトにログイン、「Login with Amazon」を提供開始：ITpro</a></p>
-
-
-<p>しかし、この Login with Amazon、まさに僕が以前以下の記事で紹介した「Facebook ID でログイン」の間違った実装方法を、公式ドキュメントで推奨してしまっています。</p>
-
-
-<p><a href="http://www.atmarkit.co.jp/ait/articles/1209/10/news105_2.html">デジタル・アイデンティティ技術最新動向（2）：RFCとなった「OAuth 2.0」――その要点は？ (2/2) - ＠IT</a></p>
-
-
-<p>この Amazon のドキュメントを読んで (or 「Facebook ID でログイン」を実装した経験を元に) Login with Amazon を自身の Web Site や iOS / Android アプリに導入すると、まず確実にあなたのサイト / アプリのアカウントがハイジャックされるような脆弱性を生むことになります。</p>
-
-
-<p>@IT の記事からのリンクは OAuth.jp の Posterous -&gt; Tumblr 移行に伴いリンク切れになってしまっているので、ここにも OAuth 2.0 Implicit Flow を認証連携に使うことの危険性を説明するエントリーをリンクしておきます。</p>
-
-
-<p><a href="/blog/2012/02/08/ios-sdk">&#8220;なんちゃら iOS SDK&#8221; でありそうな被害例</a></p>
-
-
-<p>Facebook の場合は、上の記事にあるような response_type=code+token を iOS / Android アプリでは使えないので、以下の記事末尾にあるような対処法も用意されています。</p>
-
-
-<p><a href="/blog/2012/02/07/oauth-20-implicit-flow">「OAuth 2.0 (Implicit Flow) でログイン」の被害例</a></p>
-
-
-<p>が、ざっと Login with Amazon のドキュメントを読んだ限り、そのような対処法が一切用意されていない。</p>
-
-
-<p>これはもう、Login with Amazon を導入した時点で、Amazon 側の対応無しではあなたのサイト / サービスの脆弱性を止めることができないということです。</p>
-
-
-<p>既に一部有識者より Amazon 側に連絡が行っているようなので、さすがにこのまま Amazon が何の対応も取らないということは考えにくいですが、Amazon が何らかのアップデートを出してくるまで、Login with Amazon を使ってはいけません。</p>
-
-
-<p>ご注意を。</p>
-
-
-<p>[追記 2013.06.04]</p>
-
-
-<p>Login with Amazon の問題点、解決されました。詳しくは以下の記事を。</p>
-
-
-<p><a href="/blog/2013/06/04/login-with-amazon">Login with Amazon、もう使っても大丈夫！</a></p>
 
 
 		
