@@ -4,7 +4,7 @@
   <title><![CDATA[OAuth.jp]]></title>
   <link href="http://oauthjp.github.io/atom.xml" rel="self"/>
   <link href="http://oauthjp.github.io/"/>
-  <updated>2013-10-25T16:49:03+09:00</updated>
+  <updated>2014-01-30T15:27:58+09:00</updated>
   <id>http://oauthjp.github.io/</id>
   <author>
     <name><![CDATA[Nov Matake]]></name>
@@ -12,6 +12,196 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Y!J API が止まった日 - GlobalSign の Root 証明書切れから学んだこと]]></title>
+    <link href="http://oauthjp.github.io/blog/2014/01/30/globalsign-root-cert-expired/"/>
+    <updated>2014-01-30T11:28:00+09:00</updated>
+    <id>http://oauthjp.github.io/blog/2014/01/30/globalsign-root-cert-expired</id>
+    <content type="html"><![CDATA[<p>昨日あたりから、Yahoo! Wallet や YConnect といった、Yahoo! Japan の API にアクセスできなくなったって人、ちらほらいるかもしれませんね。</p>
+
+<p>僕もちょっとそういうケース見かけました。</p>
+
+<p>なんか Yahoo! Japan がポカしちゃったの？とか、まぁ昨日まで健康に動いてたシステムが突然 Yahoo! Japan の API にアクセスできなくなっちゃったんだし、そらそう思うのもムリはない。</p>
+
+<p><strong>が、今回のケース、Yahoo! は全く悪くない！<br>プライバシーフリークはどうかと思うがな！！</strong></p>
+
+<p>では早速、今回起こったことを、振り返ってみましょう。</p>
+
+<h3>Yahoo! API にアクセスできなくなった</h3>
+
+<p>Yahoo! Japan は、<b>yahoo.co.jp</b> 以外にも、CDN 用や API 用など、用途ごとにいくつかのドメインを持ってます。
+今回止まったのは、その中の API 用の <b>*.yahooapis.jp</b> というドメイン。</p>
+
+<p>Yahoo! Wallet はよく知らないけど、YConnect だと <b>userinfo.yahooapis.jp</b> っていうドメインがあって、そこにアクセスできなくなった。</p>
+
+<p>ただし、API サーバーが止まったとかそういうのではなく、API にリクエスト投げる側での、SSL エラーによって。</p>
+
+<!-- more -->
+
+
+<h3>どんな SSL エラーが起こっていたのか？</h3>
+
+<script src="https://gist.github.com/nov/8702799.js"></script>
+
+
+<p>うん&hellip;なんかエラーでてるね！w</p>
+
+<p><code>SSL certificate problem, verify that the CA cert is OK.</code> ですって！</p>
+
+<p>でもぶっちゃけこれでどこが悪いかとか、何すればいいのかとか、サッパリですよね！</p>
+
+<p>SSL まわりのエラー、たいていいつもそんな感じですよね。</p>
+
+<p>そんなとき、来ました！Yahoo! Japan Tech Blog！</p>
+
+<p><a href="http://techblog.yahoo.co.jp/maintenance/4/">WebAPIやOpenIDでSSLエラーが起きる現象につきまして &ndash; Yahoo! JAPAN Tech Blog</a></p>
+
+<h3>GlobalSign の Root 証明書が、期限切れ！？</h3>
+
+<p>Yahoo! Japan Tech Blog 読んで問題理解できる人どれくらいいるのかはよくわかりませんが、まぁ結論としては、リクエスト元のマシンに bundle されてる GlobalSign の Root 証明書が古かったと。</p>
+
+<p>で、今回某マシン上にあった期限切れ GlobalSign Root 証明書が、これ。</p>
+
+<script src="https://gist.github.com/nov/8703001.js"></script>
+
+
+<p>僕の手元のマシンにある、最新 (といっても発行されたのはもう数年も前) の GlobalSign Root 証明書はこちら。</p>
+
+<script src="https://gist.github.com/nov/8702954.js"></script>
+
+
+<p>違いは &ldquo;<b>Not After : &hellip;</b>&rdquo; ってところ。</p>
+
+<p>ちなみにどちらの Root 証明書も、そこに含まれてる公開鍵自体は同じなので、こいつの対になってる秘密鍵も同じ。
+公開鍵が同じなのは、こんな感じで確認できる。</p>
+
+<script src="https://gist.github.com/nov/8699469.js"></script>
+
+
+<p>鍵ペア自体は同じなので、その秘密鍵で署名された証明書達 (GlobalSign の中間証明書達) はどちらの Root 証明書を使っても verify できるし、その中間証明書と紐づく秘密鍵で署名されている Yahoo! 等の事業者が持ってる証明書も、どちらの Root 証明書を使っても verify できる。</p>
+
+<p>というか、できていた。古い方が expire するまでは。</p>
+
+<p>もうちょっと細かい話をすると、例えば <b>userinfo.yahooapis.jp</b> の SSL 証明書を検証する場合だと、大雑把に言うと以下のようなフローになる。</p>
+
+<ol>
+<li><b>userinfo.yahooapis.jp</b> の証明書 (<b>*.yahooapis.jp</b> 向けマルチドメイン証明書) を取得</li>
+<li>1) の証明書が local にある信頼された証明書リストに含まれるかチェック => 通常は含まれてない</li>
+<li>1) の証明書を直接信頼することはできないので、1) の証明書の発行者を検証するため 1) の証明書から発行者情報取得</li>
+<li><b>*.yahooapis.jp</b> 証明書発行者の証明書を取得 (GlobalSign の中間証明書)</li>
+<li>4) の証明書が local にある信頼された証明書リストに含まれるかチェック => 通常は含まれてない</li>
+<li>4) の証明書を直接信頼することはできないので、4) の証明書の発行者を検証するため 4) の証明書から発行者情報取得</li>
+<li>GlobalSign 中間証明書発行者の証明書を取得 (GlobalSign Root 証明書)</li>
+<li>6) の証明書が local にある信頼された証明書リストに含まれるかチェック => <b>これは含まれてる！！</b></li>
+</ol>
+
+
+<p>で、7) の証明書が valid であれば、1) の証明書も valid になる。</p>
+
+<p>そして、7は valid だった。expire するまでは。</p>
+
+<p>でも、expire しちゃったんですね、このタイミングで。<br>
+<b>Not After : Jan 28 12:00:00 2014 GMT</b></p>
+
+<p>日本時間で、28日の夜9時。</p>
+
+<p>この時を境に、古い方の GlobalSign Root 証明書を持ってるマシンでは、*.yahooapis.jp はじめ GlobalSign 発行の SSL 証明書を持ってるいろんなサーバーにアクセスする際に、SSL エラーが発生しだしたんですね。</p>
+
+<p>&hellip;そらまぁ、Root 証明書 Expire してますし、エラーですよね&hellip;</p>
+
+<h3>何が起こっていて、何は起こっていなかったのか。</h3>
+
+<p>起こってたこと</p>
+
+<ul>
+<li>*.yahooapis.jp アクセス時の SSL エラー</li>
+<li>一部の古い OS 積んでるようなマシンに bundle されてる GlobalSign Root 証明書の期限切れ</li>
+</ul>
+
+
+<p>起こってなかったこと</p>
+
+<ul>
+<li>Yahoo! の API サーバーが止まった</li>
+<li>*.yahoo.co.jp アクセス時の SSL エラー</li>
+<li>Yahoo! Japan 側での SSL 証明書更新、設定変更</li>
+<li>その他なんらかの Yahoo! 側での異常</li>
+<li>OAuth 関連のエラー</li>
+</ul>
+
+
+<p>ようするに、あれだ。</p>
+
+<p><b>お前らいつまで Debian5 (とか CentOS5 とか) 使ってんだよ</b> と。</p>
+
+<p>まぁちゃんと Root 証明書リストとか必要に応じてアップデートできるんなら別だけど、ムリなんだったらやっぱ新しい OS 使おうぜ、と。</p>
+
+<h3>僕がやったこと</h3>
+
+<p>僕が手を下さないと行けなかったのは、たいしたサーバーじゃなかったし、さくっと <code>/etc/ssl/certs/GlobalSign_Root_CA.pem</code> を vi で書き換えるという荒技を使いましたよ。</p>
+
+<p>まさか Root 証明書を vi で書き換える日が来るなんてね。</p>
+
+<h3>得られた教訓</h3>
+
+<p>ぶっちゃけ、Root 証明書って Expire すんだな、ってしみじみ思いましたよ。</p>
+
+<p>落ち着いて考えると、そらまぁするんでしょうけども。</p>
+
+<p>あと GlobalSign、もちょっと期限切れ直前におっきな声でアラートあげてもいんじゃないかなぁ？</p>
+
+<p>今回の件は、厳密には Y!J も GlobalSign も悪くないし、ある意味天災的なもんかとも思いますが、でもこの件で GlobalSign から証明書買おうとする人は、一時的には減るよね。</p>
+
+<p>だって古い OS からはそのままだと SSL エラーでるようになっちゃったんだもの、GlobalSign 発行の証明書。</p>
+
+<p>他にも証明書発行業者が複数あるなかで、それは結構なビジネスリスクですよね。</p>
+
+<p>まぁどんなキャンペーンやればみんなが Debian5 &ndash;> Debian6 に上げるのか、アイデア無いですけども&hellip;</p>
+
+<br>
+
+
+<br>
+
+
+<br>
+
+
+<p>そして、もう一つ、僕らは重要なことを学んだ気がする。</p>
+
+<p><strong style="font-size: 2.5em">PKI、年取ったな。</strong></p>
+
+<br>
+
+
+<br>
+
+
+<br>
+
+
+<p>ps1.</p>
+
+<p>ちなみに、今後数年はメジャーな Root 証明書が Expire することなさげです。気づいたらその数年あっという間に過ぎてんでしょうけど。</p>
+
+<br>
+
+
+<br>
+
+
+<br>
+
+
+<p>ps2.</p>
+
+<p>タイトルの最初で言っといてなんですが、Yahoo! Japan の API は止まってません。
+Tech Blog といい、Yahoo! 側では何の問題も起こしてないのに、いろいろこまめに対応しててすばらしいなと思います！</p>
+
+<p><strong>プライバシーフリークはどうかと思うけどな！</strong></p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Ruby & PHP の JOSE 実装で JWE draft v17 に追いつきました]]></title>
@@ -961,18 +1151,6 @@ sessionをserver-sideで管理するようにさえすれば、この問題は�
 
 <p>Too long. Just use Charles.</p>
 
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Important: OAuth 1.0 has been officially deprecated as of April 20, 2012. It will continue to work as per our deprecation policy, but we encourage you to migrate to OAuth 2.0 as soon as possible.]]></title>
-    <link href="http://oauthjp.github.io/blog/2012/04/22/important-oauth-1-0-has-been-officially/"/>
-    <updated>2012-04-22T00:00:00+09:00</updated>
-    <id>http://oauthjp.github.io/blog/2012/04/22/important-oauth-1-0-has-been-officially</id>
-    <content type="html"><![CDATA[<blockquote>Important: OAuth 1.0 has been officially deprecated as of April 20, 2012. It will continue to work as per our deprecation policy, but we encourage you to migrate to OAuth 2.0 as soon as possible.</blockquote>
-
-
-<p>&#8212;<a href="https://developers.google.com/accounts/docs/OAuth">OAuth 1.0 for Web Applications &ndash; Google Accounts Authentication and Authorization — Google Developers</a></p>
 ]]></content>
   </entry>
   

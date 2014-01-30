@@ -1,0 +1,352 @@
+
+<!DOCTYPE HTML>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Y!J API が止まった日 - GlobalSign の Root 証明書切れから学んだこと - OAuth.jp</title>
+    <meta name="author" content="Nov Matake">
+    
+	<meta name="description" content="昨日あたりから、Yahoo! Wallet や YConnect といった、Yahoo! Japan の API にアクセスできなくなったって人、ちらほらいるかもしれませんね。 僕もちょっとそういうケース見かけました。 なんか Yahoo! Japan がポカしちゃったの？とか、 &hellip;">
+	
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+	<link href="/atom.xml" rel="alternate" title="OAuth.jp" type="application/atom+xml">
+	<link rel="canonical" href="">
+	<link href="/favicon.ico" rel="shortcut icon">
+    <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+
+    <link href='http://fonts.googleapis.com/css?family=Slackey' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Fjalla+One' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Amethysta' rel='stylesheet' type='text/css'>
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+    <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+
+    <script type="text/javascript" src="/javascripts/jquery-tapir.js"></script>
+
+    <!-- remove or comment it to disable ajaxification -->
+    <!-- <script src="/javascripts/ajaxify.js"></script> -->
+
+    
+    
+
+</head>
+
+
+<body>
+    <div id="wrapper">
+    <header id="header" class="inner"><!-- for more effects see _animate.scss -->
+<h1 class="animated bounceInDown">
+  <a href='/'>
+    <div id="headerbg">
+      OAuth.jp
+    </div>
+  </a>
+</h1>
+<br>
+
+<ul id="social-links" style="text-align:center">
+  
+  <!-- Facebook -->
+  <li>
+  <a href="http://www.facebook.com/oauth.jp" class="facebook" title="Facebook"></a>
+  </li>
+  
+  
+  <!-- Twitter -->
+  <li>
+  <a href="http://www.twitter.com/oauthjp" class="twitter" title="Twitter"></a>
+  </li>
+  
+  
+  <!-- GitHub -->
+  <li>
+  <a href="https://github.com/oauthjp" class="github" title="Github"></a>
+  </li>
+  
+  
+  
+  
+  
+  
+</ul>
+
+
+<!-- use full url including 'index.html' for navigation bar if you are using ajax -->
+<ul id="nav">
+  
+</ul>
+
+
+
+
+</header>
+
+<div id="toload">
+<!-- begin toload --> 
+    <div id="content" class="inner">
+        <article class="post">
+	<h2 class="title">Y!J API が止まった日 - GlobalSign の Root 証明書切れから学んだこと</h2>
+	<div class="entry-content"><p>昨日あたりから、Yahoo! Wallet や YConnect といった、Yahoo! Japan の API にアクセスできなくなったって人、ちらほらいるかもしれませんね。</p>
+
+<p>僕もちょっとそういうケース見かけました。</p>
+
+<p>なんか Yahoo! Japan がポカしちゃったの？とか、まぁ昨日まで健康に動いてたシステムが突然 Yahoo! Japan の API にアクセスできなくなっちゃったんだし、そらそう思うのもムリはない。</p>
+
+<p><strong>が、今回のケース、Yahoo! は全く悪くない！<br>プライバシーフリークはどうかと思うがな！！</strong></p>
+
+<p>では早速、今回起こったことを、振り返ってみましょう。</p>
+
+<h3>Yahoo! API にアクセスできなくなった</h3>
+
+<p>Yahoo! Japan は、<b>yahoo.co.jp</b> 以外にも、CDN 用や API 用など、用途ごとにいくつかのドメインを持ってます。
+今回止まったのは、その中の API 用の <b>*.yahooapis.jp</b> というドメイン。</p>
+
+<p>Yahoo! Wallet はよく知らないけど、YConnect だと <b>userinfo.yahooapis.jp</b> っていうドメインがあって、そこにアクセスできなくなった。</p>
+
+<p>ただし、API サーバーが止まったとかそういうのではなく、API にリクエスト投げる側での、SSL エラーによって。</p>
+
+<!-- more -->
+
+
+<h3>どんな SSL エラーが起こっていたのか？</h3>
+
+<script src="https://gist.github.com/nov/8702799.js"></script>
+
+
+<p>うん&hellip;なんかエラーでてるね！w</p>
+
+<p><code>SSL certificate problem, verify that the CA cert is OK.</code> ですって！</p>
+
+<p>でもぶっちゃけこれでどこが悪いかとか、何すればいいのかとか、サッパリですよね！</p>
+
+<p>SSL まわりのエラー、たいていいつもそんな感じですよね。</p>
+
+<p>そんなとき、来ました！Yahoo! Japan Tech Blog！</p>
+
+<p><a href="http://techblog.yahoo.co.jp/maintenance/4/">WebAPIやOpenIDでSSLエラーが起きる現象につきまして &ndash; Yahoo! JAPAN Tech Blog</a></p>
+
+<h3>GlobalSign の Root 証明書が、期限切れ！？</h3>
+
+<p>Yahoo! Japan Tech Blog 読んで問題理解できる人どれくらいいるのかはよくわかりませんが、まぁ結論としては、リクエスト元のマシンに bundle されてる GlobalSign の Root 証明書が古かったと。</p>
+
+<p>で、今回某マシン上にあった期限切れ GlobalSign Root 証明書が、これ。</p>
+
+<script src="https://gist.github.com/nov/8703001.js"></script>
+
+
+<p>僕の手元のマシンにある、最新 (といっても発行されたのはもう数年も前) の GlobalSign Root 証明書はこちら。</p>
+
+<script src="https://gist.github.com/nov/8702954.js"></script>
+
+
+<p>違いは &ldquo;<b>Not After : &hellip;</b>&rdquo; ってところ。</p>
+
+<p>ちなみにどちらの Root 証明書も、そこに含まれてる公開鍵自体は同じなので、こいつの対になってる秘密鍵も同じ。
+公開鍵が同じなのは、こんな感じで確認できる。</p>
+
+<script src="https://gist.github.com/nov/8699469.js"></script>
+
+
+<p>鍵ペア自体は同じなので、その秘密鍵で署名された証明書達 (GlobalSign の中間証明書達) はどちらの Root 証明書を使っても verify できるし、その中間証明書と紐づく秘密鍵で署名されている Yahoo! 等の事業者が持ってる証明書も、どちらの Root 証明書を使っても verify できる。</p>
+
+<p>というか、できていた。古い方が expire するまでは。</p>
+
+<p>もうちょっと細かい話をすると、例えば <b>userinfo.yahooapis.jp</b> の SSL 証明書を検証する場合だと、大雑把に言うと以下のようなフローになる。</p>
+
+<ol>
+<li><b>userinfo.yahooapis.jp</b> の証明書 (<b>*.yahooapis.jp</b> 向けマルチドメイン証明書) を取得</li>
+<li>1) の証明書が local にある信頼された証明書リストに含まれるかチェック => 通常は含まれてない</li>
+<li>1) の証明書を直接信頼することはできないので、1) の証明書の発行者を検証するため 1) の証明書から発行者情報取得</li>
+<li><b>*.yahooapis.jp</b> 証明書発行者の証明書を取得 (GlobalSign の中間証明書)</li>
+<li>4) の証明書が local にある信頼された証明書リストに含まれるかチェック => 通常は含まれてない</li>
+<li>4) の証明書を直接信頼することはできないので、4) の証明書の発行者を検証するため 4) の証明書から発行者情報取得</li>
+<li>GlobalSign 中間証明書発行者の証明書を取得 (GlobalSign Root 証明書)</li>
+<li>6) の証明書が local にある信頼された証明書リストに含まれるかチェック => <b>これは含まれてる！！</b></li>
+</ol>
+
+
+<p>で、7) の証明書が valid であれば、1) の証明書も valid になる。</p>
+
+<p>そして、7は valid だった。expire するまでは。</p>
+
+<p>でも、expire しちゃったんですね、このタイミングで。<br>
+<b>Not After : Jan 28 12:00:00 2014 GMT</b></p>
+
+<p>日本時間で、28日の夜9時。</p>
+
+<p>この時を境に、古い方の GlobalSign Root 証明書を持ってるマシンでは、*.yahooapis.jp はじめ GlobalSign 発行の SSL 証明書を持ってるいろんなサーバーにアクセスする際に、SSL エラーが発生しだしたんですね。</p>
+
+<p>&hellip;そらまぁ、Root 証明書 Expire してますし、エラーですよね&hellip;</p>
+
+<h3>何が起こっていて、何は起こっていなかったのか。</h3>
+
+<p>起こってたこと</p>
+
+<ul>
+<li>*.yahooapis.jp アクセス時の SSL エラー</li>
+<li>一部の古い OS 積んでるようなマシンに bundle されてる GlobalSign Root 証明書の期限切れ</li>
+</ul>
+
+
+<p>起こってなかったこと</p>
+
+<ul>
+<li>Yahoo! の API サーバーが止まった</li>
+<li>*.yahoo.co.jp アクセス時の SSL エラー</li>
+<li>Yahoo! Japan 側での SSL 証明書更新、設定変更</li>
+<li>その他なんらかの Yahoo! 側での異常</li>
+<li>OAuth 関連のエラー</li>
+</ul>
+
+
+<p>ようするに、あれだ。</p>
+
+<p><b>お前らいつまで Debian5 (とか CentOS5 とか) 使ってんだよ</b> と。</p>
+
+<p>まぁちゃんと Root 証明書リストとか必要に応じてアップデートできるんなら別だけど、ムリなんだったらやっぱ新しい OS 使おうぜ、と。</p>
+
+<h3>僕がやったこと</h3>
+
+<p>僕が手を下さないと行けなかったのは、たいしたサーバーじゃなかったし、さくっと <code>/etc/ssl/certs/GlobalSign_Root_CA.pem</code> を vi で書き換えるという荒技を使いましたよ。</p>
+
+<p>まさか Root 証明書を vi で書き換える日が来るなんてね。</p>
+
+<h3>得られた教訓</h3>
+
+<p>ぶっちゃけ、Root 証明書って Expire すんだな、ってしみじみ思いましたよ。</p>
+
+<p>落ち着いて考えると、そらまぁするんでしょうけども。</p>
+
+<p>あと GlobalSign、もちょっと期限切れ直前におっきな声でアラートあげてもいんじゃないかなぁ？</p>
+
+<p>今回の件は、厳密には Y!J も GlobalSign も悪くないし、ある意味天災的なもんかとも思いますが、でもこの件で GlobalSign から証明書買おうとする人は、一時的には減るよね。</p>
+
+<p>だって古い OS からはそのままだと SSL エラーでるようになっちゃったんだもの、GlobalSign 発行の証明書。</p>
+
+<p>他にも証明書発行業者が複数あるなかで、それは結構なビジネスリスクですよね。</p>
+
+<p>まぁどんなキャンペーンやればみんなが Debian5 &ndash;> Debian6 に上げるのか、アイデア無いですけども&hellip;</p>
+
+<br>
+
+
+<br>
+
+
+<br>
+
+
+<p>そして、もう一つ、僕らは重要なことを学んだ気がする。</p>
+
+<p><strong style="font-size: 2.5em">PKI、年取ったな。</strong></p>
+
+<br>
+
+
+<br>
+
+
+<br>
+
+
+<p>ps1.</p>
+
+<p>ちなみに、今後数年はメジャーな Root 証明書が Expire することなさげです。気づいたらその数年あっという間に過ぎてんでしょうけど。</p>
+
+<br>
+
+
+<br>
+
+
+<br>
+
+
+<p>ps2.</p>
+
+<p>タイトルの最初で言っといてなんですが、Yahoo! Japan の API は止まってません。
+Tech Blog といい、Yahoo! 側では何の問題も起こしてないのに、いろいろこまめに対応しててすばらしいなと思います！</p>
+
+<p><strong>プライバシーフリークはどうかと思うけどな！</strong></p>
+</div>
+
+<div class="meta">
+	
+</div>
+</article>
+
+	<div class="share">
+	<div class="addthis_toolbox addthis_default_style ">
+	
+	<a class="addthis_button_facebook_like" fb:like:layout="button_count"></a>
+	
+	
+	<a class="addthis_button_tweet"></a>
+	
+	
+	<a class="addthis_button_google_plusone" g:plusone:size="medium"></a>
+	
+	</div>
+  <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid="></script>
+</div>
+
+
+
+<section id="comment">
+    <h2 class="title">Comments</h2>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+</section>
+
+    </div>
+    <footer id="footer">
+    <div style="display:inline">
+    Copyright &copy; 2014
+
+    Nov Matake
+. Powered by <a href="http://octopress.org">Octopress</a> | 
+    Theme <a href="http://github.com/panks/fabric">fabric</a> by <a href="http://panks.me">Pankaj Kumar</a>
+</div>
+
+
+    </footer>
+    <script src="/javascripts/fabric.js"></script>
+<script src="/javascripts/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+	$('.fancybox').fancybox();
+})(jQuery);
+</script> <!-- Delete or comment this line to disable Fancybox -->
+
+
+<script type="text/javascript">
+      var disqus_shortname = 'oauthjp';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://oauthjp.github.io/blog/2014/01/30/globalsign-root-cert-expired/';
+        var disqus_url = 'http://oauthjp.github.io/blog/2014/01/30/globalsign-root-cert-expired/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+<!-- end toload --> 
+</div>
+</div>
+<script src="/javascripts/jquery.ui.totop.js" type="text/javascript"></script>
+<script type="text/javascript">
+/*<![CDATA[*/
+;(function($){$().UItoTop({easingType:'easeOutCirc'});})(jQuery); 
+/*]]>*/
+</script><!-- remove it to remove the scroll to top button -->
+</body>
+</html>

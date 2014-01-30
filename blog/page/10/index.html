@@ -6,7 +6,7 @@
 	<title>OAuth.jp</title>
     <meta name="author" content="Nov Matake">
     
-	<meta name="description" content="Published on: Apr 21st, 2011 Tags: @nov です。 先日 @ritou が「OAuth 2.0 MAC Tokenを使った署名付きリクエストの作り方」という記事を書いてたので、それを参考に Rack::OAuth2 でも MAC サポートを追加しました。 &hellip;">
+	<meta name="description" content="Published on: Aug 15th, 2011 Tags: OpenID Connect の OP &amp; RP 用の RubyGem をリリースしました。 https://github.com/nov/openid_connect 同時にサンプル OP サイトも公開しました。 &hellip;">
 	
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
@@ -85,6 +85,66 @@
 <!-- begin toload --> 
     <div id="content" class="inner">
         
+
+
+    <article class="post">
+	<h2 class="title">
+		
+		<a href="/blog/2011/08/15/openid-connect-rubygem/">
+		
+			OpenID Connect RubyGem リリース</a>
+	</h2>
+    <div class="entry-content">
+    <div class="meta">
+      <div class="date">Published on: 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-08-15T00:00:00+09:00" pubdate data-updated="true">Aug 15<span>th</span>, 2011</time></div>
+      <div class="tags">Tags: 
+
+</div>
+    </div>
+		<p>OpenID Connect の OP &amp; RP 用の RubyGem をリリースしました。</p>
+
+<p><a href="https://github.com/nov/openid_connect">https://github.com/nov/openid_connect</a></p>
+
+<p>同時にサンプル OP サイトも公開しました。</p>
+
+<p>サイト: <a href="https://openid-connect.herokuapp.com/">https://openid-connect.herokuapp.com/</a></p>
+
+<p>ソース: <a href="https://github.com/nov/openid_connect_sample">https://github.com/nov/openid_connect_sample</a></p>
+
+<p>サンプルサイトに Facebook / Google ID でログインすると、まず OAuth Client の登録を要求されます。
+OAuth Client を登録すると、以下の様に各 response_type ごとの Authorization Flow を開始するボタンが表示されます。</p>
+
+<p>とりあえず OpenID Connect の UserInfo Endpoint にアクセスしたい場合は、token を選ぶのが一番手っ取り早いでしょう。
+Access Token を取得したら、以下のように UserInfo Endpoint にアクセスしてみてください。</p>
+
+<p><a href="https://openid-connect.herokuapp.com/user_info?access_token=YOUR_TOKEN">https://openid-connect.herokuapp.com/user_info?access_token=YOUR_TOKEN</a></p>
+
+<p>こんな感じで JSON レスポンスが返ってくるはずです。</p>
+
+<p>仕様の詳細はまだ把握しきれてないけど、とりあえず OpenID TechNight in Kansai にサンプル間に合った！
+今後も 12/1 の OpenID Summit in Tokyo に向けて、徐々に機能追加していきます。
+pull request 大歓迎♪</p>
+
+		
+		
+	</div>
+
+<div class="meta">
+	
+</div>
+</article>
 
 
     <article class="post">
@@ -328,56 +388,6 @@
 </div>
 </article>
 
-
-    <article class="post">
-	<h2 class="title">
-		
-		<a href="/blog/2010/12/15/oauth/">
-		
-			はてなのOAuthをさっそく使ってみました</a>
-	</h2>
-    <div class="entry-content">
-    <div class="meta">
-      <div class="date">Published on: 
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2010-12-15T00:00:00+09:00" pubdate data-updated="true">Dec 15<span>th</span>, 2010</time></div>
-      <div class="tags">Tags: 
-
-</div>
-    </div>
-		<p>こんばんは、ritouです。 </p>
-
-
-<p> はてなのOAuthですが、OAuth 1.0aに対応しているようです。 <br/>アプリケーション登録から動作確認まで試してみましたので、他の開発者のみな <br/>さんも是非トライしてみてはいかがでしょうか？ <p></p> はてなのAPIがOAuth対応したというので、早速試してみた！ <br/><a href="http://d.hatena.ne.jp/ritou/20101215/1292347014"><a href="http://d.hatena.ne.jp/ritou/20101215/1292347014"><a href="http://d.hatena.ne.jp/ritou/20101215/1292347014">http://d.hatena.ne.jp/ritou/20101215/1292347014</a></a></a></p>
-
-<p>追記 (by @nov)</p>
-
-
-<p>Hatena OAuth Ruby Sample</p>
-
-
-<p><a href="https://gist.github.com/741666"><a href="https://gist.github.com/741666">https://gist.github.com/741666</a></a></p>
-
-
-		
-		
-	</div>
-
-<div class="meta">
-	
-</div>
-</article>
-
 <nav id="pagenavi">
     
         <a href="/blog/page/9/" class="prev">Prev</a>
@@ -391,7 +401,7 @@
     </div>
     <footer id="footer">
     <div style="display:inline">
-    Copyright &copy; 2013
+    Copyright &copy; 2014
 
     Nov Matake
 . Powered by <a href="http://octopress.org">Octopress</a> | 
