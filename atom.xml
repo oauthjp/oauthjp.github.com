@@ -4,7 +4,7 @@
   <title><![CDATA[OAuth.jp]]></title>
   <link href="http://oauthjp.github.io/atom.xml" rel="self"/>
   <link href="http://oauthjp.github.io/"/>
-  <updated>2014-05-07T20:14:55+09:00</updated>
+  <updated>2014-05-07T20:16:30+09:00</updated>
   <id>http://oauthjp.github.io/</id>
   <author>
     <name><![CDATA[Nov Matake]]></name>
@@ -40,7 +40,7 @@
 
 <p>GREE のサーバーには <strong>#foobar</strong> の部分は送られませんが、games.gree.net/welcome という <strong>Endpoint 上の JS からは、#foobar</strong> にアクセスできます。</p>
 
-<p>なので、Covert Redirect のケースでも、open redirector をつかって最終的に被害者がリダイレクトしてくる endpoint に攻撃者が JS を仕込んでそれを自分のサーバーにでも送るようにしておけば、access token が漏洩します。</p>
+<p>なので、Covert Redirect のケースでも、open redirector をつかって最終的に被害者がリダイレクトしてくる endpoint に攻撃者が JS を仕込んでそれを自分のサーバーにでも送るようにしておけば、<strong>access token が漏洩します</strong>。</p>
 
 <p>もちろん<a href="http://oauthjp.github.io/blog/2014/05/07/covert-redirect">先ほどの記事にあるように</a>、Authorization Code が漏洩するケースもありますが、open redirector の実装詳細に依存しない分、Implicit Flow において fragment に含まれる access token が漏洩する方が可能性としては高いでしょう。</p>
 
@@ -51,7 +51,7 @@
 
 <p><a href="http://weblog.bulknews.net/post/85008516879/covert-redirect-vulnerability-with-oauth-2">宮川さんが記事</a>にもあるように、<a href="http://tools.ietf.org/html/rfc6819">RFC6819 &ndash; OAuth 2.0 Threat Model and Security Considerations</a> の Section 4.2.4, 5.2.3.5 あたりにはこの問題が指摘されています。(<a href="http://openid-foundation-japan.github.io/rfc6819.ja.html#implicit_flow">RFC6819 翻訳版はこちら</a>)</p>
 
-<p>OpenID Connect では、そもそも redirect_uri の部分一致を認めていません。(<a href="http://openid.net/specs/openid-connect-core-1_0.html">Core</a> Section 3.2.2.1 参照, <a href="http://openid-foundation-japan.github.io/openid-connect-core-1_0.ja.html">日本語版はこちら</a>)</p>
+<p>OpenID Connect では、<strong>そもそも redirect_uri の部分一致を認めていません</strong>。(<a href="http://openid.net/specs/openid-connect-core-1_0.html">Core</a> Section 3.2.2.1 参照, <a href="http://openid-foundation-japan.github.io/openid-connect-core-1_0.ja.html">日本語版はこちら</a>)</p>
 
 <p>OAuth 1.0 では Refresh Token Secret が漏れない限り Access Token が Covert Redirect 経由で漏洩することは無いですし、OpenID 2.0 でも RP Discovery というのをきちんとやっていれば、redirect_uri の exact match 相当のことができます。</p>
 

@@ -135,7 +135,7 @@
 
 <p>GREE のサーバーには <strong>#foobar</strong> の部分は送られませんが、games.gree.net/welcome という <strong>Endpoint 上の JS からは、#foobar</strong> にアクセスできます。</p>
 
-<p>なので、Covert Redirect のケースでも、open redirector をつかって最終的に被害者がリダイレクトしてくる endpoint に攻撃者が JS を仕込んでそれを自分のサーバーにでも送るようにしておけば、access token が漏洩します。</p>
+<p>なので、Covert Redirect のケースでも、open redirector をつかって最終的に被害者がリダイレクトしてくる endpoint に攻撃者が JS を仕込んでそれを自分のサーバーにでも送るようにしておけば、<strong>access token が漏洩します</strong>。</p>
 
 <p>もちろん<a href="/blog/2014/05/07/covert-redirect">先ほどの記事にあるように</a>、Authorization Code が漏洩するケースもありますが、open redirector の実装詳細に依存しない分、Implicit Flow において fragment に含まれる access token が漏洩する方が可能性としては高いでしょう。</p>
 
