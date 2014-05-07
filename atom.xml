@@ -4,7 +4,7 @@
   <title><![CDATA[OAuth.jp]]></title>
   <link href="http://oauthjp.github.io/atom.xml" rel="self"/>
   <link href="http://oauthjp.github.io/"/>
-  <updated>2014-05-07T20:10:33+09:00</updated>
+  <updated>2014-05-07T20:12:36+09:00</updated>
   <id>http://oauthjp.github.io/</id>
   <author>
     <name><![CDATA[Nov Matake]]></name>
@@ -26,7 +26,7 @@
 
 <p>で、訂正分だけ以下に。</p>
 
-<h3>Fragment in Redirect</h3>
+<h3>Fragment Handling in Redirect</h3>
 
 <p><a href="http://weblog.bulknews.net/post/85008516879/covert-redirect-vulnerability-with-oauth-2">宮川さんが記事にしてますね</a>。</p>
 
