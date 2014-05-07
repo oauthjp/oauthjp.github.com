@@ -4,7 +4,7 @@
   <title><![CDATA[OAuth.jp]]></title>
   <link href="http://oauthjp.github.io/atom.xml" rel="self"/>
   <link href="http://oauthjp.github.io/"/>
-  <updated>2014-01-30T15:27:58+09:00</updated>
+  <updated>2014-05-07T16:51:19+09:00</updated>
   <id>http://oauthjp.github.io/</id>
   <author>
     <name><![CDATA[Nov Matake]]></name>
@@ -12,6 +12,112 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[OAuth 2.0 の脆弱性 (!?) "Covert Redirect" とは]]></title>
+    <link href="http://oauthjp.github.io/blog/2014/05/07/covert-redirect/"/>
+    <updated>2014-05-07T13:53:00+09:00</updated>
+    <id>http://oauthjp.github.io/blog/2014/05/07/covert-redirect</id>
+    <content type="html"><![CDATA[<p>ゴールデンウィークまっただなかに Twitter で海外の ID 厨から袋だたきにあってたので、もうこの問題は片付いただろうとすっかり油断してた「Covert Redirect」の件ですが、日本でもゴールデンウィーク明けてバズりだしたので、一旦問題を整理した方がよさそうですね。</p>
+
+<h3>事の発端</h3>
+
+<p>Wang Jing さんていうシンガポールの大学院生が、<a href="http://tetraph.com/covert_redirect/oauth2_openid_covert_redirect.html">こんなサイト</a>を公開すると共に <a href="http://www.cnet.com/news/serious-security-flaw-in-oauth-and-openid-discovered/">CNet</a> はじめ各種メディアが取り上げたのが、バズりだした発端のようです。</p>
+
+<h3>前提知識</h3>
+
+<p>OAuth 2.0 や OpenID Connect だけでなく、OAuth 1.0 や OpenID 1.0/2.0 や SAML なんかでも、<strong>2つのサービスの間でリダイレクトを経由して</strong>、Access Token や ID Token などのいわゆる <strong>&ldquo;Security Token&rdquo; の授受</strong> が行われます。</p>
+
+<p>Covert Redirect の問題は本質的にはこれら全てに影響しますが、各仕様一個一個見て行くといろいろ疲れるので、ここでは OAuth 2.0 に絞って話をすすめましょう。</p>
+
+<p>OAuth 2.0 では、まず Client が End-User の UserAgent を Server の Authorization Endpoint というところにリダイレクトします。よく Twitter とか Facebook の ID で外部サービスにログインするとき、一度 Twitter や Facebook にリダイレクトして、同意画面表示されますよね？あれです。</p>
+
+<p><img src="https://fbcdn-dragon-a.akamaihd.net/hphotos-ak-prn1/t39.2178-6/851557_535801936465660_169463870_n.png" alt="FB の同意画面" /></p>
+
+<p>で、みなさん <s>何も考えず</s> 熟慮の結果、同意ボタンを押すじゃないですか。そして、元のサイト (= Client) に戻って来る、と。</p>
+
+<p>OAuth 愛好家の間で &ldquo;OAuth Dance&rdquo; なんて呼ばれてるアレですね。</p>
+
+<p>で、今回の話は、その <strong>&ldquo;OAuth Dance&rdquo; 中の話</strong> です。</p>
+
+<!-- more -->
+
+
+<h3>Covert Redirect てなんだ？</h3>
+
+<p>Server 側の同意画面で同意ボタンを押すと、Client にリダイレクトして戻って来る。</p>
+
+<p>そう、同意すると、元の Client に戻って来るんですよ。</p>
+
+<p>で、Client 側に open redirector があって、まさにその open redirector めがけて戻ってきちゃったりしたら、そらもう open に redirect する訳です。</p>
+
+<p>さらに悪いことに、open redirector の実装によっては、リダイレクト時に query に引っ付いてきたデータがそのリダイレクト先にまで渡っちゃうこともあるんです。</p>
+
+<p>渡された query パラメータを全てリダイレクト先にまで forward するような実装、ちょっと正気の沙汰とは思えないかもしれないけど、まぁそういうのは実際あるらしいですし。(ESPN ってサイトがそうらしい)</p>
+
+<p>こうして <strong>Client 側の open redirector が悪用</strong> されて、<strong>query についた Security Token が攻撃者に漏れちゃう</strong> っていうこれ、これが <strong>Covert Redirect</strong> なんです。</p>
+
+<h3>Redirect URI に open redirector !?</h3>
+
+<p>え？なんで redirect_uri に指定するエンドポイントに open redirector が存在すんだよ！って？</p>
+
+<p>えぇ、普通ありえないですよね。</p>
+
+<p>いくら open redirector だらけのザルサイトでも、さすがに redirect_uri に指定するエンドポイントくらいは&hellip;</p>
+
+<p><em>&hellip;いや、P言語ならありえなくもない気がしてきましたけど&hellip;</em></p>
+
+<p>でも Covert Redirect で想定されているケースでは、Client が本来指定する redirect_uri とは別の URL が、攻撃者によって redirect_uri に指定されるというのを想定してます。</p>
+
+<p>で、Server 側では、事前に登録済の redirect_uri と部分一致すれば OK にしちゃうケースが結構あるんです。(domain だけが一致すれば OK とか)</p>
+
+<p>この、<strong>Server 側の甘めの redirect_uri 検証</strong> と、<strong>Client 側が内包する open redirector</strong>、Covert Redirect はこの2つがうまいことくみ合わさって成立するんです。</p>
+
+<p>Server 側では、一度部分一致を許した実装が広く世の中につかわれだしてしまうと、そこの仕様を変更するのはなかなか大変なんで、いざ直そうと思っても数ヶ月から数年の政治的調整作業等が必要になっちゃうかもですね。</p>
+
+<h3>で、どれくらいヤバいの？</h3>
+
+<p>実際の影響については、OpenID Connect の仕様策定者の一人でもある <a href="http://www.thread-safe.com/2014/05/covert-redirect-and-its-real-impact-on.html">John Bradley さんが記事書いてる</a>ので、まぁそれを読んでください。</p>
+
+<p>ほんとはちゃんとこれ訳そうと思ったんですが、<a href="http://www.openid.or.jp/blog/2014/05/covert-redirect-and-its-real-impact-on-oauth-and-openid-connect.html">OpenID Foundation Japan から翻訳版</a>まで出たので、もういんじゃね？って空気を感じています。</p>
+
+<p><em>もういんじゃね？って空気を感じながらも、必死に記事を書いてる僕の心境、お察しください&hellip;</em></p>
+
+<p>で、まぁそんな僕の気持ちなんてスルーして翻訳版なり原文なりを要約すると、Covert Redirect によって <strong>access token 漏れるとか、そんな心配は無い</strong>ってことです。</p>
+
+<p>さらに言えば、<strong>それ別に新しい発見でも何でも無いし</strong>って。</p>
+
+<p><em>え？？漏れないの？？発見でもないの？？</em></p>
+
+<p><em>シンガポールウソばっかなの？？</em></p>
+
+<h3>ちょっとヤバいかも (?) なケース</h3>
+
+<p>ただ、Authorization Code が漏れることはあり得て、被害者の code を攻撃者が正規 Client に送りつけて来て、攻撃者の Client 上のアカウントと被害者の Server 上の access token が紐づいちゃう、なんてことはあり得なくはないですね。</p>
+
+<p>FB Login つかってるサイトでは、Client 上の既に FB と Connect 済の被害者のアカウントに、攻撃者がログインできちゃうかもしれないですね。</p>
+
+<p>ただこれは、各 Client が state パラメーターってのをつかって CSRF 対策することで防ぐことができます。</p>
+
+<p>state パラメータってのは&hellip;まぁ @ritou 先生のブログを読んでみてください。</p>
+
+<p><a href="http://d.hatena.ne.jp/ritou/20121008/1349695124">http://d.hatena.ne.jp/ritou/20121008/1349695124</a></p>
+
+<h3>結論</h3>
+
+<p>Covert Redirect によって <strong>access token 漏れるとか、そんな心配は無い</strong>。</p>
+
+<p>ただし悪用される open redirector の実装によっては、<strong>code は漏れることもあり得る</strong>。</p>
+
+<p>code が漏れて CSRF に脆弱な Client と組合わさると、被害者の code が本来紐づくべきでない攻撃者のアカウントと紐づいて、Client 側でアカウントが乗っ取られたりってことはあり得る。</p>
+
+<h3>対策</h3>
+
+<p>これから Server 作るときは、redirect_uri は事前登録必須 + 完全一致にしようね。</p>
+
+<p>(特に外部 ID ログイン目的で) OAuth 2.0 を利用する Client 作ってる人は、state パラメータちゃんとチェックしようね。</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Y!J API が止まった日 - GlobalSign の Root 証明書切れから学んだこと]]></title>
@@ -1135,21 +1241,6 @@ sessionをserver-sideで管理するようにさえすれば、この問題は�
 
 
 <p>ではでは！</p>
-
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Debugging OAuth2 SSL Connections]]></title>
-    <link href="http://oauthjp.github.io/blog/2012/05/04/debugging-oauth2-ssl-connections/"/>
-    <updated>2012-05-04T00:00:00+09:00</updated>
-    <id>http://oauthjp.github.io/blog/2012/05/04/debugging-oauth2-ssl-connections</id>
-    <content type="html"><![CDATA[<blockquote>Debugging OAuth2 SSL Connections</blockquote>
-
-
-<p>&#8212;<p><a href="http://ignisvulpis.blogspot.jp/2012/05/debugging-oauth2-ssl-connections.html?m=1"><a href="http://ignisvulpis.blogspot.jp/2012/05/debugging-oauth2-ssl-connections.html?m=1"><a href="http://ignisvulpis.blogspot.jp/2012/05/debugging-oauth2-ssl-connections.html?m=1">http://ignisvulpis.blogspot.jp/2012/05/debugging-oauth2-ssl-connections.html?m=1</a></a></a> (via <a href="http://eidentity.tumblr.com/" class="tumblr_blog">eidentity</a>)</p></p>
-
-<p>Too long. Just use Charles.</p>
 
 ]]></content>
   </entry>

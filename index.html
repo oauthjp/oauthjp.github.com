@@ -6,7 +6,7 @@
 	<title>OAuth.jp</title>
     <meta name="author" content="Nov Matake">
     
-	<meta name="description" content="Published on: Jan 30th, 2014 Tags: 昨日あたりから、Yahoo! Wallet や YConnect といった、Yahoo! Japan の API にアクセスできなくなったって人、ちらほらいるかもしれませんね。 僕もちょっとそういうケース見かけました。 なんか &hellip;">
+	<meta name="description" content="Published on: May 7th, 2014 Tags: ゴールデンウィークまっただなかに Twitter で海外の ID 厨から袋だたきにあってたので、もうこの問題は片付いただろうとすっかり油断してた「Covert Redirect」の件ですが、 &hellip;">
 	
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
@@ -85,6 +85,65 @@
 <!-- begin toload --> 
     <div id="content" class="inner">
         
+
+
+    <article class="post">
+	<h2 class="title">
+		
+		<a href="/blog/2014/05/07/covert-redirect/">
+		
+			OAuth 2.0 の脆弱性 (!?) &#8220;Covert Redirect&#8221; とは</a>
+	</h2>
+    <div class="entry-content">
+    <div class="meta">
+      <div class="date">Published on: 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-05-07T13:53:00+09:00" pubdate data-updated="true">May 7<span>th</span>, 2014</time></div>
+      <div class="tags">Tags: 
+
+</div>
+    </div>
+		<p>ゴールデンウィークまっただなかに Twitter で海外の ID 厨から袋だたきにあってたので、もうこの問題は片付いただろうとすっかり油断してた「Covert Redirect」の件ですが、日本でもゴールデンウィーク明けてバズりだしたので、一旦問題を整理した方がよさそうですね。</p>
+
+<h3>事の発端</h3>
+
+<p>Wang Jing さんていうシンガポールの大学院生が、<a href="http://tetraph.com/covert_redirect/oauth2_openid_covert_redirect.html">こんなサイト</a>を公開すると共に <a href="http://www.cnet.com/news/serious-security-flaw-in-oauth-and-openid-discovered/">CNet</a> はじめ各種メディアが取り上げたのが、バズりだした発端のようです。</p>
+
+<h3>前提知識</h3>
+
+<p>OAuth 2.0 や OpenID Connect だけでなく、OAuth 1.0 や OpenID 1.0/2.0 や SAML なんかでも、<strong>2つのサービスの間でリダイレクトを経由して</strong>、Access Token や ID Token などのいわゆる <strong>&ldquo;Security Token&rdquo; の授受</strong> が行われます。</p>
+
+<p>Covert Redirect の問題は本質的にはこれら全てに影響しますが、各仕様一個一個見て行くといろいろ疲れるので、ここでは OAuth 2.0 に絞って話をすすめましょう。</p>
+
+<p>OAuth 2.0 では、まず Client が End-User の UserAgent を Server の Authorization Endpoint というところにリダイレクトします。よく Twitter とか Facebook の ID で外部サービスにログインするとき、一度 Twitter や Facebook にリダイレクトして、同意画面表示されますよね？あれです。</p>
+
+<p><img src="https://fbcdn-dragon-a.akamaihd.net/hphotos-ak-prn1/t39.2178-6/851557_535801936465660_169463870_n.png" alt="FB の同意画面" /></p>
+
+<p>で、みなさん <s>何も考えず</s> 熟慮の結果、同意ボタンを押すじゃないですか。そして、元のサイト (= Client) に戻って来る、と。</p>
+
+<p>OAuth 愛好家の間で &ldquo;OAuth Dance&rdquo; なんて呼ばれてるアレですね。</p>
+
+<p>で、今回の話は、その <strong>&ldquo;OAuth Dance&rdquo; 中の話</strong> です。</p>
+
+
+		
+		<a href="/blog/2014/05/07/covert-redirect/" class="more-link">Read on &rarr;</a>
+	</div>
+
+<div class="meta">
+	
+</div>
+</article>
 
 
     <article class="post">
@@ -311,61 +370,6 @@ FBとかY!Jとかでやってる「パスワード変更したら既存のsessio
 
 		
 		
-	</div>
-
-<div class="meta">
-	
-</div>
-</article>
-
-
-    <article class="post">
-	<h2 class="title">
-		
-		<a href="/blog/2013/08/30/enterprise-grade-oauth2/">
-		
-			エンプラグレード OAuth 2.0</a>
-	</h2>
-    <div class="entry-content">
-    <div class="meta">
-      <div class="date">Published on: 
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-08-30T00:27:00+09:00" pubdate data-updated="true">Aug 30<span>th</span>, 2013</time></div>
-      <div class="tags">Tags: 
-
-</div>
-    </div>
-		<p>エンプラ、よく分かりません。</p>
-
-<p>エンプラグレード、逆に不安です。</p>
-
-<p>と、まぁそんな内輪ネタはさておき、最近はエンプラで OAuth 2.0 使う事例も増えてるようです。</p>
-
-<p>Google Apps とか導入してたら、OAuth 2.0 とか G+ Sign-in (= OpenID Connect) も使うでしょうし、そんな時にエンプラだと特定のアプリにだけ特定の API へのアクセスを許可したい、なんてこともあるんでしょう。</p>
-
-<p>で、今日それっぽい事例をちょっと見かけたので、response_type=code ってなってるとこを response_type=token に書き換えてやったんですが&hellip;</p>
-
-<p>しっかり access_token 取れて、自分で書いたスクリプトからも API アクセスできましたよ！</p>
-
-<p>特定アプリに限定したつもりでも、別に自分のアカウントと紐づいた access_token 取るだけなら client_secret いらなかったりするのは、当然っちゃ当然なのですが、これがエンプラの世界では許容されるのかされないのかがよく分かんないです。</p>
-
-<p>もし許容されないのだとしたら、特定のアプリに限定するってなら response_typ=code に限定するとかもしないとダメなんでしょうねぇ。</p>
-
-<p>と、Octopress に移行して断然ブログ書きやすくなったので、つらつら書いてみました。</p>
-
-
-		
-		<a href="/blog/2013/08/30/enterprise-grade-oauth2/" class="more-link">Read on &rarr;</a>
 	</div>
 
 <div class="meta">
