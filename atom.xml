@@ -4,7 +4,7 @@
   <title><![CDATA[OAuth.jp]]></title>
   <link href="http://oauthjp.github.io/atom.xml" rel="self"/>
   <link href="http://oauthjp.github.io/"/>
-  <updated>2014-05-07T18:54:04+09:00</updated>
+  <updated>2014-05-07T18:54:46+09:00</updated>
   <id>http://oauthjp.github.io/</id>
   <author>
     <name><![CDATA[Nov Matake]]></name>
@@ -55,12 +55,12 @@
 
 <p>OAuth 愛好家の間で &ldquo;OAuth Dance&rdquo; なんて呼ばれてるアレですね。</p>
 
-<p>で、今回の話は、その <strong>&ldquo;OAuth Dance&rdquo; 中の話</strong> です。</p>
+<p>で、今回の話は、その <strong>&ldquo;OAuth Dance&rdquo; 中の話</strong> です。</s></p>
 
 <!-- more -->
 
 
-<h3>Covert Redirect てなんだ？</h3>
+<p><s>### Covert Redirect てなんだ？</p>
 
 <p>Server 側の同意画面で同意ボタンを押すと、Client にリダイレクトして戻って来る。</p>
 
