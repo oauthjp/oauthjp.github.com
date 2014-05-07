@@ -6,7 +6,7 @@
 	<title>OAuth 2.0 の脆弱性 (!?) "Covert Redirect" とは - OAuth.jp</title>
     <meta name="author" content="Nov Matake">
     
-	<meta name="description" content="ゴールデンウィークまっただなかに Twitter で海外の ID 厨から袋だたきにあってたので、もうこの問題は片付いただろうとすっかり油断してた「Covert Redirect」の件ですが、日本でもゴールデンウィーク明けてバズりだしたので、一旦問題を整理した方がよさそうですね。 事の発端 Wang &hellip;">
+	<meta name="description" content="訂正 リダイレクト時の fragment の扱いを勘違いしていたため、本記事全体訂正します。 細かく訂正いれてると分けわかんなくなってきたんで、新しい記事書きました。 ゴールデンウィークまっただなかに Twitter で海外の ID 厨から袋だたきにあってたので、 &hellip;">
 	
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
@@ -86,7 +86,13 @@
     <div id="content" class="inner">
         <article class="post">
 	<h2 class="title">OAuth 2.0 の脆弱性 (!?) "Covert Redirect" とは</h2>
-	<div class="entry-content"><p>ゴールデンウィークまっただなかに Twitter で海外の ID 厨から袋だたきにあってたので、もうこの問題は片付いただろうとすっかり油断してた「Covert Redirect」の件ですが、日本でもゴールデンウィーク明けてバズりだしたので、一旦問題を整理した方がよさそうですね。</p>
+	<div class="entry-content"><h3>訂正</h3>
+
+<p>リダイレクト時の fragment の扱いを勘違いしていたため、本記事全体訂正します。</p>
+
+<p>細かく訂正いれてると分けわかんなくなってきたんで、<a href="#">新しい記事書きました</a>。</p>
+
+<p><s>ゴールデンウィークまっただなかに Twitter で海外の ID 厨から袋だたきにあってたので、もうこの問題は片付いただろうとすっかり油断してた「Covert Redirect」の件ですが、日本でもゴールデンウィーク明けてバズりだしたので、一旦問題を整理した方がよさそうですね。</p>
 
 <h3>事の発端</h3>
 
@@ -102,7 +108,7 @@
 
 <p><img src="https://fbcdn-dragon-a.akamaihd.net/hphotos-ak-prn1/t39.2178-6/851557_535801936465660_169463870_n.png" alt="FB の同意画面" /></p>
 
-<p>で、みなさん <s>何も考えず</s> 熟慮の結果、同意ボタンを押すじゃないですか。そして、元のサイト (= Client) に戻って来る、と。</p>
+<p>で、みなさん何も考えず熟慮の結果、同意ボタンを押すじゃないですか。そして、元のサイト (= Client) に戻って来る、と。</p>
 
 <p>OAuth 愛好家の間で &ldquo;OAuth Dance&rdquo; なんて呼ばれてるアレですね。</p>
 
@@ -187,7 +193,7 @@
 
 <p>以上、仕事に戻ります (>_&lt;)></p>
 
-<p><em>ほんとゴールデンウィーク明け初日から&hellip;</em></p>
+<p><em>ほんとゴールデンウィーク明け初日から&hellip;</em></s></p>
 </div>
 
 <div class="meta">
