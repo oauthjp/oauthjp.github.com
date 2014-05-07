@@ -4,7 +4,7 @@
   <title><![CDATA[OAuth.jp]]></title>
   <link href="http://oauthjp.github.io/atom.xml" rel="self"/>
   <link href="http://oauthjp.github.io/"/>
-  <updated>2014-05-07T20:12:36+09:00</updated>
+  <updated>2014-05-07T20:13:34+09:00</updated>
   <id>http://oauthjp.github.io/</id>
   <author>
     <name><![CDATA[Nov Matake]]></name>
@@ -32,13 +32,13 @@
 
 <p>英語だけど。</p>
 
-<p>で、まぁ要するに、(Modern Browser は) 30x リダイレクト時にリダイレクト元に付いてた URL fragment をリダイレクト先にも引っ付ける、と。</p>
+<p>で、まぁ要するに、(Modern Browser は) <strong>30x リダイレクト時にリダイレクト元に付いてた URL fragment をリダイレクト先にも引っ付ける</strong>、と。</p>
 
 <p>fragment は server-side には送られないけど、クライアントサイドではリダイレクト先に引き継がれる、と。</p>
 
 <p>試しに <a href="http://id.gree.net/#foobar">http://id.gree.net/#foobar</a> にアクセスすると、(未ログイン時は) リダイレクトを繰り返して <a href="http://games.gree.net/welcome#foobar">http://games.gree.net/welcome#foobar</a> にリダイレクトされるかと思います。</p>
 
-<p>GREE のサーバーには #foobar の部分は送られませんが、games.gree.net/welcome という Endpoint 上の JS からは、#foobar にアクセスできます。</p>
+<p>GREE のサーバーには <strong>#foobar</strong> の部分は送られませんが、games.gree.net/welcome という <strong>Endpoint 上の JS から</strong>は、<strong>#foobar</strong> にアクセスできます。</p>
 
 <p>なので、Covert Redirect のケースでも、open redirector をつかって最終的に被害者がリダイレクトしてくる endpoint に攻撃者が JS を仕込んでそれを自分のサーバーにでも送るようにしておけば、access token が漏洩します。</p>
 
