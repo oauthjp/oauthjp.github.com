@@ -100,13 +100,13 @@
 
 <p>英語だけど。</p>
 
-<p>で、まぁ要するに、(Modern Browser は) 30x リダイレクト時に<strong>リダイレクト元に付いてた URL fragment</strong> を<strong>リダイレクト先にも引っ付ける</strong>、と。</p>
+<p>で、まぁ要するに、(Modern Browser は) 30x リダイレクト時に<strong>リダイレクト元に付いてた URL fragment をリダイレクト先にも引っ付ける</strong>、と。</p>
 
 <p>fragment は server-side には送られないけど、クライアントサイドではリダイレクト先に引き継がれる、と。</p>
 
 <p>試しに <a href="http://id.gree.net/#foobar">http://id.gree.net/#foobar</a> にアクセスすると、(未ログイン時は) リダイレクトを繰り返して <a href="http://games.gree.net/welcome#foobar">http://games.gree.net/welcome#foobar</a> にリダイレクトされるかと思います。</p>
 
-<p>GREE のサーバーには <strong>#foobar</strong> の部分は送られませんが、games.gree.net/welcome という <strong>Endpoint 上の JS から</strong>は、<strong>#foobar</strong> にアクセスできます。</p>
+<p>GREE のサーバーには <strong>#foobar</strong> の部分は送られませんが、games.gree.net/welcome という <strong>Endpoint 上の JS からは、#foobar</strong> にアクセスできます。</p>
 
 <p>なので、Covert Redirect のケースでも、open redirector をつかって最終的に被害者がリダイレクトしてくる endpoint に攻撃者が JS を仕込んでそれを自分のサーバーにでも送るようにしておけば、access token が漏洩します。</p>
 
