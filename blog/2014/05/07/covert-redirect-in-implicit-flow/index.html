@@ -127,6 +127,14 @@
 
 <p>が、まずい実装は結構ある、というのが、<a href="http://tetraph.com/covert_redirect/oauth2_openid_covert_redirect.html">元記事</a>の Provider List が伝えたかったことなのでしょう。</p>
 
+<p>まぁ確かに redirect_uri の部分一致認めてる OAuth Server なんてそこら中にあるし、OpenID 2.0 に至っては RP Discovery 必須な OP ってどこよ？、みたいな状態ですし、OpenID Connect 実装って言っても完全に OpenID Connect の仕様に準拠してるかどうかあやしいですし&hellip;</p>
+
+<p>いや、Google の Connect 実装は exact match ですよ。</p>
+
+<p>Y!J もそう、なんじゃないかな。 => これは Y!J Developers Blog に期待。</p>
+
+<p>でも他は&hellip;特に元々 OAuth 2.0 実装済やったとこが後から OpenID Connect 対応したよ！とか言ってきたケースとかは&hellip;あやしいかもしれませんね。</p>
+
 <h3>攻撃パターン</h3>
 
 <p>攻撃者は、redirect_uri を Client 上に存在する open redirector の endpoint に書き換えたリンクを被害者に踏ませます。</p>
