@@ -4,7 +4,7 @@
   <title><![CDATA[OAuth.jp]]></title>
   <link href="http://oauthjp.github.io/atom.xml" rel="self"/>
   <link href="http://oauthjp.github.io/"/>
-  <updated>2014-05-07T18:50:44+09:00</updated>
+  <updated>2014-05-07T18:54:04+09:00</updated>
   <id>http://oauthjp.github.io/</id>
   <author>
     <name><![CDATA[Nov Matake]]></name>
@@ -14,7 +14,7 @@
 
   
   <entry>
-    <title type="html"><![CDATA[Implicit Flow では Covert Redirect で access token 漏れる]]></title>
+    <title type="html"><![CDATA[Implicit Flow では Covert Redirect で Token 漏れるね]]></title>
     <link href="http://oauthjp.github.io/blog/2014/05/07/covert-redirect-in-implicit-flow/"/>
     <updated>2014-05-07T18:41:00+09:00</updated>
     <id>http://oauthjp.github.io/blog/2014/05/07/covert-redirect-in-implicit-flow</id>
