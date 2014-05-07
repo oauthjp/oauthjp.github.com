@@ -129,11 +129,13 @@
 
 <p>まぁ確かに redirect_uri の部分一致認めてる OAuth Server なんてそこら中にあるし、OpenID 2.0 に至っては RP Discovery 必須な OP ってどこよ？、みたいな状態ですし、OpenID Connect 実装って言っても完全に OpenID Connect の仕様に準拠してるかどうかあやしいですし&hellip;</p>
 
-<p>いや、Google の Connect 実装は exact match ですよ。でも元記事見る限り、Google のは OpenID 2.0 実装が問題にされてますね。RP Discovery..なくていけたような気もするが遠い記憶が&hellip;</p>
+<p>いや、Google の Connect 実装は exact match ですよ。でも元記事見る限り、Google のは OpenID 2.0 実装が問題にされてますね。</p>
 
-<p>Y!J もそう、なんじゃないかな。 => これは Y!J Developers Blog に期待。</p>
+<p>Y!J の OpenID Connect も大丈夫、なんじゃないかな。これは Y!J Developers Blog に期待するとして、Y!J も OpenID 2.0 実装の方は&hellip;あやしいな&hellip;</p>
 
-<p>でも他は&hellip;特に元々 OAuth 2.0 実装済やったとこが後から OpenID Connect 対応したよ！とか言ってきたケースとかは&hellip;あやしいかもしれませんね。</p>
+<p>他の OpenID Connect 実装は&hellip;元々 OAuth 2.0 実装済やったとこが後から OpenID Connect 対応したよ！とか言ってきたケースとかは&hellip;あやしいかもしれませんね&hellip;</p>
+
+<p>他に何があったっけ&hellip;</p>
 
 <h3>攻撃パターン</h3>
 
@@ -152,6 +154,8 @@
 <p>redirect_uri の完全一致を必須にする。</p>
 
 <p>いままで動いてた既存アプリが突然動かなくなるケースもあるでしょうし、そうそう気軽に変更できる部分では無いかもしれませんが、ある程度の猶予期間を用意した上で、redirect_uri の完全一致を必須にするのが良いでしょう。</p>
+
+<p>あと、そもそもこの問題が自社の各プロトコル実装で置きうるのかどうか、redirect_uri の検証方法をいま一度 Developer 向けに広報する、とかはやった方がいいかもしれませんね。</p>
 
 <h4>Client 側ができること</h4>
 
