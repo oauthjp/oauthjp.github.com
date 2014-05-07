@@ -4,7 +4,7 @@
   <title><![CDATA[OAuth.jp]]></title>
   <link href="http://oauthjp.github.io/atom.xml" rel="self"/>
   <link href="http://oauthjp.github.io/"/>
-  <updated>2014-05-07T20:25:17+09:00</updated>
+  <updated>2014-05-08T01:45:22+09:00</updated>
   <id>http://oauthjp.github.io/</id>
   <author>
     <name><![CDATA[Nov Matake]]></name>
@@ -68,6 +68,15 @@
 <p>他の OpenID Connect 実装は&hellip;元々 OAuth 2.0 実装済やったとこが後から OpenID Connect 対応したよ！とか言ってきたケースとかは&hellip;あやしいかもしれませんね&hellip;</p>
 
 <p>他に何があったっけ&hellip;</p>
+
+<p>[追記]</p>
+
+<ul>
+<li>Y!J の OAuth 2.0 &amp; OpenID Connect 実装は redirect_uri 完全一致必須でした。</li>
+<li>mixi の OAuth 2.0 実装は Implicit Flow サポートしてませんでした。</li>
+<li>楽天の OAuth 2.0 実装も Implicit Flow サポートしてませんでした。</li>
+</ul>
+
 
 <h3>攻撃パターン</h3>
 

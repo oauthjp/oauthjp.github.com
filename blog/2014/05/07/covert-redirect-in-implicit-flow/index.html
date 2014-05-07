@@ -137,6 +137,15 @@
 
 <p>他に何があったっけ&hellip;</p>
 
+<p>[追記]</p>
+
+<ul>
+<li>Y!J の OAuth 2.0 &amp; OpenID Connect 実装は redirect_uri 完全一致必須でした。</li>
+<li>mixi の OAuth 2.0 実装は Implicit Flow サポートしてませんでした。</li>
+<li>楽天の OAuth 2.0 実装も Implicit Flow サポートしてませんでした。</li>
+</ul>
+
+
 <h3>攻撃パターン</h3>
 
 <p>攻撃者は、redirect_uri を Client 上に存在する open redirector の endpoint に書き換えたリンクを被害者に踏ませます。</p>
