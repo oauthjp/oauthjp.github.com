@@ -4,7 +4,7 @@
   <title><![CDATA[OAuth.jp]]></title>
   <link href="http://oauthjp.github.io/atom.xml" rel="self"/>
   <link href="http://oauthjp.github.io/"/>
-  <updated>2014-05-07T20:13:34+09:00</updated>
+  <updated>2014-05-07T20:14:01+09:00</updated>
   <id>http://oauthjp.github.io/</id>
   <author>
     <name><![CDATA[Nov Matake]]></name>
@@ -43,6 +43,9 @@
 <p>なので、Covert Redirect のケースでも、open redirector をつかって最終的に被害者がリダイレクトしてくる endpoint に攻撃者が JS を仕込んでそれを自分のサーバーにでも送るようにしておけば、access token が漏洩します。</p>
 
 <p>もちろん<a href="http://oauthjp.github.io/blog/2014/05/07/covert-redirect">先ほどの記事にあるように</a>、Authorization Code が漏洩するケースもありますが、open redirector の実装詳細に依存しない分、Implicit Flow において fragment に含まれる access token が漏洩する方が可能性としては高いでしょう。</p>
+
+<!-- more -->
+
 
 <h3>仕様のバグではないが&hellip;</h3>
 

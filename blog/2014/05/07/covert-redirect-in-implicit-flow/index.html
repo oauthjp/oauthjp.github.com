@@ -112,6 +112,9 @@
 
 <p>もちろん<a href="/blog/2014/05/07/covert-redirect">先ほどの記事にあるように</a>、Authorization Code が漏洩するケースもありますが、open redirector の実装詳細に依存しない分、Implicit Flow において fragment に含まれる access token が漏洩する方が可能性としては高いでしょう。</p>
 
+<!-- more -->
+
+
 <h3>仕様のバグではないが&hellip;</h3>
 
 <p><a href="http://weblog.bulknews.net/post/85008516879/covert-redirect-vulnerability-with-oauth-2">宮川さんが記事</a>にもあるように、<a href="http://tools.ietf.org/html/rfc6819">RFC6819 &ndash; OAuth 2.0 Threat Model and Security Considerations</a> の Section 4.2.4, 5.2.3.5 あたりにはこの問題が指摘されています。(<a href="http://openid-foundation-japan.github.io/rfc6819.ja.html#implicit_flow">RFC6819 翻訳版はこちら</a>)</p>
