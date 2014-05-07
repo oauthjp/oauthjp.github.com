@@ -6,7 +6,7 @@
 	<title>Implicit Flow では Covert Redirect で Token 漏れるね - OAuth.jp</title>
     <meta name="author" content="Nov Matake">
     
-	<meta name="description" content="とりあえず前の記事の訂正する。 この記事は後で書く。 ">
+	<meta name="description" content="この記事は、先ほど書いたこちらの記事の訂正版です。 記事に入る前に、まずは全シンガポールにお詫び申し上げますm m さて、Covert Redirect についての説明は&hellip;超絶取り消し線はいりまくってる前の記事を読んでください、でいいでしょうか？ で、訂正分だけ以下に。 &hellip;">
 	
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
@@ -86,9 +86,79 @@
     <div id="content" class="inner">
         <article class="post">
 	<h2 class="title">Implicit Flow では Covert Redirect で Token 漏れるね</h2>
-	<div class="entry-content"><p>とりあえず前の記事の訂正する。</p>
+	<div class="entry-content"><p>この記事は、<a href="/blog/2014/05/07/covert-redirect">先ほど書いたこちらの記事</a>の訂正版です。</p>
 
-<p>この記事は後で書く。</p>
+<p><strong>記事に入る前に、まずは全シンガポールにお詫び申し上げますm<em> </em>m</strong></p>
+
+<p>さて、Covert Redirect についての説明は&hellip;超絶取り消し線はいりまくってる前の記事を読んでください、でいいでしょうか？</p>
+
+<p>で、訂正分だけ以下に。</p>
+
+<h3>Fragment in Redirect</h3>
+
+<p><a href="http://weblog.bulknews.net/post/85008516879/covert-redirect-vulnerability-with-oauth-2">宮川さんが記事にしてますね</a>。</p>
+
+<p>英語だけど。</p>
+
+<p>で、まぁ要するに、(Modern Browser は) 30x リダイレクト時にリダイレクト元に付いてた URL fragment をリダイレクト先にも引っ付ける、と。</p>
+
+<p>fragment は server-side には送られないけど、クライアントサイドではリダイレクト先に引き継がれる、と。</p>
+
+<p>試しに <a href="http://id.gree.net/#foobar">http://id.gree.net/#foobar</a> にアクセスすると、(未ログイン時は) リダイレクトを繰り返して <a href="http://games.gree.net/welcome#foobar">http://games.gree.net/welcome#foobar</a> にリダイレクトされるかと思います。</p>
+
+<p>GREE のサーバーには #foobar の部分は送られませんが、games.gree.net/welcome という Endpoint 上の JS からは、#foobar にアクセスできます。</p>
+
+<p>なので、Covert Redirect のケースでも、open redirector をつかって最終的に被害者がリダイレクトしてくる endpoint に攻撃者が JS を仕込んでそれを自分のサーバーにでも送るようにしておけば、access token が漏洩します。</p>
+
+<p>もちろん<a href="/blog/2014/05/07/covert-redirect">先ほどの記事にあるように</a>、Authorization Code が漏洩するケースもありますが、open redirector の実装詳細に依存しない分、Implicit Flow において fragment に含まれる access token が漏洩する方が可能性としては高いでしょう。</p>
+
+<h3>仕様のバグではないが&hellip;</h3>
+
+<p><a href="http://weblog.bulknews.net/post/85008516879/covert-redirect-vulnerability-with-oauth-2">宮川さんが記事</a>にもあるように、<a href="http://tools.ietf.org/html/rfc6819">RFC6819 &ndash; OAuth 2.0 Threat Model and Security Considerations</a> の Section 4.2.4, 5.2.3.5 あたりにはこの問題が指摘されています。(<a href="http://openid-foundation-japan.github.io/rfc6819.ja.html#implicit_flow">RFC6819 翻訳版はこちら</a>)</p>
+
+<p>OpenID Connect では、そもそも redirect_uri の部分一致を認めていません。(<a href="http://openid.net/specs/openid-connect-core-1_0.html">Core</a> Section 3.2.2.1 参照, <a href="http://openid-foundation-japan.github.io/openid-connect-core-1_0.ja.html">日本語版はこちら</a>)</p>
+
+<p>OAuth 1.0 では Refresh Token Secret が漏れない限り Access Token が Covert Redirect 経由で漏洩することは無いですし、OpenID 2.0 でも RP Discovery というのをきちんとやっていれば、redirect_uri の exact match 相当のことができます。</p>
+
+<p>なので、特に Covert Redirect がこれらの仕様のバグであるということではありません。</p>
+
+<p>が、まずい実装は結構ある、というのが、<a href="http://tetraph.com/covert_redirect/oauth2_openid_covert_redirect.html">元記事</a>の Provider List が伝えたかったことなのでしょう。</p>
+
+<h3>攻撃パターン</h3>
+
+<p>攻撃者は、redirect_uri を Client 上に存在する open redirector の endpoint に書き換えたリンクを被害者に踏ませます。</p>
+
+<p>このリンクを踏ませる方法は何でもいいのですが、Client 側に悪意が無い限り、基本的には「通常のフロー」とは異なる方法でリンクを踏ませることになるでしょう。フィッシングですね。</p>
+
+<p>で、あとは被害者が同意ボタンを押せば、open redirector 経由で攻撃者が指定した URL に、(ユーザーが Modern Browser を利用している場合は) fragment に access token を含んだ状態で、被害者がアクセスしてきます。</p>
+
+<p>あとはその fragment から JS をつかって access token を抜き出して&hellip;ってのはこの記事冒頭でも書きましたね。</p>
+
+<h3>対策</h3>
+
+<h4>Server 側ができること</h4>
+
+<p>redirect_uri の完全一致を必須にする。</p>
+
+<p>いままで動いてた既存アプリが突然動かなくなるケースもあるでしょうし、そうそう気軽に変更できる部分では無いかもしれませんが、ある程度の猶予期間を用意した上で、redirect_uri の完全一致を必須にするのが良いでしょう。</p>
+
+<h4>Client 側ができること</h4>
+
+<p>例えば Facebook は、redirect_uri の完全一致を行うようにアプリ設定画面で指定することができます。(Advanced Settings の &ldquo;Valid OAuth redirect URIs&rdquo; ってやつ)</p>
+
+<p>&ldquo;Valid OAuth redirect URIs&rdquo; はデフォルトでは空っぽで、その状態では redirect_uri の部分一致が許容されますが、ここに URL を指定することでFB 側に redirect_uri の完全一致を要求することができます。</p>
+
+<p>そもそも Implicit Flow なんてつかわねーよ、って場合は、<a href="https://developers.facebook.com/docs/graph-api/securing-requests/">appsecret_proof</a> なんていう FB の独自拡張を利用することもできそうですが、まぁこれはそのうち調べようと心に誓いつつ全く調べてないのでよく知らないです。</p>
+
+<p>あと open redirector 作らない、ってのね。</p>
+
+<p>こらそこ、「あっ、はい」とか言わない。</p>
+
+<h4>User 側ができること</h4>
+
+<p>フィッシングに引っかかるな、くらいしか思いつかないですが、まぁそれじゃ引っかかる時は引っかかるでしょうね&hellip;</p>
+
+<p>Client と Server が頑張る、のを応援する、ってのが一番いいかもしれませんね。</p>
 </div>
 
 <div class="meta">
