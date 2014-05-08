@@ -4,7 +4,7 @@
   <title><![CDATA[OAuth.jp]]></title>
   <link href="http://oauthjp.github.io/atom.xml" rel="self"/>
   <link href="http://oauthjp.github.io/"/>
-  <updated>2014-05-08T16:16:19+09:00</updated>
+  <updated>2014-05-08T16:16:39+09:00</updated>
   <id>http://oauthjp.github.io/</id>
   <author>
     <name><![CDATA[Nov Matake]]></name>
@@ -18,7 +18,7 @@
     <link href="http://oauthjp.github.io/blog/2014/05/08/covert-redirect-and-non-30x-redirects/"/>
     <updated>2014-05-08T15:47:00+09:00</updated>
     <id>http://oauthjp.github.io/blog/2014/05/08/covert-redirect-and-non-30x-redirects</id>
-    <content type="html"><![CDATA[<p>Covert Redirect 連載最後は、location.href とか &lt;meta http-equiv=&ldquo;Refresh&rdquo;&gt; とかだと referrer 漏れるかもね！ってお話です。</p>
+    <content type="html"><![CDATA[<p>Covert Redirect 連載最後は、location.href とか &lt;meta http-equiv=&ldquo;Refresh&rdquo;&gt; とかだと referrer 通じて query に含まれる code とかも漏れるかもね！ってお話です。</p>
 
 <p>古いサイトですが、こことか見れば大体いいんじゃないでしょうか => <a href="http://www.teria.com/~koseki/memo/referrer/">リファラ実験</a></p>
 
