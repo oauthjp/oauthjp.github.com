@@ -6,7 +6,7 @@
 	<title>OAuth.jp</title>
     <meta name="author" content="Nov Matake">
     
-	<meta name="description" content="Published on: May 30th, 2013 Tags: Amazon が、Login with Amazon というAPIおよびそれに付随する JS / iOS / Android SDKs を出してきました。 以下の記事にあるように、OAuth 2.0 &hellip;">
+	<meta name="description" content="Published on: Jun 4th, 2013 Tags: 先日以下のような記事を書きました。 Login with Amazonを使うと、あなたのサイトのユーザーがアカウントハイジャックされる。 Login with Amazon 危険ですよ！という記事だったのですが、その後  &hellip;">
 	
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
@@ -85,6 +85,66 @@
 <!-- begin toload --> 
     <div id="content" class="inner">
         
+
+
+    <article class="post">
+	<h2 class="title">
+		
+		<a href="/blog/2013/06/04/login-with-amazon/">
+		
+			Login With Amazon、もう使っても大丈夫！</a>
+	</h2>
+    <div class="entry-content">
+    <div class="meta">
+      <div class="date">Published on: 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-06-04T00:00:00+09:00" pubdate data-updated="true">Jun 4<span>th</span>, 2013</time></div>
+      <div class="tags">Tags: 
+
+</div>
+    </div>
+		<p>先日以下のような記事を書きました。</p>
+
+
+<p><a href="/blog/2013/05/30/login-with-amazon">Login with Amazonを使うと、あなたのサイトのユーザーがアカウントハイジャックされる。</a></p>
+
+
+<p>Login with Amazon 危険ですよ！という記事だったのですが、その後 Login with Amazon のドキュメントに、Token Info API が追加されました。</p>
+
+
+<p>こちらの Step4 Obtain Profile Information のサンプルコードで、Profile API を叩く前に Token 発行先の Client ID が自身の Client ID と一致することを確認する処理が追加されています。</p>
+
+
+<p><a href="http://login.amazon.com/website">Web - Login with Amazon Developer Center</a></p>
+
+
+<p>こちらのより詳細なドキュメントには、Security Considerations の &#8220;Impersonating a Resource Owner in Implicit Flow&#8221; という節で、Token Info API を使わない場合の攻撃例が述べられています。</p>
+
+
+<p><a href="https://images-na.ssl-images-amazon.com/images/G/01/lwa/dev/docs/website-developer-guide._TTH_.pdf">Login with Amazon - Developer Guide for Websites (PDF)</a></p>
+
+
+<p>というわけで、Login with Amazon、ドキュメント通り実装すれば安全です :)</p>
+
+
+		
+		
+	</div>
+
+<div class="meta">
+	
+</div>
+</article>
 
 
     <article class="post">
@@ -460,72 +520,6 @@
 
 
 <p>ここにない言語でRSAもサポートしてるライブラリご存知でしたらお教えいただけるとうれしいです。</p>
-
-
-		
-		
-	</div>
-
-<div class="meta">
-	
-</div>
-</article>
-
-
-    <article class="post">
-	<h2 class="title">
-		
-		<a href="/blog/2012/10/16/facebookaccess-token-introspection-api/">
-		
-			Facebookが新たなAccess Token Introspection APIを出したようです</a>
-	</h2>
-    <div class="entry-content">
-    <div class="meta">
-      <div class="date">Published on: 
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-10-16T00:00:00+09:00" pubdate data-updated="true">Oct 16<span>th</span>, 2012</time></div>
-      <div class="tags">Tags: 
-
-</div>
-    </div>
-		<p>今朝fb_graphにこんな要望が来てて知ったのですが、Facebookが新たなAccess Token Introspection APIを出したようです。</p>
-
-
-<p><a href="https://github.com/nov/fb_graph/issues/269">Adding support for /debug_token endpoint · Issue #269 · nov/fb_graph</a></p>
-
-
-<p>こんなリクエストを送ると</p>
-
-
-<p><a href="https://gist.github.com/3896829"><a href="https://gist.github.com/3896829">https://gist.github.com/3896829</a></a></p>
-
-
-<p>こんなレスポンスが帰ってくる、と。</p>
-
-
-<p><a href="https://gist.github.com/3896826"><a href="https://gist.github.com/3896826">https://gist.github.com/3896826</a></a></p>
-
-
-<p>&#8220;data&#8221; ってなんやろとかApp Token無いと使えへんのメンドイなとか思ったりはしますが、ちゃんと別のClientに発行されたAccess Tokenを<code>input_token</code>として送るとエラーが帰ってくるし、Success Responseにはscopeとかissued_atとかも付いてくるので、いろいろと使い勝手は良さそうですね。まぁ例のごとく完全に独自仕様ですが。</p>
-
-
-<p>って実際にGraph API Explorerで試したら、issued_at返ってこないですが（謎</p>
-
-
-<p>オフィシャルドキュメントはこちら。</p>
-
-
-<p><a href="https://developers.facebook.com/docs/howtos/login/debugging-access-tokens/">Debugging Access Tokens and Handling Errors</a></p>
 
 
 		
