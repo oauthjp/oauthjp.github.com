@@ -4,7 +4,7 @@
   <title><![CDATA[OAuth.jp]]></title>
   <link href="http://oauthjp.github.io/atom.xml" rel="self"/>
   <link href="http://oauthjp.github.io/"/>
-  <updated>2014-05-08T12:51:11+09:00</updated>
+  <updated>2014-05-08T12:55:38+09:00</updated>
   <id>http://oauthjp.github.io/</id>
   <author>
     <name><![CDATA[Nov Matake]]></name>
@@ -76,6 +76,11 @@
 <p>iKnow! はちょっとレアケースで、サブドメインを許可する為に &ldquo;*.iknow.jp&rdquo; になってますが、そういう場合は &ldquo;*&rdquo; を &ldquo;www&rdquo; に置き換えて &ldquo;<a href="https://www.iknow.jp/open_ids">https://www.iknow.jp/open_ids</a>&rdquo; にアクセスします。</p>
 
 <script src="https://gist.github.com/nov/c702782baa98c75702dc.js"></script>
+
+
+<p>あ、リダイレクトしましたね。これは follow します。</p>
+
+<script src="https://gist.github.com/nov/67c491166bed6f9cdb7e.js"></script>
 
 
 <p>で、このレスポンスヘッダに注目です。</p>
