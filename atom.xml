@@ -4,7 +4,7 @@
   <title><![CDATA[OAuth.jp]]></title>
   <link href="http://oauthjp.github.io/atom.xml" rel="self"/>
   <link href="http://oauthjp.github.io/"/>
-  <updated>2014-05-08T14:11:07+09:00</updated>
+  <updated>2014-05-08T15:01:12+09:00</updated>
   <id>http://oauthjp.github.io/</id>
   <author>
     <name><![CDATA[Nov Matake]]></name>
@@ -12,6 +12,97 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Facebook Login で Covert Redirect を防止する]]></title>
+    <link href="http://oauthjp.github.io/blog/2014/05/08/facebook-login-and-covert-redirect/"/>
+    <updated>2014-05-08T14:16:00+09:00</updated>
+    <id>http://oauthjp.github.io/blog/2014/05/08/facebook-login-and-covert-redirect</id>
+    <content type="html"><![CDATA[<p><a href="http://oauth.jp/blog/2014/05/07/covert-redirect-in-implicit-flow/">OAuth 2.0 Implicit Flow では Covert Redirect 経由で access token が漏れる件</a>については既に紹介しましたが、ここではみなさん大好き Facebook Login で OAuth Client Developer ができる対策について紹介することにします。</p>
+
+<h3>攻撃方法</h3>
+
+<ol>
+<li>攻撃対象となる OAuth Client の FB client_id を取得
+
+<ul>
+<li>client_id は FB Login ボタンさえクリックすればアドレスバーに表示される。</li>
+</ul>
+</li>
+<li>Authorization Request URL を構築
+
+<ul>
+<li>対象 Client が通常 response_type=code を使ってる場合でも、問答無用で response_type=token にしてください。</li>
+<li><a href="https://www.facebook.com/dialog/oauth?client_id=relace-me&amp;redirect_uri=relace-me&amp;response_type=token">https://www.facebook.com/dialog/oauth?client_id=<em>&lt;client_id></em>&amp;redirect_uri=<em>&lt;redirect-url></em>&amp;response_type=token</a></li>
+</ul>
+</li>
+<li>被害者を2で作った URL にアクセスさせます
+
+<ul>
+<li>フィッシングがんばってください。</li>
+</ul>
+</li>
+<li>redirect_uri に指定しておいた URL で fragment に付いて来る access token を待ち構えます。</li>
+</ol>
+
+
+<p>以上、巧いフィッシング方法さえ思いつけば簡単ですね。</p>
+
+<h3>防御方法</h3>
+
+<p>防御方法は、大きく分けて3つあります。</p>
+
+<ol>
+<li>open redirector を撤廃する</li>
+<li>response_type=token を利用禁止にする</li>
+<li>redirect_uri を完全一致しか認めさせなくする</li>
+</ol>
+
+
+<!-- more -->
+
+
+<h4>open redirector を撤廃する</h4>
+
+<p>まぁそらそれがベストですよね。</p>
+
+<p>「あっ、はい」とか言う人いるけども。</p>
+
+<p>まぁ、「それができれば最初っからやってるっちゅうねん」ってのは、ごもっとも。</p>
+
+<h4>response_type=token を利用禁止にする</h4>
+
+<p>FB にはそのためのオプション &ldquo;<a href="https://developers.facebook.com/docs/graph-api/securing-requests/">appsecret_proof</a>&rdquo; があります。</p>
+
+<p>厳密には response_type=token を利用禁止にするのではなく、access token 単体で API Request をさせない、というオプションです。</p>
+
+<p>このオプションを有効化すると、API Request に client_secret が必要になるため、client_secret が漏洩しない限りは、たとえ access token が漏洩してしまっても問題ありません。</p>
+
+<p>え？client_secret が漏洩するかもって？</p>
+
+<p>そんな、OAuth 1.0 じゃあるまいし、まさか Native App に client_secret 埋め込んだりしてないはずですよね？ね？？</p>
+
+<p>なおこのオプションを有効にできるのは、client_secret を秘匿に保てる Client、つまりサーバーサイドで動作する Web App に限られます。</p>
+
+<p>Client が Native App な場合や、Web App と Native App の両方で同じ client_id を使っている場合は、このオプションは選べません。</p>
+
+<p>2014年5月現在では、このオプションは以下の URL から &ldquo;App Secret Proof for Server API calls&rdquo; というのを ON にすれば有効化されます。
+<a href="https://developers.facebook.com/apps/:app_id/settings/advanced/">https://developers.facebook.com/apps/:app_id/settings/advanced/</a></p>
+
+<h4>redirect_uri を完全一致しか認めさせなくする</h4>
+
+<p>デフォルトでは redirect_uri の部分一致を許容する Facebook ですが、redirect_uri を完全一致のみ許可させるよう指定することもできます。</p>
+
+<p>2014年5月現在では、このオプションは以下の URL から &ldquo;Valid OAuth redirect URIs&rdquo; というのを field に URL を指定すれば有効化されます。
+<a href="https://developers.facebook.com/apps/:app_id/settings/advanced/">https://developers.facebook.com/apps/:app_id/settings/advanced/</a></p>
+
+<p>Native App でも利用する client_id に関しては、このオプションを利用しましょう。</p>
+
+<p>Web App でも、OAuth 2.0 の独自拡張である <a href="https://developers.facebook.com/docs/graph-api/securing-requests/">appsecret_proof</a> を利用するよりも、OAuth 2.0 の仕様に乗っ取った挙動になるこのオプションの方が、ライブラリをそのまま使えるとかいろいろメリット多そうですね。</p>
+
+<p>みなさんのユースケースにあったオプションをお選びください。</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[OpenID 2.0 における Covert Redirect と RP Discovery]]></title>
@@ -1237,28 +1328,6 @@ sessionをserver-sideで管理するようにさえすれば、この問題は�
 
 
 <p>ところで<a href="https://bitbucket.org/openid/connect/issue/539/messages-0-add-scope-for-offline-access">このIssue</a>、まだopenですね。</p>
-
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[WebSocketでOAuth 2.0を使ってみた]]></title>
-    <link href="http://oauthjp.github.io/blog/2012/08/09/websocketoauth-20/"/>
-    <updated>2012-08-09T00:00:00+09:00</updated>
-    <id>http://oauthjp.github.io/blog/2012/08/09/websocketoauth-20</id>
-    <content type="html"><![CDATA[<p>WebSocket Serverでユーザー認証とか、WebSocket Serverの裏にRailsなりのAPIがあってNode.jsからそのAPI叩く見たいなのはそれなりにありそうなのに、あんまサンプルコード的なものが見当たらなかったので、自分で書いてみたのをここに公開することにします。</p>
-
-
-<p>ClientがWebSocket Serverにつなぐ時、<em><a href="http://socket.example.com/?access_token="><a href="http://socket.example.com/?access_token=">http://socket.example.com/?access_token=</a></a>***</em> みたいなURLにアクセスして、ServerはそのToken元にユーザーを認証して、その後socketがつながってる間はNode.jsがそのtoken使って裏のRails APIにアクセスする、という使い方をしてます。</p>
-
-
-<p>Access Tokenの保存先にMySQL使ってるのはあくまでRails側でそっちのが手っ取り早かったからで、ここはRedisでもMongoDBでもなんでもいいです。この例ではNode.js側ではAccess Tokenに紐づいたClientとかScopeとかを検証してないし。</p>
-
-
-<p><a href="https://gist.github.com/3300227"><a href="https://gist.github.com/3300227">https://gist.github.com/3300227</a></a></p>
-
-
-<p>ところで、WebSocketではCookieベースの認証方式が主流なんですかね？</p>
 
 ]]></content>
   </entry>
