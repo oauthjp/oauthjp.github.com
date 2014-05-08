@@ -4,7 +4,7 @@
   <title><![CDATA[OAuth.jp]]></title>
   <link href="http://oauthjp.github.io/atom.xml" rel="self"/>
   <link href="http://oauthjp.github.io/"/>
-  <updated>2014-05-08T11:01:38+09:00</updated>
+  <updated>2014-05-08T11:19:39+09:00</updated>
   <id>http://oauthjp.github.io/</id>
   <author>
     <name><![CDATA[Nov Matake]]></name>
@@ -18,7 +18,9 @@
     <link href="http://oauthjp.github.io/blog/2014/05/08/covert-redirect-and-openid-2-dot-0/"/>
     <updated>2014-05-08T10:57:00+09:00</updated>
     <id>http://oauthjp.github.io/blog/2014/05/08/covert-redirect-and-openid-2-dot-0</id>
-    <content type="html"><![CDATA[<p>あとで書く。</p>
+    <content type="html"><![CDATA[<p>さて、<a href="http://oauthjp.github.io/blog/2014/05/07/covert-redirect-in-implicit-flow/">OAuth 2.0 &amp; OpenID Connect における Covert Redirect の問題</a> についてはまとめたので、次は OpenID 2.0 についてです。</p>
+
+<p>TODO: 徐々に書く。</p>
 ]]></content>
   </entry>
   
@@ -60,7 +62,7 @@
 
 <p><a href="http://weblog.bulknews.net/post/85008516879/covert-redirect-vulnerability-with-oauth-2">宮川さんが記事</a>にもあるように、<a href="http://tools.ietf.org/html/rfc6819">RFC6819 &ndash; OAuth 2.0 Threat Model and Security Considerations</a> の <a href="http://tools.ietf.org/html/rfc6819#section-4.2.4">Section 4.2.4</a>, <a href="http://tools.ietf.org/html/rfc6819#section-5.2.3.5">Section 5.2.3.5</a> あたりにはこの問題が指摘されています。(<a href="http://openid-foundation-japan.github.io/rfc6819.ja.html">RFC6819 翻訳版はこちら</a>)</p>
 
-<p>また <a href="http://tools.ietf.org/html/rfc6749#section-3.1.2.2">OAuth 2.0 Core Section 3.2.2.1</a> では redirect_uri の<strong>部分一致は query にしか</strong>認められていません。domain のみのマッチングや path の一部のみの一致で OK にしてしまうのは、実装上のバグと言えるでしょう。</p>
+<p>また <a href="http://tools.ietf.org/html/rfc6749">RFC6749 &ndash; The OAuth 2.0 Authorization Framework</a> の <a href="http://tools.ietf.org/html/rfc6749#section-3.1.2.2">Section 3.2.2.1</a> では redirect_uri の<strong>部分一致は query にしか</strong>認められていません。domain のみのマッチングや path の一部のみの一致で OK にしてしまうのは、実装上のバグと言えるでしょう。(<a href="http://openid-foundation-japan.github.io/rfc6749.ja.html">RFC6749 翻訳版はこちら</a>)</p>
 
 <p>OpenID Connect では、query も含めて <strong>redirect_uri の部分一致を認めていません</strong>。(<a href="http://openid.net/specs/openid-connect-core-1_0.html#ImplicitAuthRequest">OpenID Connect Core Section 3.2.2.1</a> 参照, <a href="http://openid-foundation-japan.github.io/openid-connect-core-1_0.ja.html#ImplicitAuthRequest">日本語版はこちら</a>)</p>
 
