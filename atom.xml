@@ -4,7 +4,7 @@
   <title><![CDATA[OAuth.jp]]></title>
   <link href="http://oauthjp.github.io/atom.xml" rel="self"/>
   <link href="http://oauthjp.github.io/"/>
-  <updated>2014-05-08T12:41:28+09:00</updated>
+  <updated>2014-05-08T12:44:12+09:00</updated>
   <id>http://oauthjp.github.io/</id>
   <author>
     <name><![CDATA[Nov Matake]]></name>
@@ -33,6 +33,10 @@
 <p>なので、open redirector のリダイレクト先には、通常はレスポンスパラメータは渡りません。</p>
 
 <p>全ての query パラメータをリダイレクト先に引き継いでしまうという、奇妙な open redirector を用意してる場合にのみレスポンスパラメータが外部に漏洩します。</p>
+
+<p>まずはこの時点でそんなに心配することはなさそうですね。</p>
+
+<p>まぁでもせっかくなんで、話続けますね。</p>
 
 <!-- more -->
 
