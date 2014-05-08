@@ -4,7 +4,7 @@
   <title><![CDATA[OAuth.jp]]></title>
   <link href="http://oauthjp.github.io/atom.xml" rel="self"/>
   <link href="http://oauthjp.github.io/"/>
-  <updated>2014-05-08T12:46:18+09:00</updated>
+  <updated>2014-05-08T12:47:37+09:00</updated>
   <id>http://oauthjp.github.io/</id>
   <author>
     <name><![CDATA[Nov Matake]]></name>
@@ -73,7 +73,7 @@
 
 <p>まず iKnow! に OpenID でログインする際のリクエストパラメータを眺めると、&#8221;openid.realm=<a href="https://*.iknow.jp/open_ids">https://*.iknow.jp/open_ids</a>&#8221; ってのが含まれてるのが分かるかと思います。</p>
 
-<p>iKnow! はちょっとレアケースで、サブドメインを許可する為に &ldquo;<em>.iknow.jp&rdquo; になってますが、そういう場合は &ldquo;</em>&rdquo; を &ldquo;www&rdquo; に置き換えて &ldquo;<a href="https://www.iknow.jp/open_ids">https://www.iknow.jp/open_ids</a>&rdquo; にアクセスします。</p>
+<p>iKnow! はちょっとレアケースで、サブドメインを許可する為に &ldquo;*.iknow.jp&rdquo; になってますが、そういう場合は &ldquo;*&rdquo; を &ldquo;www&rdquo; に置き換えて &ldquo;<a href="https://www.iknow.jp/open_ids">https://www.iknow.jp/open_ids</a>&rdquo; にアクセスします。</p>
 
 <script src="https://gist.github.com/nov/c702782baa98c75702dc.js"></script>
 
