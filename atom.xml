@@ -4,7 +4,7 @@
   <title><![CDATA[OAuth.jp]]></title>
   <link href="http://oauthjp.github.io/atom.xml" rel="self"/>
   <link href="http://oauthjp.github.io/"/>
-  <updated>2014-05-08T15:01:12+09:00</updated>
+  <updated>2014-05-08T16:08:58+09:00</updated>
   <id>http://oauthjp.github.io/</id>
   <author>
     <name><![CDATA[Nov Matake]]></name>
@@ -12,6 +12,30 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Covert Redirect と 30x 意外のリダイレクト方法]]></title>
+    <link href="http://oauthjp.github.io/blog/2014/05/08/covert-redirect-and-non-30x-redirects/"/>
+    <updated>2014-05-08T15:47:00+09:00</updated>
+    <id>http://oauthjp.github.io/blog/2014/05/08/covert-redirect-and-non-30x-redirects</id>
+    <content type="html"><![CDATA[<p>Covert Redirect 連載最後は、location.href とか &lt;meta http-equiv=&ldquo;Refresh&rdquo;&gt; とかだと referrer 漏れるかもね！ってお話です。</p>
+
+<p>古いサイトですが、こことか見れば大体いいんじゃないでしょうか => <a href="http://www.teria.com/~koseki/memo/referrer/">リファラ実験</a></p>
+
+<p>で、こういうリダイレクトをしてる箇所が OAuth 2.0 の redirect_uri なり OpenID 2.0 の return_to なりに指定されていれば、query に付いた code なり email なりがリファラ経由で外部に漏れるよね、という。</p>
+
+<p>はい、漏れますね！ (投げやり</p>
+
+<p>さて、そんなに該当例多くはないと思うのですが、ここまで該当してしまったサービスは、どうしますかねぇ&hellip;</p>
+
+<p>Facebook であれば、<a href="http://oauthjp.github.io/blog/2014/05/08/facebook-login-and-covert-redirect/">Facebook Login で Covert Redirect を防止する</a>にあるような方法で回避できますが、それ以外の OAuth Provider なり OpenID 2.0 Provider と連携してる場合は、困っちゃいますねぇ&hellip;</p>
+
+<!-- more -->
+
+
+<p>リダイレクト方法変えろ、って意外の回避策を思いついたら、この下に書きます。</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Facebook Login で Covert Redirect を防止する]]></title>
@@ -1264,70 +1288,6 @@ sessionをserver-sideで管理するようにさえすれば、この問題は�
 <p>第3回 <a href="http://www.atmarkit.co.jp/ait/articles/1209/20/news140.html">OpenIDが果たす役割を知る</a></p>
 
 <p>第4回 <a href="http://www.atmarkit.co.jp/ait/articles/1209/27/news138.html">「OpenID Connect」を理解する</a></p></blockquote>
-
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[OAuthのoffline_accessについて]]></title>
-    <link href="http://oauthjp.github.io/blog/2012/10/01/oauthofflineaccess/"/>
-    <updated>2012-10-01T00:00:00+09:00</updated>
-    <id>http://oauthjp.github.io/blog/2012/10/01/oauthofflineaccess</id>
-    <content type="html"><![CDATA[<p>少し前ですが、OpenID Connectのbitbuckeetで<a href="https://bitbucket.org/openid/connect/issue/539/messages-0-add-scope-for-offline-access">offline_accessについての議論</a>がされていたので、まとめておきます。</p>
-
-
-<h3>Googleの場合</h3>
-
-
-<h4>offline access の定義</h4>
-
-
-<ul><li>refresh tokenが発行されるのがoffline。</li>
-<li>特にoffline accessを要求しない限り、デフォルトではonline accessを要求したものと見なされる。</li>
-<li>online accessの場合はrefresh tokenは発行されない。</li>
-<li>refresh tokenはユーザーがrevokeするまで有効。</li>
-</ul>
-
-
-<h4>auto approval</h4>
-
-
-<ul><li>一度ApproveされたClientに対しては、accessがrevokeされるまでは次回以降のAuthorization Request時の同意画面はスキップされる。</li>
-<li>同意画面がスキップされる場合、refresh tokenは発行されない。</li>
-</ul>
-
-
-<h4>promptとaccess_type</h4>
-
-
-<ul><li>Authorization Request時にprompt=trueというパラメーターを指定すると、auto approvalを無効化し、ユーザーに同意画面を見せることができる。</li>
-<li>同様にaccess_type=offlineを指定すると、offline accessを要求できる。</li>
-<li>access_type=offlineを指定した場合、初回同意時にのみrefresh tokenが発行される。</li>
-<li>それ以降もrefresh tokenが必要な場合は、prompt=trueとaccess_type=offlineを同時に指定すること。</li>
-</ul>
-
-
-<h3>AOLの場合</h3>
-
-
-<h4>offline accessの定義</h4>
-
-
-<ul><li>デフォルトではcode flowでは常にrefresh tokenが返される。</li>
-<li>refresh tokenはユーザーがログアウトするまで有効。</li>
-<li>ユーザーがログアウトしても有効なrefresh tokenが欲しい場合は、scopeにoffline_accessを指定する。</li>
-</ul>
-
-
-<h4>auto approval</h4>
-
-
-<ul><li>ユーザーが明示的にチェックボックスにチェックを入れた場合のみ、次回以降の同意画面がスキップされる。</li>
-<li>同意画面がスキップされるケースでも、offline_accessを要求することができる。</li>
-</ul>
-
-
-<p>ところで<a href="https://bitbucket.org/openid/connect/issue/539/messages-0-add-scope-for-offline-access">このIssue</a>、まだopenですね。</p>
 
 ]]></content>
   </entry>

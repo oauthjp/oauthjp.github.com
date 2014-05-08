@@ -3,10 +3,10 @@
 <html>
 <head>
 	<meta charset="utf-8">
-	<title>OAuth.jp</title>
+	<title>Covert Redirect と 30x 意外のリダイレクト方法 - OAuth.jp</title>
     <meta name="author" content="Nov Matake">
     
-	<meta name="description" content="Published on: Jul 4th, 2010 Tags: 日本のWeb Developer向けに、OAuthに関する情報を発信するコミュニティブログのような存在にしていきたいと思っています。 ご協力いただける方を大募集中！ぜひinfo@oauth.jpか@ &hellip;">
+	<meta name="description" content="Covert Redirect 連載最後は、location.href とか &lt;meta http-equiv=&ldquo;Refresh&rdquo;&gt; とかだと referrer 漏れるかもね！ってお話です。 古いサイトですが、こことか見れば大体いいんじゃないでしょうか => &hellip;">
 	
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
@@ -84,101 +84,53 @@
 <div id="toload">
 <!-- begin toload --> 
     <div id="content" class="inner">
-        
+        <article class="post">
+	<h2 class="title">Covert Redirect と 30x 意外のリダイレクト方法</h2>
+	<div class="entry-content"><p>Covert Redirect 連載最後は、location.href とか &lt;meta http-equiv=&ldquo;Refresh&rdquo;&gt; とかだと referrer 漏れるかもね！ってお話です。</p>
+
+<p>古いサイトですが、こことか見れば大体いいんじゃないでしょうか => <a href="http://www.teria.com/~koseki/memo/referrer/">リファラ実験</a></p>
+
+<p>で、こういうリダイレクトをしてる箇所が OAuth 2.0 の redirect_uri なり OpenID 2.0 の return_to なりに指定されていれば、query に付いた code なり email なりがリファラ経由で外部に漏れるよね、という。</p>
+
+<p>はい、漏れますね！ (投げやり</p>
+
+<p>さて、そんなに該当例多くはないと思うのですが、ここまで該当してしまったサービスは、どうしますかねぇ&hellip;</p>
+
+<p>Facebook であれば、<a href="/blog/2014/05/08/facebook-login-and-covert-redirect/">Facebook Login で Covert Redirect を防止する</a>にあるような方法で回避できますが、それ以外の OAuth Provider なり OpenID 2.0 Provider と連携してる場合は、困っちゃいますねぇ&hellip;</p>
+
+<!-- more -->
 
 
-    <article class="post">
-	<h2 class="title">
-		
-		<a href="/blog/2010/07/04/oauthjp/">
-		
-			OAuth.jpを立ち上げました</a>
-	</h2>
-    <div class="entry-content">
-    <div class="meta">
-      <div class="date">Published on: 
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2010-07-04T00:00:00+09:00" pubdate data-updated="true">Jul 4<span>th</span>, 2010</time></div>
-      <div class="tags">Tags: 
-
+<p>リダイレクト方法変えろ、って意外の回避策を思いついたら、この下に書きます。</p>
 </div>
-    </div>
-		<p>日本のWeb Developer向けに、OAuthに関する情報を発信するコミュニティブログのような存在にしていきたいと思っています。</p>
-
-<p>ご協力いただける方を大募集中！ぜひinfo@oauth.jpか@oauthjp宛にご連絡くださいm<em> </em>m</p>
-
-		
-		
-	</div>
 
 <div class="meta">
 	
 </div>
 </article>
 
-
-    <article class="post">
-	<h2 class="title">
-		
-		<a href="/blog/2010/07/04/githuborganization/">
-		
-			GithubにOrganizationアカウントを作成</a>
-	</h2>
-    <div class="entry-content">
-    <div class="meta">
-      <div class="date">Published on: 
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2010-07-04T00:00:00+09:00" pubdate data-updated="true">Jul 4<span>th</span>, 2010</time></div>
-      <div class="tags">Tags: 
-
-</div>
-    </div>
-		<p>つい先日Githubがリリースした「Organization」アカウントを、OAuth.jp用に用意しました。</p>
-
-<p><a href="http://github.com/oauthjp">http://github.com/oauthjp</a></p>
-
-<p>今はRuby/Railsまわりのライブラリと、OpenID Foundation Japanの翻訳プロジェクトで翻訳したOAuth1.0仕様の翻訳版、および過去にgihyo.jpでOAuthの記事を書いた時に作ったOAuthのサンプルConsumer&amp;Serverをforkしてきています。</p>
-
-<p>GithubのOrganizationアカウントは￼、Organization参加者の個人アカウントでそれぞれOrganizationのメンバー／管理者として活動できて、個人アカウントのDashboardに以下のように「Switch Context」というメニューが出てきて、参加しているOrganizationと個人アカウントのDashboardを行き来できます。</p>
-
-<p>ちなみにいまforkしてきているコードは完全にRuby一色なので、ぜひ他の言語でもライブラリやサンプルなんかを集めたいところ。協力者募集中です！</p>
-
-		
-		
-	</div>
-
-<div class="meta">
+	<div class="share">
+	<div class="addthis_toolbox addthis_default_style ">
 	
+	<a class="addthis_button_facebook_like" fb:like:layout="button_count"></a>
+	
+	
+	<a class="addthis_button_tweet"></a>
+	
+	
+	<a class="addthis_button_google_plusone" g:plusone:size="medium"></a>
+	
+	</div>
+  <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid="></script>
 </div>
-</article>
 
-<nav id="pagenavi">
-    
-        <a href="/blog/page/13/" class="prev">Prev</a>
-    
-    
-    <div class="center"><a href="/blog/archives">Blog Archives</a></div>
-</nav>
+
+
+<section id="comment">
+    <h2 class="title">Comments</h2>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+</section>
 
     </div>
     <footer id="footer">
@@ -205,7 +157,10 @@
       var disqus_shortname = 'oauthjp';
       
         
-        var disqus_script = 'count.js';
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://oauthjp.github.io/blog/2014/05/08/covert-redirect-and-non-30x-redirects/';
+        var disqus_url = 'http://oauthjp.github.io/blog/2014/05/08/covert-redirect-and-non-30x-redirects/';
+        var disqus_script = 'embed.js';
       
     (function () {
       var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
