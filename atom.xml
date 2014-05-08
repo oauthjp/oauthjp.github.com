@@ -4,7 +4,7 @@
   <title><![CDATA[OAuth.jp]]></title>
   <link href="http://oauthjp.github.io/atom.xml" rel="self"/>
   <link href="http://oauthjp.github.io/"/>
-  <updated>2014-05-08T12:55:38+09:00</updated>
+  <updated>2014-05-08T13:00:39+09:00</updated>
   <id>http://oauthjp.github.io/</id>
   <author>
     <name><![CDATA[Nov Matake]]></name>
@@ -124,6 +124,8 @@
 <p>まず query を全部引き継いでリダイレクトするのやめましょう。いや、そもそもみなさんはそんなことしてないと思いますけど。</p>
 
 <p>RP Discovery は、まぁ頑張ってやってみてもいいかもしれないけど、結構複雑なのであまり気軽に実装できる気はしません。</p>
+
+<p>&hellip;懐かしかったですね。</p>
 ]]></content>
   </entry>
   
