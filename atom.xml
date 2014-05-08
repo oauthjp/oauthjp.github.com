@@ -4,7 +4,7 @@
   <title><![CDATA[OAuth.jp]]></title>
   <link href="http://oauthjp.github.io/atom.xml" rel="self"/>
   <link href="http://oauthjp.github.io/"/>
-  <updated>2014-05-08T16:08:58+09:00</updated>
+  <updated>2014-05-08T16:09:39+09:00</updated>
   <id>http://oauthjp.github.io/</id>
   <author>
     <name><![CDATA[Nov Matake]]></name>
@@ -14,7 +14,7 @@
 
   
   <entry>
-    <title type="html"><![CDATA[Covert Redirect と 30x 意外のリダイレクト方法]]></title>
+    <title type="html"><![CDATA[Covert Redirect と 30x 以外のリダイレクト方法]]></title>
     <link href="http://oauthjp.github.io/blog/2014/05/08/covert-redirect-and-non-30x-redirects/"/>
     <updated>2014-05-08T15:47:00+09:00</updated>
     <id>http://oauthjp.github.io/blog/2014/05/08/covert-redirect-and-non-30x-redirects</id>
