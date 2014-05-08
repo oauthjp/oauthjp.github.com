@@ -100,7 +100,10 @@
 
 <p>なので、open redirector のリダイレクト先には、通常はレスポンスパラメータは渡りません。</p>
 
-<p>全ての query パラメータをリダイレクト先に引き継いでしまうという、奇妙な open redirector を用意してる場合にのみ問題が発生します。</p>
+<p>全ての query パラメータをリダイレクト先に引き継いでしまうという、奇妙な open redirector を用意してる場合にのみレスポンスパラメータが外部に漏洩します。</p>
+
+<!-- more -->
+
 
 <h3>RP Discovery ってのがあってだな</h3>
 
@@ -120,7 +123,60 @@
 
 <h3>RP Discovery ってのがあってだな (part 2)</h3>
 
-<p>TODO: 徐々に書く。</p>
+<p>まぁ既に RP Discovery についての記述を読んだみなさんには釈迦に説法、ネコに小判ですか？あれですね、日本語難しいですね。</p>
+
+<p>まぁあれです、OpenID 2.0 の仕様だけで RP Discovery 理解しろとかムリゲーな気がします。Yadis ってのがあってだな&hellip;いや、やめよう。</p>
+
+<p>実際に、これまた懐かしの iKnow! を例に、RP Discovery ってのを概観してみましょう。</p>
+
+<p>まず iKnow! に OpenID でログインする際のリクエストパラメータを眺めると、&#8221;openid.realm=<a href="https://*.iknow.jp/open_ids">https://*.iknow.jp/open_ids</a>&#8221; ってのが含まれてるのが分かるかと思います。</p>
+
+<p>iKnow! はちょっとレアケースで、サブドメインを許可する為に &ldquo;<em>.iknow.jp&rdquo; になってますが、そういう場合は &ldquo;</em>&rdquo; を &ldquo;www&rdquo; に置き換えて &ldquo;<a href="https://www.iknow.jp/open_ids">https://www.iknow.jp/open_ids</a>&rdquo; にアクセスします。</p>
+
+<script src="https://gist.github.com/nov/c702782baa98c75702dc.js"></script>
+
+
+<p>で、このレスポンスヘッダに注目です。</p>
+
+<pre>X-XRDS-Location: https://iknow.jp/discovery.xrds</pre>
+
+
+<p>XRDS ってのがありますね。これが、RP の metadata が記述されたドキュメントです。</p>
+
+<p>で、今度はこの XRDS endpoint にアクセスします。</p>
+
+<script src="https://gist.github.com/nov/b6173c3195fa49e1c668.js"></script>
+
+
+<p>はい、return_to が指定されてますね。</p>
+
+<pre>&lt;Service priority="0"&gt;
+  &lt;Type>http://specs.openid.net/auth/2.0/return_to&lt;/Type&gt;
+  &lt;URI>https://iknow.jp/open_ids?_method=GET&lt;/URI&gt;
+&lt;/Service&gt;</pre>
+
+
+<p>で、RP Discovery をサポートしてる OP は、RP の realm にアクセスしてみて、レスポンスヘッダに &ldquo;X-XRDS-Location&rdquo; ってのがあれば、return_to の検証を行う、ってのが一般的な実装かと思います。</p>
+
+<h3>RP Discovery って必要なの？</h3>
+
+<p>大概の OP では不要です。</p>
+
+<p>てか RP 側の人たちはこれほとんど知らんかったんじゃないかと。</p>
+
+<p>噂によると一部 OP では RP Discovery が必須なやつもいるらしいですが、Gooogle, Yahoo! Japan, mixi はじめ、ほぼ全ての主要 OP では RP Discovery は OPTIONAL です。</p>
+
+<p>また XRDS 中の return_to に指定されている URL とリクエストパラメータに含まれる return_to のマッチングルールも、完全一致だったり部分一致だったりは OP ごとに違うようです。</p>
+
+<p>さらには RP 側が &ldquo;X-XRDS-Location&rdquo; を返さない限り、OP 側では RP Discovery をスキップします。</p>
+
+<p>よって、RP Discovery を実装していない RP に open redirector が存在する場合は、それが悪用されるケースはあり得ます。(まぁこの記事の先頭で紹介した発生条件を満たす open redirector が存在するケースは稀ですが)</p>
+
+<h3>対策</h3>
+
+<p>まず query を全部引き継いでリダイレクトするのやめましょう。いや、そもそもみなさんはそんなことしてないと思いますけど。</p>
+
+<p>RP Discovery は、まぁ頑張ってやってみてもいいかもしれないけど、結構複雑なのであまり気軽に実装できる気はしません。</p>
 </div>
 
 <div class="meta">
