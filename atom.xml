@@ -4,7 +4,7 @@
   <title><![CDATA[OAuth.jp]]></title>
   <link href="http://oauthjp.github.io/atom.xml" rel="self"/>
   <link href="http://oauthjp.github.io/"/>
-  <updated>2014-05-08T12:47:37+09:00</updated>
+  <updated>2014-05-08T12:50:54+09:00</updated>
   <id>http://oauthjp.github.io/</id>
   <author>
     <name><![CDATA[Nov Matake]]></name>
@@ -178,7 +178,7 @@
 
 <p>mixi と楽天の OAuth 2.0 実装は、そもそも Implicit Flow サポートしてません。</p>
 
-<p><a href="http://oauthjp.github.io/blog/2014/05/08/covert-redirect-and-openid-2-dot-0">ただ各社とも OpenID 2.0 実装に関しては、問題あるかもです</a>。</p>
+<p><a href="http://oauthjp.github.io/blog/2014/05/08/covert-redirect-and-openid-2-dot-0">OpenID 2.0 実装に関しては、別記事にまとめました</a>。</p>
 
 <h3>攻撃パターン</h3>
 
