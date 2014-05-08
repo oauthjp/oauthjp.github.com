@@ -106,7 +106,7 @@
 
 <p>試しに <a href="http://www.idcon.org/#foobar">http://www.idcon.org/#foobar</a> にアクセスすると、<a href="http://idcon.org/#foobar">http://idcon.org/#foobar</a> にリダイレクトされるかと思います。</p>
 
-<p>www.idcon.org のサーバーには <strong>#foobar</strong> の部分は送られませんが、<a href="http://idcon.org/">http://idcon.org/</a> に load される client-side の JS からは、#foobar** にアクセスできます。</p>
+<p>www.idcon.org のサーバーには <strong>#foobar</strong> の部分は送られませんが、<a href="http://idcon.org/">http://idcon.org/</a> に load される client-side の JS からは、<strong>#foobar</strong> にアクセスできます。</p>
 
 <p>なので、Covert Redirect のケースでも、open redirector をつかって最終的に被害者がリダイレクトしてくる endpoint に攻撃者が JS を仕込んでそれを自分のサーバーにでも送るようにしておけば、<strong>access token が漏洩します</strong>。</p>
 
