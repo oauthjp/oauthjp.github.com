@@ -4,7 +4,7 @@
   <title><![CDATA[OAuth.jp]]></title>
   <link href="http://oauthjp.github.io/atom.xml" rel="self"/>
   <link href="http://oauthjp.github.io/"/>
-  <updated>2014-05-08T11:19:39+09:00</updated>
+  <updated>2014-05-08T11:53:40+09:00</updated>
   <id>http://oauthjp.github.io/</id>
   <author>
     <name><![CDATA[Nov Matake]]></name>
@@ -19,6 +19,38 @@
     <updated>2014-05-08T10:57:00+09:00</updated>
     <id>http://oauthjp.github.io/blog/2014/05/08/covert-redirect-and-openid-2-dot-0</id>
     <content type="html"><![CDATA[<p>さて、<a href="http://oauthjp.github.io/blog/2014/05/07/covert-redirect-in-implicit-flow/">OAuth 2.0 &amp; OpenID Connect における Covert Redirect の問題</a> についてはまとめたので、次は OpenID 2.0 についてです。</p>
+
+<p>いいですか、OpenID Connect ではなく、OpenID 2.0 ですよ。古い方です。懐かしいですね、<a href="http://openid.net/specs/openid-authentication-2_0.html">OpenID Authentication 2.0 &ndash; Final</a>。</p>
+
+<p>そういえば、OpenID Foundation Japan の翻訳 WG を立ち上げて、一番最初に翻訳したのが <a href="http://openid-foundation-japan.github.io/openid-authentication.html">OpenID Authentication 2.0 の 日本語訳</a>でしたね&hellip;(遠い目</p>
+
+<p>と、昔話はそれくらいにして、本題に入りましょう。</p>
+
+<h3>まずは Covert Redirect 発生条件について</h3>
+
+<p>OpenID 2.0 では、レスポンスパラメータは query に引っ付いてきます。fragment は使いません。</p>
+
+<p>なので、open redirector のリダイレクト先には、通常はレスポンスパラメータは渡りません。</p>
+
+<p>全ての query パラメータをリダイレクト先に引き継いでしまうという、奇妙な open redirector を用意してる場合にのみ問題が発生します。</p>
+
+<h3>RP Discovery ってのがあってだな</h3>
+
+<p>さて、OpenID 2.0 には、<a href="http://openid.net/specs/openid-authentication-2_0.html#rp_discovery">RP Discovery というものが定義されていた</a> (<a href="http://openid-foundation-japan.github.io/openid-authentication.html#rp_discovery">翻訳版はこちら</a>) のを、おぼろげに覚えている方もおられるのではないでしょうか？</p>
+
+<p>え、そんなの聞いた事が無い？えぇ、そうだと思ってこの記事書いてんですよ (キリッ</p>
+
+<p>OpenID 2.0 は OAuth とちがって、通常 RP (Relying Party: OAuth 2.0 用語では Client と呼ばれるやつ) が OP (OpenID Provider: OAuth 2.0 の Server 相当) に対して事前登録を行うことはありません。</p>
+
+<p>OP と RP の間では、動的に association というものを確立します。association って何？って人には、「最初に Temporary な共有秘密鍵をする」って言っちゃえばいいですかね。</p>
+
+<p>association が確立されると、RP は各種リクエストパラメータと共に return_to (OAuth 2.0 の redirect_uri 相当) ってのを指定して、ユーザーを OP にリダイレクトさせます。</p>
+
+<p>で、OP はユーザー認証とか同意取得とか OAuth と似たようなことしてから、最終的に各種レスポンスパラメータを添えてユーザーを指定された RP の return_to にリダイレクトして戻します。</p>
+
+<p>で、ここまでが全部 dynamic なんで、事前登録された return_to との完全一致、なんてことがそもそもありえないんです。</p>
+
+<h3>RP Discovery ってのがあってだな (part 2)</h3>
 
 <p>TODO: 徐々に書く。</p>
 ]]></content>
