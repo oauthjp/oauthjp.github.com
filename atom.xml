@@ -4,7 +4,7 @@
   <title><![CDATA[OAuth.jp]]></title>
   <link href="http://oauthjp.github.io/atom.xml" rel="self"/>
   <link href="http://oauthjp.github.io/"/>
-  <updated>2014-05-09T11:07:46+09:00</updated>
+  <updated>2014-05-09T11:08:31+09:00</updated>
   <id>http://oauthjp.github.io/</id>
   <author>
     <name><![CDATA[Nov Matake]]></name>
@@ -24,7 +24,7 @@
 
 <p>で、今回の内容は<strong>「code が漏れたら何がまずいのか」</strong>についてです。</p>
 
-<h3>code は漏れても大丈夫説</h3>
+<h3>「code は漏れても大丈夫」説</h3>
 
 <p><a href="http://www.openid.or.jp/blog/2014/05/covert-redirect-and-its-real-impact-on-oauth-and-openid-connect.html">「Covert Redirect」についての John Bradley 氏の解説（追記あり）</a>にも、こうありましたね。</p>
 
