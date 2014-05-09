@@ -4,7 +4,7 @@
   <title><![CDATA[OAuth.jp]]></title>
   <link href="http://oauthjp.github.io/atom.xml" rel="self"/>
   <link href="http://oauthjp.github.io/"/>
-  <updated>2014-05-09T11:14:52+09:00</updated>
+  <updated>2014-05-09T11:16:50+09:00</updated>
   <id>http://oauthjp.github.io/</id>
   <author>
     <name><![CDATA[Nov Matake]]></name>
@@ -142,7 +142,9 @@ Host: client.example.com
 
 <p>OAuth Client がちゃんと実装するしかありません。</p>
 
-<p>ちゃんとしましょう。</p>
+<p>open redirector だらけで state パラメータもまともに使っていないような OAuth Client なんて、もう救いようが&hellip;(ry</p>
+
+<p>まぁ、みんなちゃんとしましょう。</p>
 
 <p>※1「Token 置換攻撃」については、これまでもたびたび書いてきたので、これらの記事をどうぞ。</p>
 
