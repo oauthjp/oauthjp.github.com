@@ -92,7 +92,7 @@
 
 <p>細かく訂正いれてると分けわかんなくなってきたんで、<a href="/blog/2014/05/07/covert-redirect-in-implicit-flow/">新しい記事書きました</a>。</p>
 
-<p><s>ゴールデンウィークまっただなかに Twitter で海外の ID 厨から袋だたきにあってたので、もうこの問題は片付いただろうとすっかり油断してた「Covert Redirect」の件ですが、日本でもゴールデンウィーク明けてバズりだしたので、一旦問題を整理した方がよさそうですね。</p>
+<p>ゴールデンウィークまっただなかに Twitter で海外の ID 厨から袋だたきにあってたので、もうこの問題は片付いただろうとすっかり油断してた「Covert Redirect」の件ですが、日本でもゴールデンウィーク明けてバズりだしたので、一旦問題を整理した方がよさそうですね。</p>
 
 <h3>事の発端</h3>
 
@@ -112,12 +112,12 @@
 
 <p>OAuth 愛好家の間で &ldquo;OAuth Dance&rdquo; なんて呼ばれてるアレですね。</p>
 
-<p>で、今回の話は、その <strong>&ldquo;OAuth Dance&rdquo; 中の話</strong> です。</s></p>
+<p>で、今回の話は、その <strong>&ldquo;OAuth Dance&rdquo; 中の話</strong> です。</p>
 
 <!-- more -->
 
 
-<p><s>### Covert Redirect てなんだ？</p>
+<h3>Covert Redirect てなんだ？</h3>
 
 <p>Server 側の同意画面で同意ボタンを押すと、Client にリダイレクトして戻って来る。</p>
 
@@ -151,7 +151,7 @@
 
 <h3>で、どれくらいヤバいの？</h3>
 
-<p>実際の影響については、OpenID Connect の仕様策定者の一人でもある <a href="http://www.thread-safe.com/2014/05/covert-redirect-and-its-real-impact-on.html">John Bradley さんが記事書いてる</a>ので、まぁそれを読んでください。</p>
+<p><s>実際の影響については、OpenID Connect の仕様策定者の一人でもある <a href="http://www.thread-safe.com/2014/05/covert-redirect-and-its-real-impact-on.html">John Bradley さんが記事書いてる</a>ので、まぁそれを読んでください。</p>
 
 <p>ほんとはちゃんとこれ訳そうと思ったんですが、<a href="http://www.openid.or.jp/blog/2014/05/covert-redirect-and-its-real-impact-on-oauth-and-openid-connect.html">OpenID Foundation Japan から翻訳版</a>まで出たので、もういんじゃね？って空気を感じています。</p>
 
@@ -163,7 +163,7 @@
 
 <p><em>え？？漏れないの？？発見でもないの？？</em></p>
 
-<p><em>シンガポールウソばっかなの？？</em></p>
+<p><em>シンガポールウソばっかなの？？</em></s></p>
 
 <h3>ちょっとヤバいかも (?) なケース</h3>
 
@@ -179,7 +179,7 @@
 
 <h3>結論</h3>
 
-<p>Covert Redirect によって <strong>access token 漏れるとか、そんな心配は無い</strong>。</p>
+<p><s>Covert Redirect によって <strong>access token 漏れるとか、そんな心配は無い</strong>。</s></p>
 
 <p>ただし悪用される open redirector の実装によっては、<strong>code は漏れることもあり得る</strong>。</p>
 
@@ -193,7 +193,7 @@
 
 <p>以上、仕事に戻ります (>_&lt;)></p>
 
-<p><em>ほんとゴールデンウィーク明け初日から&hellip;</em></s></p>
+<p><em>ほんとゴールデンウィーク明け初日から&hellip;</em></p>
 </div>
 
 <div class="meta">

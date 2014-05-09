@@ -6,7 +6,7 @@
 	<title>OAuth.jp</title>
     <meta name="author" content="Nov Matake">
     
-	<meta name="description" content=" Published on: Mar 11th, 2012 Tags: ">
+	<meta name="description" content="Published on: Mar 11th, 2012 Tags: response_type=code tokenとかあるので仕様曖昧だよな～と思っていたのですが、普通に書いてありました。 A client application consisting of multiple &hellip;">
 	
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
@@ -85,6 +85,66 @@
 <!-- begin toload --> 
     <div id="content" class="inner">
         
+
+
+    <article class="post">
+	<h2 class="title">
+		
+		<a href="/blog/2012/03/11/response-type-code/">
+		
+			OAuth 2.0でユーザーが認可をする”アプリケーション”とはサービス全体のことではない - R-weblife</a>
+	</h2>
+    <div class="entry-content">
+    <div class="meta">
+      <div class="date">Published on: 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-03-11T00:00:00+09:00" pubdate data-updated="true">Mar 11<span>th</span>, 2012</time></div>
+      <div class="tags">Tags: 
+
+</div>
+    </div>
+		<blockquote><p>response_type=code tokenとかあるので仕様曖昧だよな～と思っていたのですが、普通に書いてありました。</p>
+
+<p>A client application consisting of multiple components, each with its
+own client type (e.g. a distributed client with both a confidential
+server-based component and a public browser-based component), MUST
+register each component separately as a different client to ensure
+proper handling by the authorization server.</p>
+
+<p>Clientはユーザーに代わって保護リソースにアクセスするアプリケーション。
+Client Typesとして、秘密鍵を安全に管理できるconfidential、クライアントサイドで動いて管理できないのはpublic。
+ConfidentialならAuthZ Code, PublicなのはImplicit使え。
+サーバーサイドとクライアントサイドの両方のComponentから構成されている場合、別々で登録しろ！</p></blockquote>
+
+
+<p>&#8212;<p><a href="http://d.hatena.ne.jp/ritou/20120311/1331444771">OAuth 2.0でユーザーが認可をする”アプリケーション”とはサービス全体のことではない &ndash; r-weblife</a></p></p>
+
+<p>で、そういう状況でどうやって効率的に同意を取るかは、AuthZ Serverの実装依存、か。。。</p>
+
+
+
+
+<p>(via <a href="http://kyomichi.tumblr.com/" class="tumblr_blog">kyomichi</a>)</p>
+
+
+		
+		
+	</div>
+
+<div class="meta">
+	
+</div>
+</article>
 
 
     <article class="post">
@@ -253,47 +313,6 @@
 
 <p>(via <a href="http://tkudo.tumblr.com/" class="tumblr_blog">tkudo</a>)</p>
 
-
-		
-		
-	</div>
-
-<div class="meta">
-	
-</div>
-</article>
-
-
-    <article class="post">
-	<h2 class="title">
-		
-		<a href="/blog/2012/03/04/here-is-a-table-that-describes-this-relationship/">
-		
-			Here Is a Table That Describes This Relationship in OpenID Connect When Scope Includes “openid”.</a>
-	</h2>
-    <div class="entry-content">
-    <div class="meta">
-      <div class="date">Published on: 
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-03-04T00:00:00+09:00" pubdate data-updated="true">Mar 4<span>th</span>, 2012</time></div>
-      <div class="tags">Tags: 
-
-</div>
-    </div>
-		<blockquote>Here is a table that describes this relationship in OpenID Connect when scope includes “openid”.</blockquote>
-
-
-<p>&#8212;<a href="http://nat.sakimura.org/2012/02/22/the-relationship-between-endpoint-responses-and-response_type-scope-pair/">The relationship between endpoint responses and response_type, scope pair&#160;: =nat</a></p>
 
 		
 		
