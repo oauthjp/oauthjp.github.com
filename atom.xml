@@ -4,7 +4,7 @@
   <title><![CDATA[OAuth.jp]]></title>
   <link href="http://oauthjp.github.io/atom.xml" rel="self"/>
   <link href="http://oauthjp.github.io/"/>
-  <updated>2014-05-09T11:06:45+09:00</updated>
+  <updated>2014-05-09T11:07:46+09:00</updated>
   <id>http://oauthjp.github.io/</id>
   <author>
     <name><![CDATA[Nov Matake]]></name>
@@ -14,7 +14,7 @@
 
   
   <entry>
-    <title type="html"><![CDATA[OAuth 2.0 - code が漏れた後の話をしよう]]></title>
+    <title type="html"><![CDATA[OAuth 2.0 の code は漏れても大丈夫ってホント!?]]></title>
     <link href="http://oauthjp.github.io/blog/2014/05/09/what-happens-when-oauth2-code-leaked/"/>
     <updated>2014-05-09T09:59:00+09:00</updated>
     <id>http://oauthjp.github.io/blog/2014/05/09/what-happens-when-oauth2-code-leaked</id>
