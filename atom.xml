@@ -4,7 +4,7 @@
   <title><![CDATA[OAuth.jp]]></title>
   <link href="http://oauthjp.github.io/atom.xml" rel="self"/>
   <link href="http://oauthjp.github.io/"/>
-  <updated>2014-05-09T11:16:50+09:00</updated>
+  <updated>2014-05-09T14:01:31+09:00</updated>
   <id>http://oauthjp.github.io/</id>
   <author>
     <name><![CDATA[Nov Matake]]></name>
@@ -112,6 +112,10 @@ Host: client.example.com
 
 
 <p>なんて悠長なことは、言ってられませんね。</p>
+
+<h4>[捕捉]</h4>
+
+<p>なお、code &lt;&ndash;> token 交換時には redirect_uri を Token Endpoint に送ることになるので、ここで Server 側がちゃんと code 発行時の redirect_uri とここで送られて来る redirect_uri を exact match で検証していれば、Step1 でエラーになってこの攻撃は成立しないはずです。(各 OAuth Server のこの部分の実装がちゃんとしてるかは未調査)</p>
 
 <h3>対策方法</h3>
 
