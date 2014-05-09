@@ -4,7 +4,7 @@
   <title><![CDATA[OAuth.jp]]></title>
   <link href="http://oauthjp.github.io/atom.xml" rel="self"/>
   <link href="http://oauthjp.github.io/"/>
-  <updated>2014-05-09T11:08:31+09:00</updated>
+  <updated>2014-05-09T11:09:34+09:00</updated>
   <id>http://oauthjp.github.io/</id>
   <author>
     <name><![CDATA[Nov Matake]]></name>
@@ -54,7 +54,11 @@ OAuth と OpenID Connect には複数の response_type があるんだけど、�
 <h4>[OAuth Client 実装者視点での答え]</h4>
 
 <blockquote>
-え？俺ちゃんと仕様に沿って実装できてんの？&#8230;まぁ動いてるしできてる、よね！？それに万が一 code 漏れても、うちに被害及ぶってより OAuth Server に被害及ぶはずやし、OAuth Server がちゃんと対策してれば、まぁなんとかなるよね？
+え？俺ちゃんと仕様に沿って実装できてんの？
+
+&#8230;まぁ動いてるしできてる、よね！？
+
+それに万が一 code 漏れても、うちに被害及ぶってより OAuth Server に被害及ぶはずやし、OAuth Server がちゃんと対策してれば、まぁなんとかなるよね？
 </blockquote>
 
 
