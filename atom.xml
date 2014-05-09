@@ -4,7 +4,7 @@
   <title><![CDATA[OAuth.jp]]></title>
   <link href="http://oauthjp.github.io/atom.xml" rel="self"/>
   <link href="http://oauthjp.github.io/"/>
-  <updated>2014-05-09T11:10:03+09:00</updated>
+  <updated>2014-05-09T11:13:19+09:00</updated>
   <id>http://oauthjp.github.io/</id>
   <author>
     <name><![CDATA[Nov Matake]]></name>
@@ -62,7 +62,7 @@ OAuth と OpenID Connect には複数の response_type があるんだけど、�
 </blockquote>
 
 
-<p><strong>ゆとりか！</strong></p>
+<p><strong>ゆとりか！(｀ヘ´#)</strong></p>
 
 <p>OAuth Client 実装者がこういう考えだと、一瞬でやられちゃいそうですねぇ。</p>
 
@@ -73,7 +73,7 @@ OAuth と OpenID Connect には複数の response_type があるんだけど、�
 
 <h3>前提条件</h3>
 
-<p>あなたのサイトは「Facebook ID でログイン」できるようになっています。Facebook の代わりに GitHub や LinkedIn の ID でもいいです。</p>
+<p>あなたのサイトは「Facebook ID でログイン」できるようになっています。(ちなみにここでは一番世に広まっている Facebook を挙げますが、問題の本質は Facebook に限定された話ではないので、ID Provider が GitHub や LinkedIn な場合でも同様です)</p>
 
 <p>あなたのサイトからは client secret は漏れていませんし、Implicit Flow も使ってないので、「Token 置換攻撃 ※1」は受けません。</p>
 
