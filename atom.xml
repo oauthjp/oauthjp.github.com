@@ -4,7 +4,7 @@
   <title><![CDATA[OAuth.jp]]></title>
   <link href="http://oauthjp.github.io/atom.xml" rel="self"/>
   <link href="http://oauthjp.github.io/"/>
-  <updated>2014-05-09T14:51:13+09:00</updated>
+  <updated>2014-06-23T11:33:49+09:00</updated>
   <id>http://oauthjp.github.io/</id>
   <author>
     <name><![CDATA[Nov Matake]]></name>
@@ -12,6 +12,67 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Twitter Login にも CSRF 脆弱性ができやすい罠が!?]]></title>
+    <link href="http://oauthjp.github.io/blog/2014/06/23/csrf-on-twitter-login/"/>
+    <updated>2014-06-23T10:46:00+09:00</updated>
+    <id>http://oauthjp.github.io/blog/2014/06/23/csrf-on-twitter-login</id>
+    <content type="html"><![CDATA[<p>OAuth 2.0 では state パラメータってのがあって、それをちゃんと使わないと CSRF 脆弱性ができちゃうよって話は、<a href="http://www.slideshare.net/ritou/idcon17-oauth2-csrfprotectionritou">@ritou 先生のスライド</a>などでみなさん勉強したんではないでしょうか。state パラメータは RFC 6749 では RECOMMENDED 扱いで、REQUIRED ではありませんが、OAuth 2.0 をログインに使う場合は REQUIRED にすべきでしょう。OAuth 2.0 をログインに使うの、Token 置換攻撃とか Covert Redirect + Code 置換攻撃とか、いろんな罠がありますねぇ〜。</p>
+
+<p>OAuth 1.0 ならそんなことないのに&hellip;</p>
+
+<p>そう思ってた時期が、僕にもありました。</p>
+
+<p>でも @ritou 先生よく言ってるじゃないですか。「Twitter の OAuth 実装クソや」って。でね、ほんとにクソやったんすよ、コレが。</p>
+
+<!-- more -->
+
+
+<p>さて、Developer の皆様におかれましては、もうずいぶん「Twitter ID でログイン」の実装なんて放置してて詳細忘れ去ってるころかと思いますので、まずは OAuth 1.0 の Access Token 取得までのフローを復習しましょう。</p>
+
+<p><img src="http://oauthjp.github.io/images/posts/oauth1_flow.png" alt="OAuth 1.0 Flow" /></p>
+
+<p>思い出しましたか？</p>
+
+<p>思い出せない方には<a href="http://openid-foundation-japan.github.io/rfc5849.ja.html">仕様を読み直していただく</a>として、先に進みましょう。</p>
+
+<p>OAuth 1.0 には Request Token + Request Token Secret というのがありました。RFC 5849 では Temporary Credentials とか言われたりもしますが、Request Token という呼び名の方が一般的でしょう。</p>
+
+<p>で、この Request Token Secret、Access Token 取得時のリクエストに署名するために必要になります。「Consumer Secret と Request Token Secret の2つを連結させたものを HMAC 鍵として利用する」って、習いましたよね？</p>
+
+<p>で、一般的にはこの Request Token Secret を Session と紐づけて保存すると思うんですが、これが認可レスポンスが返される箇所 (Callback URL) への CSRF 対策として作用していたんです。</p>
+
+<p>認可リクエストを送った Browser と認可レスポンスを返してきた Browser が異なれば、当然認可レスポンスを返してきたブラウザでは Session と紐づく Request Token Secret が取得できないので、Access Token が取得できない。よって CSRF 対策ができている。</p>
+
+<p><strong>が、ここで罠があるんです。</strong></p>
+
+<p>実は Twitter は、Access Token 取得時のリクエストの署名に、<strong>Request Token Secret を使わなくてもいい</strong>んです。なので Session に紐づいた Request Token Secret が空の場合にそれをそのまま空文字列として処理してしまう RP は、<strong>正常に Access Token を受け取れてしまいます</strong>。</p>
+
+<p>つまり、攻撃者が被害者にこんな URL を踏ませると、被害者は攻撃者の Twitter アカウントを使ってあなたのサイトにログインできてしまう可能性があるのです。</p>
+
+<pre>
+https://client.example.com/callback?
+  oauth_token=&lt;request-token-authorized-by-attacker&gt;&
+  oauth_verifier=&lt;valid-oauth-verifier&gt;
+</pre>
+
+
+<p>このパターン、すでにいくつかの「Twitter ID でログイン」を実装してるサイトでは確認してます。</p>
+
+<p>この脆弱性によるリスクは <a href="http://www.slideshare.net/ritou/idcon17-oauth2-csrfprotectionritou">@ritou 先生のスライド</a> に書いてあるのでそちらにゆずります。</p>
+
+<p>ちなみに Twitter 側はこのバグは認識してるらしいのですが、直すと多くのサイトが動かなくなるのも把握しているのか、修正できないでいるようで、みなさんが個別に対策するしかないわけです。</p>
+
+<p>とりあえず <strong>Session に紐づいた Request Token Secret が無かったら、エラーにしちゃえば OK</strong> です。</p>
+
+<p>そもそも Request Token Secret が Session に紐づいてなかったり、Request Token Secret 一切使ってないなんて人は、アウトです。まぁいまから再び Twitter ID でログインとか自分で実装するよりは、人気のライブラリ探した方が良いでしょう。Rails だといまでも omniauth-twitter とかが人気なんでしょうか。</p>
+
+<p>ちなみに omniauth-twitter (というか omniauth-oauth) は Callback URL で Session に Request Token Secret が入ってなければエラーになるので Safe です。Gunosy とか Doorkeeper は omniauth-twitter 使ってるのか、Safe でした。</p>
+
+<p>そういや最近<a href="https://twitter.com/TSJ2010">日本ツイッター学会</a>って何してんすかね？</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[OAuth 2.0 の code は漏れても大丈夫ってホント!?]]></title>
@@ -1359,81 +1420,6 @@ sessionをserver-sideで管理するようにさえすれば、この問題は�
 
 
 <p><a href="https://developers.facebook.com/docs/howtos/login/debugging-access-tokens/">Debugging Access Tokens and Handling Errors</a></p>
-
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Hello OAuth 2.0, Good-bye OAuth 1.0!]]></title>
-    <link href="http://oauthjp.github.io/blog/2012/10/13/hello-oauth-20-good-bye-oauth-10/"/>
-    <updated>2012-10-13T00:00:00+09:00</updated>
-    <id>http://oauthjp.github.io/blog/2012/10/13/hello-oauth-20-good-bye-oauth-10</id>
-    <content type="html"><![CDATA[<p>おっす、おらOAuthおにーさん！</p>
-
-
-<h3>ついにOAuth 2.0 CoreとBearerがそれぞれRFCに！！！</h3>
-
-
-<p><a href="http://tools.ietf.org/html/rfc6749">RFC 6749 - The OAuth 2.0 Authorization Framework</a></p>
-
-
-<p><a href="http://tools.ietf.org/html/rfc6750">RFC 6750 - The OAuth 2.0 Authorization Framework: Bearer Token Usage</a></p>
-
-
-<p>このブログができたころには既にOAuth 2.0のdraftが出てたのですが、そういえばOAuth.jpっていつできたんだっけ？と思ってみて見ると…</p>
-
-
-<p><a href="http://oauthjp.github.io/blog/2010/07/04/oauthjp">OAuth.jpを立ち上げました。 - OAuth.jp</a></p>
-
-
-<p>2010年7月！</p>
-
-
-<p>そんな長い間やってたのか。。</p>
-
-
-<p>FB Graph APIが出たのが2010年4月なので、OAuth 2.0の実装がでてからかれこれ2年半ほどでようやくRFCになった訳ですね。</p>
-
-
-<h3>さて、RFC化された直後の国内の反応ですが..</h3>
-
-
-<blockquote class="twitter-tweet">
-<p>「Twitterさん、もう、OAuth 1.0古いっすよ。」って誰か言え！オレは言わない！</p>
-<div><a href="https://twitter.com/ritou/status/256932933263294464">October 13, 2012</a></div>
-</blockquote>
-
-
-<blockquote class="twitter-tweet">
-<p>twitterさん、もう OAuth 1.0 古いですよ。正式に deprecate されました。 RT @<a href="https://twitter.com/ritou">ritou</a>: 「Twitterさん、もう、OAuth 1.0古いっすよ。」って誰か言え！オレは言わない！</p>
-<div><a href="https://twitter.com/_nat/status/256945174251442176">October 13, 2012</a></div>
-</blockquote>
-
-
-<blockquote class="twitter-tweet">
-<p>OAuth 1.0はもぅ古いので、Twitterの関係者は至急おっおーっす学会長の私に連絡してください。日本語の分からない本国のバカどもは話にならないので、Twitter Japanの関係者に限ります。キリッ！ノブッ！</p>
-<div><a href="https://twitter.com/IdentityNobuwo/status/256951736630132736">October 13, 2012</a></div>
-</blockquote>
-
-
-<p>そうなんです。OAuth 2.0 Coreには、こう書いてあるんですね。</p>
-
-
-<blockquote class="posterous_short_quote">
-<div>This specification replaces and obsoletes the OAuth 1.0 protocol described in RFC 5849.</div>
-</blockquote>
-
-
-<p>OAuth 1.0サポートしてるTwitter APIとかOpenSocial採用してるプラットフォーム各社とか、どうなるんでしょうね？</p>
-
-
-<p>そういえばそれ以外にも @ritou がまたブログ記事書いてましたね。</p>
-
-
-<p><a href="http://d.hatena.ne.jp/ritou/20121013/1350128492">RFCになったOAuth 2.0を使ってGoogleはどれだけパスワード入力を減らせるのか - r-weblife</a></p>
-
-
-<p>OAuthおねーさんの次回作が気になるところです。</p>
 
 ]]></content>
   </entry>
