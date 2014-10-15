@@ -130,6 +130,11 @@ https://client.example.com/callback?
 
 <p>この脆弱性によるリスクは <a href="http://www.slideshare.net/ritou/idcon17-oauth2-csrfprotectionritou">@ritou 先生のスライド</a> に書いてあるのでそちらにゆずります。</p>
 
+<p>Twitter が Request Token Secret を必須にしてないことは以下のコードで確認できます。</p>
+
+<script src="https://gist.github.com/nov/5e99d1999bea0e16bb74.js"></script>
+
+
 <p>ちなみに Twitter 側はこのバグは認識してるらしいのですが、直すと多くのサイトが動かなくなるのも把握しているのか、修正できないでいるようで、みなさんが個別に対策するしかないわけです。</p>
 
 <p>とりあえず <strong>Session に紐づいた Request Token Secret が無かったら、エラーにしちゃえば OK</strong> です。</p>

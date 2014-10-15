@@ -4,7 +4,7 @@
   <title><![CDATA[OAuth.jp]]></title>
   <link href="http://oauthjp.github.io/atom.xml" rel="self"/>
   <link href="http://oauthjp.github.io/"/>
-  <updated>2014-06-23T11:33:49+09:00</updated>
+  <updated>2014-10-15T12:02:50+09:00</updated>
   <id>http://oauthjp.github.io/</id>
   <author>
     <name><![CDATA[Nov Matake]]></name>
@@ -12,6 +12,50 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[FIDO Alliance]]></title>
+    <link href="http://oauthjp.github.io/blog/2014/10/15/fido-alliance/"/>
+    <updated>2014-10-15T11:28:00+09:00</updated>
+    <id>http://oauthjp.github.io/blog/2014/10/15/fido-alliance</id>
+    <content type="html"><![CDATA[<p>先週末、FIDO Alliance　のメンバーが来日して、<a href="http://www.dds.co.jp/fido_tokyoseminar/">FIDO Alliance Tokyo Seminar</a> というセミナーが開催されていました。僕も今春の <a href="http://idcon.doorkeeper.jp/events/10195">#idcon vol.18</a> で <a href="http://www.slideshare.net/matake/fido-alliance">FIDO Alliance について紹介した</a> 時にまだいろいろ不明点が多かったのもあって、このセミナーに参加してきました。</p>
+
+<p>で、参加してみて分かった事。</p>
+
+<h2>生体認証押し</h2>
+
+<p>まぁ、これは FIDO Alliance のサイト見ても、元々そうっちゃそうなんですが。</p>
+
+<p>FIDO は仕様的には特に生体認証センサーとか必要ないし、FIDO に準拠してない Apple TouchID みたいなセンサーモジュールと連携したソフトウェアモジュールさえ積んでればFIDO 仕様に沿った実装は可能です。</p>
+
+<p>ひとことで言うと、エンドユーザーが「端末のセキュア領域に保存されている秘密鍵にアクセスして assertion に署名できる存在」であることを認証しているに過ぎないので、その秘密鍵のロック解除に指紋使ってもいいし、PIN Code 使ってもいいはずです。</p>
+
+<p>が、やはり Alliance Member には生体認証ハードウェアモジュールのベンダーが多い事もあってか、発表ではヤケに生体認証を押していました。</p>
+
+<p>その影響か、Twitter とか現地での Q&amp;A でも、生体認証のセキュリティについての質問が多かったように思います。</p>
+
+<!-- more -->
+
+
+<h2>UAF と U2F は完全に別物</h2>
+
+<p>FIDO Alliance では、パスワードレスな認証の実現を目指す Universal Authentication Framework (UAF) と、2要素認証の UX 改善を目指す Universal Second Factor (U2F) という2つの Working Group が、それぞれに仕様策定を進めています。</p>
+
+<p>僕の #idcon vol.18 時点の理解では、U2F は UAF とほぼ同じで、JS API や Android SDK などでの利用を想定した仕様策定がそれにプラスαで進んでいるのだと思っていたのですが、懇親会で Google の Dirk Balfanz さんに聞いたところでは、U2F は「JS API (と Android SDK)」のみの標準化を行っているそうです。</p>
+
+<p>UAF では、センサーモジュールと Client App、Client App と Backend Server などの間でのやりとりが規定されているのですが、U2F ではその辺りのやり取りは「各実装が自由にやれ」という姿勢とのこと。</p>
+
+<p>UAF 側の Rolf Lindemann (Nok Nok Labs) に別途聞いたところでは U2F Working Group に UAF で策定した仕様を取り込むよう働きかけているとのことでしたが、2つの WG の間の連携は、それほど強くないのかもしれません。</p>
+
+<h2>Discovery は貧弱</h2>
+
+<p>FIDO UAF Protocol では、FIDO Alliance が FIDO Ready な製品を作る Vendor に Vendor ID を発行し、FIDO Ready な Product を Metadata Service (?) に登録したりするというようなことが書かれているのですが、現状は Vendor ID の発行にとどまっており、Metadata は必要に応じて RP が「ダウンロード」している状況のようです。</p>
+
+<p>この部分がマニュアルだと、結局デバイスメーカーやアプリベンダーは、OAuth のクライアント登録的なマニュアル作業から抜け出せないように思います。</p>
+
+<p>ま、もろもろまだまだ、って感じでしょうか。</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Twitter Login にも CSRF 脆弱性ができやすい罠が!?]]></title>
@@ -61,6 +105,11 @@ https://client.example.com/callback?
 <p>このパターン、すでにいくつかの「Twitter ID でログイン」を実装してるサイトでは確認してます。</p>
 
 <p>この脆弱性によるリスクは <a href="http://www.slideshare.net/ritou/idcon17-oauth2-csrfprotectionritou">@ritou 先生のスライド</a> に書いてあるのでそちらにゆずります。</p>
+
+<p>Twitter が Request Token Secret を必須にしてないことは以下のコードで確認できます。</p>
+
+<script src="https://gist.github.com/nov/5e99d1999bea0e16bb74.js"></script>
+
 
 <p>ちなみに Twitter 側はこのバグは認識してるらしいのですが、直すと多くのサイトが動かなくなるのも把握しているのか、修正できないでいるようで、みなさんが個別に対策するしかないわけです。</p>
 
@@ -1383,43 +1432,6 @@ sessionをserver-sideで管理するようにさえすれば、この問題は�
 
 
 <p>ここにない言語でRSAもサポートしてるライブラリご存知でしたらお教えいただけるとうれしいです。</p>
-
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Facebookが新たなAccess Token Introspection APIを出したようです]]></title>
-    <link href="http://oauthjp.github.io/blog/2012/10/16/facebookaccess-token-introspection-api/"/>
-    <updated>2012-10-16T00:00:00+09:00</updated>
-    <id>http://oauthjp.github.io/blog/2012/10/16/facebookaccess-token-introspection-api</id>
-    <content type="html"><![CDATA[<p>今朝fb_graphにこんな要望が来てて知ったのですが、Facebookが新たなAccess Token Introspection APIを出したようです。</p>
-
-
-<p><a href="https://github.com/nov/fb_graph/issues/269">Adding support for /debug_token endpoint · Issue #269 · nov/fb_graph</a></p>
-
-
-<p>こんなリクエストを送ると</p>
-
-
-<p><a href="https://gist.github.com/3896829"><a href="https://gist.github.com/3896829">https://gist.github.com/3896829</a></a></p>
-
-
-<p>こんなレスポンスが帰ってくる、と。</p>
-
-
-<p><a href="https://gist.github.com/3896826"><a href="https://gist.github.com/3896826">https://gist.github.com/3896826</a></a></p>
-
-
-<p>&#8220;data&#8221; ってなんやろとかApp Token無いと使えへんのメンドイなとか思ったりはしますが、ちゃんと別のClientに発行されたAccess Tokenを<code>input_token</code>として送るとエラーが帰ってくるし、Success Responseにはscopeとかissued_atとかも付いてくるので、いろいろと使い勝手は良さそうですね。まぁ例のごとく完全に独自仕様ですが。</p>
-
-
-<p>って実際にGraph API Explorerで試したら、issued_at返ってこないですが（謎</p>
-
-
-<p>オフィシャルドキュメントはこちら。</p>
-
-
-<p><a href="https://developers.facebook.com/docs/howtos/login/debugging-access-tokens/">Debugging Access Tokens and Handling Errors</a></p>
 
 ]]></content>
   </entry>
