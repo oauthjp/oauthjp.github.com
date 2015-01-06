@@ -4,7 +4,7 @@
   <title><![CDATA[OAuth.jp]]></title>
   <link href="http://oauthjp.github.io/atom.xml" rel="self"/>
   <link href="http://oauthjp.github.io/"/>
-  <updated>2015-01-06T21:53:05+09:00</updated>
+  <updated>2015-01-06T21:57:44+09:00</updated>
   <id>http://oauthjp.github.io/</id>
   <author>
     <name><![CDATA[Nov Matake]]></name>
@@ -58,7 +58,7 @@
 
 <h3>code token</h3>
 
-<p>Native App で access_token 使うんだけど、Native App の　Backend Server 側でも access_token (と id_token) 欲しい時に使います。</p>
+<p>Native App で access_token 使うんだけど、Native App の Backend Server 側でも access_token (と id_token) 欲しい時に使います。</p>
 
 <p>fragment に code と access_token がついて返って来るので、access_token はそのまま Native App が内部に保持して、code だけを Native App から Backend Server に渡します。</p>
 
