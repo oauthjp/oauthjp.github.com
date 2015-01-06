@@ -143,13 +143,17 @@
 
 <h3>id_token</h3>
 
-<p>「access_token はいらない」って時に使います。</p>
+<p>access_token が不要な時に使います。</p>
+
+<p>Web App / Native App どちらでも使われうるかと思います。</p>
 
 <p>ただしこれ使うと fragment に id_token ついて返ってくるので、Web App からは扱いづらいかもしれません。</p>
 
 <p>「response_type=code 使って access_token 捨てればいいやん」って言われたら、「その通りですね」とお返しします。</p>
 
-<p>Native App 側で id_token 使いたいけど access_token はいらんねん、ってケースもあるかもしれませんが、Native App 側で id_token 使ってユーザー認証するケースって、そんなに多くはなさそうです。</p>
+<p>また、Native App 側で id_token 使ってユーザー認証するケースって、そんなに多くはなさそうです。</p>
+
+<p>この response_type は、あまり使う機会なさそうです。</p>
 
 <h3>id_token code</h3>
 
