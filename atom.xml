@@ -4,7 +4,7 @@
   <title><![CDATA[OAuth.jp]]></title>
   <link href="http://oauthjp.github.io/atom.xml" rel="self"/>
   <link href="http://oauthjp.github.io/"/>
-  <updated>2015-01-06T22:03:28+09:00</updated>
+  <updated>2015-01-06T22:05:39+09:00</updated>
   <id>http://oauthjp.github.io/</id>
   <author>
     <name><![CDATA[Nov Matake]]></name>
@@ -137,7 +137,7 @@
 </ul>
 
 
-<h3>[補足]</h3>
+<h3>補足</h3>
 
 <p>本記事全体として、Native App を JS App に置き換えても同様です。</p>
 
