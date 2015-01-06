@@ -4,7 +4,7 @@
   <title><![CDATA[OAuth.jp]]></title>
   <link href="http://oauthjp.github.io/atom.xml" rel="self"/>
   <link href="http://oauthjp.github.io/"/>
-  <updated>2015-01-06T21:57:44+09:00</updated>
+  <updated>2015-01-06T22:00:26+09:00</updated>
   <id>http://oauthjp.github.io/</id>
   <author>
     <name><![CDATA[Nov Matake]]></name>
@@ -58,7 +58,7 @@
 
 <h3>code token</h3>
 
-<p>Native App で access_token 使うんだけど、Native App の Backend Server 側でも access_token (と id_token) 欲しい時に使います。</p>
+<p>Native App で access_token 使うんだけど、Native App の Backend Server 側でも access_token (と id_token) が欲しい時に使います。</p>
 
 <p>fragment に code と access_token がついて返って来るので、access_token はそのまま Native App が内部に保持して、code だけを Native App から Backend Server に渡します。</p>
 
@@ -68,7 +68,8 @@
 
 <ul>
 <li>Token Replace Attack に対して脆弱になりがち</li>
-<li>Lifetime が短い access_token しか取得できない (ただしこれは Server 側の実装依存)</li>
+<li>Backend Server でも refresh_token を取得できない</li>
+<li>Implicit Flow 経由で発行される access_token は lifetime が短くなりがち (Server 側の実装依存)</li>
 </ul>
 
 
@@ -84,7 +85,7 @@
 
 <h3>id_token code</h3>
 
-<p>Native App で id_token 使うんだけど、Native App の　Backend Server 側でも access_token (と id_token) 欲しい時に使います。</p>
+<p>Native App で id_token 使うんだけど、Native App の　Backend Server 側でも access_token (と id_token) が欲しい時に使います。</p>
 
 <p>fragment に code と id_token ついて返ってくるので、id_token はそのまま Native App が内部に保持して、code だけを Native App から Backend Server に渡します。</p>
 
