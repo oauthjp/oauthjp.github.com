@@ -1,0 +1,228 @@
+
+<!DOCTYPE HTML>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Google OpenID 2.0 のサポート終了、OpenID Connect への移行はお早めに - OAuth.jp</title>
+    <meta name="author" content="Nov Matake">
+    
+	<meta name="description" content="今朝こちらの Tweet みて気がついたんですが、Google が OpenID 2.0 のサポートを2015年4月20日で終了するようです。 Developers beware! Google has published its timeline for deprecation of &hellip;">
+	
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+	<link href="/atom.xml" rel="alternate" title="OAuth.jp" type="application/atom+xml">
+	<link rel="canonical" href="">
+	<link href="/favicon.ico" rel="shortcut icon">
+    <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+
+    <link href='http://fonts.googleapis.com/css?family=Slackey' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Fjalla+One' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Amethysta' rel='stylesheet' type='text/css'>
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+    <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+
+    <script type="text/javascript" src="/javascripts/jquery-tapir.js"></script>
+
+    <!-- remove or comment it to disable ajaxification -->
+    <!-- <script src="/javascripts/ajaxify.js"></script> -->
+
+    
+    
+
+</head>
+
+
+<body>
+    <div id="wrapper">
+    <header id="header" class="inner"><!-- for more effects see _animate.scss -->
+<h1 class="animated bounceInDown">
+  <a href='/'>
+    <div id="headerbg">
+      OAuth.jp
+    </div>
+  </a>
+</h1>
+<br>
+
+<ul id="social-links" style="text-align:center">
+  
+  <!-- Facebook -->
+  <li>
+  <a href="http://www.facebook.com/oauth.jp" class="facebook" title="Facebook"></a>
+  </li>
+  
+  
+  <!-- Twitter -->
+  <li>
+  <a href="http://www.twitter.com/oauthjp" class="twitter" title="Twitter"></a>
+  </li>
+  
+  
+  <!-- GitHub -->
+  <li>
+  <a href="https://github.com/oauthjp" class="github" title="Github"></a>
+  </li>
+  
+  
+  
+  
+  
+  
+</ul>
+
+
+<!-- use full url including 'index.html' for navigation bar if you are using ajax -->
+<ul id="nav">
+  
+</ul>
+
+
+
+
+</header>
+
+<div id="toload">
+<!-- begin toload --> 
+    <div id="content" class="inner">
+        <article class="post">
+	<h2 class="title">Google OpenID 2.0 のサポート終了、OpenID Connect への移行はお早めに</h2>
+	<div class="entry-content"><p>今朝こちらの Tweet みて気がついたんですが、Google が OpenID 2.0 のサポートを2015年4月20日で終了するようです。</p>
+
+<blockquote class="twitter-tweet" lang="en">
+    <p>Developers beware! Google has published its timeline for deprecation of OpenID 2.0:<a href="http://t.co/84cIS0wR1D">http://t.co/84cIS0wR1D</a></p>
+    &mdash; Gluu (@GluuFederation)
+    <a href="https://twitter.com/GluuFederation/status/552615928014577665">January 7, 2015</a>
+</blockquote>
+
+
+<script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+
+<p>本当にそんな短期間で OpenID 2.0 止めて大丈夫なのかって気がしますが、<a href="https://developers.google.com/accounts/docs/OpenID#shutdown-timetable">Google OpenID 2.0 Shutdown Timetable</a> によると、4/20で全てが止まるようです。</p>
+
+<p>僕が把握しているところでは、以下のサイトは現時点でまだ Google OpenID 2.0 を使っています。他にもいっぱいあるんでしょうが、僕は把握してません。他に知ってるのあれば教えてください。</p>
+
+<ul>
+<li><a href="http://iknow.jp">iKnow!</a></li>
+<li><a href="http://chatwork.com">ChatWork</a></li>
+<li><a href="http://atnd.org">ATND</a></li>
+</ul>
+
+
+<p>OpenID 2.0 停止により、上記のようなサイトでは、いままで Google Account でログインしてきたユーザー達はログインできなくなります。</p>
+
+<p>これらのサイトは、4/20までに OpenID Connect (Google+ Signin) への移行が必要です。</p>
+
+<!--more-->
+
+
+<p>移行方法は <a href="https://developers.google.com/accounts/docs/OpenID">Google OpenID 2.0 Migration</a> にあります。</p>
+
+<p>なんだかユースケースごとに4通りの移行方法が紹介されてますが、基本は <a href="https://developers.google.com/accounts/docs/OpenID#update-to-plus">Migrating to Google+ Sign-In</a> に従えば良さそうです。</p>
+
+<p>細かいステップは <a href="https://developers.google.com/+/api/auth-migration#oid2">Migrate from OpenID 2.0 or OpenID+OAuth hybrid to Google+ Sign-In</a> を読んでいただくとして、大雑把な Step は以下の通りです。</p>
+
+<ol>
+<li>Authorization Request に OpenID 2.0 時代に使っていた realm を含める。</li>
+<li>ID Token に OpenID 2.0 時代の Claimed Identifier が &ldquo;openid_id&rdquo; という名前で含まれて帰って来る。</li>
+<li>&ldquo;openid_id&rdquo; をキーに既存ユーザーを探して、該当ユーザーの識別子を &ldquo;sub&rdquo; に置換する。</li>
+</ol>
+
+
+<p>あと、Attribute Exchange 使ってプロフィール情報を取得してた場合は、UserInfo API 叩くように変更しましょう。</p>
+
+<p>ま、これだけっちゃこれだけなんですが、4/20までって言われると、焦りますね。</p>
+
+<p>みんな realm が何かとか把握してるんでしょうか？</p>
+
+<p>ってことで、自分が使ってるサービスが Google OpenID 2.0 使い続けてる場合は、サービス運営者に移行予定を問い合わせるなりしたほうが良いですね。</p>
+
+<p>国内サービスの場合は、このブログのコメント欄にサービス名列挙していただけると、こちらでも対応可能かもしれません。(たぶん OpenID Foundation Japan 経由で)</p>
+
+<p>あと、自社サービスが Google OpenID 2.0 使ってて移行ムリゲーとかいう事業者の方は、<a href="http://openid.or.jp/inquiry/">OpenID Foundation Japan に問い合わせ</a> いただいけるといいかもですね。</p>
+
+<p>要望が多ければ、OpenID Foundation Japan のエヴァンジェリスト達で Migration Handson なり Hackathon なり企画してもいいかなと思っています。</p>
+
+<p>いや、何も<a href="http://openid.or.jp/about/index.html#op-about-joining">いますぐ Foundation に加盟</a>しろなんていいませんよ？</p>
+</div>
+
+<div class="meta">
+	
+</div>
+</article>
+
+	<div class="share">
+	<div class="addthis_toolbox addthis_default_style ">
+	
+	<a class="addthis_button_facebook_like" fb:like:layout="button_count"></a>
+	
+	
+	<a class="addthis_button_tweet"></a>
+	
+	
+	<a class="addthis_button_google_plusone" g:plusone:size="medium"></a>
+	
+	</div>
+  <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid="></script>
+</div>
+
+
+
+<section id="comment">
+    <h2 class="title">Comments</h2>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+</section>
+
+    </div>
+    <footer id="footer">
+    <div style="display:inline">
+    Copyright &copy; 2015
+
+    Nov Matake
+. Powered by <a href="http://octopress.org">Octopress</a> | 
+    Theme <a href="http://github.com/panks/fabric">fabric</a> by <a href="http://panks.me">Pankaj Kumar</a>
+</div>
+
+
+    </footer>
+    <script src="/javascripts/fabric.js"></script>
+<script src="/javascripts/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+	$('.fancybox').fancybox();
+})(jQuery);
+</script> <!-- Delete or comment this line to disable Fancybox -->
+
+
+<script type="text/javascript">
+      var disqus_shortname = 'oauthjp';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://oauthjp.github.io/blog/2015/01/07/google-openid2-termination/';
+        var disqus_url = 'http://oauthjp.github.io/blog/2015/01/07/google-openid2-termination/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+<!-- end toload --> 
+</div>
+</div>
+<script src="/javascripts/jquery.ui.totop.js" type="text/javascript"></script>
+<script type="text/javascript">
+/*<![CDATA[*/
+;(function($){$().UItoTop({easingType:'easeOutCirc'});})(jQuery); 
+/*]]>*/
+</script><!-- remove it to remove the scroll to top button -->
+</body>
+</html>

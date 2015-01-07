@@ -6,7 +6,7 @@
 	<title>OAuth.jp</title>
     <meta name="author" content="Nov Matake">
     
-	<meta name="description" content="Published on: Jan 6th, 2015 Tags: 特に新しい話題ではないですが、定期的に質問されてる気がするので記事にしときます。 OAuth 2.0 の Core には、&#8221;code&#8221; と &ldquo;token&rdquo; という2つの &hellip;">
+	<meta name="description" content="Published on: Jan 7th, 2015 Tags: 今朝こちらの Tweet みて気がついたんですが、Google が OpenID 2.0 のサポートを2015年4月20日で終了するようです。 Developers beware! Google has published &hellip;">
 	
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
@@ -85,6 +85,70 @@
 <!-- begin toload --> 
     <div id="content" class="inner">
         
+
+
+    <article class="post">
+	<h2 class="title">
+		
+		<a href="/blog/2015/01/07/google-openid2-termination/">
+		
+			Google OpenID 2.0 のサポート終了、OpenID Connect への移行はお早めに</a>
+	</h2>
+    <div class="entry-content">
+    <div class="meta">
+      <div class="date">Published on: 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2015-01-07T13:20:00+09:00" pubdate data-updated="true">Jan 7<span>th</span>, 2015</time></div>
+      <div class="tags">Tags: 
+
+</div>
+    </div>
+		<p>今朝こちらの Tweet みて気がついたんですが、Google が OpenID 2.0 のサポートを2015年4月20日で終了するようです。</p>
+
+<blockquote class="twitter-tweet" lang="en">
+    <p>Developers beware! Google has published its timeline for deprecation of OpenID 2.0:<a href="http://t.co/84cIS0wR1D">http://t.co/84cIS0wR1D</a></p>
+    &mdash; Gluu (@GluuFederation)
+    <a href="https://twitter.com/GluuFederation/status/552615928014577665">January 7, 2015</a>
+</blockquote>
+
+
+<script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+
+<p>本当にそんな短期間で OpenID 2.0 止めて大丈夫なのかって気がしますが、<a href="https://developers.google.com/accounts/docs/OpenID#shutdown-timetable">Google OpenID 2.0 Shutdown Timetable</a> によると、4/20で全てが止まるようです。</p>
+
+<p>僕が把握しているところでは、以下のサイトは現時点でまだ Google OpenID 2.0 を使っています。他にもいっぱいあるんでしょうが、僕は把握してません。他に知ってるのあれば教えてください。</p>
+
+<ul>
+<li><a href="http://iknow.jp">iKnow!</a></li>
+<li><a href="http://chatwork.com">ChatWork</a></li>
+<li><a href="http://atnd.org">ATND</a></li>
+</ul>
+
+
+<p>OpenID 2.0 停止により、上記のようなサイトでは、いままで Google Account でログインしてきたユーザー達はログインできなくなります。</p>
+
+<p>これらのサイトは、4/20までに OpenID Connect (Google+ Signin) への移行が必要です。</p>
+
+
+		
+		<a href="/blog/2015/01/07/google-openid2-termination/" class="more-link">Read on &rarr;</a>
+	</div>
+
+<div class="meta">
+	
+</div>
+</article>
 
 
     <article class="post">
@@ -328,55 +392,6 @@ OAuth と OpenID Connect には複数の response_type があるんだけど、�
 
 		
 		<a href="/blog/2014/05/09/what-happens-when-oauth2-code-leaked/" class="more-link">Read on &rarr;</a>
-	</div>
-
-<div class="meta">
-	
-</div>
-</article>
-
-
-    <article class="post">
-	<h2 class="title">
-		
-		<a href="/blog/2014/05/08/covert-redirect-and-non-30x-redirects/">
-		
-			Covert Redirect で Query 漏れるケースもある!?</a>
-	</h2>
-    <div class="entry-content">
-    <div class="meta">
-      <div class="date">Published on: 
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2014-05-08T15:47:00+09:00" pubdate data-updated="true">May 8<span>th</span>, 2014</time></div>
-      <div class="tags">Tags: 
-
-</div>
-    </div>
-		<p>Covert Redirect 連載最後は、location.href とか &lt;meta http-equiv=&ldquo;Refresh&rdquo;&gt; とかだと referrer 通じて query に含まれる code とかも漏れるかもね！ってお話です。</p>
-
-<p>古いサイトですが、こことか見れば大体いいんじゃないでしょうか => <a href="http://www.teria.com/~koseki/memo/referrer/">リファラ実験</a></p>
-
-<p>で、こういうリダイレクトをしてる箇所が OAuth 2.0 の redirect_uri なり OpenID 2.0 の return_to なりに指定されていれば、query に付いた code なり email なりがリファラ経由で外部に漏れるよね、という。</p>
-
-<p>はい、漏れますね！ (投げやり</p>
-
-<p>さて、そんなに該当例多くはないと思うのですが、ここまで該当してしまったサービスは、どうしますかねぇ&hellip;</p>
-
-<p>Facebook であれば、<a href="/blog/2014/05/08/facebook-login-and-covert-redirect/">Facebook Login で Covert Redirect を防止する</a>にあるような方法で回避できますが、それ以外の OAuth Provider なり OpenID 2.0 Provider と連携してる場合は、困っちゃいますねぇ&hellip;</p>
-
-
-		
-		<a href="/blog/2014/05/08/covert-redirect-and-non-30x-redirects/" class="more-link">Read on &rarr;</a>
 	</div>
 
 <div class="meta">
