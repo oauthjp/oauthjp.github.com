@@ -4,7 +4,7 @@
   <title><![CDATA[OAuth.jp]]></title>
   <link href="http://oauthjp.github.io/atom.xml" rel="self"/>
   <link href="http://oauthjp.github.io/"/>
-  <updated>2015-02-28T23:39:21+09:00</updated>
+  <updated>2015-02-28T23:40:13+09:00</updated>
   <id>http://oauthjp.github.io/</id>
   <author>
     <name><![CDATA[Nov Matake]]></name>
@@ -35,6 +35,9 @@
 <p>すでにそれが可能な実装にしているものだけが、SAMLer に石を投げなさい。</p>
 
 <p>これ、実装どうするかって話もあるんですが、そもそもそんなケースでもトレーサビリティ必要なんでしたっけ？って疑問が湧きますよね。</p>
+
+<!-- more -->
+
 
 <p>こういうケースって、散財情報扱いなんでしょうか？</p>
 
