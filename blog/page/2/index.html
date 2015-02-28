@@ -6,7 +6,7 @@
 	<title>OAuth.jp</title>
     <meta name="author" content="Nov Matake">
     
-	<meta name="description" content="Published on: May 8th, 2014 Tags: Covert Redirect 連載最後は、location.href とか &lt;meta http-equiv=&ldquo;Refresh&rdquo;&gt; とかだと referrer 通じて query に含まれる &hellip;">
+	<meta name="description" content="Published on: May 9th, 2014 Tags: 昨日のCovert Redirect で Query 漏れるケースもある!?やOAuth 2.0 の脆弱性 (!?) &ldquo;Covert Redirect&rdquo; とはにあるように、OAuth 2.0 の code &hellip;">
 	
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
@@ -85,6 +85,93 @@
 <!-- begin toload --> 
     <div id="content" class="inner">
         
+
+
+    <article class="post">
+	<h2 class="title">
+		
+		<a href="/blog/2014/05/09/what-happens-when-oauth2-code-leaked/">
+		
+			OAuth 2.0 の Code は漏れても大丈夫ってホント!?</a>
+	</h2>
+    <div class="entry-content">
+    <div class="meta">
+      <div class="date">Published on: 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-05-09T09:59:00+09:00" pubdate data-updated="true">May 9<span>th</span>, 2014</time></div>
+      <div class="tags">Tags: 
+
+</div>
+    </div>
+		<p>昨日の<a href="/blog/2014/05/08/covert-redirect-and-non-30x-redirects/">Covert Redirect で Query 漏れるケースもある!?</a>や<a href="/blog/2014/05/07/covert-redirect/">OAuth 2.0 の脆弱性 (!?) &ldquo;Covert Redirect&rdquo; とは</a>にあるように、OAuth 2.0 の code が漏れちゃうことも、ありえます。</p>
+
+<p>漏れないためにやるべきことは、上記の記事や<a href="/blog/2014/05/08/facebook-login-and-covert-redirect/">Facebook Login で Covert Redirect を防止する</a>なんかでも紹介してるので、そちら読んでください。</p>
+
+<p>で、今回の内容は<strong>「code が漏れたら何がまずいのか」</strong>についてです。</p>
+
+<h3>「code は漏れても大丈夫」説</h3>
+
+<p><a href="http://www.openid.or.jp/blog/2014/05/covert-redirect-and-its-real-impact-on-oauth-and-openid-connect.html">「Covert Redirect」についての John Bradley 氏の解説（追記あり）</a>にも、こうありましたね。</p>
+
+<blockquote>
+OAuth と OpenID Connect には複数の response_type があるんだけど、さきのリポートの著者は、最も一般的な response_type が &#8220;code&#8221; であることに触れず、またクライアント・クレデンシャルを使ってもう一度呼び出しを行わないとアクセス・トークンは手に入らないってことも無視してる。つまり、たしかに &#8220;code&#8221; がオープン・リダイレクターを経由して漏洩するかもしれない、という点については彼が正しい。けど、その code を使って攻撃者がなにかできるわけではないよ。これこそまさに、&#8221;code&#8221; response_type を使うことで得られる効果的な緩和策だね。
+</blockquote>
+
+
+<p>あれ？code 漏れても問題なさそうですね？</p>
+
+<p>ほんとでしょうか？</p>
+
+<h4>[仕様策定者視点での答え]</h4>
+
+<blockquote>
+本当です。みんながちゃんと OAuth の仕様に沿って実装していれば。仕様に沿って実装してない場合は知らん。ちゃんとやれ。
+</blockquote>
+
+
+<h4>[OAuth Server 実装者視点での答え]</h4>
+
+<blockquote>
+本当です。Client がちゃんと client secret を漏洩させずに、OAuth の仕様に沿って実装していれば。client secret 漏らしたり仕様に沿って実装してない場合は、うちのユーザーに迷惑かかるかもしれんし、あなたのアプリ停止しちゃうね。
+</blockquote>
+
+
+<h4>[OAuth Client 実装者視点での答え]</h4>
+
+<blockquote>
+え？俺ちゃんと仕様に沿って実装できてんの？
+
+&#8230;まぁ動いてるしできてる、よね！？
+
+それに万が一 code 漏れても、うちに被害及ぶってより OAuth Server に被害及ぶはずやし、OAuth Server がちゃんと対策してれば、まぁなんとかなるよね？
+</blockquote>
+
+
+<p><strong>ゆとりか！(｀ヘ´#)</strong></p>
+
+<p>OAuth Client 実装者がこういう考えだと、一瞬でやられちゃいそうですねぇ。</p>
+
+<p>ってことで、ここでは<strong>「code が漏れたら OAuth Client 側でアカウント乗っ取りが発生する」</strong>ケースについて考えてみましょう。</p>
+
+
+		
+		<a href="/blog/2014/05/09/what-happens-when-oauth2-code-leaked/" class="more-link">Read on &rarr;</a>
+	</div>
+
+<div class="meta">
+	
+</div>
+</article>
 
 
     <article class="post">
@@ -326,71 +413,6 @@
 
 		
 		<a href="/blog/2014/05/07/covert-redirect-in-implicit-flow/" class="more-link">Read on &rarr;</a>
-	</div>
-
-<div class="meta">
-	
-</div>
-</article>
-
-
-    <article class="post">
-	<h2 class="title">
-		
-		<a href="/blog/2014/05/07/covert-redirect/">
-		
-			OAuth 2.0 の脆弱性 (!?) &#8220;Covert Redirect&#8221; とは</a>
-	</h2>
-    <div class="entry-content">
-    <div class="meta">
-      <div class="date">Published on: 
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2014-05-07T13:53:00+09:00" pubdate data-updated="true">May 7<span>th</span>, 2014</time></div>
-      <div class="tags">Tags: 
-
-</div>
-    </div>
-		<h3>訂正</h3>
-
-<p>リダイレクト時の fragment の扱いを勘違いしていたため、本記事全体訂正します。</p>
-
-<p>細かく訂正いれてると分けわかんなくなってきたんで、<a href="/blog/2014/05/07/covert-redirect-in-implicit-flow/">新しい記事書きました</a>。</p>
-
-<p>ゴールデンウィークまっただなかに Twitter で海外の ID 厨から袋だたきにあってたので、もうこの問題は片付いただろうとすっかり油断してた「Covert Redirect」の件ですが、日本でもゴールデンウィーク明けてバズりだしたので、一旦問題を整理した方がよさそうですね。</p>
-
-<h3>事の発端</h3>
-
-<p>Wang Jing さんていうシンガポールの大学院生が、<a href="http://tetraph.com/covert_redirect/oauth2_openid_covert_redirect.html">こんなサイト</a>を公開すると共に <a href="http://www.cnet.com/news/serious-security-flaw-in-oauth-and-openid-discovered/">CNet</a> はじめ各種メディアが取り上げたのが、バズりだした発端のようです。</p>
-
-<h3>前提知識</h3>
-
-<p>OAuth 2.0 や OpenID Connect だけでなく、OAuth 1.0 や OpenID 1.0/2.0 や SAML なんかでも、<strong>2つのサービスの間でリダイレクトを経由して</strong>、Access Token や ID Token などのいわゆる <strong>&ldquo;Security Token&rdquo; の授受</strong> が行われます。</p>
-
-<p>Covert Redirect の問題は本質的にはこれら全てに影響しますが、各仕様一個一個見て行くといろいろ疲れるので、ここでは OAuth 2.0 に絞って話をすすめましょう。</p>
-
-<p>OAuth 2.0 では、まず Client が End-User の UserAgent を Server の Authorization Endpoint というところにリダイレクトします。よく Twitter とか Facebook の ID で外部サービスにログインするとき、一度 Twitter や Facebook にリダイレクトして、同意画面表示されますよね？あれです。</p>
-
-<p><img src="https://fbcdn-dragon-a.akamaihd.net/hphotos-ak-prn1/t39.2178-6/851557_535801936465660_169463870_n.png" alt="FB の同意画面" /></p>
-
-<p>で、みなさん何も考えず熟慮の結果、同意ボタンを押すじゃないですか。そして、元のサイト (= Client) に戻って来る、と。</p>
-
-<p>OAuth 愛好家の間で &ldquo;OAuth Dance&rdquo; なんて呼ばれてるアレですね。</p>
-
-<p>で、今回の話は、その <strong>&ldquo;OAuth Dance&rdquo; 中の話</strong> です。</p>
-
-
-		
-		<a href="/blog/2014/05/07/covert-redirect/" class="more-link">Read on &rarr;</a>
 	</div>
 
 <div class="meta">

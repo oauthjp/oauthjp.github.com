@@ -4,7 +4,7 @@
   <title><![CDATA[OAuth.jp]]></title>
   <link href="http://oauthjp.github.io/atom.xml" rel="self"/>
   <link href="http://oauthjp.github.io/"/>
-  <updated>2015-01-07T14:17:28+09:00</updated>
+  <updated>2015-02-28T23:39:21+09:00</updated>
   <id>http://oauthjp.github.io/</id>
   <author>
     <name><![CDATA[Nov Matake]]></name>
@@ -12,6 +12,45 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[[PR] 属性単位のトレーサビリティについて]]></title>
+    <link href="http://oauthjp.github.io/blog/2015/02/28/traceability-on-each-attributes/"/>
+    <updated>2015-02-28T23:10:00+09:00</updated>
+    <id>http://oauthjp.github.io/blog/2015/02/28/traceability-on-each-attributes</id>
+    <content type="html"><![CDATA[<p>来週月曜 (2015/03/02) <a href="http://www.openid.or.jp/news/2015/02/OpenIDBizDay-8.html">OpenID BizDay vol.8</a> が開催され、ひろみちゅせんせ・まさともせんせ・Nat さんの3名を中心に、個人情報改正を控え、「炎上レスでパーソナルデータ活用ビジネスを進めるためにどこまでが許容範囲なのか、個人情報保護法改正に関して現時点で何をどこまで気にしておけば良いか」といった内容についてみんなで考える機会が設けられます。</p>
+
+<p>なんと、いつもは OpenID Foundation Japan 会員限定の BizDay が、今回は 5,000 円さえ払えば非会員でも参加できるんです！！</p>
+
+<p>こらぁ上司の承認とか後回しで、<a href="http://www.openid.or.jp/seminar/entry.html">いますぐ申し込まないとダメですね</a>！！！</p>
+
+<p>と、前置きはこれくらいにして、個人情報保護法改正項目の中でも、今日は「第三者提供時に提供元 &amp; 提供先双方でその記録義務が追加される」という点について、OpenID Connect や Facebook Connect などの「外部 ID 連携」時の影響範囲について、考えてみましょう。</p>
+
+<p>僕の感覚だと、普通に外部 ID 連携した場合、属性も IdP から引っ張ってくるけど、引っ張ってきた属性 (氏名とかメアドとか) はユーザーが後から編集可能な状況になっていると思います。</p>
+
+<p>そんな状況で、任意の時点でユーザーから「この氏名データ、どこから来たの？」って聞かれたら答えられるトレーサビリティを確保する&hellip;</p>
+
+<p>一つのアカウントに複数 IdP が紐づけ可能で、任意の IdP との紐づけを任意のタイミングで解除できる、そんな状況でもトレーサビリティを確保する&hellip;</p>
+
+<p>すでにそれが可能な実装にしているものだけが、SAMLer に石を投げなさい。</p>
+
+<p>これ、実装どうするかって話もあるんですが、そもそもそんなケースでもトレーサビリティ必要なんでしたっけ？って疑問が湧きますよね。</p>
+
+<p>こういうケースって、散財情報扱いなんでしょうか？</p>
+
+<p>ユーザーが明示的に書き換えた情報に関してまで、トレーサビリティはいらないですよね？</p>
+
+<p>ユーザーが明示的に紐づけた IdP から、明示的に同意を取った scope に紐づく属性を取得した時に、それをトレースする義務はユーザーに負わせることはできないのでしょうか？</p>
+
+<p>とまぁ、気になってるけど調べきれてないことも、きっと BizDay なら先生方に直に聞ける！</p>
+
+<p>プライバシーフリークカフェでおなじみ、ひろみちゅせんせ・まさともせんせ・切込隊長による <a href="http://www.shoeisha.co.jp/book/detail/9784798139760">ニッポンの個人情報</a> の即席サイン会にだって参加できる！</p>
+
+<p>あぁそうさ、要するに <a href="http://www.openid.or.jp/news/2015/02/OpenIDBizDay-8.html">OpenID BizDay #8</a> 来いよってことさ！</p>
+
+<p>もし BizDay のこと初めて聞いたって方がおられましたら、いまさら遅せーよとか言わないでくださいごめんなさい。</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Google OpenID 2.0 のサポート終了、OpenID Connect への移行はお早めに]]></title>
@@ -1435,38 +1474,6 @@ sessionをserver-sideで管理するようにさえすれば、この問題は�
 
 
 <p><a href="http://oauthjp.github.io/blog/2013/06/04/login-with-amazon">Login with Amazon、もう使っても大丈夫！</a></p>
-
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[OAuth 2.0 Core & Bearer Spec (RFC 6749 & RFC 6750) 翻訳公開！]]></title>
-    <link href="http://oauthjp.github.io/blog/2013/01/23/oauth-20-core-bearer-spec-rfc-rfc-6749-rfc-67/"/>
-    <updated>2013-01-23T00:00:00+09:00</updated>
-    <id>http://oauthjp.github.io/blog/2013/01/23/oauth-20-core-bearer-spec-rfc-rfc-6749-rfc-67</id>
-    <content type="html"><![CDATA[<p>ずいぶん前に「<a href="http://oauthjp.github.io/blog/2011/11/29/oauth-20-core-bearer-spec-76993">OAuth 2.0 Core &amp; Bearer Spec 翻訳公開！</a>」で紹介したように、OAuth 2.0 Core &amp; Bearerは、OpenID Foundation Japanの翻訳WGで翻訳を公開していましたが、2012年に両specがRFC化されたのを受け、今回RFC版も翻訳しました。</p>
-
-
-<ul><li><a href="http://openid-foundation-japan.github.com/rfc6749.ja.html">The OAuth 2.0 Authorization Framework (RFC 6749)</a></li>
-<li><a href="http://openid-foundation-japan.github.com/rfc6750.ja.html">The OAuth 2.0 Authorization Framework: Bearer Token Usage (RFC 6750)</a></li>
-</ul>
-
-
-<p>前回翻訳したdraft版から仕様自体に大きな変更はありませんが、特に</p>
-
-
-<ul><li>まだdraft版も読んだことが無い人</li>
-<li>自社のAPIドキュメントからdraft版の翻訳にリンクしている人</li>
-</ul>
-
-
-<p>などは、RFC版を参照していただければと思います。</p>
-
-
-<p>いまこれらとは別に、”<a href="http://openid-foundation-japan.github.com/rfc6819.ja.html">OAuth 2.0 Threat Model and Security Considerations (RFC 6819)</a>” という、OAuth 2.0の利用に際して注意すべきセキュリティ上の特徴・注意点などについてまとめたドキュメントを翻訳中です。こちらも翻訳完了次第公開予定。(追記: 2013.01.25 翻訳公開済)</p>
-
-
-<p>最後に、2/1に東京ミッドタウンのYahoo! Japanオフィスで <a href="http://idcon.doorkeeper.jp/events/2448">#idcon 15th ~ YConnect &amp; Future of Authentication ~</a> というイベントをやります。OAuth 2.0ベースのOpenID次世代仕様であるOpenID Connectについて、世界で初めてOpenID Connect対応API (YConnect) を一般公開したYahoo! Japanの担当者の方の話も聞けるので、興味あったら参加してください :)</p>
 
 ]]></content>
   </entry>

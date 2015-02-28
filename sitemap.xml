@@ -278,7 +278,7 @@
     </url>
     <url>
         <loc>http://oauthjp.github.io/blog/2014/05/08/facebook-login-and-covert-redirect/</loc>
-        <lastmod>2014-05-08T15:01:02+09:00</lastmod>
+        <lastmod>2014-05-08T15:00:22+09:00</lastmod>
     </url>
     <url>
         <loc>http://oauthjp.github.io/blog/2014/05/08/covert-redirect-and-non-30x-redirects/</loc>
@@ -305,15 +305,19 @@
         <lastmod>2015-01-07T14:17:20+09:00</lastmod>
     </url>
     <url>
+        <loc>http://oauthjp.github.io/blog/2015/02/28/traceability-on-each-attributes/</loc>
+        <lastmod>2015-02-28T23:38:35+09:00</lastmod>
+    </url>
+    <url>
         <loc>http://oauthjp.github.io/404.html</loc>
         <lastmod>2013-08-18T11:28:37+09:00</lastmod>
     </url>
     <url>
         <loc>http://oauthjp.github.io/blog/archives/</loc>
-        <lastmod>2015-01-07T14:17:20+09:00</lastmod>
+        <lastmod>2015-02-28T23:38:35+09:00</lastmod>
     </url>
     <url>
         <loc>http://oauthjp.github.io/</loc>
-        <lastmod>2015-01-07T14:17:20+09:00</lastmod>
+        <lastmod>2015-02-28T23:38:35+09:00</lastmod>
     </url>
 </urlset>
