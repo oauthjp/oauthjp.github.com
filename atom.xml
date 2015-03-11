@@ -4,7 +4,7 @@
   <title><![CDATA[OAuth.jp]]></title>
   <link href="http://oauthjp.github.io/atom.xml" rel="self"/>
   <link href="http://oauthjp.github.io/"/>
-  <updated>2015-02-28T23:40:13+09:00</updated>
+  <updated>2015-03-16T14:09:32+09:00</updated>
   <id>http://oauthjp.github.io/</id>
   <author>
     <name><![CDATA[Nov Matake]]></name>
@@ -12,6 +12,119 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[JWS 実装時に作りがちな脆弱性パターン]]></title>
+    <link href="http://oauthjp.github.io/blog/2015/03/16/common-jws-implementation-vulnerability/"/>
+    <updated>2015-03-16T11:45:00+09:00</updated>
+    <id>http://oauthjp.github.io/blog/2015/03/16/common-jws-implementation-vulnerability</id>
+    <content type="html"><![CDATA[<p>JOSE (Javascript Object Signing and Encryption) 愛で満ち溢れる ID 厨界隈において、燦々と輝く JWS (JSON Web Signature)、美しいですよね！</p>
+
+<p>JWT がジャニーズなら、JWE は EXILE、JWS は石原さとみと言ったところでしょうか？</p>
+
+<p>と、冗談はさておき、JWT をお使いの皆さんは、当然署名付けてますよね？署名検証しますよね？</p>
+
+<p>そんなあなたに一言いいたい！</p>
+
+<p>まだ HMAC で消耗してるの？</p>
+
+<p>いや、決して HMAC オワコンとかは言ってないですよ？スマホアプリでの署名検証のために、アプリに共通鍵埋め込むのはナンセンスってだけで。</p>
+
+<p>ということで、今日は JWS をお使いのみなさんに、実装時に作りがちな脆弱性パターンを2つご紹介します。</p>
+
+<p>今日紹介する脆弱性の2つのうち、1つめは HMAC, RSA, ECDSA のどれを使っても対象になるパターン、2つめは公開鍵暗号 (RSA / ECDSA) を使っている場合にのみ対象になるパターンです。</p>
+
+<p>では、さっそく行ってみましょう。</p>
+
+<!-- more -->
+
+
+<h2>JWS Header の alg を &ldquo;none&rdquo; に改ざん</h2>
+
+<p>JWS Header には、alg とか typ とか kid とかが入ってるわけですが、この攻撃では alg を &ldquo;none&rdquo; に書き換えます。そして、署名部分をごっそり取り除きます。</p>
+
+<p>例えばこんな JWT を</p>
+
+<pre>
+Raw: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiIsImtpZCI6ImRlZmF1bHQifQ.eyJmb28iOiJiYXIifQ.lmsUbhkgf5KpheRpXwc-pbG_HhYr9Grw1301d0sVzxI
+Header: {typ: "JWT", alg: "HS256", kid: "default"}
+</pre>
+
+
+<p>こんな風に</p>
+
+<pre>
+Raw: eyJ0eXAiOiJKV1QiLCJhbGciOiJub25lIiwia2lkIjoiZGVmYXVsdCJ9.eyJmb28iOiJiYXIifQ.
+Header: {typ: "JWT", alg: "none", kid: "default"}
+</pre>
+
+
+<p>これだけで、あとはもう Payload を改ざんし放題。</p>
+
+<p>こういう JWT を受け入れてしまう実装が、意外に多いらしいです。</p>
+
+<p>えぇ、かつて JSON::JWT Gem もそうでした、随分と昔の話ですが。</p>
+
+<p>署名検証する場所では、alg=none な JWT が送られてきたときにちゃんとエラーになるかどうか、確認しましょう。</p>
+
+<h2>JWS Header の alg を &ldquo;HMAC-SHA*&rdquo; に改ざん</h2>
+
+<p>こちらも JWS Header の alg を改ざんするんですが、こちらのケースでは署名はちゃんとついています。</p>
+
+<p>このケースでは、alg を公開鍵暗号方式 (RSA / ECDSA) から共通鍵暗号方式 (HMAC) に差し替え、「公開鍵文字列を共通鍵として利用して」署名を生成します。</p>
+
+<p>前提として、攻撃者が公開鍵を取得できることが必要ですが、まぁ公開鍵は割と誰にでも手に入りそうです。(当社比)</p>
+
+<p>で、今度は Ruby のサンプルコードで説明すると、</p>
+
+<pre>
+private_pem = <<-PEM
+-----BEGIN RSA PRIVATE KEY-----
+MIIEpAIBAAKCAQEArUeGng6YrNJT/YbxgWVfJPHtv8tVXNugsuPEt10af+OyCeyk
+ :
+-----END RSA PRIVATE KEY-----
+PEM
+private_key = OpenSSL::PKey::RSA.new private_pem
+
+jwt = JSON::JWT.new(foo: :bar)
+jws = jwt.sign(private_key, :RS256)
+</pre>
+
+
+<p>だったのを</p>
+
+<pre>
+public_pem = <<-PEM
+-----BEGIN PUBLIC KEY-----
+MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEArUeGng6YrNJT/YbxgWVf
+ :
+-----END PUBLIC KEY-----
+PEM
+
+jwt = JSON::JWT.new(malformed: "something attacker added")
+jws = jwt.sign(public_pem, :HS256)
+</pre>
+
+
+<p>にする感じです。</p>
+
+<p>公開鍵をどのようなフォーマットで保存しているかは実装依存でしょうが、その辺は空気読んでいただくとして。</p>
+
+<p>こちらも Payload は改ざんし放題です。</p>
+
+<p>こちらの脆弱性は、JSON::JWT のように公開鍵を鍵オブジェクトとして扱う環境ではエラーになったりしますが、公開鍵を文字列として扱うような環境では以外に署名検証を通過したりしてしまうようです。</p>
+
+<p>例えば PHP とか。</p>
+
+<p>署名検証時に署名アルゴリズムを明示的にチェックするなどの対策が必要でしょう。</p>
+
+<h2>まとめ</h2>
+
+<p>僕らの JOSE 愛は、こんなことじゃめげないですよ！</p>
+
+<p>でも、気をつけましょうね。</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[[PR] 属性単位のトレーサビリティについて]]></title>
@@ -1419,64 +1532,6 @@ sessionをserver-sideで管理するようにさえすれば、この問題は�
 
 
 <p>というわけで、Login with Amazon、ドキュメント通り実装すれば安全です :)</p>
-
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Login with Amazonを使うと、あなたのサイトのユーザーがアカウントハイジャックされる。]]></title>
-    <link href="http://oauthjp.github.io/blog/2013/05/30/login-with-amazon/"/>
-    <updated>2013-05-30T00:00:00+09:00</updated>
-    <id>http://oauthjp.github.io/blog/2013/05/30/login-with-amazon</id>
-    <content type="html"><![CDATA[<p>Amazon が、<a href="http://login.amazon.com">Login with Amazon</a> というAPIおよびそれに付随する JS / iOS / Android SDKs を出してきました。</p>
-
-
-<p>以下の記事にあるように、OAuth 2.0 ベースで認証連携を行う仕組みです。</p>
-
-
-<p><a href="http://itpro.nikkeibp.co.jp/article/NEWS/20130530/480782/">Amazonアカウントでアプリやサイトにログイン、「Login with Amazon」を提供開始：ITpro</a></p>
-
-
-<p>しかし、この Login with Amazon、まさに僕が以前以下の記事で紹介した「Facebook ID でログイン」の間違った実装方法を、公式ドキュメントで推奨してしまっています。</p>
-
-
-<p><a href="http://www.atmarkit.co.jp/ait/articles/1209/10/news105_2.html">デジタル・アイデンティティ技術最新動向（2）：RFCとなった「OAuth 2.0」――その要点は？ (2/2) - ＠IT</a></p>
-
-
-<p>この Amazon のドキュメントを読んで (or 「Facebook ID でログイン」を実装した経験を元に) Login with Amazon を自身の Web Site や iOS / Android アプリに導入すると、まず確実にあなたのサイト / アプリのアカウントがハイジャックされるような脆弱性を生むことになります。</p>
-
-
-<p>@IT の記事からのリンクは OAuth.jp の Posterous -&gt; Tumblr 移行に伴いリンク切れになってしまっているので、ここにも OAuth 2.0 Implicit Flow を認証連携に使うことの危険性を説明するエントリーをリンクしておきます。</p>
-
-
-<p><a href="http://oauthjp.github.io/blog/2012/02/08/ios-sdk">&#8220;なんちゃら iOS SDK&#8221; でありそうな被害例</a></p>
-
-
-<p>Facebook の場合は、上の記事にあるような response_type=code+token を iOS / Android アプリでは使えないので、以下の記事末尾にあるような対処法も用意されています。</p>
-
-
-<p><a href="http://oauthjp.github.io/blog/2012/02/07/oauth-20-implicit-flow">「OAuth 2.0 (Implicit Flow) でログイン」の被害例</a></p>
-
-
-<p>が、ざっと Login with Amazon のドキュメントを読んだ限り、そのような対処法が一切用意されていない。</p>
-
-
-<p>これはもう、Login with Amazon を導入した時点で、Amazon 側の対応無しではあなたのサイト / サービスの脆弱性を止めることができないということです。</p>
-
-
-<p>既に一部有識者より Amazon 側に連絡が行っているようなので、さすがにこのまま Amazon が何の対応も取らないということは考えにくいですが、Amazon が何らかのアップデートを出してくるまで、Login with Amazon を使ってはいけません。</p>
-
-
-<p>ご注意を。</p>
-
-
-<p>[追記 2013.06.04]</p>
-
-
-<p>Login with Amazon の問題点、解決されました。詳しくは以下の記事を。</p>
-
-
-<p><a href="http://oauthjp.github.io/blog/2013/06/04/login-with-amazon">Login with Amazon、もう使っても大丈夫！</a></p>
 
 ]]></content>
   </entry>
