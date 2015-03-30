@@ -6,7 +6,7 @@
 	<title>OAuth.jp</title>
     <meta name="author" content="Nov Matake">
     
-	<meta name="description" content="Published on: Jun 23rd, 2014 Tags: OAuth 2.0 では state パラメータってのがあって、それをちゃんと使わないと CSRF 脆弱性ができちゃうよって話は、@ritou 先生のスライドなどでみなさん勉強したんではないでしょうか。state パラメータは &hellip;">
+	<meta name="description" content="Published on: Oct 15th, 2014 Tags: 先週末、FIDO Alliance　のメンバーが来日して、FIDO Alliance Tokyo Seminar というセミナーが開催されていました。僕も今春の #idcon vol.18 で FIDO Alliance &hellip;">
 	
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
@@ -85,6 +85,59 @@
 <!-- begin toload --> 
     <div id="content" class="inner">
         
+
+
+    <article class="post">
+	<h2 class="title">
+		
+		<a href="/blog/2014/10/15/fido-alliance/">
+		
+			FIDO Alliance</a>
+	</h2>
+    <div class="entry-content">
+    <div class="meta">
+      <div class="date">Published on: 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-10-15T11:28:00+09:00" pubdate data-updated="true">Oct 15<span>th</span>, 2014</time></div>
+      <div class="tags">Tags: 
+
+</div>
+    </div>
+		<p>先週末、FIDO Alliance　のメンバーが来日して、<a href="http://www.dds.co.jp/fido_tokyoseminar/">FIDO Alliance Tokyo Seminar</a> というセミナーが開催されていました。僕も今春の <a href="http://idcon.doorkeeper.jp/events/10195">#idcon vol.18</a> で <a href="http://www.slideshare.net/matake/fido-alliance">FIDO Alliance について紹介した</a> 時にまだいろいろ不明点が多かったのもあって、このセミナーに参加してきました。</p>
+
+<p>で、参加してみて分かった事。</p>
+
+<h2>生体認証押し</h2>
+
+<p>まぁ、これは FIDO Alliance のサイト見ても、元々そうっちゃそうなんですが。</p>
+
+<p>FIDO は仕様的には特に生体認証センサーとか必要ないし、FIDO に準拠してない Apple TouchID みたいなセンサーモジュールと連携したソフトウェアモジュールさえ積んでればFIDO 仕様に沿った実装は可能です。</p>
+
+<p>ひとことで言うと、エンドユーザーが「端末のセキュア領域に保存されている秘密鍵にアクセスして assertion に署名できる存在」であることを認証しているに過ぎないので、その秘密鍵のロック解除に指紋使ってもいいし、PIN Code 使ってもいいはずです。</p>
+
+<p>が、やはり Alliance Member には生体認証ハードウェアモジュールのベンダーが多い事もあってか、発表ではヤケに生体認証を押していました。</p>
+
+<p>その影響か、Twitter とか現地での Q&amp;A でも、生体認証のセキュリティについての質問が多かったように思います。</p>
+
+
+		
+		<a href="/blog/2014/10/15/fido-alliance/" class="more-link">Read on &rarr;</a>
+	</div>
+
+<div class="meta">
+	
+</div>
+</article>
 
 
     <article class="post">
@@ -338,63 +391,6 @@ OAuth と OpenID Connect には複数の response_type があるんだけど、�
 
 		
 		<a href="/blog/2014/05/08/facebook-login-and-covert-redirect/" class="more-link">Read on &rarr;</a>
-	</div>
-
-<div class="meta">
-	
-</div>
-</article>
-
-
-    <article class="post">
-	<h2 class="title">
-		
-		<a href="/blog/2014/05/08/covert-redirect-and-openid-2-dot-0/">
-		
-			OpenID 2.0 における Covert Redirect と RP Discovery</a>
-	</h2>
-    <div class="entry-content">
-    <div class="meta">
-      <div class="date">Published on: 
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2014-05-08T10:57:00+09:00" pubdate data-updated="true">May 8<span>th</span>, 2014</time></div>
-      <div class="tags">Tags: 
-
-</div>
-    </div>
-		<p>さて、<a href="/blog/2014/05/07/covert-redirect-in-implicit-flow/">OAuth 2.0 &amp; OpenID Connect における Covert Redirect の問題</a> についてはまとめたので、次は OpenID 2.0 についてです。</p>
-
-<p>いいですか、OpenID Connect ではなく、OpenID 2.0 ですよ。古い方です。懐かしいですね、<a href="http://openid.net/specs/openid-authentication-2_0.html">OpenID Authentication 2.0 &ndash; Final</a>。</p>
-
-<p>そういえば、OpenID Foundation Japan の翻訳 WG を立ち上げて、一番最初に翻訳したのが <a href="http://openid-foundation-japan.github.io/openid-authentication.html">OpenID Authentication 2.0 の 日本語訳</a>でしたね&hellip;(遠い目</p>
-
-<p>と、昔話はそれくらいにして、本題に入りましょう。</p>
-
-<h3>まずは Covert Redirect 発生条件について</h3>
-
-<p>OpenID 2.0 では、レスポンスパラメータは query に引っ付いてきます。fragment は使いません。</p>
-
-<p>なので、open redirector のリダイレクト先には、通常はレスポンスパラメータは渡りません。</p>
-
-<p>全ての query パラメータをリダイレクト先に引き継いでしまうという、奇妙な open redirector を用意してる場合にのみレスポンスパラメータが外部に漏洩します。</p>
-
-<p>まずはこの時点でそんなに心配することはなさそうですね。</p>
-
-<p>まぁでもせっかくなんで、話続けますね。</p>
-
-
-		
-		<a href="/blog/2014/05/08/covert-redirect-and-openid-2-dot-0/" class="more-link">Read on &rarr;</a>
 	</div>
 
 <div class="meta">

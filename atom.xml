@@ -4,7 +4,7 @@
   <title><![CDATA[OAuth.jp]]></title>
   <link href="http://oauthjp.github.io/atom.xml" rel="self"/>
   <link href="http://oauthjp.github.io/"/>
-  <updated>2015-03-16T14:09:32+09:00</updated>
+  <updated>2015-03-30T14:51:56+09:00</updated>
   <id>http://oauthjp.github.io/</id>
   <author>
     <name><![CDATA[Nov Matake]]></name>
@@ -12,6 +12,38 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[個人情報保護法改正案に見る第三者提供記録義務と越境問題]]></title>
+    <link href="http://oauthjp.github.io/blog/2015/03/30/traceability-and-cross-border-data-transportation/"/>
+    <updated>2015-03-30T14:19:00+09:00</updated>
+    <id>http://oauthjp.github.io/blog/2015/03/30/traceability-and-cross-border-data-transportation</id>
+    <content type="html"><![CDATA[<p>先日の「<a href="http://oauth.jp/blog/2015/02/28/traceability-on-each-attributes/">属性単位のトレーサビリティについて</a>」という記事でも取り上げましたが、<a href="http://www.cas.go.jp/jp/houan/150310/siryou3.pdf">個人情報保護法改正案</a>では、第二十五条に「第三者提供に係る記録の作成等」という規定が設けられ、第三者提供時に提供者受療者双方に記録義務が発生することとなっています。</p>
+
+<p>また土曜日に行われた情報法制研究会第1回シンポジウムこの提供記録義務と、同じく改正案第二十四条の「外国にある第三者への提供の制限」を組み合わせると、AWSにデータ保存 (委託行為？) するだけで、第三者提供扱いとなり、記録義務が発生してしまうのではという指摘がありました。(まとめからのリンク先、板倉先生の資料参照。パスワードは空気読んで頑張って探してください。)
+<a href="http://togetter.com/li/801181?page=1">20150328情報法制研究会 第1回シンポジウム「改正個人情報保護法の内容と今後の課題」関連まとめ(私家版)</a></p>
+
+<p>確かに第二十四条では、認定国もしくは認定事業者以外の外国事業者に対するデータ提供の場合は、下記のように第二十三条の例外規定 (委託や共同利用を第三者提供として扱わないという規定含む) を適用しないと明記しているので、委託の場合でも第三者提供扱いとなり、記録義務が発生することになりそうです。</p>
+
+<blockquote>この場合においては、同条の規定は、適用しない。</blockquote>
+
+
+<p>さらに外国事業者への提供時には、通常の同意とは別に外国事業者への提供であることを明記した上での同意を取得する必要があるため、海外のRPを相手にする国内IdPは、</p>
+
+<ul>
+<li>RPが国内事業者であるか否か</li>
+<li>RPが海外事業者である場合には認定国の事業者であるか否か</li>
+<li>RPが非認定国の事業者である場合には認定事業者であるか否か</li>
+</ul>
+
+
+<p>を判断した上で、いずれにも当てはまらない場合は通常とは別の同意文言を提示する必要が出てきそうです。</p>
+
+<p>いやぁ〜、Dynamic Registrationとかしてる場合じゃないっすね！</p>
+
+<p>どうしましょか、これ？w (ノーアイデァなぅ)</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[JWS 実装時に作りがちな脆弱性パターン]]></title>
@@ -1502,37 +1534,6 @@ sessionをserver-sideで管理するようにさえすれば、この問題は�
     <content type="html"><![CDATA[<p>どうもTumblrをブログとして使うの辛いので、Octopressに移行します。</p>
 
 <p>またURL変わっちゃうのは&hellip;直せそうではあるけどちとメンドイ&hellip;</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Login with Amazon、もう使っても大丈夫！]]></title>
-    <link href="http://oauthjp.github.io/blog/2013/06/04/login-with-amazon/"/>
-    <updated>2013-06-04T00:00:00+09:00</updated>
-    <id>http://oauthjp.github.io/blog/2013/06/04/login-with-amazon</id>
-    <content type="html"><![CDATA[<p>先日以下のような記事を書きました。</p>
-
-
-<p><a href="http://oauthjp.github.io/blog/2013/05/30/login-with-amazon">Login with Amazonを使うと、あなたのサイトのユーザーがアカウントハイジャックされる。</a></p>
-
-
-<p>Login with Amazon 危険ですよ！という記事だったのですが、その後 Login with Amazon のドキュメントに、Token Info API が追加されました。</p>
-
-
-<p>こちらの Step4 Obtain Profile Information のサンプルコードで、Profile API を叩く前に Token 発行先の Client ID が自身の Client ID と一致することを確認する処理が追加されています。</p>
-
-
-<p><a href="http://login.amazon.com/website">Web - Login with Amazon Developer Center</a></p>
-
-
-<p>こちらのより詳細なドキュメントには、Security Considerations の &#8220;Impersonating a Resource Owner in Implicit Flow&#8221; という節で、Token Info API を使わない場合の攻撃例が述べられています。</p>
-
-
-<p><a href="https://images-na.ssl-images-amazon.com/images/G/01/lwa/dev/docs/website-developer-guide._TTH_.pdf">Login with Amazon - Developer Guide for Websites (PDF)</a></p>
-
-
-<p>というわけで、Login with Amazon、ドキュメント通り実装すれば安全です :)</p>
-
 ]]></content>
   </entry>
   
