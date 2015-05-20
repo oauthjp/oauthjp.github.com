@@ -6,7 +6,7 @@
 	<title>OAuth.jp</title>
     <meta name="author" content="Nov Matake">
     
-	<meta name="description" content="Published on: Aug 3rd, 2012 Tags: 昨日こんな記事を見かけたので、記事にまとめることにします。 OAuth2.0のclient_secretって本当に秘密鍵ですか？ 元記事にあるとおり、現状Native AppでのOAuth 2.0の実装は、API提供者・ &hellip;">
+	<meta name="description" content="Published on: Aug 9th, 2012 Tags: WebSocket Serverでユーザー認証とか、WebSocket Serverの裏にRailsなりのAPIがあってNode.jsからそのAPI叩く見たいなのはそれなりにありそうなのに、 &hellip;">
 	
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
@@ -85,6 +85,57 @@
 <!-- begin toload --> 
     <div id="content" class="inner">
         
+
+
+    <article class="post">
+	<h2 class="title">
+		
+		<a href="/blog/2012/08/09/websocketoauth-20/">
+		
+			WebSocketでOAuth 2.0を使ってみた</a>
+	</h2>
+    <div class="entry-content">
+    <div class="meta">
+      <div class="date">Published on: 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-08-09T00:00:00+09:00" pubdate data-updated="true">Aug 9<span>th</span>, 2012</time></div>
+      <div class="tags">Tags: 
+
+</div>
+    </div>
+		<p>WebSocket Serverでユーザー認証とか、WebSocket Serverの裏にRailsなりのAPIがあってNode.jsからそのAPI叩く見たいなのはそれなりにありそうなのに、あんまサンプルコード的なものが見当たらなかったので、自分で書いてみたのをここに公開することにします。</p>
+
+
+<p>ClientがWebSocket Serverにつなぐ時、<em><a href="http://socket.example.com/?access_token="><a href="http://socket.example.com/?access_token=">http://socket.example.com/?access_token=</a></a>***</em> みたいなURLにアクセスして、ServerはそのToken元にユーザーを認証して、その後socketがつながってる間はNode.jsがそのtoken使って裏のRails APIにアクセスする、という使い方をしてます。</p>
+
+
+<p>Access Tokenの保存先にMySQL使ってるのはあくまでRails側でそっちのが手っ取り早かったからで、ここはRedisでもMongoDBでもなんでもいいです。この例ではNode.js側ではAccess Tokenに紐づいたClientとかScopeとかを検証してないし。</p>
+
+
+<p><a href="https://gist.github.com/3300227"><a href="https://gist.github.com/3300227">https://gist.github.com/3300227</a></a></p>
+
+
+<p>ところで、WebSocketではCookieベースの認証方式が主流なんですかね？</p>
+
+
+		
+		
+	</div>
+
+<div class="meta">
+	
+</div>
+</article>
 
 
     <article class="post">
@@ -431,95 +482,6 @@
 
 
 <p>&#8212;<a href="https://developers.google.com/accounts/docs/OAuth">OAuth 1.0 for Web Applications &ndash; Google Accounts Authentication and Authorization — Google Developers</a></p>
-
-		
-		
-	</div>
-
-<div class="meta">
-	
-</div>
-</article>
-
-
-    <article class="post">
-	<h2 class="title">
-		
-		<a href="/blog/2012/04/09/when-you-access-to-an-openid-relying-party-rp/">
-		
-			WebIntent X OpenID Connect (En)</a>
-	</h2>
-    <div class="entry-content">
-    <div class="meta">
-      <div class="date">Published on: 
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-04-09T00:00:00+09:00" pubdate data-updated="true">Apr 9<span>th</span>, 2012</time></div>
-      <div class="tags">Tags: 
-
-</div>
-    </div>
-		<iframe src="http://www.slideshare.net/slideshow/embed_code/12296336" width="400" height="334" frameborder="0" marginwidth="0" marginheight="0" scrolling="no"></iframe>
-
-
-<br/><p>When you access to an OpenID Relying Party (RP), you&#8217;ll see 5 or more OpenID Provider (OP) logos at its login page. At worst, you can see 10+ OP logos, even though more than half of them are totally unknown for you. It&#8217;s called &#8220;NASCAR Problem&#8221;.</p>
-
-
-
-
-<p>OpenID community had been trying to solve the problem for a long time, but not much progress on it.</p>
-
-
-
-
-<p>Now, it&#8217;s the era of HTML5, and browsers-side functionality is improving very much.
-I found <a href="http://webintents.org/">HTML5&#8217;s WebIntents</a> [<a href="http://dvcs.w3.org/hg/web-intents/raw-file/tip/spec/Overview.html">W3C draft spec</a>] as a browser-based &#8220;discovery&#8221; protocol, which can be a solution for OpenID&#8217;s NASCAR problem.</p>
-
-
-
-
-<p>So that I made an OpenID Connect Provider &amp; Relying Party which relying on the discovery part to WebIntents.</p>
-
-
-
-
-<p>You can play my demo following the below steps.</p>
-
-
-
-
-<ol><li>Access to <a href="https://connect-op.heroku.com/">Nov OP</a> which has <intent> tag in its HTML  tag. Your browser will automatically register this site as a service provider of &#8220;OpenID Connect Discovery&#8221;.</intent></li>
-<li>Access to <a href="https://connect-rp.heroku.com/">Nov RP</a>.</li>
-<li>Click “Or Try WebIntents?” button, which initiate WebIntents-based OpenID Connect Discovery flow.</li>
-</ol>
-
-
-<p>Then you&#8217;ll see a small popup which let you choose an OP.
-After you choose Nov OP, you will go back to Nov OP and see an alert popup which shows raw OpenID Connect discovery result.
-Once RP received the response, it does normal OpenID Connect login flow.</p>
-
-
-
-
-<p>One of my friends, Ryo, made his <a href="https://openidconnect.info/">sample OP</a> &#8220;WebIntent-able&#8221;, so once you access to Ryo&#8217;s OP, you can see 2 OPs at the popup window of intent candidates.</p>
-
-
-
-
-<p><br/>
-ps.<br/>
-For some reason, this demo works only on Safari.
-(probably because of webintents.org&#8217;s JS shim issue?)</p>
-
 
 		
 		
