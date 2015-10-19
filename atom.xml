@@ -4,7 +4,7 @@
   <title><![CDATA[OAuth.jp]]></title>
   <link href="http://oauthjp.github.io/atom.xml" rel="self"/>
   <link href="http://oauthjp.github.io/"/>
-  <updated>2015-05-20T21:48:01+09:00</updated>
+  <updated>2015-10-19T12:20:25+09:00</updated>
   <id>http://oauthjp.github.io/</id>
   <author>
     <name><![CDATA[Nov Matake]]></name>
@@ -12,6 +12,38 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[[PR] OpenID Summit Tokyo 2015 やります！]]></title>
+    <link href="http://oauthjp.github.io/blog/2015/10/19/openid-summit-tokyo-2015/"/>
+    <updated>2015-10-19T11:58:00+09:00</updated>
+    <id>http://oauthjp.github.io/blog/2015/10/19/openid-summit-tokyo-2015</id>
+    <content type="html"><![CDATA[<p>Identity 界隈の皆様は、11/10 に <a href="https://openid.or.jp/summit/2015/index.html">OpenID Summit 2015</a> が開催されることはすでにご存知かと思いますが、OAuth / JWT 愛なみなさまの中にはまだご存知ない方もおられるかもしれないので、こちらでも告知しておきますね。</p>
+
+<p>はい、やります！</p>
+
+<p><a href="https://openid.or.jp/summit/2015/index.html#schedule-timetable">タイムスケジュール</a> みていただいてもおわかりのように、IETF 横浜の翌週というタイミングで、かつ OpenID Foundation (Global の方) の全面協力もあり、OpenID Foundation から主要な外タレ勢揃いな感じでございます。JWT Love なみなさんは、もちろん Mike Jones への愛を忘れたことはないでしょうし、強面やのになぜかプーさんキャラな John Bradley は IETF OAuth WG の各種最新 RFC および draft の解説をしてくれます。</p>
+
+<p>もちろんメインホールでは日本語のセッションもやっとります。日本語セッションは、Identity 技術活用事例とか FINTECH とかマイナンバーとか IDaaS とか&hellip;</p>
+
+<p>あと、毎度おなじみエバ企画、今回は OpenID Connect Certification の体験 Hands-on です。</p>
+
+<ul>
+<li>OpenID Connect IdP を実装したけど、本当に自分の実装が OpenID Connect 仕様に準拠してるのか確認したい方</li>
+<li>OpenID Connect ライブラリを実装したけど、Connect 準拠の IdP を作るのに事足りるライブラリになってるか確認したい方</li>
+<li>なんちゃって Connect 実装とか、なんちゃって OAuth 認証実装したけど、あとどれくらいで Connect 準拠になるのか知りたい方</li>
+</ul>
+
+
+<p>そんな方々に、IdP 実装の Connect 準拠具合をテストするためのツールがあります。</p>
+
+<p>OpenID Connect Certification Hands-on では、テストツールの使い方を紹介後、実際みなさんの実装に対してテストを実行していただき、テストが失敗したものに関する Debug のお手伝い等もさせていただきます。</p>
+
+<p>Global の方の OpenID Foundation からも、Mike Jones が Hands-on 会場に来てくれるようなので、Mike の OpenID Connect Certification のセッションをみた後、そのまま Hands-on に参加すると良いと思います！</p>
+
+<p>ということで、<a href="https://openid.or.jp/summit/2015/index.html">申し込みはこちら</a>！</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[IETF JOSE WG と OAuth WG から一気に9本の RFC が！]]></title>
@@ -1577,31 +1609,6 @@ sessionをserver-sideで管理するようにさえすれば、この問題は�
 <p>ps.</p>
 
 <p>関西在住でさすがにそんな気軽に関東に来れないって方には、<a href="http://nosurrender.jp/idit2013/">ID &amp; IT 2013</a> の大阪会場に参加するという手も。</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[JWT & JWS 翻訳プロジェクトスタート & イベント紹介]]></title>
-    <link href="http://oauthjp.github.io/blog/2013/08/17/jwt-jws-trans/"/>
-    <updated>2013-08-17T19:15:00+09:00</updated>
-    <id>http://oauthjp.github.io/blog/2013/08/17/jwt-jws-trans</id>
-    <content type="html"><![CDATA[<p>先週から, JWxファミリーの以下の3つの仕様書の翻訳を始めています.</p>
-
-<ul>
-<li><a href="http://tools.ietf.org/html/draft-ietf-oauth-json-web-token-11">JSON Web Token (JWT)</a></li>
-<li><a href="http://tools.ietf.org/html/draft-ietf-jose-json-web-signature-14">JSON Web Signature (JWS)</a></li>
-<li><a href="http://tools.ietf.org/html/draft-ietf-jose-use-cases-03">JOSE UseCases</a></li>
-</ul>
-
-
-<p>翻訳資料の公開は <a href="http://openid.doorkeeper.jp/events/5373">OpenID TechNight Vol.10</a> のある 9/4 に予定してます.
-<a href="http://openid.doorkeeper.jp/events/5373">OpenID TechNight Vol.10</a> では僕から簡単にこれら各仕様の概要についてもご紹介しますので, 興味ある方はぜひご参加を.</p>
-
-<p>また <a href="https://github.com/openid-foundation-japan/draft-ietf-jose">JWx 翻訳プロジェクト GitHub レポジトリ</a>にはこの他にも JSON Web Encryption や JWT Bearer といった関連仕様も含まれていて, これらも同様に翻訳予定です.
-これらの翻訳公開時期はまだ未定ですが, 9/20 の <a href="http://nosurrender.jp/idit2013/">ID &amp; IT 2013</a> に合わせて公開できればなと考えています.
-こちらのカンファレンスもエンタープライズ業界で Identity に携わっている人には必見です!</p>
-
-<p><strong>要するに, 9月がアツイ!</strong></p>
 ]]></content>
   </entry>
   
