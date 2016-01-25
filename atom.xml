@@ -4,7 +4,7 @@
   <title><![CDATA[OAuth.jp]]></title>
   <link href="http://oauthjp.github.io/atom.xml" rel="self"/>
   <link href="http://oauthjp.github.io/"/>
-  <updated>2016-01-12T16:47:04+09:00</updated>
+  <updated>2016-01-25T16:38:43+09:00</updated>
   <id>http://oauthjp.github.io/</id>
   <author>
     <name><![CDATA[Nov Matake]]></name>
@@ -12,6 +12,54 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[OAuth IdP Mix-up Attack - part II]]></title>
+    <link href="http://oauthjp.github.io/blog/2016/01/25/oauth-idp-mix-up-attack-part-ii/"/>
+    <updated>2016-01-25T15:59:00+09:00</updated>
+    <id>http://oauthjp.github.io/blog/2016/01/25/oauth-idp-mix-up-attack-part-ii</id>
+    <content type="html"><![CDATA[<p><a href="http://oauth.jp/blog/2016/01/12/oauth-idp-mix-up-attack/">OAuth IdP Mix-Up Attack とは？</a> のつづき。</p>
+
+<p>OAuth ML上で、以下のどちらを採用すべきかについての議論が収まる気配のない昨今です。</p>
+
+<ul>
+<li><a href="http://tools.ietf.org/html/draft-jones-oauth-mix-up-mitigation">http://tools.ietf.org/html/draft-jones-oauth-mix-up-mitigation</a></li>
+<li><a href="http://tools.ietf.org/html/draft-sakimura-oauth-meta">http://tools.ietf.org/html/draft-sakimura-oauth-meta</a></li>
+</ul>
+
+
+<p>そんななか、もうちょっとややこしいというか致命的なケースが出て来ました。</p>
+
+<ul>
+<li><a href="http://nat.sakimura.org/2016/01/22/code-phishing-attack-on-oauth-2-0-rfc6749/">Code phishing attack on OAuth 2.0 [RFC6749] | .Nat Zone</a></li>
+</ul>
+
+
+<p>&ldquo;Mix-up Attack&rdquo; っていうやつの話をしてたはずが、いつのまにか &ldquo;Code Phishing Attack&rdquo; って名前になっててもはや2つの違いがよく分かんなくなってきますが、ブログ記事中では「フィッシングメールをRP Developerに送って、Client DeveloperにToken Endpointを書き変えさせる」というパターンが例示されています。</p>
+
+<p>いや、そんなんに騙されるやつおらへんやろ〜、ってのがだいたいの反応かとは思いますし、RP Developerのみなさんがちゃんと注意しれてばそれで十分な話ではあるかと思います。</p>
+
+<p>が、IdP視点でいうと、アホなRPからユーザーさんのTokenとかそのRPのclient_secretとかがだだ漏れになっちゃうとIdPのレピュテーションにひびいたりするので、なかなかつらいところです。</p>
+
+<p>もはやここまで騙されてる状況では、Authorization Response以外何も信用できない訳で、Authorization Endpointにiss含んでも、issに紐付いたIdP Configがstaticにhard-codeされてるなら、そのhard-codeされてるconfig自体信用できないということになります。</p>
+
+<p>そのため、IdPが取れる対応策は以下の2つのどちらかになるでしょう。</p>
+
+<ul>
+<li>issを返しつつ、OAuth Discoveryをサポートする</li>
+<li>OAuth MetaのようにToken Endpoint URLをAuthZ Responseに含める</li>
+</ul>
+
+
+<p>前者は <a href="http://tools.ietf.org/html/draft-jones-oauth-mix-up-mitigation">http://tools.ietf.org/html/draft-jones-oauth-mix-up-mitigation</a> をより厳しくしたもので、後者は <a href="http://tools.ietf.org/html/draft-sakimura-oauth-meta">http://tools.ietf.org/html/draft-sakimura-oauth-meta</a> そのものです。</p>
+
+<p>個人的にはOAuth Discoveryが必須になるとHTTP Requestが増えるので、IdP的にはあまり嬉しくないなぁと思います。</p>
+
+<p>ps.</p>
+
+<p>Implicit FlowにおいてResource Endpointが書き換えられていることを想定したケースでは、AuthZ ResponseにResource Endpoint(s) を含めることになって、Code Flowよりさらにややこしい話になるわけですが、それはまた別の機会に&hellip;書く&hellip;かも。</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[OAuth IdP Mix-Up Attack とは？]]></title>
@@ -53,6 +101,9 @@
 <li>code/tokenを受け取ったRPは、state値を元に受け取ったAuthorization ResponseがAIdPからのものだと判断する。</li>
 <li>RPはAIdPのToken EndpointやAPI Endpointにcodeやtokenを送りつけてしまい、HIdPのcodeやtokenがAIdP (攻撃者) の手に渡る。</li>
 </ol>
+
+
+<!-- more -->
 
 
 <h2>対策方法</h2>
@@ -1620,33 +1671,6 @@ sessionをserver-sideで管理するようにさえすれば、この問題は�
 
 <p>ログアウト処理で<code>session.delete</code> (<code>session.clear</code>だっけ？ちょっと記憶曖昧) すると、RailsはSetCookieヘッダーを返してブラウザからそのsession cookieを削除しようとします。
 が、そのsession cookieを削除するかどうかの決定権は、server-sideではなくclient-sideに存在します。</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[JWT & JWS 翻訳第一弾リリース]]></title>
-    <link href="http://oauthjp.github.io/blog/2013/09/08/jwt-jws-trans-phase1-released/"/>
-    <updated>2013-09-08T15:30:00+09:00</updated>
-    <id>http://oauthjp.github.io/blog/2013/09/08/jwt-jws-trans-phase1-released</id>
-    <content type="html"><![CDATA[<p>先日 <a href="http://oauthjp.github.io/blog/2013/08/17/jwt-jws-trans/">JWT &amp; JWS 翻訳プロジェクトスタート &amp; イベント紹介</a> でお伝えした JWT &amp; JWS 翻訳プロジェクトですが、無事翻訳をリリースできました。</p>
-
-<ul>
-<li><a href="http://openid-foundation-japan.github.io/draft-ietf-oauth-json-web-token-11.ja.html">JSON Web Token (JWT)</a></li>
-<li><a href="http://openid-foundation-japan.github.io/draft-ietf-jose-json-web-signature-14.ja.html">JSON Web Signature (JWS)</a></li>
-<li><a href="http://openid-foundation-japan.github.io/draft-ietf-jose-use-cases-03.ja.html">JOSE UseCases</a></li>
-</ul>
-
-
-<p>OpenID TechNight Vol.10 ではこれらの仕様の概要説明も行いましたので、そこでのスライドもここに挙げておきます。
-(なぜかいま現在僕の環境ではこちら404 Not Foundになってしまいますが&hellip;)</p>
-
-<ul>
-<li><a href="http://slideshare.net/matake/jwt-trans">JWT &amp; JOSE 翻訳</a></li>
-</ul>
-
-
-<p>引き続き JSON Web Encryption (JWE) および OAuth2 JWT Bearer Token Profile も翻訳予定です。(スケジュール未定)
-翻訳にご協力いただける方は、<a href="http://twitter.com/nov">@nov</a> まで :)</p>
 ]]></content>
   </entry>
   

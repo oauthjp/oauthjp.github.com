@@ -6,7 +6,7 @@
 	<title>OAuth.jp</title>
     <meta name="author" content="Nov Matake">
     
-	<meta name="description" content="Published on: Sep 18th, 2010 Tags: そろそろ毎回「@nov です」で始めるのが寂しくなってきましたが、@novです。 表題の通りです。 ソースはこちら。 http://github.com/nov/rack-oauth2 こんな感じで使ってやってください。 &hellip;">
+	<meta name="description" content="Published on: Sep 19th, 2010 Tags: 今朝Twitterで @nakajiman さんに教えて頂いたのですが、サイボウズ Live APIがOAuth 1.0を採用したようです。 サイボウズ Live APIのドキュメントはこちらです。 https:// &hellip;">
 	
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
@@ -85,6 +85,75 @@
 <!-- begin toload --> 
     <div id="content" class="inner">
         
+
+
+    <article class="post">
+	<h2 class="title">
+		
+		<a href="/blog/2010/09/19/live-apioauth-10/">
+		
+			サイボウズ Live APIがOAuth 1.0に対応したようです</a>
+	</h2>
+    <div class="entry-content">
+    <div class="meta">
+      <div class="date">Published on: 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2010-09-19T00:00:00+09:00" pubdate data-updated="true">Sep 19<span>th</span>, 2010</time></div>
+      <div class="tags">Tags: 
+
+</div>
+    </div>
+		<p>今朝Twitterで <a href="http://twitter.com/nakajiman/status/24887989061">@nakajiman</a> さんに教えて頂いたのですが、サイボウズ Live APIがOAuth 1.0を採用したようです。</p>
+
+
+<p>サイボウズ Live APIのドキュメントはこちらです。</p>
+
+
+<p><a href="https://developer.cybozulive.com/doc/current/pub/authorize.html"><a href="https://developer.cybozulive.com/doc/current/pub/authorize.html">https://developer.cybozulive.com/doc/current/pub/authorize.html</a></a></p>
+
+
+<p>ドキュメントの中に出てくる用語がRFC版のものとコミュニティ版のものとまじっていて混乱するかもしれませんが、ruby-oauth使うとこんな感じになります。</p>
+
+
+<p><strong>リクエストトークン (テンポラリクレデンシャル) 取得 &amp; ユーザ (リソースオーナー) をサイボウズLiveへリダイレクト</strong></p>
+
+
+<p><a href="https://gist.github.com/586267"><a href="https://gist.github.com/586267">https://gist.github.com/586267</a></a></p>
+
+
+<p><strong>アクセストークン (トークンクレデンシャル) 取得</strong></p>
+
+
+<p><a href="https://gist.github.com/586272"><a href="https://gist.github.com/586272">https://gist.github.com/586272</a></a></p>
+
+
+<p>xAuthもサポートしているようですが、ホワイトリストに関する記述はないですね。どのclientでも使える、のかな？あと、エラーを503で返されると、ライブラリは対応しきれないかも知れませんね。</p>
+
+
+<p>ちなみにここにあるアクセスレベルってのは、client単位でscopeが設定される (=Y!方式) ってことでしょうかね？</p>
+
+
+<p><a href="https://developer.cybozulive.com/doc/current/pub/overview.html"><a href="https://developer.cybozulive.com/doc/current/pub/overview.html">https://developer.cybozulive.com/doc/current/pub/overview.html</a></a></p>
+
+
+		
+		
+	</div>
+
+<div class="meta">
+	
+</div>
+</article>
 
 
     <article class="post">
@@ -335,63 +404,6 @@
 
 
 <p><a href="http://twitter.com/7032">@7032</a>さんの「OAuthとマルチデバイス」のスライドは見当たらなかったので、見つかればまたここで紹介させてください。 &gt; @7032さん</p>
-
-
-		
-		
-	</div>
-
-<div class="meta">
-	
-</div>
-</article>
-
-
-    <article class="post">
-	<h2 class="title">
-		
-		<a href="/blog/2010/08/07/facebookoauth-rails/">
-		
-			FacebookのOAuthを使うサンプルアプリ (Rails)</a>
-	</h2>
-    <div class="entry-content">
-    <div class="meta">
-      <div class="date">Published on: 
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2010-08-07T00:00:00+09:00" pubdate data-updated="true">Aug 7<span>th</span>, 2010</time></div>
-      <div class="tags">Tags: 
-
-</div>
-    </div>
-		<p><a href="http://twitter.com/nov">@nov</a> です。</p>
-
-
-<p>自分で作ってる <a href="http://github.com/nov/fb_graph">fb_graph</a> という Facebook Graph API の Ruby ライブラリを OAuth 対応したついでに、Railsでサンプルアプリを作りました。</p>
-
-
-<p><a href="http://fbgraphsample.heroku.com/">デモサイトはこちら。</a></p>
-
-
-<p><a href="http://github.com/nov/fb_graph_sample">ソースコードはこちら。</a></p>
-
-
-<p>ソースコード内には localhost:3000 で使える API Key&amp;Secret も埋め込んであるので、特に Facebook にアプリ登録しなくても動きます。（localhost:3000 以外で動かす場合は自分でアプリ登録してください）</p>
-
-
-<p>いまのところRailsのバージョンは3.0.0.RCです。</p>
-
-
-<p>app/models/facebook.rb と app/controllers/facebooks_controller.rb を見れば、Facebook 独自の JavaScript SDK と通常の OAuth2 の Web Server provile の使い方が分かるかと思います。</p>
 
 
 		

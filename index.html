@@ -6,7 +6,7 @@
 	<title>OAuth.jp</title>
     <meta name="author" content="Nov Matake">
     
-	<meta name="description" content="Published on: Jan 12th, 2016 Tags: 成人式を迎えられたID厨の皆様におかれましては、大変おめでとうございます。成人前からID厨とか、キモカワですね。 さて、今日は、成人式直前にOAuth MLに投下された以下のpostで「OAuth 2.0の脆弱性」 &hellip;">
+	<meta name="description" content="Published on: Jan 25th, 2016 Tags: OAuth IdP Mix-Up Attack とは？ のつづき。 OAuth ML上で、以下のどちらを採用すべきかについての議論が収まる気配のない昨今です。 http://tools.ietf.org/html/draft- &hellip;">
 	
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
@@ -90,6 +90,83 @@
     <article class="post">
 	<h2 class="title">
 		
+		<a href="/blog/2016/01/25/oauth-idp-mix-up-attack-part-ii/">
+		
+			OAuth IdP Mix-up Attack - Part II</a>
+	</h2>
+    <div class="entry-content">
+    <div class="meta">
+      <div class="date">Published on: 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2016-01-25T15:59:00+09:00" pubdate data-updated="true">Jan 25<span>th</span>, 2016</time></div>
+      <div class="tags">Tags: 
+
+</div>
+    </div>
+		<p><a href="http://oauth.jp/blog/2016/01/12/oauth-idp-mix-up-attack/">OAuth IdP Mix-Up Attack とは？</a> のつづき。</p>
+
+<p>OAuth ML上で、以下のどちらを採用すべきかについての議論が収まる気配のない昨今です。</p>
+
+<ul>
+<li><a href="http://tools.ietf.org/html/draft-jones-oauth-mix-up-mitigation">http://tools.ietf.org/html/draft-jones-oauth-mix-up-mitigation</a></li>
+<li><a href="http://tools.ietf.org/html/draft-sakimura-oauth-meta">http://tools.ietf.org/html/draft-sakimura-oauth-meta</a></li>
+</ul>
+
+
+<p>そんななか、もうちょっとややこしいというか致命的なケースが出て来ました。</p>
+
+<ul>
+<li><a href="http://nat.sakimura.org/2016/01/22/code-phishing-attack-on-oauth-2-0-rfc6749/">Code phishing attack on OAuth 2.0 [RFC6749] | .Nat Zone</a></li>
+</ul>
+
+
+<p>&ldquo;Mix-up Attack&rdquo; っていうやつの話をしてたはずが、いつのまにか &ldquo;Code Phishing Attack&rdquo; って名前になっててもはや2つの違いがよく分かんなくなってきますが、ブログ記事中では「フィッシングメールをRP Developerに送って、Client DeveloperにToken Endpointを書き変えさせる」というパターンが例示されています。</p>
+
+<p>いや、そんなんに騙されるやつおらへんやろ〜、ってのがだいたいの反応かとは思いますし、RP Developerのみなさんがちゃんと注意しれてばそれで十分な話ではあるかと思います。</p>
+
+<p>が、IdP視点でいうと、アホなRPからユーザーさんのTokenとかそのRPのclient_secretとかがだだ漏れになっちゃうとIdPのレピュテーションにひびいたりするので、なかなかつらいところです。</p>
+
+<p>もはやここまで騙されてる状況では、Authorization Response以外何も信用できない訳で、Authorization Endpointにiss含んでも、issに紐付いたIdP Configがstaticにhard-codeされてるなら、そのhard-codeされてるconfig自体信用できないということになります。</p>
+
+<p>そのため、IdPが取れる対応策は以下の2つのどちらかになるでしょう。</p>
+
+<ul>
+<li>issを返しつつ、OAuth Discoveryをサポートする</li>
+<li>OAuth MetaのようにToken Endpoint URLをAuthZ Responseに含める</li>
+</ul>
+
+
+<p>前者は <a href="http://tools.ietf.org/html/draft-jones-oauth-mix-up-mitigation">http://tools.ietf.org/html/draft-jones-oauth-mix-up-mitigation</a> をより厳しくしたもので、後者は <a href="http://tools.ietf.org/html/draft-sakimura-oauth-meta">http://tools.ietf.org/html/draft-sakimura-oauth-meta</a> そのものです。</p>
+
+<p>個人的にはOAuth Discoveryが必須になるとHTTP Requestが増えるので、IdP的にはあまり嬉しくないなぁと思います。</p>
+
+<p>ps.</p>
+
+<p>Implicit FlowにおいてResource Endpointが書き換えられていることを想定したケースでは、AuthZ ResponseにResource Endpoint(s) を含めることになって、Code Flowよりさらにややこしい話になるわけですが、それはまた別の機会に&hellip;書く&hellip;かも。</p>
+
+		
+		
+	</div>
+
+<div class="meta">
+	
+</div>
+</article>
+
+
+    <article class="post">
+	<h2 class="title">
+		
 		<a href="/blog/2016/01/12/oauth-idp-mix-up-attack/">
 		
 			OAuth IdP Mix-Up Attack とは？</a>
@@ -150,48 +227,9 @@
 </ol>
 
 
-<h2>対策方法</h2>
-
-<h3>対策方法1</h3>
-
-<p>AIdP向けのredirect_uriとHIdP向けのredirect_uriを分ける。ただしこれが効果を発揮するためには、HIdPがRPからAIdP向けのredirect_uriを受け取った際にエラーになる必要がある。</p>
-
-<h3>対策方法2</h3>
-
-<p>Authorization Responseにcode/token発行者のIdentity情報を含める。</p>
-
-<p>いまOAuth WGで提案されている対応策は、以下の2つです。なんか似たようなのが2つ出てきててカオスですね。</p>
-
-<ul>
-<li><a href="http://tools.ietf.org/html/draft-jones-oauth-mix-up-mitigation">http://tools.ietf.org/html/draft-jones-oauth-mix-up-mitigation</a></li>
-<li><a href="http://tools.ietf.org/html/draft-sakimura-oauth-meta">http://tools.ietf.org/html/draft-sakimura-oauth-meta</a></li>
-</ul>
-
-
-<h3>対策方法3</h3>
-
-<p>悪意のある可能性があるIdPを採用しない。(まぁ、普通は採用してないですよね&hellip;)</p>
-
-<h3>どの対応策を採用すべき？</h3>
-
-<p>RPは以上の3つのうちいづれかを採用すれば良いですが、IdPが採用できるのは2しかないですね。</p>
-
-<h2>Malicious Endpoint Attackってのは？</h2>
-
-<p><a href="http://tools.ietf.org/html/draft-jones-oauth-mix-up-mitigation">OAuth 2.0 Mix-Up Mitigation &ndash; draft-jones-oauth-mix-up-mitigation-00</a> には、&#8221;IdP Mix-Up Attack&#8221; とは別に &ldquo;Malicious Endpoint Attack&rdquo; ってのが出てきます。</p>
-
-<p>これは、Discovery &amp; Dynamic Client Registrationを前提とした状況で発生する攻撃パターンです。</p>
-
-<p>Dynamic Registrationを前提とすると、「信頼できないIdPを採用しない」という選択肢が取りづらくなるため、より問題が大きくなります。</p>
-
-<p>が、そもそもみなさんそんなDynamic Client Registrationとか使ってないでしょうし、これについての解説はまた機会があればということで&hellip;</p>
-
-<h2>最後に</h2>
-
-<p>ID厨で本当に今年成人式を迎えられたあなた！次回の <a href="http://idcon.org">#idcon</a> の懇親会タダにするんでご容赦くださいm<em> </em>m</p>
 
 		
-		
+		<a href="/blog/2016/01/12/oauth-idp-mix-up-attack/" class="more-link">Read on &rarr;</a>
 	</div>
 
 <div class="meta">
@@ -422,61 +460,6 @@
 
 		
 		
-	</div>
-
-<div class="meta">
-	
-</div>
-</article>
-
-
-    <article class="post">
-	<h2 class="title">
-		
-		<a href="/blog/2015/03/16/common-jws-implementation-vulnerability/">
-		
-			JWS 実装時に作りがちな脆弱性パターン</a>
-	</h2>
-    <div class="entry-content">
-    <div class="meta">
-      <div class="date">Published on: 
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2015-03-16T11:45:00+09:00" pubdate data-updated="true">Mar 16<span>th</span>, 2015</time></div>
-      <div class="tags">Tags: 
-
-</div>
-    </div>
-		<p>JOSE (Javascript Object Signing and Encryption) 愛で満ち溢れる ID 厨界隈において、燦々と輝く JWS (JSON Web Signature)、美しいですよね！</p>
-
-<p>JWT がジャニーズなら、JWE は EXILE、JWS は石原さとみと言ったところでしょうか？</p>
-
-<p>と、冗談はさておき、JWT をお使いの皆さんは、当然署名付けてますよね？署名検証しますよね？</p>
-
-<p>そんなあなたに一言いいたい！</p>
-
-<p>まだ HMAC で消耗してるの？</p>
-
-<p>いや、決して HMAC オワコンとかは言ってないですよ？スマホアプリでの署名検証のために、アプリに共通鍵埋め込むのはナンセンスってだけで。</p>
-
-<p>ということで、今日は JWS をお使いのみなさんに、実装時に作りがちな脆弱性パターンを2つご紹介します。</p>
-
-<p>今日紹介する脆弱性の2つのうち、1つめは HMAC, RSA, ECDSA のどれを使っても対象になるパターン、2つめは公開鍵暗号 (RSA / ECDSA) を使っている場合にのみ対象になるパターンです。</p>
-
-<p>では、さっそく行ってみましょう。</p>
-
-
-		
-		<a href="/blog/2015/03/16/common-jws-implementation-vulnerability/" class="more-link">Read on &rarr;</a>
 	</div>
 
 <div class="meta">
