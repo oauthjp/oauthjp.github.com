@@ -138,6 +138,10 @@
 
 <p>もはやここまで騙されてる状況では、Authorization Response以外何も信用できない訳で、Authorization Endpointにiss含んでも、issに紐付いたIdP Configがstaticにhard-codeされてるなら、そのhard-codeされてるconfig自体信用できないということになります。</p>
 
+<p>「IdPごとに別のredirect_uriを使う」なんてのも、もはや無意味ですね。</p>
+
+<p>response_type=code+id_tokenとして、fragmentについてきたID Tokenをチェックしても、Discovery無しだとダメでしょう。</p>
+
 <p>そのため、IdPが取れる対応策は以下の2つのどちらかになるでしょう。</p>
 
 <ul>

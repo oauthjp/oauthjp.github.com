@@ -4,7 +4,7 @@
   <title><![CDATA[OAuth.jp]]></title>
   <link href="http://oauthjp.github.io/atom.xml" rel="self"/>
   <link href="http://oauthjp.github.io/"/>
-  <updated>2016-01-25T16:38:43+09:00</updated>
+  <updated>2016-01-25T16:45:29+09:00</updated>
   <id>http://oauthjp.github.io/</id>
   <author>
     <name><![CDATA[Nov Matake]]></name>
@@ -42,6 +42,10 @@
 <p>が、IdP視点でいうと、アホなRPからユーザーさんのTokenとかそのRPのclient_secretとかがだだ漏れになっちゃうとIdPのレピュテーションにひびいたりするので、なかなかつらいところです。</p>
 
 <p>もはやここまで騙されてる状況では、Authorization Response以外何も信用できない訳で、Authorization Endpointにiss含んでも、issに紐付いたIdP Configがstaticにhard-codeされてるなら、そのhard-codeされてるconfig自体信用できないということになります。</p>
+
+<p>「IdPごとに別のredirect_uriを使う」なんてのも、もはや無意味ですね。</p>
+
+<p>response_type=code+id_tokenとして、fragmentについてきたID Tokenをチェックしても、Discovery無しだとダメでしょう。</p>
 
 <p>そのため、IdPが取れる対応策は以下の2つのどちらかになるでしょう。</p>
 
