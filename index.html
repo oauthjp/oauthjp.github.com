@@ -139,19 +139,25 @@
 
 <p>まぁでも「オレオレ OAuth」の上で「オレオレ Connect」やる「JWT 認証」よりはマシなんじゃないかなっていう気はします。</p>
 
-<h2>OpenID Connect ドキュメントの読み方</h2>
+<h2>OpenID Connect 関連仕様、多すぎ問題</h2>
 
-<p>うん、OpenID Connect の仕様書は、全部読むと大変ですね。Discovery とか Dynamic Registration は読む必要無かったと思うけど、読む必要あるかどうかを判断するのは確かに大変ですね。</p>
+<p>うん、OpenID Connect の仕様群は、全部読むと大変ですね。</p>
 
-<p>IdP 実装する人は、基本は <a href="http://openid.net/specs/openid-connect-core-1_0.html">OpenID Connect Core 1.0</a> だけ読めば十分ですよ。</p>
+<p>Discovery とか Dynamic Registration は読む必要無かったと思うけど、読む必要あるかどうかを判断するがまず大変。</p>
+
+<p>そして、そこは OAuth の各種 Extension を全部読むのも同じように大変。</p>
+
+<p>OAuth の各種 Extension を読まずに OAuth 実装して、OpenID Connect 仕様を全部実装しようとしたら、作り直しになってもしょうがないかなとは思います。</p>
+
+<p>でも、自分で IdP 実装する人は、基本は <a href="http://openid.net/specs/openid-connect-core-1_0.html">OpenID Connect Core 1.0</a> だけ読めば十分ですよ。</p>
 
 <p>RP 実装する人は、その RP が Web サイトなら <a href="http://openid.net/specs/openid-connect-basic-1_0.html">OpenID Connect Basic Client Implementer&rsquo;s Guide 1.0</a> だけで十分。</p>
 
-<p>Native アプリなら&hellip; Google Platform のドキュメントが一番いい気がするけど、Native アプリ (とその Backend Server) を含めた RP に対する標準的なやり方は、まだ固定されていないというのが正直な所ではないでしょうか。ここは今後の課題。</p>
+<p>（Native アプリなら&hellip; Google Platform のドキュメントが一番いい気がするけど、Native アプリとその Backend Server を含めた RP に対する標準的なやり方は、まだ固定されていないというのが正直な所で、ここも今後の課題）</p>
 
-<p>(仕様策定時に想像できた) あらゆる RP のユースケースに答える、様々なポリシーを持つあらゆる IdP を作るためのツールを作る人は、IETF OAuth WG で議論されてる全ての RFC &amp; Internet Draft と OpenID Foundation で議論されてる仕様、一式全部読むんでしょうね。</p>
+<p>結局、IdP 作るのは RP より大変で、Authlete みたいなの作るのは IdP 作るよりさらに大変、というだけのことなのではないでしょうか。</p>
 
-<p>まぁそういう人は、そら大変ですよね。</p>
+<p>（ほとんどの IdP 実装は、既存 OAuth 実装に scope=openid と ID Token だけ追加実装すれば十分じゃね？と、個人的には思います）</p>
 
 <h2>redirect_uri 増えてる問題</h2>
 
