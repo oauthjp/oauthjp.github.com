@@ -4,7 +4,7 @@
   <title><![CDATA[OAuth.jp]]></title>
   <link href="http://oauthjp.github.io/atom.xml" rel="self"/>
   <link href="http://oauthjp.github.io/"/>
-  <updated>2016-02-24T16:16:53+09:00</updated>
+  <updated>2016-02-24T16:28:04+09:00</updated>
   <id>http://oauthjp.github.io/</id>
   <author>
     <name><![CDATA[Nov Matake]]></name>
@@ -113,7 +113,7 @@
 
 <h2>さいごに</h2>
 
-<p>OpenID Connect にしろ OAuth にしろ、何が大変って IdP / Server 向けのオフィシャルなガイドラインが皆無なことですよね。</p>
+<p>OpenID Connect にしろ OAuth にしろ、何が大変って IdP / Server 向けのオフィシャルなガイドラインが皆無なことですよね。（最近の Google Identity Platform のドキュメント群はなかなかいい感じだと思うけど）</p>
 
 <p>その影響で、関連仕様全部読んで必要なのだけピックアップする仕様理解力か、Core だけ読んで他全部無視するスルー力のどちらかが必要になる。</p>
 
@@ -121,7 +121,7 @@
 
 <p>どういうユースケースの場合はどういう OPTIONAL が選択された、っていうノウハウが Authlete に溜まっていくと、そこは Authlete の強みになるんでしょうね。</p>
 
-<p>特に Consumer 向けサービスやってる事業者さん向けには、そういうニーズ高そうな気がします。</p>
+<p>特に Consumer 向けサービスやってる事業者さん向けには、そういうニーズはありそうな気がします。</p>
 
 <p>OpenID Foundation にもそういうユースケース集作るモチベーションはあると思うので、そういうところで Authlete が活動するメリットを見出せると良いのでしょうね。</p>
 
