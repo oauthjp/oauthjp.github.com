@@ -4,7 +4,7 @@
   <title><![CDATA[OAuth.jp]]></title>
   <link href="http://oauthjp.github.io/atom.xml" rel="self"/>
   <link href="http://oauthjp.github.io/"/>
-  <updated>2016-02-24T14:51:11+09:00</updated>
+  <updated>2016-02-24T14:55:11+09:00</updated>
   <id>http://oauthjp.github.io/</id>
   <author>
     <name><![CDATA[Nov Matake]]></name>
@@ -20,7 +20,7 @@
     <id>http://oauthjp.github.io/blog/2016/02/24/is-openid-connect-far-from-oauth2</id>
     <content type="html"><![CDATA[<p><a href="http://qiita.com/TakahikoKawasaki/items/f2a0d25a4f05790b3baa">OAuth 2.0 + OpenID Connect のフルスクラッチ実装者が知見を語る &ndash; Qiita</a> ってのになんかフォローアップしろよ的なのが来たので。</p>
 
-<p>ざっと読んだ感想としては、「まぁ OpenAM みたいな感じの、OpenID Connect の OPTIONAL な機能全部実装したら、そら大変ですね」という感じでしょうか。(Authlete に関しては、OpenAM みたいな感じで使われる有料の何かなんだろうな、くらいしか知らないです)</p>
+<p>ざっと読んだ感想としては、「まぁ OpenAM みたいな感じの、OpenID Connect の OPTIONAL な機能全部実装したら、そら大変ですね」という感じでしょうか。(Authlete に関しては、OpenAM みたいな感じで使われる、OpenAM よりはるかに簡単に使える代わりに有料の何かなんだろうな、というイメージ)</p>
 
 <h2>OAuth は必要なのか？</h2>
 
@@ -32,11 +32,7 @@
 
 <p>っていう前提で話すると、OAuth 以外まともな選択肢が無いんじゃないでしょうか。</p>
 
-<p>あ、Session Cookie で事足りるなら、それでもいいかとは思います。</p>
-
-<p>自社内だからオレオレでやるわ〜、ってのは、インターネットに公開してる時点でもはや自社内に限定された話じゃ無いんじゃないですかね？という気がします。</p>
-
-<p>ただ、自社内でやる場合、OAuth の仕様書にある OPTIONAL な機能は、基本実装しなくて事足りるんじゃ無いかとも思います。</p>
+<p>ただ、OAuth の仕様書にある OPTIONAL な機能は、そこまで実装しなくて事足りるんじゃ無いかとも思います。</p>
 
 <h2>「OAuth 認証」とは</h2>
 
@@ -61,6 +57,12 @@
 <p>(仕様策定時に想像できた) あらゆる RP のユースケースに答える、様々なポリシーを持つあらゆる IdP を作るためのツールを作る人は、IETF OAuth WG で議論されてる全ての RFC &amp; Internet Draft と OpenID Foundation で議論されてる仕様、一式全部読むんでしょうね。</p>
 
 <p>まぁそういう人は、そら大変ですよね。</p>
+
+<h2>redirect_uri 増えてる問題</h2>
+
+<p>これはまぁ RFC 6749 の時代には標準化するレベルになかったものが、OpenID Connect の時代には標準化レベルに達していて、OpenID Foundation が Connect 策定するついでに <a href="http://openid.net/specs/oauth-v2-multiple-response-types-1_0.html">OAuth 2.0 Multiple Response Type Encoding Practices</a> にまとめた、っていうのが実際のところ。</p>
+
+<p>「現実の OAuth がとっくに RFC 6749 を超えていたのだよ」という感じでしょうか。</p>
 
 <h2>クライアントアプリケーションのメタ情報、多すぎ問題</h2>
 
