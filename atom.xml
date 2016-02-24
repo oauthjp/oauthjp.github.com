@@ -4,7 +4,7 @@
   <title><![CDATA[OAuth.jp]]></title>
   <link href="http://oauthjp.github.io/atom.xml" rel="self"/>
   <link href="http://oauthjp.github.io/"/>
-  <updated>2016-02-24T15:13:40+09:00</updated>
+  <updated>2016-02-24T15:59:29+09:00</updated>
   <id>http://oauthjp.github.io/</id>
   <author>
     <name><![CDATA[Nov Matake]]></name>
@@ -20,7 +20,7 @@
     <id>http://oauthjp.github.io/blog/2016/02/24/is-openid-connect-far-from-oauth2</id>
     <content type="html"><![CDATA[<p><a href="http://qiita.com/TakahikoKawasaki/items/f2a0d25a4f05790b3baa">OAuth 2.0 + OpenID Connect のフルスクラッチ実装者が知見を語る &ndash; Qiita</a> ってのになんかフォローアップしろよ的なのが来たので。</p>
 
-<p>ざっと読んだ感想としては、「まぁ OpenAM みたいな感じの、OpenID Connect の OPTIONAL な機能全部実装したら、そら大変ですね」という感じでしょうか。(Authlete に関しては、OpenAM みたいな感じで使われる、OpenAM よりはるかに簡単に使える代わりに有料の何かなんだろうな、というイメージ)</p>
+<p>ざっと読んだ感想としては、「OpenID Connect の OPTIONAL な機能全部実装したら、そら大変ですね」という感じ。（Authlete に関しては、OpenAM みたいな感じで使われる、OpenAM よりはるかに簡単に使える代わりに有料の何かなんだろうな、というイメージです）</p>
 
 <h2>OAuth は必要なのか？</h2>
 
@@ -36,11 +36,11 @@
 
 <h2>「OAuth 認証」とは</h2>
 
-<p>OAuth は「End-User (に信頼された OAuth Server) が OAuth Client のアクセス権限をコントロールする」というコンテキストにおいての標準化されたプロトコルであって、「Identity Provider が End-User を認証した結果を受け取って、Relying Party が (Identity Provider への信頼を元に) End-User を認証する」というコンテキストで OAuth を使うユースケースが「OAuth 認証」と呼ばれるやつです。</p>
+<p>OAuth は「End-User (に信頼された OAuth Server) が OAuth Client のアクセス権限をコントロールする」というコンテキストにおいての標準化されたプロトコルであって、「Identity Provider (IdP) が End-User を認証した結果を受け取って、Relying Party (RP) が (IdP への信頼を元に) End-User を認証する」というコンテキストで OAuth を使うユースケースが「OAuth 認証」と呼ばれるやつです。</p>
 
 <p>後者のコンテキストで、OAuth は何も標準的な仕様を定めてはいません。</p>
 
-<p>Identity Provider が End-User を認証した結果を Relying Party に伝えるの方法 (ID Token 相当) や、そのコンテキストで求められることが多い認証されたユーザー属性情報の取得方法 (UserInfo 相当) については、完全に各 Platform が独自に API を提供してるだけなので、そういう意味では「OAuth 認証」ってのは「オレオレ Connect」みたいなもんですね。</p>
+<p>IdP が End-User を認証した結果を RP に伝える方法 (ID Token 相当) や、そのコンテキストで求められることが多い認証されたユーザー属性情報の取得方法 (UserInfo 相当) については、完全に各 Platform が独自に API を提供してるだけなので、そういう意味では「OAuth 認証」ってのは「オレオレ Connect」みたいなもんですね。</p>
 
 <p>まぁでも「オレオレ OAuth」の上で「オレオレ Connect」やる「JWT 認証」よりはマシなんじゃないかなっていう気はします。</p>
 
@@ -48,21 +48,25 @@
 
 <p>うん、OpenID Connect の仕様群は、全部読むと大変ですね。</p>
 
-<p>Discovery とか Dynamic Registration は読む必要無かったと思うけど、読む必要あるかどうかを判断するがまず大変。</p>
+<p>Authlete の人も Dynamic Client Registration は読む必要無かったと思うけど、読む必要あるかどうかを判断するのがまず大変。</p>
 
-<p>そして、そこは OAuth の各種 Extension を全部読むのも同じように大変。</p>
+<p>そして、そこは OAuth の各種 Extension を全部理解して使いこなすのも、同じように大変。</p>
 
-<p>OAuth の各種 Extension を読まずに OAuth 実装して、OpenID Connect 仕様を全部実装しようとしたら、作り直しになってもしょうがないかなとは思います。</p>
+<p>OAuth の各種 Extension を読まずに OAuth 実装して、その状態から OpenID Connect 仕様を全部実装しようとしたら、一回全部作り直しになってもしょうがないかなとは思います。</p>
 
-<p>でも、自分で IdP 実装する人は、基本は <a href="http://openid.net/specs/openid-connect-core-1_0.html">OpenID Connect Core 1.0</a> だけ読めば十分ですよ。</p>
+<p>でも、自分で IdP 実装する人は、基本 <a href="http://openid.net/specs/openid-connect-core-1_0.html">OpenID Connect Core 1.0</a> だけ読めば十分ですよ。それでも十分大変だけど。</p>
 
 <p>RP 実装する人は、その RP が Web サイトなら <a href="http://openid.net/specs/openid-connect-basic-1_0.html">OpenID Connect Basic Client Implementer&rsquo;s Guide 1.0</a> だけで十分。</p>
 
-<p>（Native アプリなら&hellip; Google Platform のドキュメントが一番いい気がするけど、Native アプリとその Backend Server を含めた RP に対する標準的なやり方は、まだ固定されていないというのが正直な所で、ここも今後の課題）</p>
+<p>Native アプリなら&hellip;Native アプリのケースって Backend Server 含めると 4-party ですし、3-party を想定して策定されてる OAuth や OpenID Connect の範囲を超えているので、今後の課題ですかね。（そういや <a href="http://labs.gree.jp/blog/2015/12/14831/">OAuth for Native Apps</a> てのを先日書きました）</p>
 
-<p>結局、IdP 作るのは RP より大変で、Authlete みたいなの作るのは IdP 作るよりさらに大変、というだけのことなのではないでしょうか。</p>
+<p>で、ちょっと話がそれましたが、結論としては、IdP 作るのは RP より大変で、Authlete みたいなの作るのは IdP 作るよりさらに大変、というだけのことなのではないでしょうか。</p>
 
-<p>（ほとんどの IdP 実装は、既存 OAuth 実装に scope=openid と ID Token だけ追加実装すれば十分じゃね？と、個人的には思います）</p>
+<p>必要な Extension については具体的なユースケース聞かない限りなんとも言えないので、そこは Authlete 的に「とりあえず実装する」という方針だと、Authlete が大変なのはよくわかります。</p>
+
+<p>一方で、ほとんどの IdP 実装は、既存 OAuth 実装に scope=openid と ID Token だけ追加実装すれば十分じゃね？とも思います。</p>
+
+<p>具体的なユースケース聞かない限りなんとも言えないのですが。</p>
 
 <h2>response_type 増えてる問題</h2>
 
@@ -70,7 +74,7 @@
 
 <p>「現実の OAuth がとっくに RFC 6749 を超えていたのだよ」という感じでしょうか。</p>
 
-<p>みんなが当時 IETF OAuth WG のスピード感に満足していれば、<a href="http://openid.net/specs/oauth-v2-multiple-response-types-1_0.html">OAuth 2.0 Multiple Response Type Encoding Practices</a> は IETF 側でまとめられていたよね、というのもある。</p>
+<p>みんなが当時 IETF OAuth WG のスピード感に満足していれば、<a href="http://openid.net/specs/oauth-v2-multiple-response-types-1_0.html">OAuth 2.0 Multiple Response Type Encoding Practices</a> は IETF 側でまとめられていたよね、というのもあるし、RFC 6749 があそこまで時間かかるんだったら、response_type=code+token は Core に入れられたよね、ってのもあるにはあるけど、いまさら言ってもしゃーないすね。</p>
 
 <h2>クライアントアプリケーションのメタ情報、多すぎ問題</h2>
 
@@ -78,13 +82,13 @@
 
 <p>Dynamic Client Registration を検討してるって人がもしいたら、まずは <a href="https://tools.ietf.org/html/rfc7636">OAuth PKCE</a> ってので代用できないか検討するがいいかと思います。</p>
 
-<p>Dynamic Client Registration をセキュアにやる方法は、OAuth WG と OpenID Connect の関連仕様を全部読んでもまだ足りないと思います。</p>
+<p>Dynamic Client Registration をセキュアにやる方法は、OAuth WG と OpenID Connect の関連仕様を全部読んでもまだ足りないはず。</p>
 
 <p>それでも Dynamic Client Registration したいんだ！って人は&hellip;PKI まわりの技術一通り把握したら、使いこなせる&hellip;のかな&hellip;？</p>
 
-<p>うん、僕、そういう人が出てきてから考えますね。</p>
+<p>という前提の元で Dynamic Client Registration で登録された Client を Public / Confidential どちらにするかという話をすると、grant_types に implicit 以外が含まれてたら Confidential ですね。</p>
 
-<p>あ、Trust Framework 作りたいんだ！とかいう人は、Dynamic Registration 読むべきだとは思います。使うかどうかは別として。</p>
+<p>そもそも Dynamic Client Registration で Public Client 登録する意義がよくわかんないですけど。</p>
 
 <h2>Unsigned JWT 作れない問題</h2>
 
@@ -94,25 +98,25 @@
 
 <p>UserInfo Response を Singed and/or Encrypted JWT にするってのも、まず使わないでしょう。</p>
 
-<p>「Aggregated Claims が使いたいんだ！」っていう人は検討してもいいですが、「Aggregated Claims って何？」っていう人は、その Aggregated Claims も使うこと無いでしょうから別にいいです。</p>
-
-<p>（あ、話はちょっと逸れますが、Dynamic Registration で Public Client 登録したいっていう意図は、僕にはさっぱりです。動的に redirect_uri が増えるけど、redirect_uri の検証は exact match を維持したい、とか？）</p>
+<p>「Aggregated Claims が使いたいんだ！」っていう人は検討してもいいですが、「Aggregated Claims って何？」っていう人は、きっと Aggregated Claims も使うこと無いでしょう。</p>
 
 <h2>redirect_uri は必須か？</h2>
 
-<p><a href="http://openid.net/specs/openid-connect-core-1_0.html#TokenRequestValidation">Token Request Validation</a> では redirect_uri の省略を許しつつも Authentication Request の Section では REQUIRED としか書いてない Connect Core が、読みづらいですね。</p>
+<p>これに関しては、<a href="http://openid.net/specs/openid-connect-core-1_0.html#TokenRequestValidation">Token Request Validation</a> では redirect_uri の省略を許しつつも Authentication Request の Section では REQUIRED としか書いてない Connect Core が、読みづらいですね。</p>
 
 <p>Connect でも OAuth との整合性を保つため redirect_uri が1つの場合は省略可能としてもいいですが、OAuth Server のポリシーとして Authorization Request に redirect_uri を必須にしても良いです。</p>
 
-<p>openid scope の有無でそこが切り替わるっていう実装は&hellip;余計わかりづらく無いでしょうか？</p>
+<p>scope=openid の有無でそこが切り替わるっていう実装が、一番わかりづらいんじゃないでしょうか？</p>
 
 <h2>さいごに</h2>
 
 <p>Qiita の記事を読む限り、Authlete では RP が幅広い OPTIONAL な機能を選択できるようなので、その選択で本当に大丈夫なのかの判断はなかなか高度な仕様理解を求めそうです。</p>
 
-<p>どういうユースケースの場合はどういう OPTIONAL が選択された、っていうノウハウが溜まっていくと、特に B2C の分野ではニーズ高そうな気がします。</p>
+<p>どういうユースケースの場合はどういう OPTIONAL が選択された、っていうノウハウが溜まっていくと、そこは Authlete の強みになるんでしょうな。</p>
 
-<p>あと、どこかのタイミングで「実際には一度も選択されたことの無い OPTIONAL 機能」とかリストで公開してもらって、それらがどういうときに使われるのかを議論する #idcon とか、ニッチな ID 厨に受ける気がしますね :)</p>
+<p>特に Consumer 向けサービスやってる事業者さん向けには、そういうニーズ高そうな気がします。</p>
+
+<p>あと、どこかのタイミングで「実際には一度も選択されたことの無い OPTIONAL 機能」とかリストで公開してもらって、それらがどういうときに使われるのかを議論するのとかおもしろそう :)</p>
 ]]></content>
   </entry>
   
