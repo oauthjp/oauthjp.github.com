@@ -4,7 +4,7 @@
   <title><![CDATA[OAuth.jp]]></title>
   <link href="http://oauthjp.github.io/atom.xml" rel="self"/>
   <link href="http://oauthjp.github.io/"/>
-  <updated>2016-01-25T16:45:29+09:00</updated>
+  <updated>2016-02-24T14:51:11+09:00</updated>
   <id>http://oauthjp.github.io/</id>
   <author>
     <name><![CDATA[Nov Matake]]></name>
@@ -12,6 +12,99 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[OpenID Connectはそんなに大変かね？]]></title>
+    <link href="http://oauthjp.github.io/blog/2016/02/24/is-openid-connect-far-from-oauth2/"/>
+    <updated>2016-02-24T11:14:00+09:00</updated>
+    <id>http://oauthjp.github.io/blog/2016/02/24/is-openid-connect-far-from-oauth2</id>
+    <content type="html"><![CDATA[<p><a href="http://qiita.com/TakahikoKawasaki/items/f2a0d25a4f05790b3baa">OAuth 2.0 + OpenID Connect のフルスクラッチ実装者が知見を語る &ndash; Qiita</a> ってのになんかフォローアップしろよ的なのが来たので。</p>
+
+<p>ざっと読んだ感想としては、「まぁ OpenAM みたいな感じの、OpenID Connect の OPTIONAL な機能全部実装したら、そら大変ですね」という感じでしょうか。(Authlete に関しては、OpenAM みたいな感じで使われる有料の何かなんだろうな、くらいしか知らないです)</p>
+
+<h2>OAuth は必要なのか？</h2>
+
+<ul>
+<li>Basic 認証は死んだ。</li>
+<li>ユーザー単位での API のアクセスコントロールがしたいです。</li>
+</ul>
+
+
+<p>っていう前提で話すると、OAuth 以外まともな選択肢が無いんじゃないでしょうか。</p>
+
+<p>あ、Session Cookie で事足りるなら、それでもいいかとは思います。</p>
+
+<p>自社内だからオレオレでやるわ〜、ってのは、インターネットに公開してる時点でもはや自社内に限定された話じゃ無いんじゃないですかね？という気がします。</p>
+
+<p>ただ、自社内でやる場合、OAuth の仕様書にある OPTIONAL な機能は、基本実装しなくて事足りるんじゃ無いかとも思います。</p>
+
+<h2>「OAuth 認証」とは</h2>
+
+<p>OAuth は「End-User (に信頼された OAuth Server) が OAuth Client のアクセス権限をコントロールする」というコンテキストにおいての標準化されたプロトコルであって、「Identity Provider が End-User を認証した結果を受け取って、Relying Party が (Identity Provider への信頼を元に) End-User を認証する」というコンテキストで OAuth を使うユースケースが「OAuth 認証」と呼ばれるやつです。</p>
+
+<p>後者のコンテキストで、OAuth は何も標準的な仕様を定めてはいません。</p>
+
+<p>Identity Provider が End-User を認証した結果のやりとり (ID Token 相当) や、そのコンテキストで求められることが多い認証されたユーザー属性情報のやりとり (UserInfo 相当) については、完全に各 Platform が独自 API を提供してるだけなので、そういう意味では「OAuth 認証」ってのは「オレオレ Connect」みたいなもんですね。</p>
+
+<p>まぁでも「オレオレ OAuth」の上で「オレオレ Connect」やる「JWT 認証」よりはマシなんじゃないかなっていう気はします。</p>
+
+<h2>OpenID Connect ドキュメントの読み方</h2>
+
+<p>うん、OpenID Connect の仕様書は、全部読むと大変ですね。Discovery とか Dynamic Registration は読む必要無かったと思うけど、読む必要あるかどうかを判断するのは確かに大変ですね。</p>
+
+<p>IdP 実装する人は、基本は <a href="http://openid.net/specs/openid-connect-core-1_0.html">OpenID Connect Core 1.0</a> だけ読めば十分ですよ。</p>
+
+<p>RP 実装する人は、その RP が Web サイトなら <a href="http://openid.net/specs/openid-connect-basic-1_0.html">OpenID Connect Basic Client Implementer&rsquo;s Guide 1.0</a> だけで十分。</p>
+
+<p>Native アプリなら&hellip; Google Platform のドキュメントが一番いい気がするけど、Native アプリ (とその Backend Server) を含めた RP に対する標準的なやり方は、まだ固定されていないというのが正直な所ではないでしょうか。ここは今後の課題。</p>
+
+<p>(仕様策定時に想像できた) あらゆる RP のユースケースに答える、様々なポリシーを持つあらゆる IdP を作るためのツールを作る人は、IETF OAuth WG で議論されてる全ての RFC &amp; Internet Draft と OpenID Foundation で議論されてる仕様、一式全部読むんでしょうね。</p>
+
+<p>まぁそういう人は、そら大変ですよね。</p>
+
+<h2>クライアントアプリケーションのメタ情報、多すぎ問題</h2>
+
+<p>えっと、そもそも、Dynamic Client Registration、きっと使わないです。</p>
+
+<p>Dynamic Client Registration を検討してるって人がもしいたら、まずは <a href="https://tools.ietf.org/html/rfc7636">OAuth PKCE</a> ってので代用できないか検討するがいいかと思います。</p>
+
+<p>Dynamic Client Registration をセキュアにやる方法は、OAuth WG と OpenID Connect の関連仕様を全部読んでもまだ足りないと思います。</p>
+
+<p>それでも Dynamic Client Registration したいんだ！って人は&hellip;PKI まわりの技術一通り把握したら、使いこなせる&hellip;のかな&hellip;？</p>
+
+<p>うん、僕、そういう人が出てきてから考えますね。</p>
+
+<p>あ、Trust Framework 作りたいんだ！とかいう人は、Dynamic Registration 読むべきだとは思います。使うかどうかは別として。</p>
+
+<h2>Unsigned JWT 作れない問題</h2>
+
+<p>UserInfo Response を Unsigned JWT にするってのも、きっと使わないです。</p>
+
+<p>署名の無い URL-safe Base64 Encoded な JSON (= Unsigned JWT) とか、素の JSON より decode がちょっとめんどいっていう以外に、どんな意義があるというのでしょうか？</p>
+
+<p>UserInfo Response を Singed and/or Encrypted JWT にするってのも、まず使わないでしょう。</p>
+
+<p>「Aggregated Claims が使いたいんだ！」っていう人は検討してもいいですが、「Aggregated Claims って何？」っていう人は、その Aggregated Claims も使うこと無いでしょうから別にいいです。</p>
+
+<p>（あ、話はちょっと逸れますが、Dynamic Registration で Public Client 登録したいっていう意図は、僕にはさっぱりです。動的に redirect_uri が増えるけど、redirect_uri の検証は exact match を維持したい、とか？）</p>
+
+<h2>redirect_uri は必須か？</h2>
+
+<p><a href="http://openid.net/specs/openid-connect-core-1_0.html#TokenRequestValidation">Token Request Validation</a> では redirect_uri の省略を許しつつも Authentication Request の Section では REQUIRED としか書いてない Connect Core が、読みづらいですね。</p>
+
+<p>Connect でも OAuth との整合性を保つため redirect_uri が1つの場合は省略可能としてもいいですが、OAuth Server のポリシーとして Authorization Request に redirect_uri を必須にしても良いです。</p>
+
+<p>openid scope の有無でそこが切り替わるっていう実装は&hellip;余計わかりづらく無いでしょうか？</p>
+
+<h2>さいごに</h2>
+
+<p>Qiita の記事を読む限り、Authlete では RP が幅広い OPTIONAL な機能を選択できるようなので、その選択で本当に大丈夫なのかの判断はなかなか高度な仕様理解を求めそうです。</p>
+
+<p>どういうユースケースの場合はどういう OPTIONAL が選択された、っていうノウハウが溜まっていくと、特に B2C の分野ではニーズ高そうな気がします。</p>
+
+<p>あと、どこかのタイミングで「実際には一度も選択されたことの無い OPTIONAL 機能」とかリストで公開してもらって、それらがどういうときに使われるのかを議論する #idcon とか、ニッチな ID 厨に受ける気がしますね :)</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[OAuth IdP Mix-up Attack - part II]]></title>
@@ -1600,81 +1693,6 @@ Tech Blog といい、Yahoo! 側では何の問題も起こしてないのに、
 <p>ところでその pull request 内でのやり取りで知ったのですが、Xbox One ってのが JWE を使ってるらしいですね。</p>
 
 <p>他にも Production で JWE 使ってるとことかあるんでしょうか？</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Rails SessionにCookieStore使った時の問題点]]></title>
-    <link href="http://oauthjp.github.io/blog/2013/09/26/rails-session-cookie/"/>
-    <updated>2013-09-26T12:45:00+09:00</updated>
-    <id>http://oauthjp.github.io/blog/2013/09/26/rails-session-cookie</id>
-    <content type="html"><![CDATA[<p>今日 @mad_p さんからRT来てたこのツイートに関して、ちょっと調べたのでまとめときます。</p>
-
-<blockquote class="twitter-tweet"><p>Security Issue in Ruby on Rails Could Expose Cookies <a href="http://t.co/JlsXVEn4rZ">http://t.co/JlsXVEn4rZ</a></p>&mdash; Ruby on Rails News (@RubyonRailsNews) <a href="https://twitter.com/RubyonRailsNews/statuses/383002160654336000">September 25, 2013</a></blockquote>
-
-
-<script async src="http://oauthjp.github.io//platform.twitter.com/widgets.js" charset="utf-8"></script>
-
-
-<h3>前提条件</h3>
-
-<p>Railsではデフォルトでsessionをcookieにのみ保存して、DBなりmemcacheなりのserver-side storageには何も保存しません。
-これがCookieStoreとか呼ばれてるやつです。</p>
-
-<p>この場合のsession cookieは、Railsのsession object (Hash object) をMarshal.dumpしてそれに署名を付けたtokenです。
-rails 4では署名付ける代わりに暗号化してるけど、ここで述べる問題に関してはsignedなのかencryptedなのかは関係ないのでその点は無視していいです。</p>
-
-<p>「current user identifierを含むSigned JSONをcookieに入れてるのと同じなので、OpenID ConnectのID Tokenがcookieに入ってるようなもんだと思えばいい」と言えば、#idcon に来たり定期的にOAuth.jp読んだりしてる人には通じるだろうと期待します。</p>
-
-<h3>問題点</h3>
-
-<p>server-sideではstate管理しないので、当然remoteでセッションの無効化はできません。
-つまりログアウトしてもsession cookieのtoken自体は無効化されません。</p>
-
-<p>これを確認するには、サイトにログインしてCookie Headerから_foo_cookieってやつ見つけ出してその値をコピーして、CharlesでRequest Cookie Headerの_foo_sessionの値を常にそのコピーした値に書き換えてやるようなRewriteルールを設定してやって、サイトからログアウトしてみるとよいです。
-通常server-sideでsession管理してるサービスだとこれでログアウトされるけど、CookieStoreを使ってる場合はこの条件の元ではログアウトしてもログイン状態のままになります。</p>
-
-<p>でもまぁこれはCookieStoreの仕組み上どうしようもないのです。</p>
-
-<p>問題は、session cookieが無効化できないのに、それが永遠に有効であること。
-FBとかY!Jとかでやってる「パスワード変更したら既存のsessionが無効になる」ってのはRailsは一切面倒見てくれないので、パスワード変えても漏洩したsession cookieは有効なままです。
-なので、ひとたびsession cookieが漏れたら、完全にアウト。
-なにやってもアカウント乗っ取られたまんま。永遠に。</p>
-
-<!-- more -->
-
-
-<h3>解決策</h3>
-
-<p><a href="http://www.bryanrite.com/ruby-on-rails-cookiestore-security-concerns-lifetime-pass/">こちらのブログ記事</a>は2011年のものなので、この問題自体は古くから知られている問題なのだと思います。僕知らなかったけど :p</p>
-
-<p>この記事では以下のように「SSL使えばいいよ」って解決策示されてるけど、SSL化はsession cookieが漏洩する可能性を低くするだけで、「session cookie tokenが永遠に有効である」という状況を回避するものではないです。</p>
-
-<blockquote>
-The best and easiest solution is simply to use SSL.  Not just on your login forms and actions, but your entire site, or at least any pages where you have sessions turned on.  With SSL on, the user will not be able to replay your cookies and the entire attack vector is shut down.  Rails 3.1 has a handy force_ssl switch you can use, and you can use something like:
-</blockquote>
-
-
-<p>「session cookie tokenが永遠に有効である」という状況を回避したい場合は、各デベロッパーが <code>session[:expires_at] = 1.hour.from_now</code> とかして session cookie token 自体に有効期限を含めて、それを毎リクエストごとにチェックする必要があります。</p>
-
-<p>OpenID ConnectのID Tokenでも同じ問題が発生しうるので、ID Tokenは有効期限 (exp) をtoken自体に含んでいます。
-で、ID Tokenを受け取ったサービスは、署名検証と同時に有効期限もチェックすることで、ID Tokenが漏洩してもなりすましリスクを一定期間内に狭めることができます。
-ID Tokenはnonceを含むこともできる (し多分通常はnonce付いてる) ので、onetime tokenとして利用することもできます。
-onetime tokenとして扱うと、なりすましリスクはかなり限定的になるでしょう。(ゼロではない)</p>
-
-<p>&hellip;ってことで、RailsのsessionでもOpenID ConnectのID Tokenが含んでるような情報を含むようにして、ID Tokenのverificationと同じような処理をsession受け取った際にやってやれば、それで良いのです。
-あとはConnectの仕様さえ読めばOKェ</p>
-
-<p>もしくはCookieStoreの代わりにMemcacheStore使うようにしてもいいです。
-sessionをserver-sideで管理するようにさえすれば、この問題はそもそも発生しないですし。
-パフォーマンスに影響しますけど。</p>
-
-<h3>捕捉</h3>
-
-<p>Railsには<code>config/initializers/session_store.rb</code>には<code>expires_after</code>ってオプションもあるけど、こちらはあくまでcookieの有効期限であって、悪意の無い通常のユーザーが普通にブラウザでアクセスしてればその期間すぎたらブラウザがcookieを削除してくれるけど、悪意あるユーザーはわざとcookieの有効期限無視してsession cookie送りつけてきたりするので、そこの設定はこのケースでは意味ない。</p>
-
-<p>ログアウト処理で<code>session.delete</code> (<code>session.clear</code>だっけ？ちょっと記憶曖昧) すると、RailsはSetCookieヘッダーを返してブラウザからそのsession cookieを削除しようとします。
-が、そのsession cookieを削除するかどうかの決定権は、server-sideではなくclient-sideに存在します。</p>
 ]]></content>
   </entry>
   
