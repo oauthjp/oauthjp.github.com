@@ -4,7 +4,7 @@
   <title><![CDATA[OAuth.jp]]></title>
   <link href="http://oauthjp.github.io/atom.xml" rel="self"/>
   <link href="http://oauthjp.github.io/"/>
-  <updated>2016-02-24T16:28:04+09:00</updated>
+  <updated>2016-02-25T14:19:43+09:00</updated>
   <id>http://oauthjp.github.io/</id>
   <author>
     <name><![CDATA[Nov Matake]]></name>
@@ -12,6 +12,89 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[「OAuth 認証」を定義しよう]]></title>
+    <link href="http://oauthjp.github.io/blog/2016/02/25/oauth-authentication/"/>
+    <updated>2016-02-25T11:27:00+09:00</updated>
+    <id>http://oauthjp.github.io/blog/2016/02/25/oauth-authentication</id>
+    <content type="html"><![CDATA[<p>「OAuth 認証」って言葉が出てくると、「認証と認可は違う」とか言い出す人が出てきて、大体の場合「OAuth 認証」言ってた人たちがやりたいことの話とはズレた議論が始まるので、もういっその事「OAuth 認証」とは何かを定義してみましょうかね。</p>
+
+<h2>「OAuth 認証」で Relying Party (RP) がやりたかったこと</h2>
+
+<p>RP (OAuth Client) は、ブラウザの前にいる人を、認証したかったんですよね？</p>
+
+<p>もう少し正確にいうと、ブラウザの前にいる Entity が、RP 側で把握しているどの Identity と紐付いているか、というのを知りたかったんですよね？</p>
+
+<p>いきなり Entity とか Identity とかいう専門用語が出てきてアレですが、そのあたりのことは先日の OpenID TechNight #13 でもお話ししたので、以下のスライドの Entity・Identity・Authentication・Authorization のあたりのページを見てください。</p>
+
+<iframe src="http://oauthjp.github.io//www.slideshare.net/slideshow/embed_code/key/Lw5OsZp5n6qwXb" width="595" height="485" frameborder="0" marginwidth="0" marginheight="0" scrolling="no" style="border:1px solid #CCC; border-width:1px; margin-bottom:5px; max-width: 100%;" allowfullscreen> </iframe>
+
+
+<p>で、あるサービスが End-User を認証したいって思った時って、普通は当該サービスが事前に当該 Entity に対して ID と Password を登録させておいて Identity Record (「サービスアカウント」と言ってもいい) を作成し、後で当該 Entity が当該サービスに訪れた時には登録済みの ID と Password を提示させて、当該 Entity に紐づく Identity を確定するわけです。</p>
+
+<p>でも Identity Federation (上記スライドでは「ID 連携」と表現している) という手法を使うと、外部のサービス (Identity Provider, IdP) の Identity を当該サービス (Relying Party, RP)の Identity と紐付けて管理することで、End-User から直接パスワードを預からなくても、ブラウザの前にいる Entity (= End-User) に紐づく IdP 側の Identity に紐付いた RP 側の Identity を確定できるので、結果として End-User に紐づく RP 側の Identity を確定することができます。</p>
+
+<p>で、どうやって IdP と RP がそれぞれに管理している Identity を紐付けるのか、というのが、Federation Protocol の肝なわけですが、「OAuth 認証」というのはその一種です。</p>
+
+<!-- more -->
+
+
+<p>OAuth 自体は「End-User が OAuth Server に管理を委託している Resource に対して、OAuth Client がアクセスすることを許可する方法」を標準化した OAuth Core (RFC 6749) と、「End-User の許可を得た OAuth Client が実際に OAuth Server 上の Resource にアクセスする方法」を標準化した OAuth Bearer (RFC 6750) を核とした標準仕様群なので、Federation Protocol に必要な「IdP 上の Identity をどう表現し RP に伝えるか、という仕組み」は持っていません。</p>
+
+<p>しかし、「IdP 上の Identity をどう表現し RP に伝えるか、という仕組み」は別に標準化されていなくてもいいんですよ。どうせみなさんほとんど Facebook Login しかしないんだから。</p>
+
+<p>っていうことで、「IdP (OAuth Server) 上の Identity 情報にアクセスする API へのアクセス権だけを OAuth Protocol に従って RP (OAuth Client) に渡しましょう。Identity 情報にアクセスする API は、まぁ JSON に user_id とか含めりゃいいだけでしょ。」っていうノリでできあがったのが、「OAuth 認証」です。</p>
+
+<p>標準化された方法ではないけども、Identity Federation、してますね。</p>
+
+<p>実際には Identity 情報にアクセスする API って各 IdP で仕様バラバラなんですけど、みんな OAuth 使ってアクセス権やり取りするってところは共通です。</p>
+
+<p>Identity Federation に必要な要件の多くが、その仕様バラバラな部分に依存したりしてるわけですけど、まぁその話はここではスルー。</p>
+
+<p>ということで、「OAuth 認証」の定義としては、</p>
+
+<p><b>「RP が、IdP の提供する任意の Identity 情報取得 API に対して OAuth Protocol に従ってアクセスすることで、Identity Federation を行う方法の総称」</b></p>
+
+<p>とかでいかがでしょうか？</p>
+
+<h2>結局「認証か認可か」という議論は何だったのか？</h2>
+
+<p>さて、OAuth は「End-User が OAuth Server に管理を委託している Resource に対して、OAuth Client がアクセスすることを許可する方法」でしたね。</p>
+
+<p>「OAuth Client が End-User に対して OAuth Client 上の Resource のアクセス権があるかどうか判断する方法」ではなくて。</p>
+
+<p>普通「認証か認可か」について議論するときって、以下のように主語と目的語が揃っていて、動詞だけが違う条件の元で議論すると思うんですよ。</p>
+
+<ul>
+<li>Service X authenticates End-User Y</li>
+<li>Service X authorizes End-User Y&rsquo;s access (to Resource Z)</li>
+</ul>
+
+
+<p>でも「OAuth を利用した認証」と「OAuth における認可」っていう比較をする時って、以下の2つを比較してませんか？</p>
+
+<ul>
+<li>RP authenticates End-User (relying on IdP&rsquo;s help)</li>
+<li>End-User authorizes RP&rsquo;s access (to Resource on IdP)</li>
+</ul>
+
+
+<p>いや、それ比較してもいいんですよ。</p>
+
+<p>いいんですけど、よほどの前提知識がない限り、主語と目的語と動詞が全部違う2つのコンテキストを比較して、意味のある結論を導き出すことは困難なんじゃないかと思うんです。</p>
+
+<p>本当に「認証か認可か」って比較をするのであれば、以下のコンテキストで比較して意義ある答えにたどり着くようなコンテキストで議論したほうがいいよなぁ、と。</p>
+
+<ul>
+<li>Service X authenticates End-User Y</li>
+<li>Service X authorizes End-User Y&rsquo;s access (to Resource Z)</li>
+</ul>
+
+
+<p>なので、「OAuth と OpenID Connect」の比較の流れで「認証と認可」って話するのは、生暖かく見守っております :p</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[OpenID Connectはそんなに大変かね？]]></title>
@@ -1695,27 +1778,6 @@ Host: client.example.com
 Tech Blog といい、Yahoo! 側では何の問題も起こしてないのに、いろいろこまめに対応しててすばらしいなと思います！</p>
 
 <p><strong>プライバシーフリークはどうかと思うけどな！</strong></p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Ruby & PHP の JOSE 実装で JWE draft v17 に追いつきました]]></title>
-    <link href="http://oauthjp.github.io/blog/2013/10/25/jwe-draft-v17/"/>
-    <updated>2013-10-25T16:34:00+09:00</updated>
-    <id>http://oauthjp.github.io/blog/2013/10/25/jwe-draft-v17</id>
-    <content type="html"><![CDATA[<p>@nov です。</p>
-
-<p>JWE はまだまだ変わりそうな気がしてしばらく最新仕様への追随を怠っていたのですが、先日<a href="https://github.com/nov/json-jwt/issues/14">こんな pull request</a> をいただいたので、以下の2つのライブラリの JWE 実装を、JWE draft v17 に追随させました。</p>
-
-<ul>
-<li><a href="https://github.com/nov/json-jwt">Ruby json-jwt gem</a></li>
-<li><a href="https://github.com/nov/jose-php">PHP JOSE</a></li>
-</ul>
-
-
-<p>ところでその pull request 内でのやり取りで知ったのですが、Xbox One ってのが JWE を使ってるらしいですね。</p>
-
-<p>他にも Production で JWE 使ってるとことかあるんでしょうか？</p>
 ]]></content>
   </entry>
   
