@@ -338,11 +338,15 @@
     </url>
     <url>
         <loc>http://oauthjp.github.io/blog/2016/02/24/is-openid-connect-far-from-oauth2/</loc>
-        <lastmod>2016-02-24T16:27:49+09:00</lastmod>
+        <lastmod>2016-02-25T02:00:34+09:00</lastmod>
     </url>
     <url>
         <loc>http://oauthjp.github.io/blog/2016/02/25/oauth-authentication/</loc>
         <lastmod>2016-02-25T14:40:48+09:00</lastmod>
+    </url>
+    <url>
+        <loc>http://oauthjp.github.io/blog/2016/03/26/yauth-dot-jp-founded/</loc>
+        <lastmod>2016-03-26T12:53:48+09:00</lastmod>
     </url>
     <url>
         <loc>http://oauthjp.github.io/404.html</loc>
@@ -350,10 +354,10 @@
     </url>
     <url>
         <loc>http://oauthjp.github.io/blog/archives/</loc>
-        <lastmod>2016-02-25T14:40:48+09:00</lastmod>
+        <lastmod>2016-03-26T12:53:48+09:00</lastmod>
     </url>
     <url>
         <loc>http://oauthjp.github.io/</loc>
-        <lastmod>2016-02-25T14:40:48+09:00</lastmod>
+        <lastmod>2016-03-26T12:53:48+09:00</lastmod>
     </url>
 </urlset>
