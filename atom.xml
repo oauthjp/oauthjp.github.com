@@ -4,7 +4,7 @@
   <title><![CDATA[OAuth.jp]]></title>
   <link href="http://oauthjp.github.io/atom.xml" rel="self"/>
   <link href="http://oauthjp.github.io/"/>
-  <updated>2016-04-02T19:28:20+09:00</updated>
+  <updated>2016-04-02T19:29:25+09:00</updated>
   <id>http://oauthjp.github.io/</id>
   <author>
     <name><![CDATA[Nov Matake]]></name>
@@ -24,7 +24,7 @@
 
 <p>通常であればにいさんと呼びたいところですが、今回新たな MVP も産んだことですし、Identity 業界の慣習にならって積極的にパパ呼ばわりしていきたいとおもいます。</p>
 
-<p>また、Award のカテゴリーは <a href="https://mvp.microsoft.com/ja-jp/pages/mvp-award-update">&ldquo;Microsoft Azure&rdquo;</a> ってなってたので、<a href="http://idmlab.eidentity.jp">ふぁらおぅにぃさん</a>が腹ちがいのにぃさんになった感じですかね、きっと。</p>
+<p>また、<a href="https://mvp.microsoft.com/ja-jp/pages/mvp-award-update">Award のカテゴリー</a>は &ldquo;Microsoft Azure&rdquo; ってなってたので、<a href="http://idmlab.eidentity.jp">ふぁらおぅにぃさん</a>が腹ちがいのにぃさんになった感じですかね、きっと。</p>
 
 <p>どこまで今回の MVP Award のカテゴリーにマッチしてるのかはよくわかってないんですが、僕がいま興味あるエリアは AzureAD &amp; ADFS の Connect サポート、Graph API、Windows 10 の FIDO サポートあたりなんで、その辺りでいろいろ遊びながらこのブログとかで記事書いていければいいなと思います。</p>
 
