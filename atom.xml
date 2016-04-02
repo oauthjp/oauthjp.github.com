@@ -4,7 +4,7 @@
   <title><![CDATA[OAuth.jp]]></title>
   <link href="http://oauthjp.github.io/atom.xml" rel="self"/>
   <link href="http://oauthjp.github.io/"/>
-  <updated>2016-04-02T19:29:25+09:00</updated>
+  <updated>2016-04-02T19:30:07+09:00</updated>
   <id>http://oauthjp.github.io/</id>
   <author>
     <name><![CDATA[Nov Matake]]></name>
@@ -28,7 +28,7 @@
 
 <p>どこまで今回の MVP Award のカテゴリーにマッチしてるのかはよくわかってないんですが、僕がいま興味あるエリアは AzureAD &amp; ADFS の Connect サポート、Graph API、Windows 10 の FIDO サポートあたりなんで、その辺りでいろいろ遊びながらこのブログとかで記事書いていければいいなと思います。</p>
 
-<p><a href="https://code.visualstudio.com/">Visual Studio Code</a> で。(まじこいつ起動はえー！Atom より圧倒的に起動はえー！！)</p>
+<p>もちろんエディタは <a href="https://code.visualstudio.com/">Visual Studio Code</a> で。(まじこいつ起動はえー！Atom より圧倒的に起動はえー！！)</p>
 
 <p>とりあえず Microsoft Edge の FIDO 実装で遊ぶためにも、Surface Pro4 を買わないとですね！</p>
 
