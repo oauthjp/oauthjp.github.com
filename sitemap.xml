@@ -357,15 +357,21 @@
         <lastmod>2016-04-17T20:51:59+09:00</lastmod>
     </url>
     <url>
+        <loc>
+            http://oauthjp.github.io/blog/2016/04/19/fb-message-callback-with-azure-function/
+        </loc>
+        <lastmod>2016-04-19T14:04:33+09:00</lastmod>
+    </url>
+    <url>
         <loc>http://oauthjp.github.io/404.html</loc>
         <lastmod>2013-08-18T11:28:37+09:00</lastmod>
     </url>
     <url>
         <loc>http://oauthjp.github.io/blog/archives/</loc>
-        <lastmod>2016-04-17T20:51:59+09:00</lastmod>
+        <lastmod>2016-04-19T14:04:33+09:00</lastmod>
     </url>
     <url>
         <loc>http://oauthjp.github.io/</loc>
-        <lastmod>2016-04-17T20:51:59+09:00</lastmod>
+        <lastmod>2016-04-19T14:04:33+09:00</lastmod>
     </url>
 </urlset>
