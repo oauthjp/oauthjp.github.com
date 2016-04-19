@@ -4,7 +4,7 @@
   <title><![CDATA[OAuth.jp]]></title>
   <link href="http://oauthjp.github.io/atom.xml" rel="self"/>
   <link href="http://oauthjp.github.io/"/>
-  <updated>2016-04-19T14:06:49+09:00</updated>
+  <updated>2016-04-19T14:09:19+09:00</updated>
   <id>http://oauthjp.github.io/</id>
   <author>
     <name><![CDATA[Nov Matake]]></name>
@@ -14,13 +14,13 @@
 
   
   <entry>
-    <title type="html"><![CDATA[FB Message Callback as an Azure Function]]></title>
+    <title type="html"><![CDATA[FB Message API Callback as an Azure Function]]></title>
     <link href="http://oauthjp.github.io/blog/2016/04/19/fb-message-callback-with-azure-function/"/>
     <updated>2016-04-19T10:56:00+09:00</updated>
     <id>http://oauthjp.github.io/blog/2016/04/19/fb-message-callback-with-azure-function</id>
-    <content type="html"><![CDATA[<p>今日は Azure Function で FB Message Callback を作ってみます。</p>
+    <content type="html"><![CDATA[<p>今日は Azure Function で FB Message API Callback を作ってみます。</p>
 
-<p>Azure Portal の Marketplace で &ldquo;Function App&rdquo; って検索すると、出てきますね。</p>
+<p>Azure Function は、Azure Portal の Marketplace で &ldquo;Function App&rdquo; って検索すると出てきますね。</p>
 
 <p><img src="http://oauthjp.github.io/images/posts/azure/azure-function-in-marketplace.png" alt="Azure Function in Marketplace" /></p>
 
@@ -39,7 +39,7 @@
 
 <p>Azure 側の WebHook URL を FB Message の WebHook 設定に登録して、WebHook Verify 様にテンプレの Azure Function を書き換えます。</p>
 
-<p><img src="http://oauthjp.github.io/images/posts/azure/fb-message-callback.png" alt="FB Message Callback" /></p>
+<p><img src="http://oauthjp.github.io/images/posts/azure/fb-message-callback.png" alt="FB Message API Callback (FB WebHook)" /></p>
 
 <p>Azure Function 仕様の WebHook Verify 様コードは、こんな感じ。</p>
 

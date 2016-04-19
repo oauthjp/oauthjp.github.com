@@ -3,10 +3,10 @@
 <html>
 <head>
 	<meta charset="utf-8">
-	<title>FB Message Callback as an Azure Function - OAuth.jp</title>
+	<title>FB Message API Callback as an Azure Function - OAuth.jp</title>
     <meta name="author" content="Nov Matake">
     
-	<meta name="description" content="今日は Azure Function で FB Message Callback を作ってみます。 Azure Portal の Marketplace で &ldquo;Function App&rdquo; って検索すると、出てきますね。 Function App の Deploy &hellip;">
+	<meta name="description" content="今日は Azure Function で FB Message API Callback を作ってみます。 Azure Function は、Azure Portal の Marketplace で &ldquo;Function App&rdquo; って検索すると出てきますね。 &hellip;">
 	
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
@@ -85,10 +85,10 @@
 <!-- begin toload --> 
     <div id="content" class="inner">
         <article class="post">
-	<h2 class="title">FB Message Callback as an Azure Function</h2>
-	<div class="entry-content"><p>今日は Azure Function で FB Message Callback を作ってみます。</p>
+	<h2 class="title">FB Message API Callback as an Azure Function</h2>
+	<div class="entry-content"><p>今日は Azure Function で FB Message API Callback を作ってみます。</p>
 
-<p>Azure Portal の Marketplace で &ldquo;Function App&rdquo; って検索すると、出てきますね。</p>
+<p>Azure Function は、Azure Portal の Marketplace で &ldquo;Function App&rdquo; って検索すると出てきますね。</p>
 
 <p><img src="/images/posts/azure/azure-function-in-marketplace.png" alt="Azure Function in Marketplace" /></p>
 
@@ -107,7 +107,7 @@
 
 <p>Azure 側の WebHook URL を FB Message の WebHook 設定に登録して、WebHook Verify 様にテンプレの Azure Function を書き換えます。</p>
 
-<p><img src="/images/posts/azure/fb-message-callback.png" alt="FB Message Callback" /></p>
+<p><img src="/images/posts/azure/fb-message-callback.png" alt="FB Message API Callback (FB WebHook)" /></p>
 
 <p>Azure Function 仕様の WebHook Verify 様コードは、こんな感じ。</p>
 
