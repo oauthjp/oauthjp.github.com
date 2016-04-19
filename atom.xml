@@ -4,7 +4,7 @@
   <title><![CDATA[OAuth.jp]]></title>
   <link href="http://oauthjp.github.io/atom.xml" rel="self"/>
   <link href="http://oauthjp.github.io/"/>
-  <updated>2016-04-19T14:13:19+09:00</updated>
+  <updated>2016-04-19T14:19:18+09:00</updated>
   <id>http://oauthjp.github.io/</id>
   <author>
     <name><![CDATA[Nov Matake]]></name>
@@ -24,15 +24,15 @@
 
 <p><img src="http://oauthjp.github.io/images/posts/azure/azure-function-in-marketplace.png" alt="Azure Function in Marketplace" /></p>
 
-<p>Function App の Deploy がおわっったら、QucikStart から &ldquo;Webhook + API&rdquo; を選びましょう。</p>
+<p>Function App の Deploy がおわったら、QuickStart から &ldquo;Webhook + API&rdquo; を選びましょう。</p>
 
 <p><img src="http://oauthjp.github.io/images/posts/azure/azure-function-quickstart.png" alt="Azure Function QuickStart" /></p>
 
-<p>Node.js のテンプレートアプリが出来上がります。</p>
+<p>以下の様な Node.js のテンプレートアプリが出来上がります。</p>
 
 <p><img src="http://oauthjp.github.io/images/posts/azure/azure-function-template.png" alt="Azure Function Template" /></p>
 
-<p>それでは、まず FB Message の WebHook として、この Function を登録します。</p>
+<p>まずは FB Message の WebHook としてこの Function を登録します。</p>
 
 <!-- more -->
 
@@ -62,13 +62,13 @@
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>これで FB 側の WebHook Verification が完了です。</p>
+<p>これで FB 側の <code>Verify and Save</code> ボタンを押せば、WebHook の Verifycation が成功して WebHook の登録が完了します。</p>
 
 <p>では次に、Text Message を Echo するように Azure Function を書き換えましょう。</p>
 
 <p>まずは FB Graph API の Messaging API を叩くために必要な FB Page Token を、Azure Function の <code>Application Setting &gt; App Setting</code> に設定しておきます。</p>
 
-<p>この時に使う FB Page Token は、Messenger API Config (developers.facebook.com/apps/&lt;YOUR-APP-ID>/messenger/) で取得したものを使う様にしてください。そこで取得したものは Expire しません。</p>
+<p>この時に使う FB Page Token は、先ほど WebHook を登録したページ (FB Messenger API の設定ページ) で取得したものを使う様にしてください。そこで取得した FB Page Token は Expire しません。</p>
 
 <p><img src="http://oauthjp.github.io/images/posts/azure/azure-function-env.png" alt="Azure Function Env" /></p>
 
@@ -143,7 +143,7 @@
 
 <p>早速該当 FB Page にメッセージを送ってみましょう。Echo が返ってくると思います。</p>
 
-<p>また今度、YAuth.jp の問い合わせ対応 Bot を作ってみるかな。</p>
+<p>さてと、YAuth.jp の問い合わせ対応 Bot を作ってみるかな。</p>
 ]]></content>
   </entry>
   
