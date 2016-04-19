@@ -4,7 +4,7 @@
   <title><![CDATA[OAuth.jp]]></title>
   <link href="http://oauthjp.github.io/atom.xml" rel="self"/>
   <link href="http://oauthjp.github.io/"/>
-  <updated>2016-04-19T14:10:30+09:00</updated>
+  <updated>2016-04-19T14:12:27+09:00</updated>
   <id>http://oauthjp.github.io/</id>
   <author>
     <name><![CDATA[Nov Matake]]></name>
@@ -37,11 +37,11 @@
 <!-- more -->
 
 
-<p>Azure 側の WebHook URL を FB Message の WebHook 設定に登録して、WebHook Verify 用にテンプレの Azure Function を書き換えます。</p>
+<p>Azure 側の WebHook URL を FB Message API の WebHook Callback URL に登録して、適当な <code>verify_token</code> を設定します。</p>
 
 <p><img src="http://oauthjp.github.io/images/posts/azure/fb-message-callback.png" alt="FB Message API Callback (FB WebHook)" /></p>
 
-<p>Azure Function 仕様の WebHook Verify 用コードは、こんな感じ。</p>
+<p>WebHook Verification のために、テンプレの Azure Function を以下の様に書き換えます。</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
