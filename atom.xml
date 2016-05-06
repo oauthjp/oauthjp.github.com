@@ -4,7 +4,7 @@
   <title><![CDATA[OAuth.jp]]></title>
   <link href="http://oauthjp.github.io/atom.xml" rel="self"/>
   <link href="http://oauthjp.github.io/"/>
-  <updated>2016-04-19T14:19:18+09:00</updated>
+  <updated>2016-05-06T15:18:33+09:00</updated>
   <id>http://oauthjp.github.io/</id>
   <author>
     <name><![CDATA[Nov Matake]]></name>
@@ -12,6 +12,69 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[OAuth / Connect における CSRF Attack の新パターン]]></title>
+    <link href="http://oauthjp.github.io/blog/2016/05/06/another-csrf-attack/"/>
+    <updated>2016-05-06T14:19:00+09:00</updated>
+    <id>http://oauthjp.github.io/blog/2016/05/06/another-csrf-attack</id>
+    <content type="html"><![CDATA[<p>昨日こんなのが OAuth ML に流れてました。</p>
+
+<p><a href="https://mailarchive.ietf.org/arch/search/?email_list=oauth&amp;gbt=1&amp;index=G4J3H1BMyIN01FCOLKqLjrx7AZ4">[OAUTH-WG] Another CSRF attack</a></p>
+
+<h2>前提条件</h2>
+
+<p>RP (Relying Party a.k.a. OAuth Client) が2つ以上の IdP (Identity Provider a.k.a. OAuth Server) と連携している状況で、片方の IdP に悪意がある。</p>
+
+<ul>
+<li>悪意ある IdP = AIdP (A は Attacker の略)</li>
+<li>その他の IdP = HIdP (H は Honest の略)</li>
+</ul>
+
+
+<h2>攻撃フロー</h2>
+
+<p><img src="https://www.websequencediagrams.com/cgi-bin/cdraw?lz=YWx0IFZpY3RpbSdzIFNlc3Npb24KICAgAA4HLT5SUDogTG9naW4gdy8gQUlkUAAZBVJQLT4AMQY6ACENQUlkUDogQXV0aFogUmVxIHcvIHN0YXRlLVYAUAVBSWQALwoAIgVlbnRpY2F0ZQA0EgAmC0gAUAZ0dGFja2VyJ3MgY3JlZGVudGlhbHMAgSgFSABTBQB3BmNvZABIBgBfDkhJZFAncwAZBQCBCwsgKHRvIHJlZGlyZWN0X3VyaSBmb3IASgUpAIF2EACBbwlSUDoANglpcyB0aWVkIHRvIHRoZSBzAII7BiwgT0shAIIfCQCBOAYAgQ4JAIEmBlIAgUMOYWNjZXNzX3Rva2VuICYgaWQABQYAglwQIEhlbGxvLCB3aGF0J3MgeW91ciBuYW1lPwCDIhFJJ20Ag1EHCmVsc2UAgjEMAINaDACCTAgAg0wcAIJwCACDCwcAKQkAgw8HAINaEkEAgwgMADUIAINcEgA7DwAgFQCDIQ4AUwYAgScNAIMDE0EAgi1pAIFTCldlbGNvbWUgYmFjaywAhkoHIQplbmQK&amp;s=earth" alt="Another CSRF Attack" /></p>
+
+<ol>
+<li>Victim が AIdP を使って RP へのログインを試みる。</li>
+<li>RP は Authorization Request を AIdP に送る。
+
+<ul>
+<li>AuthZ Req には Browser Session と紐付いた <code>state</code> パラメータをつけている。</li>
+</ul>
+</li>
+<li>AIdP は Victim を認証し、必要に応じて同意を取得する (ふりをする)
+
+<ul>
+<li>同時に AIdP は裏で HIdP から <code>code</code> を取得する。</li>
+<li>HIdP の code は Attacker の HIdP 上のアカウントに紐付いているもの。</li>
+</ul>
+</li>
+<li>AIdP は HIdP から取得した <code>code</code> を、RP の HIdP 用 <code>redirect_uri</code> に返す。
+
+<ul>
+<li>この時 Step2 で RP が発行した <code>state</code> を付与する。</li>
+</ul>
+</li>
+<li>RP は Browser Session と紐付いた <code>state</code> を検証した上で <code>code</code> を HIdP の Token Endpoint に送る。</li>
+<li>HIdP は Attacker のアカウントに紐付いた <code>access_token</code> を返す。</li>
+<li>RP は Victim をログインさせる。
+
+<ul>
+<li>ここで HIdP 上の Attacker アカウントと RP 上の Victim アカウントが紐づけられる。</li>
+</ul>
+</li>
+</ol>
+
+
+<p>そして、Attacker は任意のタイミングで自身の HIdP 上のアカウントを使って、RP 上の Victim のアカウントにログインできる。</p>
+
+<h2>防御策</h2>
+
+<p><code>state</code> をリクエスト先の IdP とも紐づけましょう。</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[FB Message API Callback as an Azure Function]]></title>
@@ -1726,97 +1789,6 @@ Host: client.example.com
 <h3>対策方法</h3>
 
 <p>リダイレクト方法変えろ、って以外の回避策を思いついたら、この下に書きます。</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Facebook Login で Covert Redirect を防止する]]></title>
-    <link href="http://oauthjp.github.io/blog/2014/05/08/facebook-login-and-covert-redirect/"/>
-    <updated>2014-05-08T14:16:00+09:00</updated>
-    <id>http://oauthjp.github.io/blog/2014/05/08/facebook-login-and-covert-redirect</id>
-    <content type="html"><![CDATA[<p><a href="http://oauth.jp/blog/2014/05/07/covert-redirect-in-implicit-flow/">OAuth 2.0 Implicit Flow では Covert Redirect 経由で access token が漏れる件</a>については既に紹介しましたが、ここではみなさん大好き Facebook Login で OAuth Client Developer ができる対策について紹介することにします。</p>
-
-<h3>攻撃方法</h3>
-
-<ol>
-<li>攻撃対象となる OAuth Client の FB client_id を取得
-
-<ul>
-<li>client_id は FB Login ボタンさえクリックすればアドレスバーに表示される。</li>
-</ul>
-</li>
-<li>Authorization Request URL を構築
-
-<ul>
-<li>対象 Client が通常 response_type=code を使ってる場合でも、問答無用で response_type=token にしてください。</li>
-<li><a href="https://www.facebook.com/dialog/oauth?client_id=relace-me&amp;redirect_uri=relace-me&amp;response_type=token">https://www.facebook.com/dialog/oauth?client_id=<em>&lt;client_id></em>&amp;redirect_uri=<em>&lt;redirect-url></em>&amp;response_type=token</a></li>
-</ul>
-</li>
-<li>被害者を2で作った URL にアクセスさせます
-
-<ul>
-<li>フィッシングがんばってください。</li>
-</ul>
-</li>
-<li>redirect_uri に指定しておいた URL で fragment に付いて来る access token を待ち構えます。</li>
-</ol>
-
-
-<p>以上、巧いフィッシング方法さえ思いつけば簡単ですね。</p>
-
-<h3>防御方法</h3>
-
-<p>防御方法は、大きく分けて3つあります。</p>
-
-<ol>
-<li>open redirector を撤廃する</li>
-<li>response_type=token を利用禁止にする</li>
-<li>redirect_uri を完全一致しか認めさせなくする</li>
-</ol>
-
-
-<!-- more -->
-
-
-<h4>open redirector を撤廃する</h4>
-
-<p>まぁそらそれがベストですよね。</p>
-
-<p>「あっ、はい」とか言う人いるけども。</p>
-
-<p>まぁ、「それができれば最初っからやってるっちゅうねん」ってのは、ごもっとも。</p>
-
-<h4>response_type=token を利用禁止にする</h4>
-
-<p>FB にはそのためのオプション &ldquo;<a href="https://developers.facebook.com/docs/graph-api/securing-requests/">appsecret_proof</a>&rdquo; があります。</p>
-
-<p>厳密には response_type=token を利用禁止にするのではなく、access token 単体で API Request をさせない、というオプションです。</p>
-
-<p>このオプションを有効化すると、API Request に client_secret が必要になるため、client_secret が漏洩しない限りは、たとえ access token が漏洩してしまっても問題ありません。</p>
-
-<p>え？client_secret が漏洩するかもって？</p>
-
-<p>そんな、OAuth 1.0 じゃあるまいし、まさか Native App に client_secret 埋め込んだりしてないはずですよね？ね？？</p>
-
-<p>なおこのオプションを有効にできるのは、client_secret を秘匿に保てる Client、つまりサーバーサイドで動作する Web App に限られます。</p>
-
-<p>Client が Native App な場合や、Web App と Native App の両方で同じ client_id を使っている場合は、このオプションは選べません。</p>
-
-<p>2014年5月現在では、このオプションは以下の URL から &ldquo;App Secret Proof for Server API calls&rdquo; というのを ON にすれば有効化されます。
-<a href="https://developers.facebook.com/apps/:app_id/settings/advanced/">https://developers.facebook.com/apps/:app_id/settings/advanced/</a></p>
-
-<h4>redirect_uri を完全一致しか認めさせなくする</h4>
-
-<p>デフォルトでは redirect_uri の部分一致を許容する Facebook ですが、redirect_uri を完全一致のみ許可させるよう指定することもできます。</p>
-
-<p>2014年5月現在では、このオプションは以下の URL から &ldquo;Valid OAuth redirect URIs&rdquo; というのを field に URL を指定すれば有効化されます。
-<a href="https://developers.facebook.com/apps/:app_id/settings/advanced/">https://developers.facebook.com/apps/:app_id/settings/advanced/</a></p>
-
-<p>Native App でも利用する client_id に関しては、このオプションを利用しましょう。</p>
-
-<p>Web App でも、OAuth 2.0 の独自拡張である <a href="https://developers.facebook.com/docs/graph-api/securing-requests/">appsecret_proof</a> を利用するよりも、OAuth 2.0 の仕様に乗っ取った挙動になるこのオプションの方が、ライブラリをそのまま使えるとかいろいろメリット多そうですね。</p>
-
-<p>みなさんのユースケースにあったオプションをお選びください。</p>
 ]]></content>
   </entry>
   
