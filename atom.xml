@@ -4,7 +4,7 @@
   <title><![CDATA[OAuth.jp]]></title>
   <link href="http://oauthjp.github.io/atom.xml" rel="self"/>
   <link href="http://oauthjp.github.io/"/>
-  <updated>2016-05-14T16:20:43+09:00</updated>
+  <updated>2016-05-14T17:01:44+09:00</updated>
   <id>http://oauthjp.github.io/</id>
   <author>
     <name><![CDATA[Nov Matake]]></name>
@@ -73,6 +73,9 @@
 
 
 <p>うん、これは最悪ですね。</p>
+
+<!-- more -->
+
 
 <h2>Consumer の世界に置き換えると、つまりどういうこと？</h2>
 
