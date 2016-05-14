@@ -4,7 +4,7 @@
   <title><![CDATA[OAuth.jp]]></title>
   <link href="http://oauthjp.github.io/atom.xml" rel="self"/>
   <link href="http://oauthjp.github.io/"/>
-  <updated>2016-05-14T18:32:54+09:00</updated>
+  <updated>2016-05-14T19:04:42+09:00</updated>
   <id>http://oauthjp.github.io/</id>
   <author>
     <name><![CDATA[Nov Matake]]></name>
@@ -225,7 +225,7 @@
 </table>
 
 
-<p>要するに Issuer チェックをするようにしたんでしょうが、SAML IdP と Office 365 の間に Azure AD がいるっていう状態で、具体的にどの箇所でどの属性をチェックするようにしたのかってのは、よくわからず。</p>
+<p>要するに Issuer チェックをするようにしたんでしょうが、SAML IdP と Office 365 の間に Azure AD がいるっていう状態で、具体的にどの箇所でどういう検証をするようにしたのかってのは、よくわからず。</p>
 
 <p>Office 365 の MVP の人とかに聞くとわかるんですかね、こういうのは？</p>
 ]]></content>
