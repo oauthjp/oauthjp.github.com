@@ -4,7 +4,7 @@
   <title><![CDATA[OAuth.jp]]></title>
   <link href="http://oauthjp.github.io/atom.xml" rel="self"/>
   <link href="http://oauthjp.github.io/"/>
-  <updated>2016-05-06T15:18:33+09:00</updated>
+  <updated>2016-05-14T16:20:43+09:00</updated>
   <id>http://oauthjp.github.io/</id>
   <author>
     <name><![CDATA[Nov Matake]]></name>
@@ -12,6 +12,219 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Office 365 SAML implementation vulnerability]]></title>
+    <link href="http://oauthjp.github.io/blog/2016/05/14/office-365-saml-implementation-vulnerability/"/>
+    <updated>2016-05-14T10:32:00+09:00</updated>
+    <id>http://oauthjp.github.io/blog/2016/05/14/office-365-saml-implementation-vulnerability</id>
+    <content type="html"><![CDATA[<p>先日 Office 365 のこんな記事見つけたので、一応まとめておきますかね。</p>
+
+<p><a href="http://www.economyofmechanism.com/office365-authbypass.html">The road to hell is paved with SAML Assertions</a></p>
+
+<p>タイトルだけ見るとまた SAML is DEAD 案件かと思いきや、Office 365 の脆弱性の話です。</p>
+
+<p>SAML 悪く無いです。</p>
+
+<p>SAML isn&rsquo;t vulnerable, just DEAD.</p>
+
+<h2>SAML SP としての Office 365</h2>
+
+<p>Office 365 は SAML Service Provider (SP) として動作するので、みなさんがお持ちの Identity Provider (IdP) を SAML IdP として動作することができれば、みなさんの IdP に登録されてるアカウントを使って Office 365 にログインすることができます。</p>
+
+<p>みなさんの社内の ADFS とか、Ping Federate / Okta / OneLogin &hellip; みたいな IDaaS とか、そういうのは大抵 SAML IdP として動作するので、そういう製品を使ってるなら、みなさんの会社のアカウントでそのまま Office 365 にログインできます。</p>
+
+<p>通常 SAML SP は、IdP から返ってくる SAML Response に含まれる IdP 側のユーザー識別子 (Subject Identifier) と IdP 自身の識別子 (Issuer Identifier) のペアを元に、SP 側のアカウントにログインさせます。</p>
+
+<p>がしかし、Office 365 の場合は、IdP が渡してくる Email アドレスと Office 365 がローカルで持ってる Email アドレスの一致だけを見て Office 365 ローカルのユーザーを認証していたようです。</p>
+
+<p>Subject Identifier も Issuer Identifier も無視していた、と。(Issuer Identifier は、SAML Response の署名検証用の鍵を特定するためにだけ利用していたようです)</p>
+
+<h2>Office 365 の脆弱性概要</h2>
+
+<p>これで何が起こっていたかというと、<code>nov@victim.example.com</code> という Email アドレスを持つ Office 365 ユーザーのアカウントにログインする際に、<code>attacker.example.com</code> という IdP が <code>nov@victim.example.com</code> という Email アドレスを含んだ SAML Assertion を発行すると、Office 365 がその Assertion を受け入れて <code>nov@victim.example.com</code> の Office 365 アカウントへのログインを許可してしまっていました。</p>
+
+<p>よって、以下の2つのパターンが、どちらも同じ Office 365 アカウントにログイン可能になっていました。</p>
+
+<table>
+<thead>
+<tr>
+<th></th>
+<th> Issuer Identifier    </th>
+<th> Subject Identifier  </th>
+<th> Email Address          </th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td> attacker.example.com </td>
+<td> 58df3c9b2c32ca86f.. </td>
+<td> <code>nov@victim.example.com</code></td>
+</tr>
+<tr>
+<td></td>
+<td> victim.example.com   </td>
+<td> 20166f0c077c1f6c1.. </td>
+<td> <code>nov@victim.example.com</code></td>
+</tr>
+</tbody>
+</table>
+
+
+<p>うん、これは最悪ですね。</p>
+
+<h2>Consumer の世界に置き換えると、つまりどういうこと？</h2>
+
+<p>Consumer 分野であれば、Facebook と Google の両方を IdP として使う RP がいる場合、Facebook が返すユーザーの Email アドレスが Gmail だったりすることは普通にあります。</p>
+
+<p>この時、Facebook が <code>nov@gmail.com</code> というメアドを返してきた場合に、RP 側で <code>nov@gmail.com</code> というメアドを持つユーザーを、たとえそのアカウントが Facebook アカウントと紐付いていない状況だったとしても認証してしまう、と。Office 365 がやっていたのは、そういう処理です。</p>
+
+<p>Facebook と Google だけが IdP であれば、どちらも Email 疎通確認等をちゃんとしているという前提があるため、以下の2つの Identity は同一人物に紐づくという前提で設計することもできるでしょう。</p>
+
+<table>
+<thead>
+<tr>
+<th></th>
+<th> Issuer  Identifier </th>
+<th> Subject Identifier  </th>
+<th> Email Address   </th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td> google.com         </td>
+<td> 58df3c9b2c32ca86f.. </td>
+<td> <code>nov@gmail.com</code></td>
+</tr>
+<tr>
+<td></td>
+<td> facebook.com       </td>
+<td> 20166f0c077c1f6c1.. </td>
+<td> <code>nov@gmail.com</code></td>
+</tr>
+</tbody>
+</table>
+
+
+<p>しかし、OpenID 2.0 の頃のように、ユーザーが Dynamic に任意の IdP を選択できるとしたらどうでしょう？</p>
+
+<p>以下の3つめのアカウントが、その上の2つと同一人物に紐づくという前提条件は、あっさり崩れてしまいます。</p>
+
+<table>
+<thead>
+<tr>
+<th></th>
+<th> Issuer Identifier    </th>
+<th> Subject Identifier  </th>
+<th> Email Address   </th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td> google.com           </td>
+<td> 58df3c9b2c32ca86f.. </td>
+<td> <code>nov@gmail.com</code></td>
+</tr>
+<tr>
+<td></td>
+<td> facebook.com         </td>
+<td> 20166f0c077c1f6c1.. </td>
+<td> <code>nov@gmail.com</code></td>
+</tr>
+<tr>
+<td></td>
+<td> attacker.example.com </td>
+<td> 0d3f617edef9b176c.. </td>
+<td> <code>nov@gmail.com</code></td>
+</tr>
+</tbody>
+</table>
+
+
+<p>Office 365 の場合、テナントごとに任意の IdP を指定することができるため、攻撃者が Office 365 にテナント登録してしまいさえすれば、<code>attacker.example.com</code> を IdP として登録できてしまい、上記の3つめのパターンを作り出すことができてしまいます。</p>
+
+<p>うん、これは最悪ですね。</p>
+
+<h2>こういう場合、どうすればいいの？</h2>
+
+<p>まずは以下3つのパターンが、基本的には RP 側では全て異なるアカウントに紐づくように設計することです。</p>
+
+<p>つまり、Subject Identifier と Issuer Identifier のペアごとに、異なるアカウントに紐づくようにする、と。</p>
+
+<table>
+<thead>
+<tr>
+<th></th>
+<th> Issuer Identifier    </th>
+<th> Subject Identifier  </th>
+<th> Email Address   </th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td> google.com           </td>
+<td> 58df3c9b2c32ca86f.. </td>
+<td> <code>nov@gmail.com</code></td>
+</tr>
+<tr>
+<td></td>
+<td> facebook.com         </td>
+<td> 20166f0c077c1f6c1.. </td>
+<td> <code>nov@gmail.com</code></td>
+</tr>
+<tr>
+<td></td>
+<td> attacker.example.com </td>
+<td> 0d3f617edef9b176c.. </td>
+<td> <code>nov@gmail.com</code></td>
+</tr>
+</tbody>
+</table>
+
+
+<p>その上で、RP 側で Email アドレスがユニークである必要があるのであれば、3つのアカウントを RP 側で一つのアカウントに紐付けるためのフローを RP が頑張って実装するか、IdP から渡される Email アドレスを無視して別の Email アドレスを設定させる等の処理が必要です。</p>
+
+<p>そのあたりの細かい実装方法については&hellip; <a href="http://yauth.jp">YAuth.jp</a> に相談？w</p>
+
+<h2>Office 365 はどういう修正をしたのか？</h2>
+
+<p>これは、元記事にも書いて無いですね。</p>
+
+<p>でも7時間で修正されたって書いてあるので、上記のような解決策ではなくて、以下の1つめのパターンを reject するようにしたのでしょう。</p>
+
+<table>
+<thead>
+<tr>
+<th></th>
+<th> Issuer Identifier    </th>
+<th> Subject Identifier  </th>
+<th> Email Address          </th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td> attacker.example.com </td>
+<td> 58df3c9b2c32ca86f.. </td>
+<td> <code>nov@victim.example.com</code></td>
+</tr>
+<tr>
+<td></td>
+<td> victim.example.com   </td>
+<td> 20166f0c077c1f6c1.. </td>
+<td> <code>nov@victim.example.com</code></td>
+</tr>
+</tbody>
+</table>
+
+
+<p>もともと <code>victim.example.com</code> という IdP が <code>nov@victim.example.com</code> というユーザーを Provisioning した状態で、<code>attacker.example.com</code> という IdP が <code>nov@victim.example.com</code> を Provisioning することもできなかったってことでしょうから、上記の2パターンが異なる Office 365 アカウントに紐づくようにするような修正が7時間でできたとは考えにくいですし。</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[OAuth / Connect における CSRF Attack の新パターン]]></title>
@@ -1751,44 +1964,6 @@ Host: client.example.com
 <li><a href="http://oauthjp.github.io/blog/2012/06/29/oauth-20-implicit-flow-78852/">OAuth 2.0 Implicit Flow で認証の問題点、再び。</a></li>
 </ul>
 
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Covert Redirect で Query 漏れるケースもある!?]]></title>
-    <link href="http://oauthjp.github.io/blog/2014/05/08/covert-redirect-and-non-30x-redirects/"/>
-    <updated>2014-05-08T15:47:00+09:00</updated>
-    <id>http://oauthjp.github.io/blog/2014/05/08/covert-redirect-and-non-30x-redirects</id>
-    <content type="html"><![CDATA[<p>Covert Redirect 連載最後は、location.href とか &lt;meta http-equiv=&ldquo;Refresh&rdquo;&gt; とかだと referrer 通じて query に含まれる code とかも漏れるかもね！ってお話です。</p>
-
-<p>古いサイトですが、こことか見れば大体いいんじゃないでしょうか => <a href="http://www.teria.com/~koseki/memo/referrer/">リファラ実験</a></p>
-
-<p>で、こういうリダイレクトをしてる箇所が OAuth 2.0 の redirect_uri なり OpenID 2.0 の return_to なりに指定されていれば、query に付いた code なり email なりがリファラ経由で外部に漏れるよね、という。</p>
-
-<p>はい、漏れますね！ (投げやり</p>
-
-<p>さて、そんなに該当例多くはないと思うのですが、ここまで該当してしまったサービスは、どうしますかねぇ&hellip;</p>
-
-<p>Facebook であれば、<a href="http://oauthjp.github.io/blog/2014/05/08/facebook-login-and-covert-redirect/">Facebook Login で Covert Redirect を防止する</a>にあるような方法で回避できますが、それ以外の OAuth Provider なり OpenID 2.0 Provider と連携してる場合は、困っちゃいますねぇ&hellip;</p>
-
-<!-- more -->
-
-
-<h3>被害例</h3>
-
-<p><a href="http://oauthjp.github.io/blog/2014/05/07/covert-redirect/">OAuth 2.0 の code が漏れた場合について</a>は既に書きました。</p>
-
-<p>Client が redirect_uri 上で state パラメータのチェックを怠っていれば、code 置換攻撃が可能になるっていうアレです。</p>
-
-<p>OpenID 2.0 のレスポンスパラメータが漏れた場合は、そのパラメータに email や name なんかが含まれてる場合があるので、そういった場合はそれらが外部に漏洩します。</p>
-
-<p>また世の中には OpenID 2.0 の nonce を OAuth 2.0 の access token のように使って API アクセスさせる事業者があったりするんで、そういった場合は acccess token 相当のものが漏洩します。</p>
-
-<p>それら access token 相当の nonce が漏れた場合の実害については、提供される API に依存するのでここでは未知です。</p>
-
-<h3>対策方法</h3>
-
-<p>リダイレクト方法変えろ、って以外の回避策を思いついたら、この下に書きます。</p>
 ]]></content>
   </entry>
   

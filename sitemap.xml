@@ -364,7 +364,13 @@
     </url>
     <url>
         <loc>http://oauthjp.github.io/blog/2016/05/06/another-csrf-attack/</loc>
-        <lastmod>2016-05-06T15:18:15+09:00</lastmod>
+        <lastmod>2016-05-06T15:20:59+09:00</lastmod>
+    </url>
+    <url>
+        <loc>
+            http://oauthjp.github.io/blog/2016/05/14/office-365-saml-implementation-vulnerability/
+        </loc>
+        <lastmod>2016-05-14T16:17:46+09:00</lastmod>
     </url>
     <url>
         <loc>http://oauthjp.github.io/404.html</loc>
@@ -372,10 +378,10 @@
     </url>
     <url>
         <loc>http://oauthjp.github.io/blog/archives/</loc>
-        <lastmod>2016-05-06T15:18:15+09:00</lastmod>
+        <lastmod>2016-05-14T16:17:46+09:00</lastmod>
     </url>
     <url>
         <loc>http://oauthjp.github.io/</loc>
-        <lastmod>2016-05-06T15:18:15+09:00</lastmod>
+        <lastmod>2016-05-14T16:17:46+09:00</lastmod>
     </url>
 </urlset>
