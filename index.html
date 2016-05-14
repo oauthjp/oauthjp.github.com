@@ -131,9 +131,9 @@
 
 <p>通常 SAML SP は、IdP から返ってくる SAML Response に含まれる IdP 側のユーザー識別子 (Subject Identifier) と IdP 自身の識別子 (Issuer Identifier) のペアを元に、SP 側のアカウントにログインさせます。</p>
 
-<p>がしかし、Office 365 の場合は、IdP が渡してくる Email アドレスと Office 365 がローカルで持ってる Email アドレスの一致だけを見て Office 365 ローカルのユーザーを認証していたようです。</p>
+<p>がしかし、Office 365 の場合は、IdP が渡してくる Email アドレスと Office 365 がローカルで持ってる Email アドレスの一致だけを見て Office 365 ローカルのユーザーを認証していたようです。Subject Identifier も Issuer Identifier も無視していた、と。</p>
 
-<p>Subject Identifier も Issuer Identifier も無視していた、と。(Issuer Identifier は、SAML Response の署名検証用の鍵を特定するためにだけ利用していたようです)</p>
+<p>(実際には、SAML IdP と Office 365 の間に Azure AD が介在しており、SAML Assertion の検証は Azure ADがやるようなアーキテクチャになっていて、Azure AD では Subject Identifier &amp; Issuer Identifier をちゃんと見ているようですが、全体として見ると Office 365 が SAML IdP の Issuer と Subject をガン無視した形になってます。この辺の話しだすとややこしい割に MS 以外の人にはあまり関係無い話になっちゃうので、今回はスルー)</p>
 
 <h2>Office 365 の脆弱性概要</h2>
 
