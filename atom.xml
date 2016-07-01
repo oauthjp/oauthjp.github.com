@@ -4,7 +4,7 @@
   <title><![CDATA[OAuth.jp]]></title>
   <link href="http://oauthjp.github.io/atom.xml" rel="self"/>
   <link href="http://oauthjp.github.io/"/>
-  <updated>2016-05-14T19:19:44+09:00</updated>
+  <updated>2016-07-01T10:50:25+09:00</updated>
   <id>http://oauthjp.github.io/</id>
   <author>
     <name><![CDATA[Nov Matake]]></name>
@@ -12,6 +12,115 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[OAuth Revocation と JWK を翻訳しました]]></title>
+    <link href="http://oauthjp.github.io/blog/2016/07/01/jwk-and-oauth-revocation-translated/"/>
+    <updated>2016-07-01T10:14:00+09:00</updated>
+    <id>http://oauthjp.github.io/blog/2016/07/01/jwk-and-oauth-revocation-translated</id>
+    <content type="html"><![CDATA[<p>どうも、この度 OpenID Foundation Japan の事務局長になった Nov です。</p>
+
+<p>事務局長就任のご挨拶的なポエムを書けというオーラをふつふつと感じながら、ガン無視してこの記事を書いております。</p>
+
+<p>さて、みなさん覚えておられるでしょうか？</p>
+
+<p><a href="http://openid-foundation-japan.github.io">OpenID Foundation Japan 翻訳 Working Group</a> のことを。</p>
+
+<p>僕が OpenID のエバンジェリストになる前からリーダーをしており、古くは 2010 年に今は亡き OpenID 2.0 の仕様を翻訳していた、あの伝説の WG を。</p>
+
+<p><strong>その伝説の WG が、2年超の休眠期間を終えて、ついに復活します！</strong></p>
+
+<p>復活第一弾は、OAuth Revocation と JWK！</p>
+
+<ul>
+<li><a href="http://openid-foundation-japan.github.io/rfc7009.ja.html">OAuth 2.0 Token Revocation &ndash; RFC 7009</a></li>
+<li><a href="http://openid-foundation-japan.github.io/rfc7517.ja.html">JSON Web Key (JWK) &ndash; RFC 7517</a></li>
+</ul>
+
+
+<p>え、この2つにどういう関連性があるのかって？</p>
+
+<p>特にないです！</p>
+
+<p>JWK 翻訳しようとしたら、途中まで翻訳されて休眠してた OAuth Revocation の存在を思い出しただけです！</p>
+
+<h2>OAuth Revocation</h2>
+
+<p>OAuth Revocation は、必要なくなったけどまだ有効期限が残っている Access Token や Refresh Token を、OAuth Client が OAuth Server に「もういらないよ」って伝えて、OAuth Server 側で Token の無効化を行う仕様です。</p>
+
+<p>これはまぁ、これだけ実装しても Client が通知してくれなけりゃあまり意味がないので、Client にちゃんと通知させることができるようなガバナンスとセットで意味をなす仕様です。<br/>
+サポートしたい OAuth Server の中の人は、ガバナンスもがんばってください。</p>
+
+<h2>JSON Web Key (JWK)</h2>
+
+<p>JWK は、OpenID Connect の ID Token の署名検証用の鍵を公開する場合によく使われる、JSON Format の鍵表現仕様です。</p>
+
+<p>たとえば Google なんかでは、<a href="http://accounts.google.com/.well-known/openid-configuration">OpenID Provider Config Endpoint</a> にアクセスすると、<code>jwks_uri</code> っていう URL が返されて、その <code>jwks_uri</code> にアクセスすると (2016.07.01 時点では) 以下のような JSON が返ってきます。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+</pre></td><td class='code'><pre><code class='json'><span class='line'><span class="p">{</span>
+</span><span class='line'>  <span class="nt">&quot;keys&quot;</span><span class="p">:</span> <span class="p">[{</span>
+</span><span class='line'>    <span class="nt">&quot;kty&quot;</span><span class="p">:</span> <span class="s2">&quot;RSA&quot;</span><span class="p">,</span>
+</span><span class='line'>    <span class="nt">&quot;alg&quot;</span><span class="p">:</span> <span class="s2">&quot;RS256&quot;</span><span class="p">,</span>
+</span><span class='line'>    <span class="nt">&quot;use&quot;</span><span class="p">:</span> <span class="s2">&quot;sig&quot;</span><span class="p">,</span>
+</span><span class='line'>    <span class="nt">&quot;kid&quot;</span><span class="p">:</span> <span class="s2">&quot;73d4e5a3ccd130498bdb8c47fa025464505264ff&quot;</span><span class="p">,</span>
+</span><span class='line'>    <span class="nt">&quot;n&quot;</span><span class="p">:</span> <span class="s2">&quot;yvWe5x68Dc7OV9E7v-wN6li4ChMbZM1DmIZg1C2Ei-78Mqrfl8x3tZMee-ukykEUBcYQicgBRTo8TfKjAerbSKQ8K7ZKDgzPBEGRmYI9UYpZkCwOzhJ-UYU0QB3HcbF1c0l8sZxWTbzNQkiAmEesHH7klqZWScNou2KQEZR9Cs8zHH4clFqbVp8_jVb6xXuVMkpcDGodBjPvmDHA7BI7suirtiGdAnBtZ_cAX8m6MlX3WknNQ4tr88L-XZhTu8pQi0l-uQgsnTNR0k1XWVzmhCs2ftn1kF-UC8ipnei2va0WmX4EMZ-_6rbWRunio1hr9siOFVFdwQw9m34RXiE_Ow&quot;</span><span class="p">,</span>
+</span><span class='line'>    <span class="nt">&quot;e&quot;</span><span class="p">:</span> <span class="s2">&quot;AQAB&quot;</span>
+</span><span class='line'>  <span class="p">},</span> <span class="p">{</span>
+</span><span class='line'>    <span class="nt">&quot;kty&quot;</span><span class="p">:</span> <span class="s2">&quot;RSA&quot;</span><span class="p">,</span>
+</span><span class='line'>    <span class="nt">&quot;alg&quot;</span><span class="p">:</span> <span class="s2">&quot;RS256&quot;</span><span class="p">,</span>
+</span><span class='line'>    <span class="nt">&quot;use&quot;</span><span class="p">:</span> <span class="s2">&quot;sig&quot;</span><span class="p">,</span>
+</span><span class='line'>    <span class="nt">&quot;kid&quot;</span><span class="p">:</span> <span class="s2">&quot;5c20e39d07fff8a69a0b134fe90bf965c8ea458e&quot;</span><span class="p">,</span>
+</span><span class='line'>    <span class="nt">&quot;n&quot;</span><span class="p">:</span> <span class="s2">&quot;r0DVakOHSFsC6x4IEGtqxERP1YJaP-tycQL5b3cpmnxvjfckHZ9pnql0TPaMHKEdjHlr68MBWatgikGLg1l8injeez_fBOk7BDGyjKezxQAY3qDiGD79CD4EuSobOhYZOiSmtRZDRSrULLtcEksOkWvoBi3aRwVPFipdOOTZvP8TRE3erp-TEtVcaACt3_rWKaW7LTA3RLsFzArVDL_tzsGMuACvz0Uab73cUSjYSS6ErJKIQ-cHqsBRhQf1aYvXxu0Jw8TxrRFwbFRgaDlt9NWptMkTAuClzs_ChXlk3K4I6m2fTaNnNgdk0I5sJel-OebertIM91SlnbGzpRSsfw&quot;</span><span class="p">,</span>
+</span><span class='line'>    <span class="nt">&quot;e&quot;</span><span class="p">:</span> <span class="s2">&quot;AQAB&quot;</span>
+</span><span class='line'>  <span class="p">},</span> <span class="p">{</span>
+</span><span class='line'>    <span class="nt">&quot;kty&quot;</span><span class="p">:</span> <span class="s2">&quot;RSA&quot;</span><span class="p">,</span>
+</span><span class='line'>    <span class="nt">&quot;alg&quot;</span><span class="p">:</span> <span class="s2">&quot;RS256&quot;</span><span class="p">,</span>
+</span><span class='line'>    <span class="nt">&quot;use&quot;</span><span class="p">:</span> <span class="s2">&quot;sig&quot;</span><span class="p">,</span>
+</span><span class='line'>    <span class="nt">&quot;kid&quot;</span><span class="p">:</span> <span class="s2">&quot;70f6c4267925b33136a1d1cfee4ebc57b249e5cb&quot;</span><span class="p">,</span>
+</span><span class='line'>    <span class="nt">&quot;n&quot;</span><span class="p">:</span> <span class="s2">&quot;qjpXf8YUP22n4Z5DY-YBb8ksxT0YsPDPaCfNtFyXwyE4zInlnw4dSiUud6y0WjPZaVhhVuV_jjgnOgh16lKgaJVYSEaaZDiukI02n5kZ02ZTCkqU27bafL7zBzMBssLliKgnaLFaNH8JBh0mj3suTWp0aB3hMouj1IkkdUB_MCfc6I56tyOwon5JK3vGrYk9vZ--cjTSllN9NYJcWfcUyGoI7RgNz9gvBIznD24NQR1cxmArkusaqmQj6AbARixklSiMpT1qIp0IG-L6wqFi6FHlcbUZnDxCZJVWHfCB9Gfdoox3lgBbdzAebFDomIgxpHwhxsA-iRhYyrjUlSrRiQ&quot;</span><span class="p">,</span>
+</span><span class='line'>    <span class="nt">&quot;e&quot;</span><span class="p">:</span> <span class="s2">&quot;AQAB&quot;</span>
+</span><span class='line'>  <span class="p">}]</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>これは JWK 仕様に定められた JSON Web Key Set (JWK Set) というもので、<code>keys</code> という JSON Array の中に含まれている一つ一つの JSON Object が JSON Web Key (JWK) です。</p>
+
+<p>OpenID Connect の場合は RSA 鍵を使うことが多いですが、EC 鍵も Shared Secret も JWK で表現できます。</p>
+
+<p>ACME や WebCrypto など、OpenID Connect 以外の仕様でも、JWK 表現された鍵を見かけることが増えてきたので、今回翻訳することにしました。</p>
+
+<p>実は各暗号アルゴリズムごとに必要な JSON メンバの定義などは JSON Web Algorithm という別仕様にまとめられているので、そちらもいつか翻訳しなきゃなとは思っています。</p>
+
+<p>あと JWK の識別子 (<code>kid</code>) として利用されることがおおい JWK Thumbprint という仕様も、そのうち翻訳しようと思っています。</p>
+
+<p>ということで、今後も <a href="http://openid-foundation-japan.github.io">OIDF-J 翻訳 WG</a> の活動をお楽しみに！</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Office 365 SAML implementation vulnerability]]></title>
@@ -1821,159 +1930,6 @@ https://client.example.com/callback?
 <p>ちなみに omniauth-twitter (というか omniauth-oauth) は Callback URL で Session に Request Token Secret が入ってなければエラーになるので Safe です。Gunosy とか Doorkeeper は omniauth-twitter 使ってるのか、Safe でした。</p>
 
 <p>そういや最近<a href="https://twitter.com/TSJ2010">日本ツイッター学会</a>って何してんすかね？</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[OAuth 2.0 の code は漏れても大丈夫ってホント!?]]></title>
-    <link href="http://oauthjp.github.io/blog/2014/05/09/what-happens-when-oauth2-code-leaked/"/>
-    <updated>2014-05-09T09:59:00+09:00</updated>
-    <id>http://oauthjp.github.io/blog/2014/05/09/what-happens-when-oauth2-code-leaked</id>
-    <content type="html"><![CDATA[<p>昨日の<a href="http://oauthjp.github.io/blog/2014/05/08/covert-redirect-and-non-30x-redirects/">Covert Redirect で Query 漏れるケースもある!?</a>や<a href="http://oauthjp.github.io/blog/2014/05/07/covert-redirect/">OAuth 2.0 の脆弱性 (!?) &ldquo;Covert Redirect&rdquo; とは</a>にあるように、OAuth 2.0 の code が漏れちゃうことも、ありえます。</p>
-
-<p>漏れないためにやるべきことは、上記の記事や<a href="http://oauthjp.github.io/blog/2014/05/08/facebook-login-and-covert-redirect/">Facebook Login で Covert Redirect を防止する</a>なんかでも紹介してるので、そちら読んでください。</p>
-
-<p>で、今回の内容は<strong>「code が漏れたら何がまずいのか」</strong>についてです。</p>
-
-<h3>「code は漏れても大丈夫」説</h3>
-
-<p><a href="http://www.openid.or.jp/blog/2014/05/covert-redirect-and-its-real-impact-on-oauth-and-openid-connect.html">「Covert Redirect」についての John Bradley 氏の解説（追記あり）</a>にも、こうありましたね。</p>
-
-<blockquote>
-OAuth と OpenID Connect には複数の response_type があるんだけど、さきのリポートの著者は、最も一般的な response_type が &#8220;code&#8221; であることに触れず、またクライアント・クレデンシャルを使ってもう一度呼び出しを行わないとアクセス・トークンは手に入らないってことも無視してる。つまり、たしかに &#8220;code&#8221; がオープン・リダイレクターを経由して漏洩するかもしれない、という点については彼が正しい。けど、その code を使って攻撃者がなにかできるわけではないよ。これこそまさに、&#8221;code&#8221; response_type を使うことで得られる効果的な緩和策だね。
-</blockquote>
-
-
-<p>あれ？code 漏れても問題なさそうですね？</p>
-
-<p>ほんとでしょうか？</p>
-
-<h4>[仕様策定者視点での答え]</h4>
-
-<blockquote>
-本当です。みんながちゃんと OAuth の仕様に沿って実装していれば。仕様に沿って実装してない場合は知らん。ちゃんとやれ。
-</blockquote>
-
-
-<h4>[OAuth Server 実装者視点での答え]</h4>
-
-<blockquote>
-本当です。Client がちゃんと client secret を漏洩させずに、OAuth の仕様に沿って実装していれば。client secret 漏らしたり仕様に沿って実装してない場合は、うちのユーザーに迷惑かかるかもしれんし、あなたのアプリ停止しちゃうね。
-</blockquote>
-
-
-<h4>[OAuth Client 実装者視点での答え]</h4>
-
-<blockquote>
-え？俺ちゃんと仕様に沿って実装できてんの？
-
-&#8230;まぁ動いてるしできてる、よね！？
-
-それに万が一 code 漏れても、うちに被害及ぶってより OAuth Server に被害及ぶはずやし、OAuth Server がちゃんと対策してれば、まぁなんとかなるよね？
-</blockquote>
-
-
-<p><strong>ゆとりか！(｀ヘ´#)</strong></p>
-
-<p>OAuth Client 実装者がこういう考えだと、一瞬でやられちゃいそうですねぇ。</p>
-
-<p>ってことで、ここでは<strong>「code が漏れたら OAuth Client 側でアカウント乗っ取りが発生する」</strong>ケースについて考えてみましょう。</p>
-
-<!-- more -->
-
-
-<h3>前提条件</h3>
-
-<p>あなたのサイトは「Facebook ID でログイン」できるようになっています。(ちなみにここでは一番世に広まっている Facebook を挙げますが、問題の本質は Facebook に限定された話ではないので、ID Provider が GitHub や LinkedIn な場合でも同様です)</p>
-
-<p>あなたのサイトからは client secret は漏れていませんし、Implicit Flow も使ってないので、「Token 置換攻撃 ※1」は受けません。</p>
-
-<p>あなたのサイトには open redirector があり、被害者の code が攻撃者に漏洩しています。(or している可能性があります)</p>
-
-<p>client secret は漏れていないので、攻撃者が漏洩した code を access token と交換することは、できません。</p>
-
-<h3>攻撃例</h3>
-
-<p>攻撃者は、あなたのサイトの正規の redirect_uri に、漏洩した code を送りつけます。</p>
-
-<pre>
-GET /facebook/callback?code=&lt;leaked-code&gt;
-Host: client.example.com
-</pre>
-
-
-<p>ここであなたのサイトはこのリクエストを Facebook から正規のリダイレクトレスポンスとして処理します。通常、だいたいこんな処理を行うのではないでしょうか。</p>
-
-<ol>
-<li>Facebook の Token Endpoint に code を POST し、access token を取得する。</li>
-<li>access token を使って <code>GET /me</code> にアクセスし、ユーザーの Facebook UserID を取得する。</li>
-<li>取得した Facebook UserID と紐づくアカウントを特定し、local の session cookie を発行するなどしてログイン済にする。</li>
-</ol>
-
-
-<p>あれ？攻撃者が漏洩した code を使って、<strong>あなたのサイトに被害者のアカウントで</strong>ログインできてしまいましたね？</p>
-
-<p>なんか Token 置換攻撃と同じような現象が起こっちゃいましたね？</p>
-
-<p>こんなことが起こりえる以上、</p>
-
-<blockquote>
-万が一 code 漏れても、うちに被害及ぶってより OAuth Server に被害及ぶはずやし、OAuth Server がちゃんと対策してれば、まぁなんとかなるよね？
-</blockquote>
-
-
-<p>なんて悠長なことは、言ってられませんね。</p>
-
-<h4>[捕捉]</h4>
-
-<p>なお、code &lt;&ndash;> token 交換時には redirect_uri を Token Endpoint に送ることになるので、ここで Server 側がちゃんと code 発行時の redirect_uri とここで送られて来る redirect_uri を exact match で検証していれば、Step.1 でエラーになってこの攻撃は成立しないはずです。</p>
-
-<p>実際 Facebook はこのタイミングでは exact match 必須なんで、正規の redirect_uri が open redirector になってない限りは上記の攻撃は Step.1 で失敗します。</p>
-
-<p>が、残念ながら世の中には 某ithub みたいに (ry</p>
-
-<h3>対策方法</h3>
-
-<p>まず、この攻撃が発生してしまう根本原因は、ここです。</p>
-
-<blockquote>
-ここであなたのサイトはこのリクエストを Facebook から正規のリダイレクトレスポンスとして処理します。
-</blockquote>
-
-
-<p>これを防げれば OK です。</p>
-
-<p>これを防ぐための一番簡単な方法は、<strong>被害者と攻撃者が異なる UserAgent を使っていることを検知する</strong>ことです。</p>
-
-<p>いわゆる CSRF 対策ができてればいいんですね。</p>
-
-<p>ここで @ritou 先生の<a href="http://d.hatena.ne.jp/ritou/20121008/1349695124">OAuth 2.0のstateとredirect_uriとOpenID ConnectのnonceとID Tokenについて</a>でも紹介されてる state パラメータってやつが登場するわけです。</p>
-
-<p>この state パラメータについては、Client が任意であらゆる文字列を指定できてしまうので、前提知識の乏しい Developer にとってはいまいち何を指定すればいいか分からないかもしれません。</p>
-
-<p>@ritou 先生の記事に従って、session ID のハッシュ値を指定してもいいですし、先日 John Bradley が出してきた<a href="http://tools.ietf.org/html/draft-bradley-jwt-encoded-oauth-state-00">こちらの OAuth 2.0 拡張仕様</a>を参考にしても良いでしょう。</p>
-
-<h3>結論</h3>
-
-<p>ちゃんと state 使ってない OAuth Client に関しては、<strong>「code なら漏れても大丈夫」なんてウソです</strong>。</p>
-
-<p>OAuth Server には、code 置換攻撃を防ぐ手だてはありません。</p>
-
-<p>OAuth Client がちゃんと実装するしかありません。</p>
-
-<p>open redirector だらけで state パラメータもまともに使っていないような OAuth Client なんて、もう救いようが&hellip;(ry</p>
-
-<p>まぁ、みんなちゃんとしましょう。</p>
-
-<p>※1「Token 置換攻撃」については、これまでもたびたび書いてきたので、これらの記事をどうぞ。</p>
-
-<ul>
-<li><a href="http://www.atmarkit.co.jp/ait/articles/1209/10/news105_2.html">@IT &ndash; RFCとなった「OAuth 2.0」――その要点は？ (2/2)</a></li>
-<li><a href="http://oauthjp.github.io/blog/2012/02/08/ios-sdk/">&ldquo;なんちゃら iOS SDK&rdquo; でありそうな被害例</a></li>
-<li><a href="http://oauthjp.github.io/blog/2012/02/07/oauth-20-implicit-flow/">「OAuth 2.0 (Implicit Flow) でログイン」の被害例</a></li>
-<li><a href="http://oauthjp.github.io/blog/2012/06/29/oauth-20-implicit-flow-78852/">OAuth 2.0 Implicit Flow で認証の問題点、再び。</a></li>
-</ul>
-
 ]]></content>
   </entry>
   

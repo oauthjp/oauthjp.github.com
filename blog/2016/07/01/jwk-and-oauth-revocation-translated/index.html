@@ -3,10 +3,10 @@
 <html>
 <head>
 	<meta charset="utf-8">
-	<title>OAuth.jp</title>
+	<title>OAuth Revocation と JWK を翻訳しました - OAuth.jp</title>
     <meta name="author" content="Nov Matake">
     
-	<meta name="description" content="Published on: Jul 1st, 2016 Tags: どうも、この度 OpenID Foundation Japan の事務局長になった Nov です。 事務局長就任のご挨拶的なポエムを書けというオーラをふつふつと感じながら、ガン無視してこの記事を書いております。 さて、 &hellip;">
+	<meta name="description" content="どうも、この度 OpenID Foundation Japan の事務局長になった Nov です。 事務局長就任のご挨拶的なポエムを書けというオーラをふつふつと感じながら、ガン無視してこの記事を書いております。 さて、みなさん覚えておられるでしょうか？ OpenID Foundation &hellip;">
 	
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
@@ -84,36 +84,9 @@
 <div id="toload">
 <!-- begin toload --> 
     <div id="content" class="inner">
-        
-
-
-    <article class="post">
-	<h2 class="title">
-		
-		<a href="/blog/2016/07/01/jwk-and-oauth-revocation-translated/">
-		
-			OAuth Revocation と JWK を翻訳しました</a>
-	</h2>
-    <div class="entry-content">
-    <div class="meta">
-      <div class="date">Published on: 
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2016-07-01T10:14:00+09:00" pubdate data-updated="true">Jul 1<span>st</span>, 2016</time></div>
-      <div class="tags">Tags: 
-
-</div>
-    </div>
-		<p>どうも、この度 OpenID Foundation Japan の事務局長になった Nov です。</p>
+        <article class="post">
+	<h2 class="title">OAuth Revocation と JWK を翻訳しました</h2>
+	<div class="entry-content"><p>どうも、この度 OpenID Foundation Japan の事務局長になった Nov です。</p>
 
 <p>事務局長就任のご挨拶的なポエムを書けというオーラをふつふつと感じながら、ガン無視してこの記事を書いております。</p>
 
@@ -214,318 +187,35 @@
 <p>あと JWK の識別子 (<code>kid</code>) として利用されることがおおい JWK Thumbprint という仕様も、そのうち翻訳しようと思っています。</p>
 
 <p>ということで、今後も <a href="http://openid-foundation-japan.github.io">OIDF-J 翻訳 WG</a> の活動をお楽しみに！</p>
-
-		
-		
-	</div>
+</div>
 
 <div class="meta">
 	
 </div>
 </article>
 
-
-    <article class="post">
-	<h2 class="title">
-		
-		<a href="/blog/2016/05/14/office-365-saml-implementation-vulnerability/">
-		
-			Office 365 SAML Implementation Vulnerability</a>
-	</h2>
-    <div class="entry-content">
-    <div class="meta">
-      <div class="date">Published on: 
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2016-05-14T10:32:00+09:00" pubdate data-updated="true">May 14<span>th</span>, 2016</time></div>
-      <div class="tags">Tags: 
-
-</div>
-    </div>
-		<p>先日 Office 365 のこんな記事見つけたので、一応まとめておきますかね。</p>
-
-<p><a href="http://www.economyofmechanism.com/office365-authbypass.html">The road to hell is paved with SAML Assertions</a></p>
-
-<p>タイトルだけ見るとまた SAML is DEAD 案件かと思いきや、Office 365 の脆弱性の話です。</p>
-
-<p>SAML 悪く無いです。</p>
-
-<p>SAML isn&rsquo;t vulnerable, just DEAD.</p>
-
-<h2>SAML SP としての Office 365</h2>
-
-<p>Office 365 は SAML Service Provider (SP) として動作するので、みなさんがお持ちの Identity Provider (IdP) を SAML IdP として動作することができれば、みなさんの IdP に登録されてるアカウントを使って Office 365 にログインすることができます。</p>
-
-<p>みなさんの社内の ADFS とか、Ping Federate / Okta / OneLogin &hellip; みたいな IDaaS とか、そういうのは大抵 SAML IdP として動作するので、そういう製品を使ってるなら、みなさんの会社のアカウントでそのまま Office 365 にログインできます。</p>
-
-<p>通常 SAML SP は、IdP から返ってくる SAML Response に含まれる IdP 側のユーザー識別子 (Subject Identifier) と IdP 自身の識別子 (Issuer Identifier) のペアを元に、SP 側のアカウントにログインさせます。</p>
-
-<p>がしかし、Office 365 の場合は、IdP が渡してくる Email アドレスと Office 365 がローカルで持ってる Email アドレスの一致だけを見て Office 365 ローカルのユーザーを認証していたようです。Subject Identifier も Issuer Identifier も無視していた、と。</p>
-
-<p>(実際には、SAML IdP と Office 365 の間に Azure AD が介在しており、SAML Assertion の検証は Azure ADがやるようなアーキテクチャになっていて、Azure AD では Subject Identifier &amp; Issuer Identifier をちゃんと見ているようですが、全体として見ると Office 365 が SAML IdP の Issuer と Subject をガン無視した形になってます。この辺の話しだすとややこしい割に MS 以外の人にはあまり関係無い話になっちゃうので、今回はスルー)</p>
-
-<h2>Office 365 の脆弱性概要</h2>
-
-<p>これで何が起こっていたかというと、<code>nov@victim.example.com</code> という Email アドレスを持つ Office 365 ユーザーのアカウントにログインする際に、<code>attacker.example.com</code> という IdP が <code>nov@victim.example.com</code> という Email アドレスを含んだ SAML Assertion を発行すると、Office 365 がその Assertion を受け入れて <code>nov@victim.example.com</code> の Office 365 アカウントへのログインを許可してしまっていました。</p>
-
-<p>よって、以下の2つのパターンが、どちらも同じ Office 365 アカウントにログイン可能になっていました。</p>
-
-<table>
-<thead>
-<tr>
-<th></th>
-<th> Issuer Identifier    </th>
-<th> Subject Identifier  </th>
-<th> Email Address          </th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td></td>
-<td> attacker.example.com </td>
-<td> 58df3c9b2c32ca86f.. </td>
-<td> <code>nov@victim.example.com</code></td>
-</tr>
-<tr>
-<td></td>
-<td> victim.example.com   </td>
-<td> 20166f0c077c1f6c1.. </td>
-<td> <code>nov@victim.example.com</code></td>
-</tr>
-</tbody>
-</table>
-
-
-<p>うん、これは最悪ですね。</p>
-
-
-		
-		<a href="/blog/2016/05/14/office-365-saml-implementation-vulnerability/" class="more-link">Read on &rarr;</a>
-	</div>
-
-<div class="meta">
+	<div class="share">
+	<div class="addthis_toolbox addthis_default_style ">
 	
-</div>
-</article>
-
-
-    <article class="post">
-	<h2 class="title">
-		
-		<a href="/blog/2016/05/06/another-csrf-attack/">
-		
-			OAuth / Connect における CSRF Attack の新パターン</a>
-	</h2>
-    <div class="entry-content">
-    <div class="meta">
-      <div class="date">Published on: 
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2016-05-06T14:19:00+09:00" pubdate data-updated="true">May 6<span>th</span>, 2016</time></div>
-      <div class="tags">Tags: 
-
-</div>
-    </div>
-		<p>昨日こんなのが OAuth ML に流れてました。</p>
-
-<p><a href="https://mailarchive.ietf.org/arch/search/?email_list=oauth&amp;gbt=1&amp;index=G4J3H1BMyIN01FCOLKqLjrx7AZ4">[OAUTH-WG] Another CSRF attack</a></p>
-
-<h2>前提条件</h2>
-
-<p>RP (Relying Party a.k.a. OAuth Client) が2つ以上の IdP (Identity Provider a.k.a. OAuth Server) と連携している状況で、片方の IdP に悪意がある。</p>
-
-<ul>
-<li>悪意ある IdP = AIdP (A は Attacker の略)</li>
-<li>その他の IdP = HIdP (H は Honest の略)</li>
-</ul>
-
-
-<h2>攻撃フロー</h2>
-
-<p><img src="https://www.websequencediagrams.com/cgi-bin/cdraw?lz=YWx0IFZpY3RpbSdzIFNlc3Npb24KICAgAA4HLT5SUDogTG9naW4gdy8gQUlkUAAZBVJQLT4AMQY6ACENQUlkUDogQXV0aFogUmVxIHcvIHN0YXRlLVYAUAVBSWQALwoAIgVlbnRpY2F0ZQA0EgAmC0gAUAZ0dGFja2VyJ3MgY3JlZGVudGlhbHMAgSgFSABTBQB3BmNvZABIBgBfDkhJZFAncwAZBQCBCwsgKHRvIHJlZGlyZWN0X3VyaSBmb3IASgUpAIF2EACBbwlSUDoANglpcyB0aWVkIHRvIHRoZSBzAII7BiwgT0shAIIfCQCBOAYAgQ4JAIEmBlIAgUMOYWNjZXNzX3Rva2VuICYgaWQABQYAglwQIEhlbGxvLCB3aGF0J3MgeW91ciBuYW1lPwCDIhFJJ20Ag1EHCmVsc2UAgjEMAINaDACCTAgAg0wcAIJwCACDCwcAKQkAgw8HAINaEkEAgwgMADUIAINcEgA7DwAgFQCDIQ4AUwYAgScNAIMDE0EAgi1pAIFTCldlbGNvbWUgYmFjaywAhkoHIQplbmQK&amp;s=earth" alt="Another CSRF Attack" /></p>
-
-<ol>
-<li>Victim が AIdP を使って RP へのログインを試みる。</li>
-<li>RP は Authorization Request を AIdP に送る。
-
-<ul>
-<li>AuthZ Req には Browser Session と紐付いた <code>state</code> パラメータをつけている。</li>
-</ul>
-</li>
-<li>AIdP は Victim を認証し、必要に応じて同意を取得する (ふりをする)
-
-<ul>
-<li>同時に AIdP は裏で HIdP から <code>code</code> を取得する。</li>
-<li>HIdP の code は Attacker の HIdP 上のアカウントに紐付いているもの。</li>
-</ul>
-</li>
-<li>AIdP は HIdP から取得した <code>code</code> を、RP の HIdP 用 <code>redirect_uri</code> に返す。
-
-<ul>
-<li>この時 Step2 で RP が発行した <code>state</code> を付与する。</li>
-</ul>
-</li>
-<li>RP は Browser Session と紐付いた <code>state</code> を検証した上で <code>code</code> を HIdP の Token Endpoint に送る。</li>
-<li>HIdP は Attacker のアカウントに紐付いた <code>access_token</code> を返す。</li>
-<li>RP は Victim をログインさせる。
-
-<ul>
-<li>ここで HIdP 上の Attacker アカウントと RP 上の Victim アカウントが紐づけられる。</li>
-</ul>
-</li>
-</ol>
-
-
-<p>そして、Attacker は任意のタイミングで自身の HIdP 上のアカウントを使って、RP 上の Victim のアカウントにログインできる。</p>
-
-<h2>防御策</h2>
-
-<p><code>state</code> をリクエスト先の IdP とも紐づけましょう。</p>
-
-		
-		
-	</div>
-
-<div class="meta">
+	<a class="addthis_button_facebook_like" fb:like:layout="button_count"></a>
 	
-</div>
-</article>
-
-
-    <article class="post">
-	<h2 class="title">
-		
-		<a href="/blog/2016/04/19/fb-message-callback-with-azure-function/">
-		
-			FB Message API Callback as an Azure Function</a>
-	</h2>
-    <div class="entry-content">
-    <div class="meta">
-      <div class="date">Published on: 
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2016-04-19T10:56:00+09:00" pubdate data-updated="true">Apr 19<span>th</span>, 2016</time></div>
-      <div class="tags">Tags: 
-
-</div>
-    </div>
-		<p>今日は Azure Function で FB Message API Callback を作ってみます。</p>
-
-<p>Azure Function は、Azure Portal の Marketplace で &ldquo;Function App&rdquo; って検索すると出てきますね。</p>
-
-<p><img src="/images/posts/azure/azure-function-in-marketplace.png" alt="Azure Function in Marketplace" /></p>
-
-<p>Function App の Deploy がおわったら、QuickStart から &ldquo;Webhook + API&rdquo; を選びましょう。</p>
-
-<p><img src="/images/posts/azure/azure-function-quickstart.png" alt="Azure Function QuickStart" /></p>
-
-<p>以下の様な Node.js のテンプレートアプリが出来上がります。</p>
-
-<p><img src="/images/posts/azure/azure-function-template.png" alt="Azure Function Template" /></p>
-
-<p>まずは FB Message の WebHook としてこの Function を登録します。</p>
-
-
-		
-		<a href="/blog/2016/04/19/fb-message-callback-with-azure-function/" class="more-link">Read on &rarr;</a>
-	</div>
-
-<div class="meta">
 	
-</div>
-</article>
-
-
-    <article class="post">
-	<h2 class="title">
-		
-		<a href="/blog/2016/04/17/oidc-on-adfs-2016/">
-		
-			Windows Server 2016 版 ADFS を触ってみた</a>
-	</h2>
-    <div class="entry-content">
-    <div class="meta">
-      <div class="date">Published on: 
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2016-04-17T19:38:00+09:00" pubdate data-updated="true">Apr 17<span>th</span>, 2016</time></div>
-      <div class="tags">Tags: 
-
-</div>
-    </div>
-		<p>MVP になったことですし、早速 Azure 常に Windows Server 2016 の VM 立ち上げて、次期バージョンの ADFS を動かしてみました。</p>
-
-<p>想定ユースケースは、Native App とその Backend Server があって、Backend Server が Native App 向けに提供している API 用の Access Token も、ADFS が発行するというものです。</p>
-
-<p>まさしく今後エンプラで増えていくであろうパターンですね。</p>
-
-<h2>Setup Hybrid Client on ADFS</h2>
-
-<p>ADFS Manager に &ldquo;Application Groups&rdquo; っていう設定が増えてるんで、そこから &ldquo;Native Application and Web API&rdquo; ってのを選択して、Connect RP (= OAuth Client) を登録します。</p>
-
-<p><img src="/images/posts/adfs/hybrid-client-new.png" alt="New Hybrid Client" /></p>
-
-<p>スクショいっぱい撮るのが面倒なのですっ飛ばしますが、こんな感じで Native App とその Backend Server を ADFS に &ldquo;Application Group&rdquo; として登録しました。</p>
-
-<p><img src="/images/posts/adfs/hybrid-client.png" alt="Registered Hybrid Client" /></p>
-
-<p>ちなみに、この時 Backend には特に Native App と別の client_id が発行されたりはしません。</p>
-
-<p>ここまでで、ADFS 側の準備は完了です。以降、<a href="https://gist.github.com/nov/3f284aa8cec5ed6bc332e9a5c9d93851">こちらの gist</a> に沿って、Step by Step で見ていきます。</p>
-
-
-		
-		<a href="/blog/2016/04/17/oidc-on-adfs-2016/" class="more-link">Read on &rarr;</a>
-	</div>
-
-<div class="meta">
+	<a class="addthis_button_tweet"></a>
 	
+	
+	<a class="addthis_button_google_plusone" g:plusone:size="medium"></a>
+	
+	</div>
+  <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid="></script>
 </div>
-</article>
 
-<nav id="pagenavi">
-    
-    
-        <a href="/blog/page/2/" class="next">Next</a>
-    
-    <div class="center"><a href="/blog/archives">Blog Archives</a></div>
-</nav>
+
+
+<section id="comment">
+    <h2 class="title">Comments</h2>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+</section>
 
     </div>
     <footer id="footer">
@@ -552,7 +242,10 @@
       var disqus_shortname = 'oauthjp';
       
         
-        var disqus_script = 'count.js';
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://oauthjp.github.io/blog/2016/07/01/jwk-and-oauth-revocation-translated/';
+        var disqus_url = 'http://oauthjp.github.io/blog/2016/07/01/jwk-and-oauth-revocation-translated/';
+        var disqus_script = 'embed.js';
       
     (function () {
       var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
