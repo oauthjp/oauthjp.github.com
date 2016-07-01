@@ -6,7 +6,7 @@
 	<title>OAuth.jp</title>
     <meta name="author" content="Nov Matake">
     
-	<meta name="description" content="Published on: Jul 1st, 2016 Tags: どうも、事務局長の Nov です。 どうも、ジムキョクチョのノブです。 どうも、のぶチョです。 そう、のぶ千代です。 最近歳のせいか、Rails で SAML IdP とか作ってます。 今日は自作 SAML IdP を &hellip;">
+	<meta name="description" content="Published on: Jul 1st, 2016 Tags: どうも、事務局長の Nov です。 どうも、ジムキョクチョのノブです。 どうも、ノブキョクチョです。 どうも、のぶチョです。 そう、のぶ千代です。 最近歳のせいか、Rails で SAML IdP とか作ってます。 今日は自作 &hellip;">
 	
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
@@ -116,6 +116,8 @@
 		<p>どうも、事務局長の Nov です。</p>
 
 <p>どうも、ジムキョクチョのノブです。</p>
+
+<p>どうも、ノブキョクチョです。</p>
 
 <p>どうも、のぶチョです。</p>
 
@@ -303,84 +305,9 @@ Mac から Remote Desktop 経由でいじりたかったんでね。</p>
 
 <p>JWK 翻訳しようとしたら、途中まで翻訳されて休眠してた OAuth Revocation の存在を思い出しただけです！</p>
 
-<h2>OAuth Revocation</h2>
-
-<p>OAuth Revocation は、必要なくなったけどまだ有効期限が残っている Access Token や Refresh Token を、OAuth Client が OAuth Server に「もういらないよ」って伝えて、OAuth Server 側で Token の無効化を行う仕様です。</p>
-
-<p>これはまぁ、これだけ実装しても Client が通知してくれなけりゃあまり意味がないので、Client にちゃんと通知させることができるようなガバナンスとセットで意味をなす仕様です。<br/>
-サポートしたい OAuth Server の中の人は、ガバナンスもがんばってください。</p>
-
-<h2>JSON Web Key (JWK)</h2>
-
-<p>JWK は、OpenID Connect の ID Token の署名検証用の鍵を公開する場合によく使われる、JSON Format の鍵表現仕様です。</p>
-
-<p>たとえば Google なんかでは、<a href="http://accounts.google.com/.well-known/openid-configuration">OpenID Provider Config Endpoint</a> にアクセスすると、<code>jwks_uri</code> っていう URL が返されて、その <code>jwks_uri</code> にアクセスすると (2016.07.01 時点では) 以下のような JSON が返ってきます。</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-</pre></td><td class='code'><pre><code class='json'><span class='line'><span class="p">{</span>
-</span><span class='line'>  <span class="nt">&quot;keys&quot;</span><span class="p">:</span> <span class="p">[{</span>
-</span><span class='line'>    <span class="nt">&quot;kty&quot;</span><span class="p">:</span> <span class="s2">&quot;RSA&quot;</span><span class="p">,</span>
-</span><span class='line'>    <span class="nt">&quot;alg&quot;</span><span class="p">:</span> <span class="s2">&quot;RS256&quot;</span><span class="p">,</span>
-</span><span class='line'>    <span class="nt">&quot;use&quot;</span><span class="p">:</span> <span class="s2">&quot;sig&quot;</span><span class="p">,</span>
-</span><span class='line'>    <span class="nt">&quot;kid&quot;</span><span class="p">:</span> <span class="s2">&quot;73d4e5a3ccd130498bdb8c47fa025464505264ff&quot;</span><span class="p">,</span>
-</span><span class='line'>    <span class="nt">&quot;n&quot;</span><span class="p">:</span> <span class="s2">&quot;yvWe5x68Dc7OV9E7v-wN6li4ChMbZM1DmIZg1C2Ei-78Mqrfl8x3tZMee-ukykEUBcYQicgBRTo8TfKjAerbSKQ8K7ZKDgzPBEGRmYI9UYpZkCwOzhJ-UYU0QB3HcbF1c0l8sZxWTbzNQkiAmEesHH7klqZWScNou2KQEZR9Cs8zHH4clFqbVp8_jVb6xXuVMkpcDGodBjPvmDHA7BI7suirtiGdAnBtZ_cAX8m6MlX3WknNQ4tr88L-XZhTu8pQi0l-uQgsnTNR0k1XWVzmhCs2ftn1kF-UC8ipnei2va0WmX4EMZ-_6rbWRunio1hr9siOFVFdwQw9m34RXiE_Ow&quot;</span><span class="p">,</span>
-</span><span class='line'>    <span class="nt">&quot;e&quot;</span><span class="p">:</span> <span class="s2">&quot;AQAB&quot;</span>
-</span><span class='line'>  <span class="p">},</span> <span class="p">{</span>
-</span><span class='line'>    <span class="nt">&quot;kty&quot;</span><span class="p">:</span> <span class="s2">&quot;RSA&quot;</span><span class="p">,</span>
-</span><span class='line'>    <span class="nt">&quot;alg&quot;</span><span class="p">:</span> <span class="s2">&quot;RS256&quot;</span><span class="p">,</span>
-</span><span class='line'>    <span class="nt">&quot;use&quot;</span><span class="p">:</span> <span class="s2">&quot;sig&quot;</span><span class="p">,</span>
-</span><span class='line'>    <span class="nt">&quot;kid&quot;</span><span class="p">:</span> <span class="s2">&quot;5c20e39d07fff8a69a0b134fe90bf965c8ea458e&quot;</span><span class="p">,</span>
-</span><span class='line'>    <span class="nt">&quot;n&quot;</span><span class="p">:</span> <span class="s2">&quot;r0DVakOHSFsC6x4IEGtqxERP1YJaP-tycQL5b3cpmnxvjfckHZ9pnql0TPaMHKEdjHlr68MBWatgikGLg1l8injeez_fBOk7BDGyjKezxQAY3qDiGD79CD4EuSobOhYZOiSmtRZDRSrULLtcEksOkWvoBi3aRwVPFipdOOTZvP8TRE3erp-TEtVcaACt3_rWKaW7LTA3RLsFzArVDL_tzsGMuACvz0Uab73cUSjYSS6ErJKIQ-cHqsBRhQf1aYvXxu0Jw8TxrRFwbFRgaDlt9NWptMkTAuClzs_ChXlk3K4I6m2fTaNnNgdk0I5sJel-OebertIM91SlnbGzpRSsfw&quot;</span><span class="p">,</span>
-</span><span class='line'>    <span class="nt">&quot;e&quot;</span><span class="p">:</span> <span class="s2">&quot;AQAB&quot;</span>
-</span><span class='line'>  <span class="p">},</span> <span class="p">{</span>
-</span><span class='line'>    <span class="nt">&quot;kty&quot;</span><span class="p">:</span> <span class="s2">&quot;RSA&quot;</span><span class="p">,</span>
-</span><span class='line'>    <span class="nt">&quot;alg&quot;</span><span class="p">:</span> <span class="s2">&quot;RS256&quot;</span><span class="p">,</span>
-</span><span class='line'>    <span class="nt">&quot;use&quot;</span><span class="p">:</span> <span class="s2">&quot;sig&quot;</span><span class="p">,</span>
-</span><span class='line'>    <span class="nt">&quot;kid&quot;</span><span class="p">:</span> <span class="s2">&quot;70f6c4267925b33136a1d1cfee4ebc57b249e5cb&quot;</span><span class="p">,</span>
-</span><span class='line'>    <span class="nt">&quot;n&quot;</span><span class="p">:</span> <span class="s2">&quot;qjpXf8YUP22n4Z5DY-YBb8ksxT0YsPDPaCfNtFyXwyE4zInlnw4dSiUud6y0WjPZaVhhVuV_jjgnOgh16lKgaJVYSEaaZDiukI02n5kZ02ZTCkqU27bafL7zBzMBssLliKgnaLFaNH8JBh0mj3suTWp0aB3hMouj1IkkdUB_MCfc6I56tyOwon5JK3vGrYk9vZ--cjTSllN9NYJcWfcUyGoI7RgNz9gvBIznD24NQR1cxmArkusaqmQj6AbARixklSiMpT1qIp0IG-L6wqFi6FHlcbUZnDxCZJVWHfCB9Gfdoox3lgBbdzAebFDomIgxpHwhxsA-iRhYyrjUlSrRiQ&quot;</span><span class="p">,</span>
-</span><span class='line'>    <span class="nt">&quot;e&quot;</span><span class="p">:</span> <span class="s2">&quot;AQAB&quot;</span>
-</span><span class='line'>  <span class="p">}]</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>これは JWK 仕様に定められた JSON Web Key Set (JWK Set) というもので、<code>keys</code> という JSON Array の中に含まれている一つ一つの JSON Object が JSON Web Key (JWK) です。</p>
-
-<p>OpenID Connect の場合は RSA 鍵を使うことが多いですが、EC 鍵も Shared Secret も JWK で表現できます。</p>
-
-<p>ACME や WebCrypto など、OpenID Connect 以外の仕様でも、JWK 表現された鍵を見かけることが増えてきたので、今回翻訳することにしました。</p>
-
-<p>実は各暗号アルゴリズムごとに必要な JSON メンバの定義などは JSON Web Algorithm という別仕様にまとめられているので、そちらもいつか翻訳しなきゃなとは思っています。</p>
-
-<p>あと JWK の識別子 (<code>kid</code>) として利用されることがおおい JWK Thumbprint という仕様も、そのうち翻訳しようと思っています。</p>
-
-<p>ということで、今後も <a href="http://openid-foundation-japan.github.io">OIDF-J 翻訳 WG</a> の活動をお楽しみに！</p>
 
 		
-		
+		<a href="/blog/2016/07/01/jwk-and-oauth-revocation-translated/" class="more-link">Read on &rarr;</a>
 	</div>
 
 <div class="meta">
