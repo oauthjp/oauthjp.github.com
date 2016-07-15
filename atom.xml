@@ -4,7 +4,7 @@
   <title><![CDATA[OAuth.jp]]></title>
   <link href="http://oauthjp.github.io/atom.xml" rel="self"/>
   <link href="http://oauthjp.github.io/"/>
-  <updated>2016-07-15T11:20:44+09:00</updated>
+  <updated>2016-07-15T16:01:31+09:00</updated>
   <id>http://oauthjp.github.io/</id>
   <author>
     <name><![CDATA[Nov Matake]]></name>
@@ -12,6 +12,150 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[NIST 800-63C を翻訳しました]]></title>
+    <link href="http://oauthjp.github.io/blog/2016/07/15/nist-800-63c/"/>
+    <updated>2016-07-15T15:06:00+09:00</updated>
+    <id>http://oauthjp.github.io/blog/2016/07/15/nist-800-63c</id>
+    <content type="html"><![CDATA[<p>先日このブログでも紹介した <a href="http://oauth.jp/blog/2016/07/01/jwk-and-oauth-revocation-translated/">OAuth Revocation, JWK JWK Thumbprint 仕様の翻訳版</a> に引き続き、OpenID Foundation Japan 翻訳・教育 WG リーダーとしての Nov です。</p>
+
+<p>先日 <a href="https://www.facebook.com/OpenIDTrans/posts/1226159194083566">翻訳 WG の Facebook Page</a> でも告知したように、現在 <a href="https://pages.nist.gov/800-63-3/">NIST SP 800-63-3 &ndash; Digital Authentication Guideline</a> の翻訳を開始しています。</p>
+
+<p>今日はその中から、すでに翻訳が完了している <a href="https://openid-foundation-japan.github.io/800-63-3/sp800-63c.ja.html">NIST SP 800-63C &ndash; Federation and Assertions</a> のご紹介です。</p>
+
+<h2>Level of Assurance</h2>
+
+<p>プロフェッショナルなみなさまのことです、すでに Level of Assurance とか LoA とかいう単語を耳にしたこともおありでしょう。</p>
+
+<p>NIST SP 800-63 は、LoA の各レベルでの要求事項を具体的に定めている NIST (米国国立標準技術研究所) の公式ドキュメントで、800-63-3 はその Revision 3 です。</p>
+
+<p>Revison 3 では、Revision 2 まで単一のドキュメントだった 800-63 を、以下の4つに分割しています。</p>
+
+<ul>
+<li>SP 800-63-3 (Digital Authentication Guideline)</li>
+<li>SP 800-63A (Identity Proofing &amp; Enrollment)</li>
+<li>SP 800-63B (Authentication &amp; Lifecycle Management)</li>
+<li>SP 800-63C (Federation &amp; Assertions)</li>
+</ul>
+
+
+<p>そして LoA も3つの Assurance Levels に分割し、それぞれをレベル分けした上で、それぞれのレベルの組み合わせを持って LoA を定義しています。</p>
+
+<ul>
+<li>Identity Assurance Level (IAL, Lv.1 &ndash; Lv.3 までの3段階)</li>
+<li>Authenticator Assurance Level (AAL, Lv.1 &ndash; Lv.3 までの3段階)</li>
+<li>Federation Assurance Level (FAL, Lv.1 &ndash; Lv.4 までの4段階)</li>
+</ul>
+
+
+<p>LoA 自体は今まで通り Lv.1 &ndash; Lv.4 までの4段階で、それぞれの LoA に求められる IAL, AAL, FAL のレベルは以下の通りとなっています。</p>
+
+<table>
+<thead>
+<tr>
+<th></th>
+<th> LOA </th>
+<th> IAL </th>
+<th> AAL </th>
+<th> FAL </th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td>  1  </td>
+<td>  1  </td>
+<td>  1  </td>
+<td>  1</td>
+</tr>
+<tr>
+<td></td>
+<td>  2  </td>
+<td>  2  </td>
+<td> 2 or 3 </td>
+<td>  2</td>
+</tr>
+<tr>
+<td></td>
+<td>  3  </td>
+<td>  2  </td>
+<td> 2 or 3 </td>
+<td>  2</td>
+</tr>
+<tr>
+<td></td>
+<td>  4  </td>
+<td>  3  </td>
+<td> 3 </td>
+<td>  4</td>
+</tr>
+</tbody>
+</table>
+
+
+<p>LoA Lv.2.5 とか、Lv.1+ とか、謎のオレオレ定義が乱立してた LoA の定義も、こういう仕組みで多少はフィレキシブルに扱えるように&hellip;</p>
+
+<p>ま、なるといいですね。</p>
+
+<h2>Federation Assurance Level (FAL)</h2>
+
+<p>で、上記のうち FAL を定義しているのが、<a href="https://openid-foundation-japan.github.io/800-63-3/sp800-63c.ja.html">NIST SP 800-63C &ndash; Federation and Assertions</a> です。</p>
+
+<p>800-63C では、Assertion と Federation Protocol のレベル分けのために、それらの特徴を複数のカテゴリに渡って分類し、それらの組み合わせによって FAL を定義しています。</p>
+
+<table>
+<thead>
+<tr>
+<th></th>
+<th> FAL </th>
+<th> Requirement </th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td>  1  </td>
+<td> Bearer assertion, direct presentation, asymmetrically signed by CSP</td>
+</tr>
+<tr>
+<td></td>
+<td>  2  </td>
+<td> Bearer assertion, indirect presentation, asymmetrically signed by CSP</td>
+</tr>
+<tr>
+<td></td>
+<td>  3  </td>
+<td> Bearer assertion, indirect presentation, asymmetrically signed by CSP and encrypted to RP</td>
+</tr>
+<tr>
+<td></td>
+<td>  4  </td>
+<td> Holder of key assertion, indirect presentation, asymmetrically signed by CSP and encrypted to RP</td>
+</tr>
+</tbody>
+</table>
+
+
+<p>Bearer か Holder-of-Key かとか、Direct か Indirect か (Artifact 使うか使わないか) とか、署名のみか署名後暗号化するかとか、プロフェッショナルなみなさまにはたまらないですよね！</p>
+
+<p>ってことで、プロフェッショナルなみなさまにおかれましては、ぜひ翻訳版読んでいただいて、<a href="https://github.com/openid-foundation-japan/800-63-3">日本語版の GitHub Repository</a> へのフィードバックお待ちしております！</p>
+
+<p>あと NIST 本家の英語版も絶賛更新中らしいんで、<a href="https://github.com/usnistgov/800-63-3">英語語版の GitHub Repository</a> にもフィードバックしてあげると喜ばれると思います！</p>
+
+<p>僕も3箇所ほどフィードバックして見ましたが、特に報告者の国籍等は関係無く反応返ってくるので、どっかのパブコメよりはよっぽど&hellip;おっと、誰か来たようだ。</p>
+
+<h2>残りの 800-63-3, 800-63A, 800-63B について</h2>
+
+<p>絶賛翻訳中です。</p>
+
+<p>NIST 800-63-3 シリーズはセクションごとにファイルが分割していて翻訳箇所の並列化がしやすくなってるので、翻訳手伝ってくれるひとはまだまだ募集してます。</p>
+
+<p>応募方法は <a href="https://www.facebook.com/OpenIDTrans/posts/1226159194083566">翻訳 WG の Facebook Page</a> をご覧ください。</p>
+
+<p>じっくりドキュメントを読み込みたい方には、翻訳とかいい機会だと思いますよ！</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Office 365 と外部 SAML IdP との連携設定]]></title>
@@ -1972,50 +2116,6 @@ jws = jwt.sign(public_pem, :HS256)
 <p>access_token の lifetime が短く、Native App で頻繁に AuthZ Request を送りたくない場合などには、Native App でも refresh_token が必要になるのです。</p>
 
 <p>ただしこの場合、Token Endpoint での Client Authentication を OPTIONAL にする必要があるので注意してください。</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[FIDO Alliance]]></title>
-    <link href="http://oauthjp.github.io/blog/2014/10/15/fido-alliance/"/>
-    <updated>2014-10-15T11:28:00+09:00</updated>
-    <id>http://oauthjp.github.io/blog/2014/10/15/fido-alliance</id>
-    <content type="html"><![CDATA[<p>先週末、FIDO Alliance　のメンバーが来日して、<a href="http://www.dds.co.jp/fido_tokyoseminar/">FIDO Alliance Tokyo Seminar</a> というセミナーが開催されていました。僕も今春の <a href="http://idcon.doorkeeper.jp/events/10195">#idcon vol.18</a> で <a href="http://www.slideshare.net/matake/fido-alliance">FIDO Alliance について紹介した</a> 時にまだいろいろ不明点が多かったのもあって、このセミナーに参加してきました。</p>
-
-<p>で、参加してみて分かった事。</p>
-
-<h2>生体認証押し</h2>
-
-<p>まぁ、これは FIDO Alliance のサイト見ても、元々そうっちゃそうなんですが。</p>
-
-<p>FIDO は仕様的には特に生体認証センサーとか必要ないし、FIDO に準拠してない Apple TouchID みたいなセンサーモジュールと連携したソフトウェアモジュールさえ積んでればFIDO 仕様に沿った実装は可能です。</p>
-
-<p>ひとことで言うと、エンドユーザーが「端末のセキュア領域に保存されている秘密鍵にアクセスして assertion に署名できる存在」であることを認証しているに過ぎないので、その秘密鍵のロック解除に指紋使ってもいいし、PIN Code 使ってもいいはずです。</p>
-
-<p>が、やはり Alliance Member には生体認証ハードウェアモジュールのベンダーが多い事もあってか、発表ではヤケに生体認証を押していました。</p>
-
-<p>その影響か、Twitter とか現地での Q&amp;A でも、生体認証のセキュリティについての質問が多かったように思います。</p>
-
-<!-- more -->
-
-
-<h2>UAF と U2F は完全に別物</h2>
-
-<p>FIDO Alliance では、パスワードレスな認証の実現を目指す Universal Authentication Framework (UAF) と、2要素認証の UX 改善を目指す Universal Second Factor (U2F) という2つの Working Group が、それぞれに仕様策定を進めています。</p>
-
-<p>僕の #idcon vol.18 時点の理解では、U2F は UAF とほぼ同じで、JS API や Android SDK などでの利用を想定した仕様策定がそれにプラスαで進んでいるのだと思っていたのですが、懇親会で Google の Dirk Balfanz さんに聞いたところでは、U2F は「JS API (と Android SDK)」のみの標準化を行っているそうです。</p>
-
-<p>UAF では、センサーモジュールと Client App、Client App と Backend Server などの間でのやりとりが規定されているのですが、U2F ではその辺りのやり取りは「各実装が自由にやれ」という姿勢とのこと。</p>
-
-<p>UAF 側の Rolf Lindemann (Nok Nok Labs) に別途聞いたところでは U2F Working Group に UAF で策定した仕様を取り込むよう働きかけているとのことでしたが、2つの WG の間の連携は、それほど強くないのかもしれません。</p>
-
-<h2>Discovery は貧弱</h2>
-
-<p>FIDO UAF Protocol では、FIDO Alliance が FIDO Ready な製品を作る Vendor に Vendor ID を発行し、FIDO Ready な Product を Metadata Service (?) に登録したりするというようなことが書かれているのですが、現状は Vendor ID の発行にとどまっており、Metadata は必要に応じて RP が「ダウンロード」している状況のようです。</p>
-
-<p>この部分がマニュアルだと、結局デバイスメーカーやアプリベンダーは、OAuth のクライアント登録的なマニュアル作業から抜け出せないように思います。</p>
-
-<p>ま、もろもろまだまだ、って感じでしょうか。</p>
 ]]></content>
   </entry>
   

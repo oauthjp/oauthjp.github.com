@@ -6,7 +6,7 @@
 	<title>OAuth.jp</title>
     <meta name="author" content="Nov Matake">
     
-	<meta name="description" content="Published on: Jan 25th, 2016 Tags: OAuth IdP Mix-Up Attack とは？ のつづき。 OAuth ML上で、以下のどちらを採用すべきかについての議論が収まる気配のない昨今です。 http://tools.ietf.org/html/draft- &hellip;">
+	<meta name="description" content="Published on: Feb 24th, 2016 Tags: OAuth 2.0 + OpenID Connect のフルスクラッチ実装者が知見を語る &ndash; Qiita ってのになんかフォローアップしろよ的なのが来たので。 ざっと読んだ感想としては、「OpenID &hellip;">
 	
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
@@ -85,6 +85,69 @@
 <!-- begin toload --> 
     <div id="content" class="inner">
         
+
+
+    <article class="post">
+	<h2 class="title">
+		
+		<a href="/blog/2016/02/24/is-openid-connect-far-from-oauth2/">
+		
+			OpenID Connectはそんなに大変かね？</a>
+	</h2>
+    <div class="entry-content">
+    <div class="meta">
+      <div class="date">Published on: 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2016-02-24T11:14:00+09:00" pubdate data-updated="true">Feb 24<span>th</span>, 2016</time></div>
+      <div class="tags">Tags: 
+
+</div>
+    </div>
+		<p><a href="http://qiita.com/TakahikoKawasaki/items/f2a0d25a4f05790b3baa">OAuth 2.0 + OpenID Connect のフルスクラッチ実装者が知見を語る &ndash; Qiita</a> ってのになんかフォローアップしろよ的なのが来たので。</p>
+
+<p>ざっと読んだ感想としては、「OpenID Connect の OPTIONAL な機能全部実装したら、そら大変ですね」という感じ。（Authlete に関しては、OpenAM みたいな感じで使われる、OpenAM よりはるかに簡単に使える代わりに有料の何かなんだろうな、というイメージです）</p>
+
+<h2>OAuth は必要なのか？</h2>
+
+<ul>
+<li>Basic 認証は死んだ。</li>
+<li>ユーザー単位での API のアクセスコントロールがしたいです。</li>
+</ul>
+
+
+<p>っていう前提で話すると、OAuth 以外まともな選択肢が無いんじゃないでしょうか。</p>
+
+<p>OAuth の各種 Extension (RFC 6749 &amp; 6750 以外にいろいろある) に関しては、適宜必要なのを実装すればいいんだけど、どれが必要なのかを選ぶのが大変なのは事実で、そこのベストプラクティスとかユースケースごとのガイドラインは今後の課題。IETF OAuth WG の中の人たちも、それは認識している。</p>
+
+<h2>「OAuth 認証」とは</h2>
+
+<p>OAuth は「End-User (に信頼された OAuth Server) が OAuth Client のアクセス権限をコントロールする」というコンテキストにおいての標準化されたプロトコルであって、「Identity Provider (IdP) が End-User を認証した結果を受け取って、Relying Party (RP) が (IdP への信頼を元に) End-User を認証する」というコンテキストで OAuth を使うユースケースが「OAuth 認証」と呼ばれるやつです。</p>
+
+<p>後者のコンテキストで、OAuth は何も標準的な仕様を定めてはいません。</p>
+
+<p>IdP が End-User を認証した結果を RP に伝える方法 (ID Token 相当) や、そのコンテキストで求められることが多い認証されたユーザー属性情報の取得方法 (UserInfo 相当) については、完全に各 Platform が独自に API を提供してるだけなので、そういう意味では「OAuth 認証」ってのは「オレオレ Connect」みたいなもんですね。</p>
+
+<p>まぁでも「オレオレ OAuth」の上で「オレオレ Connect」やる「JWT 認証」よりはマシなんじゃないかなっていう気はします。</p>
+
+
+		
+		<a href="/blog/2016/02/24/is-openid-connect-far-from-oauth2/" class="more-link">Read on &rarr;</a>
+	</div>
+
+<div class="meta">
+	
+</div>
+</article>
 
 
     <article class="post">
@@ -399,68 +462,6 @@
 </li>
 </ul>
 
-
-		
-		
-	</div>
-
-<div class="meta">
-	
-</div>
-</article>
-
-
-    <article class="post">
-	<h2 class="title">
-		
-		<a href="/blog/2015/03/30/traceability-and-cross-border-data-transportation/">
-		
-			個人情報保護法改正案に見る第三者提供記録義務と越境問題</a>
-	</h2>
-    <div class="entry-content">
-    <div class="meta">
-      <div class="date">Published on: 
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2015-03-30T14:19:00+09:00" pubdate data-updated="true">Mar 30<span>th</span>, 2015</time></div>
-      <div class="tags">Tags: 
-
-</div>
-    </div>
-		<p>先日の「<a href="http://oauth.jp/blog/2015/02/28/traceability-on-each-attributes/">属性単位のトレーサビリティについて</a>」という記事でも取り上げましたが、<a href="http://www.cas.go.jp/jp/houan/150310/siryou3.pdf">個人情報保護法改正案</a>では、第二十五条に「第三者提供に係る記録の作成等」という規定が設けられ、第三者提供時に提供者受療者双方に記録義務が発生することとなっています。</p>
-
-<p>また土曜日に行われた情報法制研究会第1回シンポジウムこの提供記録義務と、同じく改正案第二十四条の「外国にある第三者への提供の制限」を組み合わせると、AWSにデータ保存 (委託行為？) するだけで、第三者提供扱いとなり、記録義務が発生してしまうのではという指摘がありました。(まとめからのリンク先、板倉先生の資料参照。パスワードは空気読んで頑張って探してください。)</p>
-
-<p><a href="http://togetter.com/li/801181?page=1">20150328情報法制研究会 第1回シンポジウム「改正個人情報保護法の内容と今後の課題」関連まとめ(私家版)</a></p>
-
-<p>確かに第二十四条では、認定国もしくは認定事業者以外の外国事業者に対するデータ提供の場合は、下記のように第二十三条の例外規定 (委託や共同利用を第三者提供として扱わないという規定含む) を適用しないと明記しているので、委託の場合でも第三者提供扱いとなり、記録義務が発生することになりそうです。</p>
-
-<blockquote>この場合においては、同条の規定は、適用しない。</blockquote>
-
-
-<p>さらに外国事業者への提供時には、通常の同意とは別に外国事業者への提供であることを明記した上での同意を取得する必要があるため、海外のRPを相手にする国内IdPは、</p>
-
-<ul>
-<li>RPが国内事業者であるか否か</li>
-<li>RPが海外事業者である場合には認定国の事業者であるか否か</li>
-<li>RPが非認定国の事業者である場合には認定事業者であるか否か</li>
-</ul>
-
-
-<p>を判断した上で、いずれにも当てはまらない場合は通常とは別の同意文言を提示する必要が出てきそうです。</p>
-
-<p>いやぁ〜、Dynamic Registrationとかしてる場合じゃないっすね！</p>
-
-<p>どうしましょか、これ？w (ノーアイデァなぅ)</p>
 
 		
 		
