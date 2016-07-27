@@ -4,7 +4,7 @@
   <title><![CDATA[OAuth.jp]]></title>
   <link href="http://oauthjp.github.io/atom.xml" rel="self"/>
   <link href="http://oauthjp.github.io/"/>
-  <updated>2016-07-27T15:08:03+09:00</updated>
+  <updated>2016-07-27T22:16:26+09:00</updated>
   <id>http://oauthjp.github.io/</id>
   <author>
     <name><![CDATA[Nov Matake]]></name>
@@ -74,7 +74,7 @@
 
 <p>ようするに、OpenID Connect の仕様的には OPTIONAL やけど、とりあえず <code>nonce</code> 使っとけや、ってことですね。</p>
 
-<h2>OAuth 2.0 の場合 : PKCE 拡張を使う</h2>
+<h2>OAuth 2.0 の場合 (1) : PKCE 拡張を使う</h2>
 
 <p><code>nonce</code> のない OAuth 2.0 の場合、Authorization Request &amp; Response のセッションと <code>code</code> を紐付けるパラメータが特にありません。</p>
 
@@ -98,6 +98,14 @@
 
 <p>Facebook Login とか使ってる人たちは、どうすればいいんでしょうねぇ〜</p>
 
+<h2>OAuth 2.0 の場合 (2) : response_mode=form_post を使う (Thanks to @zigorou)</h2>
+
+<p>PKCE 同様 <code>response_mode=form_post</code> も拡張仕様なのでどの OAuth Server (IdP) でも使えるわけではないですが、<code>response_mode=form_post</code> を使うと Authorization Code は POST Body に含まれて返されるので、Full URL が漏れても <code>code</code> は漏れません。</p>
+
+<p>Session と紐付けた <code>nonce</code> なり <code>code_verifier</code> なりを管理するより、RP にとっては <code>response_mode=form_post</code> を使うほうが楽かもしれませんね。</p>
+
+<p>「Session と紐付ける」って概念、意外に通じないことも多いですし。</p>
+
 <h2>まとめ</h2>
 
 <p>OpenID Connect を使ってる場合は、RP が常に <code>nonce</code> 使えばいいだけなんで、RP だけが注意してれば大丈夫ですね。</p>
@@ -105,6 +113,12 @@
 <p>OAuth 2.0 を使ってる場合は、OAuth Server (IdP) 側がまず PKCE なり OpenID Connect なりに対応して、RP がそれを使う必要がありそうです。</p>
 
 <p><strong>Facebook のみなさん、聞こえますかぁ〜</strong></p>
+
+<p>ps.</p>
+
+<p>「OAuth 2.0 の場合」というセクションタイトルになってますが、OpenID Connect でも nonce の代わりに PKCE なり response_mode=form_post 使ってもいいです。</p>
+
+<p>OAuth 2.0 のレベルで解決できてるなら、OpenID Connect 特有のパラメータを利用しなくても (この攻撃は) 防げます。</p>
 ]]></content>
   </entry>
   
