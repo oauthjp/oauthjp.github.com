@@ -4,7 +4,7 @@
   <title><![CDATA[OAuth.jp]]></title>
   <link href="http://oauthjp.github.io/atom.xml" rel="self"/>
   <link href="http://oauthjp.github.io/"/>
-  <updated>2016-07-27T12:01:36+09:00</updated>
+  <updated>2016-07-27T12:13:53+09:00</updated>
   <id>http://oauthjp.github.io/</id>
   <author>
     <name><![CDATA[Nov Matake]]></name>
@@ -50,7 +50,7 @@
 <li>攻撃者自身のブラウザで Authorization Request 発行</li>
 <li>攻撃者自身の IdP 上のアカウントで IdP にログイン</li>
 <li>Authorization Response を途中で止める</li>
-<li>Authorization Response 中に含まれる <code>code</code> を被害者のものに置換 (state は置換しない)</li>
+<li>Authorization Response 中に含まれる <code>code</code> を被害者のものに置換 (<code>state</code> は置換しない)</li>
 <li>Code 置換済の Authorization Response を RP に送る</li>
 </ol>
 
@@ -69,6 +69,38 @@
 <p>OpenID Connect では、Authorization Request で <code>nonce</code> というパラメータを送ることができますね。</p>
 
 <p>あれは <code>state</code> とよく似た役割を果たしますが、<code>code</code> とは紐付かない <code>state</code> と異なり、<code>nonce</code> は <code>code</code> と紐づいて保存され、最終的に発行される ID Token に含まれて返ってきます。</p>
+
+<p>よって、<code>code</code> だけ置換しても、<code>nonce</code> に紐付いた Cookie なりを奪わない限り、RP が Token Endpoint から返ってきた <code>nonce</code> をチェックした時点で <code>code</code> 置換を検知できることになります。</p>
+
+<p>ようするに、OpenID Connect の仕様的には OPTIONAL やけど、とりあえず <code>nonce</code> 使っとけや、ってことですね。</p>
+
+<h2>OAuth 2.0 の場合 : PKCE 拡張を使う</h2>
+
+<p><code>nonce</code> のない OAuth 2.0 の場合、Authorization Request &amp; Response のセッションと <code>code</code> を紐付けるパラメータが特にありません。</p>
+
+<p>そして、それでは Code 置換攻撃は防げません。</p>
+
+<p>よって、<code>code</code> と紐付いたパラメータを用意してやる必要があります。</p>
+
+<p>OpenID Foundation Japan 事務局長としては「OpenID Connect 使えや」って話でもあるわけですが、もうちょっとお手軽な方法としては <a href="https://tools.ietf.org/html/rfc7636">OAuth PKCE</a> というのもあります。</p>
+
+<p>PKCE はもともと <code>client_secret</code> を持てない OAuth Client 向けに作られた仕様ですが、Authorization Request で送った <code>code_challenge</code> と紐づく <code>code_verifier</code> を Token Endpoint に送ることになるので、当然ながら IdP 側では <code>code</code> と <code>code_challenge</code> を紐付けて管理することになります。</p>
+
+<p>つまり、<code>code</code> を置換すると、<code>code_verifier</code> が合わなくなって、Token Request が失敗する、と。</p>
+
+<p>Code 置換攻撃、防げましたね。</p>
+
+<p>ただ PKCE は OAuth 拡張なんで、OAuth Server (IdP) 側がまず PKCE 対応する必要があります。</p>
+
+<p>Facebook Login とか使ってる人たちは、どうすればいいんでしょうねぇ〜</p>
+
+<h2>まとめ</h2>
+
+<p>OpenID Connect を使ってる場合は、RP が常に <code>nonce</code> 使えばいいだけなんで、RP だけが注意してれば大丈夫ですね。</p>
+
+<p>OAuth 2.0 を使ってる場合は、OAuth Server (IdP) 側がまず PKCE なり OpenID Connect なりに対応して、RP がそれを使う必要がありそうです。</p>
+
+<p><em>Facebook のみなさん、聞こえますかぁ〜</em></p>
 ]]></content>
   </entry>
   
