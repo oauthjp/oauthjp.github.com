@@ -4,7 +4,7 @@
   <title><![CDATA[OAuth.jp]]></title>
   <link href="http://oauthjp.github.io/atom.xml" rel="self"/>
   <link href="http://oauthjp.github.io/"/>
-  <updated>2016-07-15T16:01:31+09:00</updated>
+  <updated>2016-07-27T12:01:36+09:00</updated>
   <id>http://oauthjp.github.io/</id>
   <author>
     <name><![CDATA[Nov Matake]]></name>
@@ -12,6 +12,65 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[HTTPS でも Full URL が漏れる？OAuth の code も漏れるんじゃね？？]]></title>
+    <link href="http://oauthjp.github.io/blog/2016/07/27/https-full-url-leaks/"/>
+    <updated>2016-07-27T10:48:00+09:00</updated>
+    <id>http://oauthjp.github.io/blog/2016/07/27/https-full-url-leaks</id>
+    <content type="html"><![CDATA[<p>なんですかこれは！</p>
+
+<p><a href="http://arstechnica.com/security/2016/07/new-attack-that-cripples-https-crypto-works-on-macs-windows-and-linux/">New attack bypasses HTTPS protection on Macs, Windows, and Linux</a></p>
+
+<p>DHCP につなぐと PAC ファイルがダウンロードされて HTTPS であろうとアクセス先の Full URL は漏れるですって？</p>
+
+<p>Web Proxy Autodiscovery ですって？</p>
+
+<p>チョットニホンゴデオネガイシマス</p>
+
+<p>ってことで、まぁこれが実際どれくらい簡単に実現できる攻撃パターンなのかは他のセキュリティ業界の方々に後で聞くとして、この記事でも触れられてる OpenID Connect とか OAuth2 への影響について、ちょっとまとめておきましょうか。</p>
+
+<h2>Authorization Request &amp; Response が漏れる</h2>
+
+<p><code>response_mode=form_post</code> なんていうのも一部ありますが、基本 OAuth2 / OpenID Connect の Authorization Request &amp; Response は GET です。</p>
+
+<p>Implicit Flow の場合は Response Parameter が URL Fragment についてるので、Server に送られる Full URL が漏れたところで特に URL Fragment の内容は漏れないですが、Code Flow の場合は Response の Query についてる Authorization Code は漏れますね。</p>
+
+<p>まぁ Authorization Request に含まれる <code>state</code> とかも漏れますが、今回のケースだと Cookie とかは漏れないんで、<code>state</code> が漏れること自体は大して問題ではないでしょう。</p>
+
+<p>ただ、Redirect URL に HTTPS 使っても <code>code</code> 漏れるってのは、辛そうですね。</p>
+
+<h2>Authorization Code が漏れたらどうなるの？</h2>
+
+<p>Code 置換攻撃 (Code Cut &amp; Paste Attack) が可能になります。</p>
+
+<p>ここに漏れた <code>code</code> があるとしましょう。すると、以下の手順で攻撃者は <code>code</code> 所有者の RP 上のアカウントにログインすることができます。</p>
+
+<ol>
+<li>攻撃者自身のブラウザで Authorization Request 発行</li>
+<li>攻撃者自身の IdP 上のアカウントで IdP にログイン</li>
+<li>Authorization Response を途中で止める</li>
+<li>Authorization Response 中に含まれる <code>code</code> を被害者のものに置換 (state は置換しない)</li>
+<li>Code 置換済の Authorization Response を RP に送る</li>
+</ol>
+
+
+<p>こうすると、RP が <code>state</code> を使った CSRF 対策を行っていても、RP は受け取った <code>code</code> を使って攻撃者を被害者としてログインさせてしまいます。</p>
+
+<p>これが Code 置換攻撃です。</p>
+
+<p>では、これを防ぐ手立てはあるのでしょうか？</p>
+
+<!-- more -->
+
+
+<h2>OpenID Connect の場合 : ID Token の nonce をチェック</h2>
+
+<p>OpenID Connect では、Authorization Request で <code>nonce</code> というパラメータを送ることができますね。</p>
+
+<p>あれは <code>state</code> とよく似た役割を果たしますが、<code>code</code> とは紐付かない <code>state</code> と異なり、<code>nonce</code> は <code>code</code> と紐づいて保存され、最終的に発行される ID Token に含まれて返ってきます。</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[NIST 800-63C を翻訳しました]]></title>
@@ -1968,154 +2027,6 @@ jws = jwt.sign(public_pem, :HS256)
 <p>要望が多ければ、OpenID Foundation Japan のエヴァンジェリスト達で Migration Handson なり Hackathon なり企画してもいいかなと思っています。</p>
 
 <p>いや、何も<a href="http://openid.or.jp/about/index.html#op-about-joining">いますぐ Foundation に加盟</a>しろなんていいませんよ？</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[OAuth 2.0 の Response Type 全パターン]]></title>
-    <link href="http://oauthjp.github.io/blog/2015/01/06/oauth2-multiple-response-type/"/>
-    <updated>2015-01-06T20:15:00+09:00</updated>
-    <id>http://oauthjp.github.io/blog/2015/01/06/oauth2-multiple-response-type</id>
-    <content type="html"><![CDATA[<p>特に新しい話題ではないですが、定期的に質問されてる気がするので記事にしときます。</p>
-
-<p>OAuth 2.0 の Core には、&#8221;code&#8221; と &ldquo;token&rdquo; という2つの response_type が定義されています。</p>
-
-<p>それぞれ &ldquo;Code Grant&rdquo; と &ldquo;Implicit Grant&rdquo; と呼ばれることもありますし、歴史的経緯により &ldquo;Code Flow&rdquo; と &ldquo;Implicit Flow&rdquo; と呼ぶこともあります。</p>
-
-<p>ほとんどのケースでは、この2つの response_type のどちらかを使っているかと思いますが、実はこれ以外にも以下の response_type のパターンが存在します。
-(<a href="http://openid.net/specs/oauth-v2-multiple-response-types-1_0.html">仕様はこちら</a>)</p>
-
-<ul>
-<li>none</li>
-<li>code token</li>
-<li>id_token</li>
-<li>id_token code</li>
-<li>id_token token</li>
-<li>id_token code token</li>
-</ul>
-
-
-<p>id_token ってのが含まれてるのは、OpenID Connect で利用する response_type なので、OAuth 2.0 だけを実装する場合は無視して OK です。</p>
-
-<p>でもこんなにいっぱいあると、Server 側 (OP 側) もどこまで実装したらいいかわかんないし、Client 側 (RP 側) もどれ使うのが一番いいのかわかんないですよね。特に OpenID Connect 使う場合は。</p>
-
-<p>そんなこんなで、「どれ実装したらいいの？」とか、「どれ使えばいいの？」っていう質問を、Server 側の人にも Client 側の人にも、半年に一回くらいされる気がします。</p>
-
-<p>この機会に、それぞれの response_type で想定される Use-Case をまとめておきましょう。</p>
-
-<!-- more -->
-
-
-<h3>none</h3>
-
-<p>「Approve はするけど、access_token (と id_token) は今はいらない」って時に使います。</p>
-
-<p>はい、「それいつやねん」って思ったそこのあなた、あなたはきっとこれ使う事ないです。</p>
-
-<p>世の中のごく一部には、これが必要な人もいるようですが、僕もいままで使ったことないです。</p>
-
-<h3>code token</h3>
-
-<p>Native App で access_token 使うんだけど、Native App の Backend Server 側でも access_token (と id_token) が欲しい時に使います。</p>
-
-<p>fragment に code と access_token がついて返って来るので、access_token はそのまま Native App が内部に保持して、code だけを Native App から Backend Server に渡します。</p>
-
-<p>Backend Server はその code を Token Endpoint に送って access_token (と id_token) を取得します。</p>
-
-<p>もしかしたら Native App から access_token を Backend Server に送るような実装してる人もいるかもしれませんが、そうすると以下のようなデメリットがあります。</p>
-
-<ul>
-<li>Token Replace Attack に対して脆弱になりがち</li>
-<li>Backend Server でも refresh_token を取得できない</li>
-<li>Implicit Flow 経由で発行される access_token は lifetime が短くなりがち (Server 側の実装依存)</li>
-</ul>
-
-
-<h3>id_token</h3>
-
-<p>access_token が不要な時に使います。</p>
-
-<p>Web App / Native App どちらでも使われうるかと思います。</p>
-
-<p>ただしこれ使うと fragment に id_token ついて返ってくるので、Web App からは扱いづらいかもしれません。</p>
-
-<p>「response_type=code 使って access_token 捨てればいいやん」って言われたら、「その通りですね」とお返しします。</p>
-
-<p>また、Native App 側で id_token 使ってユーザー認証するケースって、そんなに多くはなさそうです。</p>
-
-<p>この response_type は、あまり使う機会なさそうです。</p>
-
-<h3>id_token code</h3>
-
-<p>Native App で id_token 使うんだけど、Native App の　Backend Server 側でも access_token (と id_token) が欲しい時に使います。</p>
-
-<p>fragment に code と id_token ついて返ってくるので、id_token はそのまま Native App が内部に保持して、code だけを Native App から Backend Server に渡します。</p>
-
-<p>Backend Server はその code を Token Endpoint に送って access_token (と id_token) を取得します。</p>
-
-<p>ただこの response_type も、Native App 側で id_token が必要ってケースなんで、あまり使う機会なさそうです。</p>
-
-<p>※ なぜか YConnect だけはこれを response_type=code 相当の response_type として利用しないといけないのですが、あれは YConnect の Bug です。</p>
-
-<h3>id_token token</h3>
-
-<p>Backend Server に code 渡す必要なくて、Native App 側だけで id_token と access_token 使えればそれで OK ってときに使います。</p>
-
-<p>fragment に access_token と id_token ついて返ってきます。</p>
-
-<p>この response_type も、Native App 側で id_token が必要ってケースなんで、あまり使う機会なさそうです。</p>
-
-<h3>id_token code token</h3>
-
-<p>Native App 側でも Backend Server 側でも id_token と access_token 両方必要な時に使います。</p>
-
-<p>fragment に access_token と code と id_token ついて返ってくるので、access_token と　id_token はそのまま Native App が内部に保持して、code だけを Native App から Backend Server に渡します。</p>
-
-<p>Backend Server はその code を Token Endpoint に送って access_token (と id_token) を取得します。</p>
-
-<p>この response_type も、Native App 側で id_token が必要ってケースなんで、あまり使う機会なさそうです。</p>
-
-<h3>まとめ</h3>
-
-<p>Server 側は、とりあえず以下の3つさえサポートしてれば、大抵の Use Case はサポートできそうです。</p>
-
-<ul>
-<li>code</li>
-<li>token</li>
-<li>code token</li>
-</ul>
-
-
-<p>Client 側も、基本は以下のような基準で response_type 選べば良さそうです。</p>
-
-<ul>
-<li>Web App なら code</li>
-<li>Backend Server なしの Native App なら token</li>
-<li>Backend Server ありの Native App なら code token</li>
-</ul>
-
-
-<h3>補足</h3>
-
-<p>本記事全体として、Native App を JS App に置き換えても同様です。</p>
-
-<p>また、広く公開される IdP を作る場合は、以下のようなケースも考慮しましょう。</p>
-
-<h4>Native App 側で id_token が必要なケース</h4>
-
-<p>Native App 側でマルチアカウント対応してるような場合は、Native App 側で id_token が必要になるケースはあるかもしれません。</p>
-
-<p>そういう Client にも対応したい Server は、(none 以外) 全部サポートしましょう。</p>
-
-<h4>Native App 側で code を使うケース</h4>
-
-<p>Native App から Token Endpoint に code を送るケースもあります。</p>
-
-<p>この場合は、Native App 側で refresh_token を取得したいケースが多いです。</p>
-
-<p>access_token の lifetime が短く、Native App で頻繁に AuthZ Request を送りたくない場合などには、Native App でも refresh_token が必要になるのです。</p>
-
-<p>ただしこの場合、Token Endpoint での Client Authentication を OPTIONAL にする必要があるので注意してください。</p>
 ]]></content>
   </entry>
   
