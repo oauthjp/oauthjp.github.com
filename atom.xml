@@ -4,7 +4,7 @@
   <title><![CDATA[OAuth.jp]]></title>
   <link href="http://oauthjp.github.io/atom.xml" rel="self"/>
   <link href="http://oauthjp.github.io/"/>
-  <updated>2016-07-27T12:13:53+09:00</updated>
+  <updated>2016-07-27T12:15:18+09:00</updated>
   <id>http://oauthjp.github.io/</id>
   <author>
     <name><![CDATA[Nov Matake]]></name>
@@ -89,6 +89,8 @@
 <p>つまり、<code>code</code> を置換すると、<code>code_verifier</code> が合わなくなって、Token Request が失敗する、と。</p>
 
 <p>Code 置換攻撃、防げましたね。</p>
+
+<p>これからは Confidential Client (<code>client_secret</code> 持てる OAuth Client) でも PKCE 使えってことですね。</p>
 
 <p>ただ PKCE は OAuth 拡張なんで、OAuth Server (IdP) 側がまず PKCE 対応する必要があります。</p>
 
