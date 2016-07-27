@@ -156,7 +156,9 @@
 
 <p>つまり、<code>code</code> を置換すると、<code>code_verifier</code> が合わなくなって、Token Request が失敗する、と。</p>
 
-<p>Code 置換攻撃、防げましたね。</p>
+<p>ちなみに、PKCE には <code>code_challenge_mode</code> っていうパラメータがありますが、<code>code_challenge_mode=plain</code> は Authorization Request みれる状況では <code>code_verifier</code> 自体が漏れることになるんでダメで、この攻撃防ぐためには <code>S256</code> を使ってくださいね。</p>
+
+<p>さて、これで OAuth 2.0 でも Code 置換攻撃、防げましたね。</p>
 
 <p>これからは Confidential Client (<code>client_secret</code> 持てる OAuth Client) でも PKCE 使えってことですね。</p>
 
