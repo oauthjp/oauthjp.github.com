@@ -6,7 +6,9 @@
 	<title>OAuth.jp</title>
     <meta name="author" content="Nov Matake">
     
-	<meta name="description" content=" Published on: Aug 17th, 2013 Tags: どうもTumblrをブログとして使うの辛いので、Octopressに移行します。 またURL変わっちゃうのは&hellip;直せそうではあるけどちとメンドイ&hellip; ">
+	<meta name="description" content="Published on: Aug 17th, 2013 Tags: 先週から, JWxファミリーの以下の3つの仕様書の翻訳を始めています. JSON Web Token (JWT)
+JSON Web Signature (JWS)
+JOSE UseCases 翻訳資料の公開は OpenID &hellip;">
 	
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
@@ -85,6 +87,60 @@
 <!-- begin toload --> 
     <div id="content" class="inner">
         
+
+
+    <article class="post">
+	<h2 class="title">
+		
+		<a href="/blog/2013/08/17/jwt-jws-trans/">
+		
+			JWT & JWS 翻訳プロジェクトスタート & イベント紹介</a>
+	</h2>
+    <div class="entry-content">
+    <div class="meta">
+      <div class="date">Published on: 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-08-17T19:15:00+09:00" pubdate data-updated="true">Aug 17<span>th</span>, 2013</time></div>
+      <div class="tags">Tags: 
+
+</div>
+    </div>
+		<p>先週から, JWxファミリーの以下の3つの仕様書の翻訳を始めています.</p>
+
+<ul>
+<li><a href="http://tools.ietf.org/html/draft-ietf-oauth-json-web-token-11">JSON Web Token (JWT)</a></li>
+<li><a href="http://tools.ietf.org/html/draft-ietf-jose-json-web-signature-14">JSON Web Signature (JWS)</a></li>
+<li><a href="http://tools.ietf.org/html/draft-ietf-jose-use-cases-03">JOSE UseCases</a></li>
+</ul>
+
+
+<p>翻訳資料の公開は <a href="http://openid.doorkeeper.jp/events/5373">OpenID TechNight Vol.10</a> のある 9/4 に予定してます.
+<a href="http://openid.doorkeeper.jp/events/5373">OpenID TechNight Vol.10</a> では僕から簡単にこれら各仕様の概要についてもご紹介しますので, 興味ある方はぜひご参加を.</p>
+
+<p>また <a href="https://github.com/openid-foundation-japan/draft-ietf-jose">JWx 翻訳プロジェクト GitHub レポジトリ</a>にはこの他にも JSON Web Encryption や JWT Bearer といった関連仕様も含まれていて, これらも同様に翻訳予定です.
+これらの翻訳公開時期はまだ未定ですが, 9/20 の <a href="http://nosurrender.jp/idit2013/">ID &amp; IT 2013</a> に合わせて公開できればなと考えています.
+こちらのカンファレンスもエンタープライズ業界で Identity に携わっている人には必見です!</p>
+
+<p><strong>要するに, 9月がアツイ!</strong></p>
+
+		
+		
+	</div>
+
+<div class="meta">
+	
+</div>
+</article>
 
 
     <article class="post">
@@ -334,86 +390,6 @@
 </div>
 </article>
 
-
-    <article class="post">
-	<h2 class="title">
-		
-		<a href="/blog/2012/11/08/yahoo-japanoauth-20-openid-connect/">
-		
-			Yahoo! JapanがOAuth 2.0 & OpenID Connectに対応</a>
-	</h2>
-    <div class="entry-content">
-    <div class="meta">
-      <div class="date">Published on: 
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-11-08T00:00:00+09:00" pubdate data-updated="true">Nov 8<span>th</span>, 2012</time></div>
-      <div class="tags">Tags: 
-
-</div>
-    </div>
-		<p>2011年12月のOpenID Summit Tokyoで、2012年中のOpenID Connect対応を宣言したYahoo! Japanが、本日ついに宣言通りOpenID Connectをサポート開始しました。</p>
-
-
-<p>もともとOAuth 2.0も対応していなかった（よね？）ので、OAuth 2.0対応も同時リリースです。</p>
-
-
-<p>まだバグとかあるっぽいけど、何はともあれ世界の大手IdPの中で一番最初にproduction環境でOpenID Connect対応できたのはすばらしい！</p>
-
-
-<p><iframe scrolling="no" margin src="http://www.slideshare.net/slideshow/embed_code/10433061" frameborder="0"> </iframe></p>
-
-
-<div style="margin-bottom: 5px;"><strong> <a href="http://www.slideshare.net/tzmtk/openid-summit-tokyo-2011" title="OpenID Summit Tokyo 2011" target="_blank">OpenID Summit Tokyo 2011</a> </strong> from <strong><a href="http://www.slideshare.net/tzmtk" target="_blank">Taizo Matsuoka</a></strong></div>
-
-
-<p>まだOpenID ConnectのDiscoveryとDynamic Registrationには対応していないので、<a href="https://connect-rp.heroku.com">Nov RP</a>に &#8220;yahoo.co.jp&#8221; とか入力しても使えない状態ですが、それは今後に期待です。</p>
-
-
-<p>YConnectをちょこっと触ってみて思った要望とかは以下のgistにまとめていってます。</p>
-
-
-<script src="https://gist.github.com/4031074.js?file=gistfile1.textile"></script>
-
-
-<p>scopeにopenidが指定されてるのにtoken responseにid_tokenが含まれてないとか、response_type=code+id_tokenの時にcodeとid_tokenがredirect_uriのfragmentではなくqueryについているなどの問題は、ただのバグとして修正すれば良いでしょう。</p>
-
-
-<p>それ以外でいま気になってる点としては、以下の2点です。</p>
-
-
-<ul><li>response_type=code+tokenサポートしてもらわないとserver-side componentを持つmobile appから使おうとしたときにいろいろめんどくさいことになっちゃうのはFBとか見てたら明らですが、現状のYConnectは「サーバーサイド」アプリとして登録した場合response_typeにcodeかcode+id_tokenしか指定できないみたいです。これはちょっとやめた方が良い気がします。</li>
-<li>あと、id_tokenのsignature algorithmはdefault RS256ということで進んでいるので、YConnectだけがHS256だとまたYAuthとか言われちゃったりしそうですね。</li>
-</ul>
-
-
-<p>それ以外にも、なぜかyahoo.co.jp以外のドメインのメアドはverfiedじゃなくても返してくれる (試しに <a href="mailto:hoge@hoge.com">hoge@hoge.com</a> というメアドを登録してみたらそれ返してきたw）のにyahoo.co.jpのメアドは返してくれないというのも不思議といえば不思議ですが、まぁ社内調整とかいろいろめんどくさいことありそうですし、それが原因でOpenID Connect対応のスケジュールが遅れるくらいならとりあえずそれでもいいのかなとも思います。</p>
-
-
-<p>Implicitの方でscopeにopenidが指定された時にnonceが必須になってるかとかもチェックしたかったのですが、なんかいま「クライアントサイド」のアプリを登録しようとするとエラーになっちゃうバグがあるようなので、そちらはまた明日にでも。覚えてれば。</p>
-
-
-<p>OAuth 2.0 draft 0の時点で対応してきたFacebookのように、これからOpenID Connectのbreaking changesに追随するのは大変だと思いますが、引き続きがんばってください！あと、OpenID Connectにbreaking changeがある時に一番大きな声で文句言える立場にいるので、ぜひOpenID Connect Interopにも積極的に参加していただければ :)</p>
-
-
-		
-		
-	</div>
-
-<div class="meta">
-	
-</div>
-</article>
-
 <nav id="pagenavi">
     
         <a href="/blog/page/7/" class="prev">Prev</a>
@@ -427,7 +403,7 @@
     </div>
     <footer id="footer">
     <div style="display:inline">
-    Copyright &copy; 2016
+    Copyright &copy; 2017
 
     Nov Matake
 . Powered by <a href="http://octopress.org">Octopress</a> | 

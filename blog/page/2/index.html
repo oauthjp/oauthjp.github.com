@@ -6,7 +6,7 @@
 	<title>OAuth.jp</title>
     <meta name="author" content="Nov Matake">
     
-	<meta name="description" content="Published on: May 6th, 2016 Tags: 昨日こんなのが OAuth ML に流れてました。 [OAUTH-WG] Another CSRF attack 前提条件 RP (Relying Party a.k.a. OAuth Client) が2つ以上の IdP ( &hellip;">
+	<meta name="description" content="Published on: May 14th, 2016 Tags: 先日 Office 365 のこんな記事見つけたので、一応まとめておきますかね。 The road to hell is paved with SAML Assertions タイトルだけ見るとまた SAML is DEAD &hellip;">
 	
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
@@ -85,6 +85,99 @@
 <!-- begin toload --> 
     <div id="content" class="inner">
         
+
+
+    <article class="post">
+	<h2 class="title">
+		
+		<a href="/blog/2016/05/14/office-365-saml-implementation-vulnerability/">
+		
+			Office 365 SAML Implementation Vulnerability</a>
+	</h2>
+    <div class="entry-content">
+    <div class="meta">
+      <div class="date">Published on: 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2016-05-14T10:32:00+09:00" pubdate data-updated="true">May 14<span>th</span>, 2016</time></div>
+      <div class="tags">Tags: 
+
+</div>
+    </div>
+		<p>先日 Office 365 のこんな記事見つけたので、一応まとめておきますかね。</p>
+
+<p><a href="http://www.economyofmechanism.com/office365-authbypass.html">The road to hell is paved with SAML Assertions</a></p>
+
+<p>タイトルだけ見るとまた SAML is DEAD 案件かと思いきや、Office 365 の脆弱性の話です。</p>
+
+<p>SAML 悪く無いです。</p>
+
+<p>SAML isn&rsquo;t vulnerable, just DEAD.</p>
+
+<h2>SAML SP としての Office 365</h2>
+
+<p>Office 365 は SAML Service Provider (SP) として動作するので、みなさんがお持ちの Identity Provider (IdP) を SAML IdP として動作することができれば、みなさんの IdP に登録されてるアカウントを使って Office 365 にログインすることができます。</p>
+
+<p>みなさんの社内の ADFS とか、Ping Federate / Okta / OneLogin &hellip; みたいな IDaaS とか、そういうのは大抵 SAML IdP として動作するので、そういう製品を使ってるなら、みなさんの会社のアカウントでそのまま Office 365 にログインできます。</p>
+
+<p>通常 SAML SP は、IdP から返ってくる SAML Response に含まれる IdP 側のユーザー識別子 (Subject Identifier) と IdP 自身の識別子 (Issuer Identifier) のペアを元に、SP 側のアカウントにログインさせます。</p>
+
+<p>がしかし、Office 365 の場合は、IdP が渡してくる Email アドレスと Office 365 がローカルで持ってる Email アドレスの一致だけを見て Office 365 ローカルのユーザーを認証していたようです。Subject Identifier も Issuer Identifier も無視していた、と。</p>
+
+<p>(実際には、SAML IdP と Office 365 の間に Azure AD が介在しており、SAML Assertion の検証は Azure ADがやるようなアーキテクチャになっていて、Azure AD では Subject Identifier &amp; Issuer Identifier をちゃんと見ているようですが、全体として見ると Office 365 が SAML IdP の Issuer と Subject をガン無視した形になってます。この辺の話しだすとややこしい割に MS 以外の人にはあまり関係無い話になっちゃうので、今回はスルー)</p>
+
+<h2>Office 365 の脆弱性概要</h2>
+
+<p>これで何が起こっていたかというと、<code>nov@victim.example.com</code> という Email アドレスを持つ Office 365 ユーザーのアカウントにログインする際に、<code>attacker.example.com</code> という IdP が <code>nov@victim.example.com</code> という Email アドレスを含んだ SAML Assertion を発行すると、Office 365 がその Assertion を受け入れて <code>nov@victim.example.com</code> の Office 365 アカウントへのログインを許可してしまっていました。</p>
+
+<p>よって、以下の2つのパターンが、どちらも同じ Office 365 アカウントにログイン可能になっていました。</p>
+
+<table>
+<thead>
+<tr>
+<th></th>
+<th> Issuer Identifier    </th>
+<th> Subject Identifier  </th>
+<th> Email Address          </th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td> attacker.example.com </td>
+<td> 58df3c9b2c32ca86f.. </td>
+<td> <code>nov@victim.example.com</code></td>
+</tr>
+<tr>
+<td></td>
+<td> victim.example.com   </td>
+<td> 20166f0c077c1f6c1.. </td>
+<td> <code>nov@victim.example.com</code></td>
+</tr>
+</tbody>
+</table>
+
+
+<p>うん、これは最悪ですね。</p>
+
+
+		
+		<a href="/blog/2016/05/14/office-365-saml-implementation-vulnerability/" class="more-link">Read on &rarr;</a>
+	</div>
+
+<div class="meta">
+	
+</div>
+</article>
 
 
     <article class="post">
@@ -343,53 +436,6 @@
 </div>
 </article>
 
-
-    <article class="post">
-	<h2 class="title">
-		
-		<a href="/blog/2016/03/26/yauth-dot-jp-founded/">
-		
-			独立 & YAuth.jp 設立</a>
-	</h2>
-    <div class="entry-content">
-    <div class="meta">
-      <div class="date">Published on: 
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2016-03-26T12:27:00+09:00" pubdate data-updated="true">Mar 26<span>th</span>, 2016</time></div>
-      <div class="tags">Tags: 
-
-</div>
-    </div>
-		<p>昨日を最終出社日として、GREE 正社員生活を終えました。4月からは独り会社作って独立します。</p>
-
-<p>転職じゃなくて独立で、契約形態変えて GREE さんともお仕事する可能性十分あるので、あまり退職っていう実感はないのですが、これもまぁ一応退職エントリー&hellip;ですかね？</p>
-
-<p>新会社での業務内容としては、Identity まわりのコンサルとか技術支援とかをメインでやる予定。</p>
-
-<p>ありがたいことにすでに数件4月以降の仕事依頼もいただいており、気軽に新しい案件受けづらい状況なのですが、もし興味あれば<a href="mailto:nov@yauth.jp">ご連絡いただければ</a>と思います。</p>
-
-<p>ID の専門家として仕事しつづけるとしたら、1社に閉じるより数社の仕事同時にこなす方がいいんじゃないかとか、そういう流動的に動ける人もこの国に数人いたほうがいいんじゃないかとか、そういうのが独立のきっかけとしてあるので、いろんな会社のお話聞いてみたいです。</p>
-
-
-		
-		<a href="/blog/2016/03/26/yauth-dot-jp-founded/" class="more-link">Read on &rarr;</a>
-	</div>
-
-<div class="meta">
-	
-</div>
-</article>
-
 <nav id="pagenavi">
     
         <a href="/" class="prev">Prev</a>
@@ -403,7 +449,7 @@
     </div>
     <footer id="footer">
     <div style="display:inline">
-    Copyright &copy; 2016
+    Copyright &copy; 2017
 
     Nov Matake
 . Powered by <a href="http://octopress.org">Octopress</a> | 
