@@ -4,7 +4,7 @@
   <title><![CDATA[OAuth.jp]]></title>
   <link href="http://oauthjp.github.io/atom.xml" rel="self"/>
   <link href="http://oauthjp.github.io/"/>
-  <updated>2017-01-26T22:51:47+09:00</updated>
+  <updated>2017-03-07T22:04:57+09:00</updated>
   <id>http://oauthjp.github.io/</id>
   <author>
     <name><![CDATA[Nov Matake]]></name>
@@ -12,6 +12,188 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[GitHub Business Plan 登場、GitHub.com ドメインで SCIM と SAML をサポート。]]></title>
+    <link href="http://oauthjp.github.io/blog/2017/03/07/github-support-saml-and-scim/"/>
+    <updated>2017-03-07T21:18:00+09:00</updated>
+    <id>http://oauthjp.github.io/blog/2017/03/07/github-support-saml-and-scim</id>
+    <content type="html"><![CDATA[<p>オンプレサーバーで GitHub Enterprise をお使いのみなさま。</p>
+
+<p>日々オンプレサーバーのメンテ、おつかれさまです。</p>
+
+<p>GitHub.com の Business Plan っての、良さそうですよね。</p>
+
+<p>SCIM と SAML サポートしてて、いままでオンプレ版でしかできなかった Provisioning と Federation (SSO といった方が伝わるか？) が、GitHub.com ドメインでできるようになったんですよ。</p>
+
+<p>これで GitHub.com が生きてればいつでも Deploy できますよ。</p>
+
+<p>死ぬもんね、オンプレ。てか、一旦死んだら結構しばらくの間死ぬもんね、オンプレ。</p>
+
+<p>GitHub.com なら、AWS が生き返ればきっと生き返るよ。</p>
+
+<p>ということで、Business Plan の SAML と SCIM、ちょっと試してみましたよ。</p>
+
+<h1>SAML 設定</h1>
+
+<p>GitHub Help の <a href="https://help.github.com/articles/managing-member-identity-and-access-in-your-organization-with-saml-single-sign-on/">この一連のドキュメント</a> を読む限り、SAML 設定しないと SCIM 使えないようです。</p>
+
+<p>あ、SAML の SP Entity ID とかはドキュメントには書いてないです。</p>
+
+<p>Business Plan 契約して設定画面行かないと、SP Entity ID も Assertion Consumer Service (ACS) URL もわかんないです。</p>
+
+<p>まず金払ってからしか試せません。</p>
+
+<p><strong>ファーストひどい。</strong></p>
+
+<p>で、金払って Organization の Security 設定ページ (<a href="https://github.com/organizations/YOUR-ORGANIZATION/settings/security">https://github.com/organizations/YOUR-ORGANIZATION/settings/security</a>) にアクセスすると、SAML 設定が ON にできるようになってます。</p>
+
+<p>ここに以下の情報が表示されています。</p>
+
+<ul>
+<li>Organization single sign-on URL
+
+<ul>
+<li><a href="https://github.com/orgs/YOUR-ORGANIZATION/sso">https://github.com/orgs/YOUR-ORGANIZATION/sso</a></li>
+</ul>
+</li>
+<li>Assertion consumer service URL
+
+<ul>
+<li><a href="https://github.com/orgs/YOUR-ORGANIZATION/saml/consume">https://github.com/orgs/YOUR-ORGANIZATION/saml/consume</a></li>
+</ul>
+</li>
+</ul>
+
+
+<p>あれ？SP Entity ID は？と思ったそこのあなた。</p>
+
+<p>SP Entity ID はここには記載されていません。</p>
+
+<p><strong>セカンドひどい。</strong></p>
+
+<p>実際 SAML Request を発行させてみないとわからないっぽいんですが、面倒なんでここに書いときますね。</p>
+
+<ul>
+<li>SP Entity ID
+
+<ul>
+<li><a href="https://github.com/orgs/YOUR-ORGANIZATION">https://github.com/orgs/YOUR-ORGANIZATION</a></li>
+</ul>
+</li>
+</ul>
+
+
+<p>です。</p>
+
+<p>で、これらを元に IdP 側に SP 登録して、その後 GitHub 側で以下の情報を入力すると、SAML 設定自体は完了です。</p>
+
+<ul>
+<li>Sign on URL</li>
+<li>Issuer (IdP Entity ID)</li>
+<li>Public Certificate (IdP Certificate)</li>
+</ul>
+
+
+<p>え？NameID Format はって？</p>
+
+<p>えぇ、特にドキュメントにも設定画面にも指定ないですね。</p>
+
+<p>そう、特にドキュメントにも設定画面にも指定ないです。</p>
+
+<p><strong>サードひどい。</strong></p>
+
+<p>Business Plan になってからサポートに問い合わせたら、Gist に書かれたドキュメントが送られて来て、そこには NameID Format は Email だよって書いてあったんで、Email 推奨のようです。</p>
+
+<p>が、実は UUID とか指定しても動きます。</p>
+
+<p>あと、Email 指定してもそのメアドのユーザーにログインできるわけでもないです。</p>
+
+<p><a href="&#109;&#97;&#x69;&#x6c;&#116;&#x6f;&#x3a;&#110;&#111;&#118;&#64;&#101;&#120;&#97;&#x6d;&#x70;&#108;&#101;&#x2e;&#99;&#x6f;&#109;">&#x6e;&#x6f;&#118;&#64;&#101;&#x78;&#x61;&#x6d;&#x70;&#x6c;&#101;&#46;&#99;&#111;&#x6d;</a> の NameID を持つ SAML Assertion で、<a href="&#x6d;&#x61;&#x69;&#108;&#x74;&#111;&#58;&#x6e;&#x6f;&#x76;&#64;&#x6d;&#97;&#116;&#97;&#107;&#x65;&#46;&#x6a;&#x70;">&#110;&#111;&#118;&#x40;&#x6d;&#x61;&#x74;&#x61;&#x6b;&#101;&#46;&#x6a;&#x70;</a> の GitHub アカウントにログインできたりします。</p>
+
+<p>SAML Federation とか言うてるけど、結局既存の GitHub.com アカウントに SAML IdP 側のアカウントを Link するだけなんですよ。</p>
+
+<p>その紐付けは、SAML での初回ログイン時に GitHub.com 側の ID &amp; Password 入力して行います。</p>
+
+<p>つまり、<a href="&#x6d;&#x61;&#105;&#x6c;&#x74;&#111;&#x3a;&#x6e;&#111;&#118;&#x40;&#101;&#x78;&#97;&#x6d;&#x70;&#x6c;&#101;&#x2e;&#x63;&#x6f;&#109;">&#110;&#111;&#118;&#x40;&#101;&#120;&#x61;&#x6d;&#x70;&#108;&#101;&#x2e;&#99;&#x6f;&#x6d;</a> の NameID を持つ SAML Assertion をどの GitHub アカウントに紐づけるかは、エンドユーザーが決定権を持っています。</p>
+
+<p>情シスじゃないです。</p>
+
+<p><strong>フォースひどい。てかお前それ致命的やろ。</strong></p>
+
+<p>ちなみに、NameID は不変かつ同一 IdP 内でユニークでさえあればなんでもいいです。</p>
+
+<p>Email 推奨してたドキュメントは、多分なんか気分的に Email のがいんじゃね？くらいのノリだったんだと思います。</p>
+
+<p>実際には NameID Format が Persistent で NameID が UUID、とかにしても普通に動いてました。</p>
+
+<h2>SCIM 設定</h2>
+
+<p>SCIM にいたっては、一切のドキュメントが公開されていません。</p>
+
+<p>GitHub が公式サポートをうたう OneLogin から GitHub.com を選んで設定してみましたが、OneLogin 側に設定が必要な SCIM Base URL の値すらどこにも書いてありません。</p>
+
+<p><strong>もうひどいカウントやめていいですか？</strong></p>
+
+<p>はい、サポートに問い合わせて聞いたら Gist のドキュメント送られて来ます。</p>
+
+<p>普通に SCIM Base URL 書いてあります。</p>
+
+<ul>
+<li>SCIM Base URL
+
+<ul>
+<li><a href="https://api.github.com/scim/v2/organizations/YOUR-ORGANIZATION">https://api.github.com/scim/v2/organizations/YOUR-ORGANIZATION</a></li>
+</ul>
+</li>
+</ul>
+
+
+<p>で、ここに <code>admin:org</code> scope 持つ OAuth2 Token を添えて SCIM API Request 送ってやればいいです。</p>
+
+<p>あ、どの属性が必須かって？</p>
+
+<p>Gist ドキュメントもらえば書いて&hellip;ないですけど、API リクエスト送り続けてエラー見続けたらそのうちわかります。</p>
+
+<p>ということで、現状の挙動見る限り、必須な SCIM User Attributes は以下の通りです。</p>
+
+<ul>
+<li>id</li>
+<li>userName (email)</li>
+<li>name
+
+<ul>
+<li>familyName</li>
+<li>givenName</li>
+</ul>
+</li>
+<li>emails (userName と同じメアドを primary に)</li>
+</ul>
+
+
+<p>はい、ドキュメントさえあれば、プロビジョニングなんて簡単ですよ。</p>
+
+<p>で、プロビするじゃないですか？</p>
+
+<p>さすがにプロビしたアカウントに関しては、SAML で NameID にそのメアド指定したら GitHub.com アカウントとの紐付けとかなくするっとログインできると思うじゃないですか？</p>
+
+<p>はい、SAML 初回ログイン時にアカウント紐付け必須です。</p>
+
+<p>てかそもそも SAML Assertion に指定されるメアドと GitHub.com アカウントのメアドが一致する必要はないので、SCIM でプロビしたアカウントに別メアドの SAML Assertion 送りつけて紐付けたりもできます。</p>
+
+<p><strong>お前それ致命的やろ。</strong></p>
+
+<p>よくそれで月額 <strong>$21/user</strong> も取れると思ったな。</p>
+
+<p>いや、Business Plan アカウントに対するサポートからの回答速度は爆速ですけど。</p>
+
+<p>1時間もしないうちに回答きますけど。</p>
+
+<p>そこはすばらしいですけど。</p>
+
+<p><strong>お前それ致命的やろ。</strong></p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[MacOS Sierra (10.12.x) でマイナポータルにログイン]]></title>
@@ -2113,48 +2295,6 @@ jws = jwt.sign(public_pem, :HS256)
 <p>僕らの JOSE 愛は、こんなことじゃめげないですよ！</p>
 
 <p>でも、気をつけましょうね。</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[[PR] 属性単位のトレーサビリティについて]]></title>
-    <link href="http://oauthjp.github.io/blog/2015/02/28/traceability-on-each-attributes/"/>
-    <updated>2015-02-28T23:10:00+09:00</updated>
-    <id>http://oauthjp.github.io/blog/2015/02/28/traceability-on-each-attributes</id>
-    <content type="html"><![CDATA[<p>来週月曜 (2015/03/02) <a href="http://www.openid.or.jp/news/2015/02/OpenIDBizDay-8.html">OpenID BizDay vol.8</a> が開催され、ひろみちゅせんせ・まさともせんせ・Nat さんの3名を中心に、個人情報改正を控え、「炎上レスでパーソナルデータ活用ビジネスを進めるためにどこまでが許容範囲なのか、個人情報保護法改正に関して現時点で何をどこまで気にしておけば良いか」といった内容についてみんなで考える機会が設けられます。</p>
-
-<p>なんと、いつもは OpenID Foundation Japan 会員限定の BizDay が、今回は 5,000 円さえ払えば非会員でも参加できるんです！！</p>
-
-<p>こらぁ上司の承認とか後回しで、<a href="http://www.openid.or.jp/seminar/entry.html">いますぐ申し込まないとダメですね</a>！！！</p>
-
-<p>と、前置きはこれくらいにして、個人情報保護法改正項目の中でも、今日は「第三者提供時に提供元 &amp; 提供先双方でその記録義務が追加される」という点について、OpenID Connect や Facebook Connect などの「外部 ID 連携」時の影響範囲について、考えてみましょう。</p>
-
-<p>僕の感覚だと、普通に外部 ID 連携した場合、属性も IdP から引っ張ってくるけど、引っ張ってきた属性 (氏名とかメアドとか) はユーザーが後から編集可能な状況になっていると思います。</p>
-
-<p>そんな状況で、任意の時点でユーザーから「この氏名データ、どこから来たの？」って聞かれたら答えられるトレーサビリティを確保する&hellip;</p>
-
-<p>一つのアカウントに複数 IdP が紐づけ可能で、任意の IdP との紐づけを任意のタイミングで解除できる、そんな状況でもトレーサビリティを確保する&hellip;</p>
-
-<p>すでにそれが可能な実装にしているものだけが、SAMLer に石を投げなさい。</p>
-
-<p>これ、実装どうするかって話もあるんですが、そもそもそんなケースでもトレーサビリティ必要なんでしたっけ？って疑問が湧きますよね。</p>
-
-<!-- more -->
-
-
-<p>こういうケースって、散財情報扱いなんでしょうか？</p>
-
-<p>ユーザーが明示的に書き換えた情報に関してまで、トレーサビリティはいらないですよね？</p>
-
-<p>ユーザーが明示的に紐づけた IdP から、明示的に同意を取った scope に紐づく属性を取得した時に、それをトレースする義務はユーザーに負わせることはできないのでしょうか？</p>
-
-<p>とまぁ、気になってるけど調べきれてないことも、きっと BizDay なら先生方に直に聞ける！</p>
-
-<p>プライバシーフリークカフェでおなじみ、ひろみちゅせんせ・まさともせんせ・切込隊長による <a href="http://www.shoeisha.co.jp/book/detail/9784798139760">ニッポンの個人情報</a> の即席サイン会にだって参加できる！</p>
-
-<p>あぁそうさ、要するに <a href="http://www.openid.or.jp/news/2015/02/OpenIDBizDay-8.html">OpenID BizDay #8</a> 来いよってことさ！</p>
-
-<p>もし BizDay のこと初めて聞いたって方がおられましたら、いまさら遅せーよとか言わないでくださいごめんなさい。</p>
 ]]></content>
   </entry>
   
