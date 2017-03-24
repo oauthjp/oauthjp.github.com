@@ -4,7 +4,7 @@
   <title><![CDATA[OAuth.jp]]></title>
   <link href="http://oauthjp.github.io/atom.xml" rel="self"/>
   <link href="http://oauthjp.github.io/"/>
-  <updated>2017-03-24T18:23:44+09:00</updated>
+  <updated>2017-03-24T18:24:29+09:00</updated>
   <id>http://oauthjp.github.io/</id>
   <author>
     <name><![CDATA[Nov Matake]]></name>
@@ -22,7 +22,7 @@
 
 <p>ということで、さわって見ました。</p>
 
-<h1>Step.1 Azure AD B2C テナントの作成</h1>
+<h2>Step.1 Azure AD B2C テナントの作成</h2>
 
 <p>まずは Azure AD B2C テナントを作成します。なんか portal.azure.com から行くと Classic Portal ベースのドキュメントに飛ばされるので、新しい方の Portal ベースのドキュメントをリンクしときますね。</p>
 
@@ -30,7 +30,7 @@
 
 <p>テナントを Subscription と紐づけるとかいう処理は Production Use でない限り Skip で OK です。</p>
 
-<h1>Step.2 Web API (Resource Server) および Client の登録</h1>
+<h2>Step.2 Web API (Resource Server) および Client の登録</h2>
 
 <p><a href="https://azure.microsoft.com/ja-jp/blog/azure-ad-b2c-access-tokens-now-in-public-preview/">Azure AD B2C Access Tokens now in public preview</a> にしたがって、Web API と Client を登録します。</p>
 
@@ -56,7 +56,7 @@
 <!-- more -->
 
 
-<h1>Step.4 Policy の作成</h1>
+<h2>Step.4 Policy の作成</h2>
 
 <p>Azure AD B2C に外部 Resource Server 向けの JWT 形式の Access Token を払い出させるには、Policy ID を指定しないといけません。</p>
 
@@ -70,7 +70,7 @@
 
 <p>この Policy は Resource Server ごとに指定するものでも無いようなんで、まぁデフォルトのまま放置して Policy ID だけ取得しとけば OK です。</p>
 
-<h1>Step.3 Access Token の取得</h1>
+<h2>Step.3 Access Token の取得</h2>
 
 <p>この Gist に適宜自分で作った Client ID やらなんやら指定してやれば、HTTP のやりとりなどが Console に表示されるんで、それ見ながらフロー確認してください。</p>
 
@@ -82,12 +82,12 @@
 
 <p>動作確認用のユーザーも作っておきましたので、これが正常に動いてる間はご自由にお使いください。</p>
 
-<p>Username: <a href="&#109;&#x61;&#x69;&#x6c;&#x74;&#x6f;&#58;&#x79;&#111;&#x75;&#64;&#115;&#116;&#x73;&#52;&#x62;&#x32;&#x63;&#x2e;&#111;&#x6e;&#109;&#105;&#x63;&#114;&#x6f;&#115;&#x6f;&#102;&#x74;&#x2e;&#99;&#x6f;&#109;">&#x79;&#111;&#x75;&#64;&#x73;&#116;&#x73;&#x34;&#98;&#x32;&#x63;&#x2e;&#111;&#110;&#109;&#x69;&#x63;&#114;&#x6f;&#x73;&#x6f;&#x66;&#116;&#46;&#99;&#111;&#x6d;</a>
+<p>Username: <a href="&#109;&#97;&#105;&#108;&#x74;&#111;&#58;&#x79;&#x6f;&#x75;&#64;&#x73;&#116;&#115;&#52;&#x62;&#x32;&#x63;&#x2e;&#x6f;&#110;&#x6d;&#105;&#x63;&#x72;&#x6f;&#x73;&#x6f;&#102;&#116;&#46;&#99;&#111;&#109;">&#121;&#x6f;&#117;&#64;&#x73;&#x74;&#115;&#x34;&#98;&#50;&#x63;&#46;&#x6f;&#110;&#x6d;&#105;&#x63;&#x72;&#111;&#115;&#x6f;&#x66;&#x74;&#46;&#x63;&#x6f;&#x6d;</a>
 Password: ]6]yzxXYG7uruM4p</p>
 
 <p>動かなくなったら、あきらめて自分で Azure AD B2C 環境セットアップしてください。</p>
 
-<h1>わかったこと</h1>
+<h2>わかったこと</h2>
 
 <ul>
 <li>Access Token の audience は Resource Server Application の Object ID。</li>
@@ -230,13 +230,13 @@ Password: ]6]yzxXYG7uruM4p</p>
 
 <p>あと、Email 指定してもそのメアドのユーザーにログインできるわけでもないです。</p>
 
-<p><a href="&#x6d;&#97;&#105;&#x6c;&#x74;&#x6f;&#x3a;&#110;&#x6f;&#118;&#64;&#x65;&#120;&#97;&#109;&#x70;&#108;&#x65;&#x2e;&#x63;&#x6f;&#109;">&#110;&#111;&#118;&#64;&#x65;&#x78;&#x61;&#109;&#112;&#x6c;&#101;&#46;&#99;&#x6f;&#x6d;</a> の NameID を持つ SAML Assertion で、<a href="&#x6d;&#97;&#x69;&#x6c;&#116;&#111;&#x3a;&#110;&#x6f;&#118;&#64;&#109;&#x61;&#116;&#x61;&#x6b;&#101;&#x2e;&#x6a;&#112;">&#x6e;&#111;&#118;&#x40;&#109;&#x61;&#x74;&#x61;&#x6b;&#x65;&#46;&#106;&#x70;</a> の GitHub アカウントにログインできたりします。</p>
+<p><a href="&#x6d;&#97;&#x69;&#x6c;&#x74;&#111;&#58;&#110;&#x6f;&#118;&#x40;&#101;&#120;&#97;&#x6d;&#112;&#108;&#101;&#46;&#x63;&#111;&#x6d;">&#110;&#x6f;&#118;&#64;&#101;&#120;&#97;&#109;&#112;&#x6c;&#101;&#x2e;&#99;&#x6f;&#109;</a> の NameID を持つ SAML Assertion で、<a href="&#x6d;&#x61;&#x69;&#x6c;&#116;&#111;&#58;&#110;&#x6f;&#118;&#x40;&#x6d;&#97;&#116;&#97;&#x6b;&#x65;&#x2e;&#106;&#x70;">&#x6e;&#111;&#x76;&#x40;&#109;&#97;&#x74;&#x61;&#107;&#101;&#x2e;&#x6a;&#x70;</a> の GitHub アカウントにログインできたりします。</p>
 
 <p>SAML Federation とか言うてるけど、結局既存の GitHub.com アカウントに SAML IdP 側のアカウントを Link するだけなんですよ。</p>
 
 <p>その紐付けは、SAML での初回ログイン時に GitHub.com 側の ID &amp; Password 入力して行います。</p>
 
-<p>つまり、<a href="&#x6d;&#x61;&#x69;&#108;&#116;&#x6f;&#x3a;&#110;&#x6f;&#x76;&#64;&#x65;&#x78;&#x61;&#x6d;&#112;&#x6c;&#101;&#x2e;&#x63;&#111;&#109;">&#110;&#x6f;&#118;&#x40;&#101;&#x78;&#x61;&#109;&#112;&#x6c;&#x65;&#x2e;&#x63;&#x6f;&#109;</a> の NameID を持つ SAML Assertion をどの GitHub アカウントに紐づけるかは、エンドユーザーが決定権を持っています。</p>
+<p>つまり、<a href="&#x6d;&#x61;&#105;&#x6c;&#x74;&#111;&#58;&#x6e;&#x6f;&#118;&#x40;&#101;&#120;&#97;&#x6d;&#x70;&#108;&#101;&#x2e;&#99;&#x6f;&#109;">&#110;&#x6f;&#118;&#64;&#x65;&#120;&#x61;&#x6d;&#112;&#108;&#101;&#46;&#x63;&#x6f;&#109;</a> の NameID を持つ SAML Assertion をどの GitHub アカウントに紐づけるかは、エンドユーザーが決定権を持っています。</p>
 
 <p>情シスじゃないです。</p>
 

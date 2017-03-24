@@ -90,7 +90,7 @@
 
 <p>ということで、さわって見ました。</p>
 
-<h1>Step.1 Azure AD B2C テナントの作成</h1>
+<h2>Step.1 Azure AD B2C テナントの作成</h2>
 
 <p>まずは Azure AD B2C テナントを作成します。なんか portal.azure.com から行くと Classic Portal ベースのドキュメントに飛ばされるので、新しい方の Portal ベースのドキュメントをリンクしときますね。</p>
 
@@ -98,7 +98,7 @@
 
 <p>テナントを Subscription と紐づけるとかいう処理は Production Use でない限り Skip で OK です。</p>
 
-<h1>Step.2 Web API (Resource Server) および Client の登録</h1>
+<h2>Step.2 Web API (Resource Server) および Client の登録</h2>
 
 <p><a href="https://azure.microsoft.com/ja-jp/blog/azure-ad-b2c-access-tokens-now-in-public-preview/">Azure AD B2C Access Tokens now in public preview</a> にしたがって、Web API と Client を登録します。</p>
 
@@ -124,7 +124,7 @@
 <!-- more -->
 
 
-<h1>Step.4 Policy の作成</h1>
+<h2>Step.4 Policy の作成</h2>
 
 <p>Azure AD B2C に外部 Resource Server 向けの JWT 形式の Access Token を払い出させるには、Policy ID を指定しないといけません。</p>
 
@@ -138,7 +138,7 @@
 
 <p>この Policy は Resource Server ごとに指定するものでも無いようなんで、まぁデフォルトのまま放置して Policy ID だけ取得しとけば OK です。</p>
 
-<h1>Step.3 Access Token の取得</h1>
+<h2>Step.3 Access Token の取得</h2>
 
 <p>この Gist に適宜自分で作った Client ID やらなんやら指定してやれば、HTTP のやりとりなどが Console に表示されるんで、それ見ながらフロー確認してください。</p>
 
@@ -150,12 +150,12 @@
 
 <p>動作確認用のユーザーも作っておきましたので、これが正常に動いてる間はご自由にお使いください。</p>
 
-<p>Username: <a href="&#109;&#x61;&#x69;&#x6c;&#x74;&#x6f;&#58;&#x79;&#111;&#x75;&#64;&#115;&#116;&#x73;&#52;&#x62;&#x32;&#x63;&#x2e;&#111;&#x6e;&#109;&#105;&#x63;&#114;&#x6f;&#115;&#x6f;&#102;&#x74;&#x2e;&#99;&#x6f;&#109;">&#x79;&#111;&#x75;&#64;&#x73;&#116;&#x73;&#x34;&#98;&#x32;&#x63;&#x2e;&#111;&#110;&#109;&#x69;&#x63;&#114;&#x6f;&#x73;&#x6f;&#x66;&#116;&#46;&#99;&#111;&#x6d;</a>
+<p>Username: <a href="&#109;&#97;&#105;&#108;&#x74;&#111;&#58;&#x79;&#x6f;&#x75;&#64;&#x73;&#116;&#115;&#52;&#x62;&#x32;&#x63;&#x2e;&#x6f;&#110;&#x6d;&#105;&#x63;&#x72;&#x6f;&#x73;&#x6f;&#102;&#116;&#46;&#99;&#111;&#109;">&#121;&#x6f;&#117;&#64;&#x73;&#x74;&#115;&#x34;&#98;&#50;&#x63;&#46;&#x6f;&#110;&#x6d;&#105;&#x63;&#x72;&#111;&#115;&#x6f;&#x66;&#x74;&#46;&#x63;&#x6f;&#x6d;</a>
 Password: ]6]yzxXYG7uruM4p</p>
 
 <p>動かなくなったら、あきらめて自分で Azure AD B2C 環境セットアップしてください。</p>
 
-<h1>わかったこと</h1>
+<h2>わかったこと</h2>
 
 <ul>
 <li>Access Token の audience は Resource Server Application の Object ID。</li>
