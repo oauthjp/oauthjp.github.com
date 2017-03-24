@@ -6,7 +6,7 @@
 	<title>OAuth.jp</title>
     <meta name="author" content="Nov Matake">
     
-	<meta name="description" content="Published on: Jul 1st, 2016 Tags: どうも、この度 OpenID Foundation Japan の事務局長になった Nov です。 事務局長就任のご挨拶的なポエムを書けというオーラをふつふつと感じながら、ガン無視してこの記事を書いております。 さて、 &hellip;">
+	<meta name="description" content="Published on: Jul 1st, 2016 Tags: どうも、事務局長の Nov です。 どうも、ジムキョクチョのノブです。 どうも、ノブキョクチョです。 どうも、のぶチョです。 そう、のぶ千代です。 最近歳のせいか、Rails で SAML IdP とか作ってます。 今日は自作 &hellip;">
 	
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
@@ -85,6 +85,66 @@
 <!-- begin toload --> 
     <div id="content" class="inner">
         
+
+
+    <article class="post">
+	<h2 class="title">
+		
+		<a href="/blog/2016/07/01/o365-saml-federation/">
+		
+			Office 365 と外部 SAML IdP との連携設定</a>
+	</h2>
+    <div class="entry-content">
+    <div class="meta">
+      <div class="date">Published on: 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2016-07-01T11:03:00+09:00" pubdate data-updated="true">Jul 1<span>st</span>, 2016</time></div>
+      <div class="tags">Tags: 
+
+</div>
+    </div>
+		<p>どうも、事務局長の Nov です。</p>
+
+<p>どうも、ジムキョクチョのノブです。</p>
+
+<p>どうも、ノブキョクチョです。</p>
+
+<p>どうも、のぶチョです。</p>
+
+<p>そう、のぶ千代です。</p>
+
+<p>最近歳のせいか、Rails で SAML IdP とか作ってます。</p>
+
+<p>今日は自作 SAML IdP を Office 365 と連携させてみたので、その格闘の記録を残しておきます。</p>
+
+<p>Office 365 の制約とか Azure AD の制約とか全く前提知識なしに格闘した記録なんで、そういうのいいから手っ取り早くやり方教えろやって人は我らがふぁらおぅ兄さんのこちらの連載をご覧ください。</p>
+
+<ul>
+<li><a href="http://idmlab.eidentity.jp/2014/11/office365azureadopenamid.html">Office365/AzureAD &ndash; OpenAMとのID連携 (1)</a></li>
+<li><a href="http://idmlab.eidentity.jp/2014/12/office365azureadopenamid.html">Office365/AzureAD &ndash; OpenAMとのID連携 (2)</a></li>
+<li><a href="http://idmlab.eidentity.jp/2014/12/office365azureadopenamid_25.html">Office365/AzureAD &ndash; OpenAMとのID連携 (3)</a></li>
+</ul>
+
+
+
+		
+		<a href="/blog/2016/07/01/o365-saml-federation/" class="more-link">Read on &rarr;</a>
+	</div>
+
+<div class="meta">
+	
+</div>
+</article>
 
 
     <article class="post">
@@ -380,63 +440,6 @@
 
 		
 		<a href="/blog/2016/04/19/fb-message-callback-with-azure-function/" class="more-link">Read on &rarr;</a>
-	</div>
-
-<div class="meta">
-	
-</div>
-</article>
-
-
-    <article class="post">
-	<h2 class="title">
-		
-		<a href="/blog/2016/04/17/oidc-on-adfs-2016/">
-		
-			Windows Server 2016 版 ADFS を触ってみた</a>
-	</h2>
-    <div class="entry-content">
-    <div class="meta">
-      <div class="date">Published on: 
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2016-04-17T19:38:00+09:00" pubdate data-updated="true">Apr 17<span>th</span>, 2016</time></div>
-      <div class="tags">Tags: 
-
-</div>
-    </div>
-		<p>MVP になったことですし、早速 Azure 常に Windows Server 2016 の VM 立ち上げて、次期バージョンの ADFS を動かしてみました。</p>
-
-<p>想定ユースケースは、Native App とその Backend Server があって、Backend Server が Native App 向けに提供している API 用の Access Token も、ADFS が発行するというものです。</p>
-
-<p>まさしく今後エンプラで増えていくであろうパターンですね。</p>
-
-<h2>Setup Hybrid Client on ADFS</h2>
-
-<p>ADFS Manager に &ldquo;Application Groups&rdquo; っていう設定が増えてるんで、そこから &ldquo;Native Application and Web API&rdquo; ってのを選択して、Connect RP (= OAuth Client) を登録します。</p>
-
-<p><img src="/images/posts/adfs/hybrid-client-new.png" alt="New Hybrid Client" /></p>
-
-<p>スクショいっぱい撮るのが面倒なのですっ飛ばしますが、こんな感じで Native App とその Backend Server を ADFS に &ldquo;Application Group&rdquo; として登録しました。</p>
-
-<p><img src="/images/posts/adfs/hybrid-client.png" alt="Registered Hybrid Client" /></p>
-
-<p>ちなみに、この時 Backend には特に Native App と別の client_id が発行されたりはしません。</p>
-
-<p>ここまでで、ADFS 側の準備は完了です。以降、<a href="https://gist.github.com/nov/3f284aa8cec5ed6bc332e9a5c9d93851">こちらの gist</a> に沿って、Step by Step で見ていきます。</p>
-
-
-		
-		<a href="/blog/2016/04/17/oidc-on-adfs-2016/" class="more-link">Read on &rarr;</a>
 	</div>
 
 <div class="meta">

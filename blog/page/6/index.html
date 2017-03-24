@@ -6,7 +6,7 @@
 	<title>OAuth.jp</title>
     <meta name="author" content="Nov Matake">
     
-	<meta name="description" content="Published on: May 9th, 2014 Tags: 昨日のCovert Redirect で Query 漏れるケースもある!?やOAuth 2.0 の脆弱性 (!?) &ldquo;Covert Redirect&rdquo; とはにあるように、OAuth 2.0 の code &hellip;">
+	<meta name="description" content="Published on: Jun 23rd, 2014 Tags: OAuth 2.0 では state パラメータってのがあって、それをちゃんと使わないと CSRF 脆弱性ができちゃうよって話は、@ritou 先生のスライドなどでみなさん勉強したんではないでしょうか。state パラメータは &hellip;">
 	
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
@@ -85,6 +85,51 @@
 <!-- begin toload --> 
     <div id="content" class="inner">
         
+
+
+    <article class="post">
+	<h2 class="title">
+		
+		<a href="/blog/2014/06/23/csrf-on-twitter-login/">
+		
+			Twitter Login にも CSRF 脆弱性ができやすい罠が!?</a>
+	</h2>
+    <div class="entry-content">
+    <div class="meta">
+      <div class="date">Published on: 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-06-23T10:46:00+09:00" pubdate data-updated="true">Jun 23<span>rd</span>, 2014</time></div>
+      <div class="tags">Tags: 
+
+</div>
+    </div>
+		<p>OAuth 2.0 では state パラメータってのがあって、それをちゃんと使わないと CSRF 脆弱性ができちゃうよって話は、<a href="http://www.slideshare.net/ritou/idcon17-oauth2-csrfprotectionritou">@ritou 先生のスライド</a>などでみなさん勉強したんではないでしょうか。state パラメータは RFC 6749 では RECOMMENDED 扱いで、REQUIRED ではありませんが、OAuth 2.0 をログインに使う場合は REQUIRED にすべきでしょう。OAuth 2.0 をログインに使うの、Token 置換攻撃とか Covert Redirect + Code 置換攻撃とか、いろんな罠がありますねぇ〜。</p>
+
+<p>OAuth 1.0 ならそんなことないのに&hellip;</p>
+
+<p>そう思ってた時期が、僕にもありました。</p>
+
+<p>でも @ritou 先生よく言ってるじゃないですか。「Twitter の OAuth 実装クソや」って。でね、ほんとにクソやったんすよ、コレが。</p>
+
+
+		
+		<a href="/blog/2014/06/23/csrf-on-twitter-login/" class="more-link">Read on &rarr;</a>
+	</div>
+
+<div class="meta">
+	
+</div>
+</article>
 
 
     <article class="post">
@@ -350,69 +395,6 @@ OAuth と OpenID Connect には複数の response_type があるんだけど、�
 
 		
 		<a href="/blog/2014/05/08/covert-redirect-and-openid-2-dot-0/" class="more-link">Read on &rarr;</a>
-	</div>
-
-<div class="meta">
-	
-</div>
-</article>
-
-
-    <article class="post">
-	<h2 class="title">
-		
-		<a href="/blog/2014/05/07/covert-redirect-in-implicit-flow/">
-		
-			Implicit Flow では Covert Redirect で Token 漏れるね</a>
-	</h2>
-    <div class="entry-content">
-    <div class="meta">
-      <div class="date">Published on: 
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2014-05-07T18:41:00+09:00" pubdate data-updated="true">May 7<span>th</span>, 2014</time></div>
-      <div class="tags">Tags: 
-
-</div>
-    </div>
-		<p>この記事は、<a href="/blog/2014/05/07/covert-redirect">先ほど書いたこちらの記事</a>の訂正版です。</p>
-
-<p><strong>記事に入る前に、まずは全シンガポールにお詫び申し上げますm<em> </em>m</strong></p>
-
-<p>さて、Covert Redirect についての説明は&hellip;超絶取り消し線はいりまくってる前の記事を読んでください、でいいでしょうか？</p>
-
-<p>で、訂正分だけ以下に。</p>
-
-<h3>Fragment Handling in Redirect</h3>
-
-<p><a href="http://weblog.bulknews.net/post/85008516879/covert-redirect-vulnerability-with-oauth-2">宮川さんが記事にしてますね</a>。</p>
-
-<p>英語だけど。</p>
-
-<p>で、まぁ要するに、(Modern Browser は) 30x リダイレクト時に<strong>リダイレクト元に付いてた URL fragment をリダイレクト先にも引っ付ける</strong>、と。</p>
-
-<p>fragment は server-side には送られないけど、クライアントサイドではリダイレクト先に引き継がれる、と。</p>
-
-<p>試しに <a href="http://www.idcon.org/#foobar">http://www.idcon.org/#foobar</a> にアクセスすると、<a href="http://idcon.org/#foobar">http://idcon.org/#foobar</a> にリダイレクトされるかと思います。</p>
-
-<p>www.idcon.org のサーバーには <strong>#foobar</strong> の部分は送られませんが、<a href="http://idcon.org/">http://idcon.org/</a> に load される client-side の JS からは、<strong>#foobar</strong> にアクセスできます。</p>
-
-<p>なので、Covert Redirect のケースでも、open redirector をつかって最終的に被害者がリダイレクトしてくる endpoint に攻撃者が JS を仕込んでそれを自分のサーバーにでも送るようにしておけば、<strong>access token が漏洩します</strong>。</p>
-
-<p>もちろん<a href="/blog/2014/05/07/covert-redirect">先ほどの記事にあるように</a>、Authorization Code が漏洩するケースもありますが、open redirector の実装詳細に依存しない分、Implicit Flow において fragment に含まれる access token が漏洩する方が可能性としては高いでしょう。</p>
-
-
-		
-		<a href="/blog/2014/05/07/covert-redirect-in-implicit-flow/" class="more-link">Read on &rarr;</a>
 	</div>
 
 <div class="meta">
