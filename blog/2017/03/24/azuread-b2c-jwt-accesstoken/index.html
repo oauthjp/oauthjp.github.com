@@ -150,7 +150,7 @@
 
 <p>動作確認用のユーザーも作っておきましたので、これが正常に動いてる間はご自由にお使いください。</p>
 
-<p>Username: <a href="&#109;&#97;&#105;&#108;&#x74;&#111;&#58;&#x79;&#x6f;&#x75;&#64;&#x73;&#116;&#115;&#52;&#x62;&#x32;&#x63;&#x2e;&#x6f;&#110;&#x6d;&#105;&#x63;&#x72;&#x6f;&#x73;&#x6f;&#102;&#116;&#46;&#99;&#111;&#109;">&#121;&#x6f;&#117;&#64;&#x73;&#x74;&#115;&#x34;&#98;&#50;&#x63;&#46;&#x6f;&#110;&#x6d;&#105;&#x63;&#x72;&#111;&#115;&#x6f;&#x66;&#x74;&#46;&#x63;&#x6f;&#x6d;</a>
+<p>Username: <a href="&#109;&#x61;&#x69;&#x6c;&#116;&#111;&#x3a;&#121;&#111;&#x75;&#64;&#115;&#116;&#115;&#52;&#x62;&#50;&#x63;&#46;&#111;&#110;&#109;&#x69;&#99;&#114;&#x6f;&#115;&#111;&#x66;&#116;&#46;&#99;&#x6f;&#x6d;">&#x79;&#x6f;&#x75;&#64;&#x73;&#x74;&#x73;&#x34;&#98;&#50;&#x63;&#46;&#x6f;&#x6e;&#x6d;&#x69;&#99;&#x72;&#x6f;&#x73;&#x6f;&#x66;&#116;&#x2e;&#x63;&#111;&#x6d;</a>
 Password: ]6]yzxXYG7uruM4p</p>
 
 <p>動かなくなったら、あきらめて自分で Azure AD B2C 環境セットアップしてください。</p>
@@ -188,7 +188,12 @@ Password: ]6]yzxXYG7uruM4p</p>
 <li>署名が正しく</li>
 <li>JWT の &ldquo;aud&rdquo; Claim が自身の Azure AD B2C 上の Object ID であり</li>
 <li>必要な Scope が &ldquo;scp&rdquo; Claim に含まれており</li>
-<li>&ldquo;azp&rdquo; Claim に含まれる Client ID が正当な Client のものであり</li>
+<li>&ldquo;azp&rdquo; Claim に含まれる Client ID が正当な Client のものであり
+
+<ul>
+<li>余談ですが同じく MS さんが主導の <a href="https://tools.ietf.org/html/draft-ietf-oauth-token-exchange-07#section-4.3">OAuth 2.0 Token Exchange</a> では &ldquo;cid&rdquo; Claim なのに、ここでは &ldquo;azp&rdquo; なのはなんというか&hellip;w</li>
+</ul>
+</li>
 <li>期限切れでない</li>
 </ul>
 
