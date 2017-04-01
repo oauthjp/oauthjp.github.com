@@ -6,7 +6,7 @@
 	<title>OAuth.jp</title>
     <meta name="author" content="Nov Matake">
     
-	<meta name="description" content="Published on: Jan 31st, 2011 Tags: OAuth2 gemのインストール 現状OAuth2 gemはOAuth 2.0の古いspec (draft 0?) に準拠しているので、mixiがサポートしているdraft 10に対応したOAuth2 gemをここからgit &hellip;">
+	<meta name="description" content="Published on: Mar 6th, 2011 Tags: @novです。 OAuth 2.0 draft v.13準拠のRack::OAuth2 version 0.3.0のリリースにあわせて、Rails3でSample Appを作りました。 http://rack-oauth2- &hellip;">
 	
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
@@ -93,6 +93,72 @@
 <!-- begin toload --> 
     <div id="content" class="inner">
         
+
+
+    <article class="post">
+	<h2 class="title">
+		
+		<a href="/blog/2011/03/06/rackoauth2-sample-server/">
+		
+			Rack::OAuth2 Sample Server</a>
+	</h2>
+    <div class="entry-content">
+    <div class="meta">
+      <div class="date">Published on: 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-03-06T00:00:00+09:00" pubdate data-updated="true">Mar 6<span>th</span>, 2011</time></div>
+      <div class="tags">Tags: 
+
+</div>
+    </div>
+		<p>@novです。</p>
+
+
+<p>OAuth 2.0 draft v.13準拠のRack::OAuth2 version 0.3.0のリリースにあわせて、Rails3でSample Appを作りました。</p>
+
+
+<p><a href="http://rack-oauth2-sample.heroku.com"><a href="http://rack-oauth2-sample.heroku.com">http://rack-oauth2-sample.heroku.com</a></a></p>
+
+
+<p>Facebookアカウントでログインしたら、なんとなくで使い方分かると思います。</p>
+
+
+<p>Access Token or Authorization Codeを取得した後は、こちらのClient Sampleみたいなのでアクセスしてください。</p>
+
+
+<p><a href="https://gist.github.com/857277"><a href="https://gist.github.com/857277">https://gist.github.com/857277</a></a></p>
+
+
+<p>このアプリはOAuth2 Serverを作る人向けなので、ソースの読み方も。</p>
+
+
+<p>Authorization Server =&gt; app/controllers/authorizations_controller.rb</p>
+
+
+<p>Token Endpoint =&gt; config/routes.rb (Rack App)</p>
+
+
+<p>Resource Server =&gt; config/application.rb (Rack App) &amp; lib/authentication.rb</p>
+
+
+		
+		
+	</div>
+
+<div class="meta">
+	
+</div>
+</article>
 
 
     <article class="post">
@@ -297,44 +363,6 @@
 
 <p><span style="font-size: medium;"><strong><a href="http://openid-foundation-japan.github.com/draft-hammer-oauth-10.html">The OAuth 1.0 Protocol (翻訳版)</a></strong></span></p>
 
-
-		
-		
-	</div>
-
-<div class="meta">
-	
-</div>
-</article>
-
-
-    <article class="post">
-	<h2 class="title">
-		
-		<a href="/blog/2010/09/19/oauth-20openid-connect/">
-		
-			OAuth 2.0ベースで考えられているOpenID Connectの仕様を紹介します</a>
-	</h2>
-    <div class="entry-content">
-    <div class="meta">
-      <div class="date">Published on: 
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2010-09-19T00:00:00+09:00" pubdate data-updated="true">Sep 19<span>th</span>, 2010</time></div>
-      <div class="tags">Tags: 
-
-</div>
-    </div>
-		<p>@ritouです。  なぜか、Contributorになれる気がしないので、メールで投稿にチャレンジですｗ <br/>自分のブログで、OAuth 2.0ベースで考えられているOpenID Connectの仕様を少しまとめました。 <p></p> <a href="http://d.hatena.ne.jp/ritou/20100919/1284822456"><a href="http://d.hatena.ne.jp/ritou/20100919/1284822456"><a href="http://d.hatena.ne.jp/ritou/20100919/1284822456">http://d.hatena.ne.jp/ritou/20100919/1284822456</a></a></a>  OpenID Connectは次のバージョンのOpenID/OAuthの関係においてキーになる仕様だと思っています。 <br/>興味がある方はどーぞ。 <p></p> （投稿の仕方、これでいいのかなぁ。。。不安）</p>
 
 		
 		
