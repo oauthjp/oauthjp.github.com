@@ -6,7 +6,7 @@
 	<title>OAuth.jp</title>
     <meta name="author" content="Nov Matake">
     
-	<meta name="description" content="Published on: Jul 15th, 2016 Tags: 先日このブログでも紹介した OAuth Revocation, JWK JWK Thumbprint 仕様の翻訳版 に引き続き、OpenID Foundation Japan 翻訳・教育 WG リーダーとしての Nov です &hellip;">
+	<meta name="description" content="Published on: Jul 27th, 2016 Tags: なんですかこれは！ New attack bypasses HTTPS protection on Macs, Windows, and Linux DHCP につなぐと PAC ファイルがダウンロードされて HTTPS &hellip;">
 	
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
@@ -93,6 +93,86 @@
 <!-- begin toload --> 
     <div id="content" class="inner">
         
+
+
+    <article class="post">
+	<h2 class="title">
+		
+		<a href="/blog/2016/07/27/https-full-url-leaks/">
+		
+			HTTPS でも Full URL が漏れる？OAuth の Code も漏れるんじゃね？？</a>
+	</h2>
+    <div class="entry-content">
+    <div class="meta">
+      <div class="date">Published on: 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2016-07-27T10:48:00+09:00" pubdate data-updated="true">Jul 27<span>th</span>, 2016</time></div>
+      <div class="tags">Tags: 
+
+</div>
+    </div>
+		<p>なんですかこれは！</p>
+
+<p><a href="http://arstechnica.com/security/2016/07/new-attack-that-cripples-https-crypto-works-on-macs-windows-and-linux/">New attack bypasses HTTPS protection on Macs, Windows, and Linux</a></p>
+
+<p>DHCP につなぐと PAC ファイルがダウンロードされて HTTPS であろうとアクセス先の Full URL は漏れるですって？</p>
+
+<p>Web Proxy Autodiscovery ですって？</p>
+
+<p>チョットニホンゴデオネガイシマス</p>
+
+<p>ってことで、まぁこれが実際どれくらい簡単に実現できる攻撃パターンなのかは他のセキュリティ業界の方々に後で聞くとして、この記事でも触れられてる OpenID Connect とか OAuth2 への影響について、ちょっとまとめておきましょうか。</p>
+
+<h2>Authorization Request &amp; Response が漏れる</h2>
+
+<p><code>response_mode=form_post</code> なんていうのも一部ありますが、基本 OAuth2 / OpenID Connect の Authorization Request &amp; Response は GET です。</p>
+
+<p>Implicit Flow の場合は Response Parameter が URL Fragment についてるので、Server に送られる Full URL が漏れたところで特に URL Fragment の内容は漏れないですが、Code Flow の場合は Response の Query についてる Authorization Code は漏れますね。</p>
+
+<p>まぁ Authorization Request に含まれる <code>state</code> とかも漏れますが、今回のケースだと Cookie とかは漏れないんで、<code>state</code> が漏れること自体は大して問題ではないでしょう。</p>
+
+<p>ただ、Redirect URL に HTTPS 使っても <code>code</code> 漏れるってのは、辛そうですね。</p>
+
+<h2>Authorization Code が漏れたらどうなるの？</h2>
+
+<p>Code 置換攻撃 (Code Cut &amp; Paste Attack) が可能になります。</p>
+
+<p>ここに漏れた <code>code</code> があるとしましょう。すると、以下の手順で攻撃者は <code>code</code> 所有者の RP 上のアカウントにログインすることができます。</p>
+
+<ol>
+<li>攻撃者自身のブラウザで Authorization Request 発行</li>
+<li>攻撃者自身の IdP 上のアカウントで IdP にログイン</li>
+<li>Authorization Response を途中で止める</li>
+<li>Authorization Response 中に含まれる <code>code</code> を被害者のものに置換 (<code>state</code> は置換しない)</li>
+<li>Code 置換済の Authorization Response を RP に送る</li>
+</ol>
+
+
+<p>こうすると、RP が <code>state</code> を使った CSRF 対策を行っていても、RP は受け取った <code>code</code> を使って攻撃者を被害者としてログインさせてしまいます。</p>
+
+<p>これが Code 置換攻撃です。</p>
+
+<p>では、これを防ぐ手立てはあるのでしょうか？</p>
+
+
+		
+		<a href="/blog/2016/07/27/https-full-url-leaks/" class="more-link">Read on &rarr;</a>
+	</div>
+
+<div class="meta">
+	
+</div>
+</article>
 
 
     <article class="post">
@@ -480,98 +560,6 @@
 
 		
 		<a href="/blog/2016/05/14/office-365-saml-implementation-vulnerability/" class="more-link">Read on &rarr;</a>
-	</div>
-
-<div class="meta">
-	
-</div>
-</article>
-
-
-    <article class="post">
-	<h2 class="title">
-		
-		<a href="/blog/2016/05/06/another-csrf-attack/">
-		
-			OAuth / Connect における CSRF Attack の新パターン</a>
-	</h2>
-    <div class="entry-content">
-    <div class="meta">
-      <div class="date">Published on: 
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2016-05-06T14:19:00+09:00" pubdate data-updated="true">May 6<span>th</span>, 2016</time></div>
-      <div class="tags">Tags: 
-
-</div>
-    </div>
-		<p>昨日こんなのが OAuth ML に流れてました。</p>
-
-<p><a href="https://mailarchive.ietf.org/arch/search/?email_list=oauth&amp;gbt=1&amp;index=G4J3H1BMyIN01FCOLKqLjrx7AZ4">[OAUTH-WG] Another CSRF attack</a></p>
-
-<h2>前提条件</h2>
-
-<p>RP (Relying Party a.k.a. OAuth Client) が2つ以上の IdP (Identity Provider a.k.a. OAuth Server) と連携している状況で、片方の IdP に悪意がある。</p>
-
-<ul>
-<li>悪意ある IdP = AIdP (A は Attacker の略)</li>
-<li>その他の IdP = HIdP (H は Honest の略)</li>
-</ul>
-
-
-<h2>攻撃フロー</h2>
-
-<p><img src="https://www.websequencediagrams.com/cgi-bin/cdraw?lz=YWx0IFZpY3RpbSdzIFNlc3Npb24KICAgAA4HLT5SUDogTG9naW4gdy8gQUlkUAAZBVJQLT4AMQY6ACENQUlkUDogQXV0aFogUmVxIHcvIHN0YXRlLVYAUAVBSWQALwoAIgVlbnRpY2F0ZQA0EgAmC0gAUAZ0dGFja2VyJ3MgY3JlZGVudGlhbHMAgSgFSABTBQB3BmNvZABIBgBfDkhJZFAncwAZBQCBCwsgKHRvIHJlZGlyZWN0X3VyaSBmb3IASgUpAIF2EACBbwlSUDoANglpcyB0aWVkIHRvIHRoZSBzAII7BiwgT0shAIIfCQCBOAYAgQ4JAIEmBlIAgUMOYWNjZXNzX3Rva2VuICYgaWQABQYAglwQIEhlbGxvLCB3aGF0J3MgeW91ciBuYW1lPwCDIhFJJ20Ag1EHCmVsc2UAgjEMAINaDACCTAgAg0wcAIJwCACDCwcAKQkAgw8HAINaEkEAgwgMADUIAINcEgA7DwAgFQCDIQ4AUwYAgScNAIMDE0EAgi1pAIFTCldlbGNvbWUgYmFjaywAhkoHIQplbmQK&amp;s=earth" alt="Another CSRF Attack" /></p>
-
-<ol>
-<li>Victim が AIdP を使って RP へのログインを試みる。</li>
-<li>RP は Authorization Request を AIdP に送る。
-
-<ul>
-<li>AuthZ Req には Browser Session と紐付いた <code>state</code> パラメータをつけている。</li>
-</ul>
-</li>
-<li>AIdP は Victim を認証し、必要に応じて同意を取得する (ふりをする)
-
-<ul>
-<li>同時に AIdP は裏で HIdP から <code>code</code> を取得する。</li>
-<li>HIdP の code は Attacker の HIdP 上のアカウントに紐付いているもの。</li>
-</ul>
-</li>
-<li>AIdP は HIdP から取得した <code>code</code> を、RP の HIdP 用 <code>redirect_uri</code> に返す。
-
-<ul>
-<li>この時 Step2 で RP が発行した <code>state</code> を付与する。</li>
-</ul>
-</li>
-<li>RP は Browser Session と紐付いた <code>state</code> を検証した上で <code>code</code> を HIdP の Token Endpoint に送る。</li>
-<li>HIdP は Attacker のアカウントに紐付いた <code>access_token</code> を返す。</li>
-<li>RP は Victim をログインさせる。
-
-<ul>
-<li>ここで HIdP 上の Attacker アカウントと RP 上の Victim アカウントが紐づけられる。</li>
-</ul>
-</li>
-</ol>
-
-
-<p>そして、Attacker は任意のタイミングで自身の HIdP 上のアカウントを使って、RP 上の Victim のアカウントにログインできる。</p>
-
-<h2>防御策</h2>
-
-<p><code>state</code> をリクエスト先の IdP とも紐づけましょう。</p>
-
-		
-		
 	</div>
 
 <div class="meta">

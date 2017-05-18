@@ -6,7 +6,7 @@
 	<title>OAuth.jp</title>
     <meta name="author" content="Nov Matake">
     
-	<meta name="description" content="Published on: Oct 15th, 2014 Tags: 先週末、FIDO Alliance　のメンバーが来日して、FIDO Alliance Tokyo Seminar というセミナーが開催されていました。僕も今春の #idcon vol.18 で FIDO Alliance &hellip;">
+	<meta name="description" content="Published on: Jan 6th, 2015 Tags: 特に新しい話題ではないですが、定期的に質問されてる気がするので記事にしときます。 OAuth 2.0 の Core には、&#8221;code&#8221; と &ldquo;token&rdquo; という2つの &hellip;">
 	
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
@@ -93,6 +93,70 @@
 <!-- begin toload --> 
     <div id="content" class="inner">
         
+
+
+    <article class="post">
+	<h2 class="title">
+		
+		<a href="/blog/2015/01/06/oauth2-multiple-response-type/">
+		
+			OAuth 2.0 の Response Type 全パターン</a>
+	</h2>
+    <div class="entry-content">
+    <div class="meta">
+      <div class="date">Published on: 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2015-01-06T20:15:00+09:00" pubdate data-updated="true">Jan 6<span>th</span>, 2015</time></div>
+      <div class="tags">Tags: 
+
+</div>
+    </div>
+		<p>特に新しい話題ではないですが、定期的に質問されてる気がするので記事にしときます。</p>
+
+<p>OAuth 2.0 の Core には、&#8221;code&#8221; と &ldquo;token&rdquo; という2つの response_type が定義されています。</p>
+
+<p>それぞれ &ldquo;Code Grant&rdquo; と &ldquo;Implicit Grant&rdquo; と呼ばれることもありますし、歴史的経緯により &ldquo;Code Flow&rdquo; と &ldquo;Implicit Flow&rdquo; と呼ぶこともあります。</p>
+
+<p>ほとんどのケースでは、この2つの response_type のどちらかを使っているかと思いますが、実はこれ以外にも以下の response_type のパターンが存在します。
+(<a href="http://openid.net/specs/oauth-v2-multiple-response-types-1_0.html">仕様はこちら</a>)</p>
+
+<ul>
+<li>none</li>
+<li>code token</li>
+<li>id_token</li>
+<li>id_token code</li>
+<li>id_token token</li>
+<li>id_token code token</li>
+</ul>
+
+
+<p>id_token ってのが含まれてるのは、OpenID Connect で利用する response_type なので、OAuth 2.0 だけを実装する場合は無視して OK です。</p>
+
+<p>でもこんなにいっぱいあると、Server 側 (OP 側) もどこまで実装したらいいかわかんないし、Client 側 (RP 側) もどれ使うのが一番いいのかわかんないですよね。特に OpenID Connect 使う場合は。</p>
+
+<p>そんなこんなで、「どれ実装したらいいの？」とか、「どれ使えばいいの？」っていう質問を、Server 側の人にも Client 側の人にも、半年に一回くらいされる気がします。</p>
+
+<p>この機会に、それぞれの response_type で想定される Use-Case をまとめておきましょう。</p>
+
+
+		
+		<a href="/blog/2015/01/06/oauth2-multiple-response-type/" class="more-link">Read on &rarr;</a>
+	</div>
+
+<div class="meta">
+	
+</div>
+</article>
 
 
     <article class="post">
@@ -321,84 +385,6 @@ OAuth と OpenID Connect には複数の response_type があるんだけど、�
 
 		
 		<a href="/blog/2014/05/08/covert-redirect-and-non-30x-redirects/" class="more-link">Read on &rarr;</a>
-	</div>
-
-<div class="meta">
-	
-</div>
-</article>
-
-
-    <article class="post">
-	<h2 class="title">
-		
-		<a href="/blog/2014/05/08/facebook-login-and-covert-redirect/">
-		
-			Facebook Login で Covert Redirect を防止する</a>
-	</h2>
-    <div class="entry-content">
-    <div class="meta">
-      <div class="date">Published on: 
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2014-05-08T14:16:00+09:00" pubdate data-updated="true">May 8<span>th</span>, 2014</time></div>
-      <div class="tags">Tags: 
-
-</div>
-    </div>
-		<p><a href="http://oauth.jp/blog/2014/05/07/covert-redirect-in-implicit-flow/">OAuth 2.0 Implicit Flow では Covert Redirect 経由で access token が漏れる件</a>については既に紹介しましたが、ここではみなさん大好き Facebook Login で OAuth Client Developer ができる対策について紹介することにします。</p>
-
-<h3>攻撃方法</h3>
-
-<ol>
-<li>攻撃対象となる OAuth Client の FB client_id を取得
-
-<ul>
-<li>client_id は FB Login ボタンさえクリックすればアドレスバーに表示される。</li>
-</ul>
-</li>
-<li>Authorization Request URL を構築
-
-<ul>
-<li>対象 Client が通常 response_type=code を使ってる場合でも、問答無用で response_type=token にしてください。</li>
-<li><a href="https://www.facebook.com/dialog/oauth?client_id=relace-me&amp;redirect_uri=relace-me&amp;response_type=token">https://www.facebook.com/dialog/oauth?client_id=<em>&lt;client_id></em>&amp;redirect_uri=<em>&lt;redirect-url></em>&amp;response_type=token</a></li>
-</ul>
-</li>
-<li>被害者を2で作った URL にアクセスさせます
-
-<ul>
-<li>フィッシングがんばってください。</li>
-</ul>
-</li>
-<li>redirect_uri に指定しておいた URL で fragment に付いて来る access token を待ち構えます。</li>
-</ol>
-
-
-<p>以上、巧いフィッシング方法さえ思いつけば簡単ですね。</p>
-
-<h3>防御方法</h3>
-
-<p>防御方法は、大きく分けて3つあります。</p>
-
-<ol>
-<li>open redirector を撤廃する</li>
-<li>response_type=token を利用禁止にする</li>
-<li>redirect_uri を完全一致しか認めさせなくする</li>
-</ol>
-
-
-
-		
-		<a href="/blog/2014/05/08/facebook-login-and-covert-redirect/" class="more-link">Read on &rarr;</a>
 	</div>
 
 <div class="meta">
