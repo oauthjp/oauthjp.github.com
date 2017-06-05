@@ -6,7 +6,7 @@
 	<title>OAuth.jp</title>
     <meta name="author" content="Nov Matake">
     
-	<meta name="description" content="Published on: Feb 24th, 2016 Tags: OAuth 2.0 + OpenID Connect のフルスクラッチ実装者が知見を語る &ndash; Qiita ってのになんかフォローアップしろよ的なのが来たので。 ざっと読んだ感想としては、「OpenID &hellip;">
+	<meta name="description" content="Author: Nov Matake - 技術的な相談等、お仕事依頼は YAuth.jp までどうぞ。 Date: Feb 25th, 2016 「OAuth 認証」って言葉が出てくると、「認証と認可は違う」とか言い出す人が出てきて、大体の場合「OAuth 認証」 &hellip;">
 	
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
@@ -96,15 +96,77 @@
 
 
     <article class="post">
-	<h2 class="title">
-		
-		<a href="/blog/2016/02/24/is-openid-connect-far-from-oauth2/">
-		
-			OpenID Connectはそんなに大変かね？</a>
-	</h2>
-    <div class="entry-content">
+  <h2 class="title">
+    
+    <a href="/blog/2016/02/25/oauth-authentication/">
+    
+      「OAuth 認証」を定義しよう</a>
+  </h2>
+  <div class="entry-content">
     <div class="meta">
-      <div class="date">Published on: 
+  <div class="author">
+    Author: <a href="http://matake.jp">Nov Matake</a>
+    - 技術的な相談等、お仕事依頼は <a href="http://yauth.jp">YAuth.jp</a> までどうぞ。
+  </div>
+  <div class="date">Date: 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2016-02-25T11:27:00+09:00" pubdate data-updated="true">Feb 25<span>th</span>, 2016</time></div>
+  
+</div>
+    <p>「OAuth 認証」って言葉が出てくると、「認証と認可は違う」とか言い出す人が出てきて、大体の場合「OAuth 認証」言ってた人たちがやりたいことの話とはズレた議論が始まるので、もういっその事「OAuth 認証」とは何かを定義してみましょうかね。</p>
+
+<h2>「OAuth 認証」で Relying Party (RP) がやりたかったこと</h2>
+
+<p>RP (OAuth Client) は、ブラウザの前にいる人を、認証したかったんですよね？</p>
+
+<p>もう少し正確にいうと、ブラウザの前にいる Entity が、RP 側で把握しているどの Identity と紐付いているか、というのを知りたかったんですよね？</p>
+
+<p>いきなり Entity とか Identity とかいう専門用語が出てきてアレですが、そのあたりのことは先日の OpenID TechNight #13 でもお話ししたので、以下のスライドの Entity・Identity・Authentication・Authorization のあたりのページを見てください。</p>
+
+<iframe src="//www.slideshare.net/slideshow/embed_code/key/Lw5OsZp5n6qwXb" width="595" height="485" frameborder="0" marginwidth="0" marginheight="0" scrolling="no" style="border:1px solid #CCC; border-width:1px; margin-bottom:5px; max-width: 100%;" allowfullscreen> </iframe>
+
+
+<p>で、あるサービスが End-User を認証したいって思った時って、普通は当該サービスが事前に当該 Entity に対して ID と Password を登録させて Identity Record (「サービスアカウント」と言ってもいい) を作成し、後日当該 Entity が当該サービスに訪れた際は登録済みの ID と Password を提示させて当該 Entity に紐づく Identity を確定するわけです。</p>
+
+<p>でも Identity Federation (上記スライドでは「ID 連携」と表現している) という手法を使うと、外部のサービス (Identity Provider, IdP) の Identity を当該サービス (Relying Party, RP)の Identity と紐付けて管理することで、End-User から直接パスワードを預からなくても、ブラウザの前にいる Entity (= End-User) に紐づく IdP 側の Identity に紐付いた RP 側の Identity を確定できるので、結果として End-User に紐づく RP 側の Identity を確定することができます。</p>
+
+<p>で、どうやって IdP と RP がそれぞれに管理している Identity を紐付けるのか、というのが、Federation Protocol の肝なわけですが、「OAuth 認証」というのはその一種です。</p>
+
+
+    
+    <a href="/blog/2016/02/25/oauth-authentication/" class="more-link">Read on &rarr;</a>
+  </div>
+
+<div class="meta">
+  
+</div>
+</article>
+
+
+    <article class="post">
+  <h2 class="title">
+    
+    <a href="/blog/2016/02/24/is-openid-connect-far-from-oauth2/">
+    
+      OpenID Connectはそんなに大変かね？</a>
+  </h2>
+  <div class="entry-content">
+    <div class="meta">
+  <div class="author">
+    Author: <a href="http://matake.jp">Nov Matake</a>
+    - 技術的な相談等、お仕事依頼は <a href="http://yauth.jp">YAuth.jp</a> までどうぞ。
+  </div>
+  <div class="date">Date: 
 
 
 
@@ -117,11 +179,9 @@
 
 
 <time datetime="2016-02-24T11:14:00+09:00" pubdate data-updated="true">Feb 24<span>th</span>, 2016</time></div>
-      <div class="tags">Tags: 
-
+  
 </div>
-    </div>
-		<p><a href="http://qiita.com/TakahikoKawasaki/items/f2a0d25a4f05790b3baa">OAuth 2.0 + OpenID Connect のフルスクラッチ実装者が知見を語る &ndash; Qiita</a> ってのになんかフォローアップしろよ的なのが来たので。</p>
+    <p><a href="http://qiita.com/TakahikoKawasaki/items/f2a0d25a4f05790b3baa">OAuth 2.0 + OpenID Connect のフルスクラッチ実装者が知見を語る &ndash; Qiita</a> ってのになんかフォローアップしろよ的なのが来たので。</p>
 
 <p>ざっと読んだ感想としては、「OpenID Connect の OPTIONAL な機能全部実装したら、そら大変ですね」という感じ。（Authlete に関しては、OpenAM みたいな感じで使われる、OpenAM よりはるかに簡単に使える代わりに有料の何かなんだろうな、というイメージです）</p>
 
@@ -148,26 +208,30 @@
 <p>まぁでも「オレオレ OAuth」の上で「オレオレ Connect」やる「JWT 認証」よりはマシなんじゃないかなっていう気はします。</p>
 
 
-		
-		<a href="/blog/2016/02/24/is-openid-connect-far-from-oauth2/" class="more-link">Read on &rarr;</a>
-	</div>
+    
+    <a href="/blog/2016/02/24/is-openid-connect-far-from-oauth2/" class="more-link">Read on &rarr;</a>
+  </div>
 
 <div class="meta">
-	
+  
 </div>
 </article>
 
 
     <article class="post">
-	<h2 class="title">
-		
-		<a href="/blog/2016/01/25/oauth-idp-mix-up-attack-part-ii/">
-		
-			OAuth IdP Mix-up Attack - Part II</a>
-	</h2>
-    <div class="entry-content">
+  <h2 class="title">
+    
+    <a href="/blog/2016/01/25/oauth-idp-mix-up-attack-part-ii/">
+    
+      OAuth IdP Mix-up Attack - Part II</a>
+  </h2>
+  <div class="entry-content">
     <div class="meta">
-      <div class="date">Published on: 
+  <div class="author">
+    Author: <a href="http://matake.jp">Nov Matake</a>
+    - 技術的な相談等、お仕事依頼は <a href="http://yauth.jp">YAuth.jp</a> までどうぞ。
+  </div>
+  <div class="date">Date: 
 
 
 
@@ -180,11 +244,9 @@
 
 
 <time datetime="2016-01-25T15:59:00+09:00" pubdate data-updated="true">Jan 25<span>th</span>, 2016</time></div>
-      <div class="tags">Tags: 
-
+  
 </div>
-    </div>
-		<p><a href="http://oauth.jp/blog/2016/01/12/oauth-idp-mix-up-attack/">OAuth IdP Mix-Up Attack とは？</a> のつづき。</p>
+    <p><a href="http://oauth.jp/blog/2016/01/12/oauth-idp-mix-up-attack/">OAuth IdP Mix-Up Attack とは？</a> のつづき。</p>
 
 <p>OAuth ML上で、以下のどちらを採用すべきかについての議論が収まる気配のない昨今です。</p>
 
@@ -229,26 +291,30 @@
 
 <p>Implicit FlowにおいてResource Endpointが書き換えられていることを想定したケースでは、AuthZ ResponseにResource Endpoint(s) を含めることになって、Code Flowよりさらにややこしい話になるわけですが、それはまた別の機会に&hellip;書く&hellip;かも。</p>
 
-		
-		
-	</div>
+    
+    
+  </div>
 
 <div class="meta">
-	
+  
 </div>
 </article>
 
 
     <article class="post">
-	<h2 class="title">
-		
-		<a href="/blog/2016/01/12/oauth-idp-mix-up-attack/">
-		
-			OAuth IdP Mix-Up Attack とは？</a>
-	</h2>
-    <div class="entry-content">
+  <h2 class="title">
+    
+    <a href="/blog/2016/01/12/oauth-idp-mix-up-attack/">
+    
+      OAuth IdP Mix-Up Attack とは？</a>
+  </h2>
+  <div class="entry-content">
     <div class="meta">
-      <div class="date">Published on: 
+  <div class="author">
+    Author: <a href="http://matake.jp">Nov Matake</a>
+    - 技術的な相談等、お仕事依頼は <a href="http://yauth.jp">YAuth.jp</a> までどうぞ。
+  </div>
+  <div class="date">Date: 
 
 
 
@@ -261,11 +327,9 @@
 
 
 <time datetime="2016-01-12T15:51:00+09:00" pubdate data-updated="true">Jan 12<span>th</span>, 2016</time></div>
-      <div class="tags">Tags: 
-
+  
 </div>
-    </div>
-		<p>成人式を迎えられたID厨の皆様におかれましては、大変おめでとうございます。成人前からID厨とか、キモカワですね。</p>
+    <p>成人式を迎えられたID厨の皆様におかれましては、大変おめでとうございます。成人前からID厨とか、キモカワですね。</p>
 
 <p>さて、今日は、成人式直前にOAuth MLに投下された以下のpostで「OAuth 2.0の脆弱性」として紹介されている &ldquo;IdP Mix-Up Attack&rdquo; について紹介します。</p>
 
@@ -303,26 +367,30 @@
 
 
 
-		
-		<a href="/blog/2016/01/12/oauth-idp-mix-up-attack/" class="more-link">Read on &rarr;</a>
-	</div>
+    
+    <a href="/blog/2016/01/12/oauth-idp-mix-up-attack/" class="more-link">Read on &rarr;</a>
+  </div>
 
 <div class="meta">
-	
+  
 </div>
 </article>
 
 
     <article class="post">
-	<h2 class="title">
-		
-		<a href="/blog/2015/10/19/openid-summit-tokyo-2015/">
-		
-			[PR] OpenID Summit Tokyo 2015 やります！</a>
-	</h2>
-    <div class="entry-content">
+  <h2 class="title">
+    
+    <a href="/blog/2015/10/19/openid-summit-tokyo-2015/">
+    
+      [PR] OpenID Summit Tokyo 2015 やります！</a>
+  </h2>
+  <div class="entry-content">
     <div class="meta">
-      <div class="date">Published on: 
+  <div class="author">
+    Author: <a href="http://matake.jp">Nov Matake</a>
+    - 技術的な相談等、お仕事依頼は <a href="http://yauth.jp">YAuth.jp</a> までどうぞ。
+  </div>
+  <div class="date">Date: 
 
 
 
@@ -335,11 +403,9 @@
 
 
 <time datetime="2015-10-19T11:58:00+09:00" pubdate data-updated="true">Oct 19<span>th</span>, 2015</time></div>
-      <div class="tags">Tags: 
-
+  
 </div>
-    </div>
-		<p>Identity 界隈の皆様は、11/10 に <a href="https://openid.or.jp/summit/2015/index.html">OpenID Summit 2015</a> が開催されることはすでにご存知かと思いますが、OAuth / JWT 愛なみなさまの中にはまだご存知ない方もおられるかもしれないので、こちらでも告知しておきますね。</p>
+    <p>Identity 界隈の皆様は、11/10 に <a href="https://openid.or.jp/summit/2015/index.html">OpenID Summit 2015</a> が開催されることはすでにご存知かと思いますが、OAuth / JWT 愛なみなさまの中にはまだご存知ない方もおられるかもしれないので、こちらでも告知しておきますね。</p>
 
 <p>はい、やります！</p>
 
@@ -364,119 +430,12 @@
 
 <p>ということで、<a href="https://openid.or.jp/summit/2015/index.html">申し込みはこちら</a>！</p>
 
-		
-		
-	</div>
+    
+    
+  </div>
 
 <div class="meta">
-	
-</div>
-</article>
-
-
-    <article class="post">
-	<h2 class="title">
-		
-		<a href="/blog/2015/05/20/jose-and-oauth-assertion-rfcs/">
-		
-			IETF JOSE WG と OAuth WG から一気に9本の RFC が！</a>
-	</h2>
-    <div class="entry-content">
-    <div class="meta">
-      <div class="date">Published on: 
-
-
-
-
-
-
-
-
   
-
-
-<time datetime="2015-05-20T21:05:00+09:00" pubdate data-updated="true">May 20<span>th</span>, 2015</time></div>
-      <div class="tags">Tags: 
-
-</div>
-    </div>
-		<p>一気に出ましたね。すでに過去にもいくつかは紹介したり翻訳したりしていますが、それぞれを簡単に紹介しておきます。</p>
-
-<h3>JOSE WG</h3>
-
-<ul>
-<li><a href="http://tools.ietf.org/html/rfc7515">RFC 7515</a> &ndash; JSON Web Signature (JWS)</li>
-<li><a href="http://tools.ietf.org/html/rfc7516">RFC 7516</a> &ndash; JSON Web Encryption (JWE)</li>
-<li><a href="http://tools.ietf.org/html/rfc7517">RFC 7517</a> &ndash; JSON Web Key (JWK)</li>
-<li><a href="http://tools.ietf.org/html/rfc7518">RFC 7518</a> &ndash; JSON Web Algorithms (JWA)</li>
-<li><a href="http://tools.ietf.org/html/rfc7520">RFC 7520</a> &ndash; Examples of Protecting Content Using JSON Object Signing and Encryption (JOSE)</li>
-</ul>
-
-
-<p>JWS は署名付きのデータを JSON (の Base64 URL Encode) 形式で表現するための仕様で、多くの場合は JSON Payload に対して署名するケースで利用されます。JSON じゃないデータに対して署名して、署名結果を JSON (の Base64 URL Encode) 形式で表現することもできますが&hellip;まぁ、細かい話は置いときましょう。OpenID Connect の ID Token とかは、JWS 仕様に従って署名されています。</p>
-
-<p>JWE は暗号化されたデータを JSON (の Base64 URL Encode) 形式で表現するための仕様です。現状では JWS よりは利用頻度低いかとは思いますが、SAML Assertion を暗号化してるようなユースケースを Connect に移行する時なんかには使うでしょう。</p>
-
-<p>JWK は JWS や JWE などで利用する鍵を JSON 形式で表現するための仕様です。上記2つとよくセットで利用されます。OpenID Connect でも、OpenID Connect Discovery をサポートしているような IdP では大体公開鍵を JWK Set 形式で公開していますね。</p>
-
-<p>JWA は、JWS や JWE で利用される各アルゴリズムおよびそれらの識別子を定義している仕様です。JWT, JWS, JWE をライブラリを通じて利用しているケースでは、あまり気にすることはないでしょうが、JOSE ライブラリ作者は読むことになるでしょう。</p>
-
-<p>最後のは、サンプルリストですね。これはまぁライブラリ作者が読むくらいでしょう。</p>
-
-<h3>OAuth WG</h3>
-
-<ul>
-<li><a href="http://tools.ietf.org/html/rfc7519">RFC 7519</a> &ndash; JSON Web Token (JWT)</li>
-<li><a href="http://tools.ietf.org/html/rfc7521">RFC 7521</a> &ndash; Assertion Framework for OAuth 2.0 Client Authentication and Authorization Grants</li>
-<li><a href="http://tools.ietf.org/html/rfc7522">RFC 7522</a> &ndash; Security Assertion Markup Language (SAML) 2.0 Profile for OAuth 2.0 Client Authentication and Authorization Grants</li>
-<li><a href="http://tools.ietf.org/html/rfc7523">RFC 7523</a> &ndash; JSON Web Token (JWT) Profile for OAuth 2.0 Client Authentication and Authorization Grants</li>
-</ul>
-
-
-<p>JWT は JSON (の Base64 URL Encode) 形式で Assertion を生成するための仕様です。OpenID Connect の ID Token などで利用されています。大抵は署名 (= JWS) とセットで利用されるでしょう。</p>
-
-<p>Assertion Framework for OAuth 2.0 (ry) は、任意の Assertion を OAuth 2.0 の Client Authentication で Client Credentials として使ったり、Authorization Grant として利用して Assertion を Access Token と交換するための仕様です。これ単体では利用できず、後の2つのサブ仕様の共通部分を抽象化した仕様になっています。</p>
-
-<p>SAML 2.0 Profile for OAuth 2.0 (ry) は、SAML Assertion を RFC 7521 の Assertion として利用するための仕様です。既存の SAML SP が持っている SAML Assertion を OAuth 2.0 の Access Token と交換して API Access させたいとか、そういう時に使います。「あぁ、それは SAML 単体じゃ無理なんで、ID-WSF 必要ですねぇ〜」って言われたら、多分 ID-WSF 無視してこれ使えば、OAuth 2.0 使えるようになるはずです。</p>
-
-<p>JWT Profile for OAuth 2.0 (ry) は、JWT を RFC 7521 の Assertion として利用するための仕様です。Client Authentication 目的で利用するケースは、ADFS / Azure AD とかであるはずですが、Authorization Grant として利用するケースは&hellip;あったかな？</p>
-
-<h3>Links</h3>
-
-<ul>
-<li><a href="/blog/2012/10/26/json-web-token-jwt/">JSON Web Token (JWT) &ndash; OAuth.jp</a>
-
-<ul>
-<li>もうこの記事書いてから、2年半経ってるんですね〜。感慨深い。</li>
-</ul>
-</li>
-<li><a href="/blog/2015/03/16/common-jws-implementation-vulnerability/">JWS 実装時に作りがちな脆弱性パターン &ndash; OAuth.jp</a>
-
-<ul>
-<li>すでに JOSE ライブラリは大体出揃ってるので、今後新しく作ることはあまりないかもしれませんが、もし自分で JWS 実装する時は、これ注意してくださいね。</li>
-</ul>
-</li>
-<li><a href="http://openid-foundation-japan.github.io">翻訳ドキュメント一覧 &ndash; OpenID Foundation Japan 翻訳 WG</a>
-
-<ul>
-<li>Draft 版の JOSE 仕様群は、こちらに翻訳版あります。</li>
-</ul>
-</li>
-<li><a href="http://www.sakimura.org/2015/05/2997/">JWSとJWTがRFCになりました！ &ndash; @_Nat Zone</a>
-
-<ul>
-<li>Nat さんはじめ、みなさんおつかれさまでした！</li>
-</ul>
-</li>
-</ul>
-
-
-		
-		
-	</div>
-
-<div class="meta">
-	
 </div>
 </article>
 

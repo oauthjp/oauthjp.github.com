@@ -6,7 +6,7 @@
 	<title>OAuth.jp</title>
     <meta name="author" content="Nov Matake">
     
-	<meta name="description" content="Published on: Mar 6th, 2011 Tags: @novです。 OAuth 2.0 draft v.13準拠のRack::OAuth2 version 0.3.0のリリースにあわせて、Rails3でSample Appを作りました。 http://rack-oauth2- &hellip;">
+	<meta name="description" content="Author: Nov Matake - 技術的な相談等、お仕事依頼は YAuth.jp までどうぞ。 Date: Apr 21st, 2011 @nov です。 先日 @ritou が「OAuth 2.0 MAC Tokenを使った署名付きリクエストの作り方」という記事を書いてたので、 &hellip;">
 	
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
@@ -96,15 +96,99 @@
 
 
     <article class="post">
-	<h2 class="title">
-		
-		<a href="/blog/2011/03/06/rackoauth2-sample-server/">
-		
-			Rack::OAuth2 Sample Server</a>
-	</h2>
-    <div class="entry-content">
+  <h2 class="title">
+    
+    <a href="/blog/2011/04/21/rackoauth2tokentypemac/">
+    
+      Rack::OAuth2 で Token_type=mac をサポート</a>
+  </h2>
+  <div class="entry-content">
     <div class="meta">
-      <div class="date">Published on: 
+  <div class="author">
+    Author: <a href="http://matake.jp">Nov Matake</a>
+    - 技術的な相談等、お仕事依頼は <a href="http://yauth.jp">YAuth.jp</a> までどうぞ。
+  </div>
+  <div class="date">Date: 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-04-21T00:00:00+09:00" pubdate data-updated="true">Apr 21<span>st</span>, 2011</time></div>
+  
+</div>
+    <p>@nov です。</p>
+
+
+<p>先日 @ritou が「<a href="http://d.hatena.ne.jp/ritou/20110418/1303055521">OAuth 2.0 MAC Tokenを使った署名付きリクエストの作り方</a>」という記事を書いてたので、それを参考に Rack::OAuth2 でも MAC サポートを追加しました。</p>
+
+
+<p>Sample Server はこちらです。</p>
+
+
+<p><a href="http://rack-oauth2-sample-mac.heroku.com/"><a href="http://rack-oauth2-sample-mac.heroku.com/">http://rack-oauth2-sample-mac.heroku.com/</a></a></p>
+
+
+<p><a href="https://github.com/nov/rack-oauth2"><a href="https://github.com/nov/rack-oauth2">https://github.com/nov/rack-oauth2</a></a></p>
+
+
+<p>そして早速 @ritou が Sample Client を作ってくれました。（おかげで Bug が一つ見つかりました。Thanks!）</p>
+
+
+<p><a href="http://www8322u.sakura.ne.jp/oauth2sample/"><a href="http://www8322u.sakura.ne.jp/oauth2sample/">http://www8322u.sakura.ne.jp/oauth2sample/</a></a></p>
+
+
+<p>ついでに Rack::OAuth2 にも AccessToken モデルを用意しました。</p>
+
+
+<p>Bearer、MAC ともに使い方はこんな感じです。</p>
+
+
+<p><a href="https://gist.github.com/933962"><a href="https://gist.github.com/933962">https://gist.github.com/933962</a></a></p>
+
+
+<p>そして密かに Legacy なアクセストークン (Facebook および mixi を想定) もサポートしだしました。 Bearer とか MAC とか言っても、誰もそんなの使ってないですからね。。</p>
+
+
+<p>Legacy の方も、こんな感じで使えるんでは無いでしょうか？（適当w）</p>
+
+
+<p><a href="https://gist.github.com/933954"><a href="https://gist.github.com/933954">https://gist.github.com/933954</a></a></p>
+
+
+<p>これで OAuth2 gem から Rack::OAuth2 に、いつでも乗り換えられますね ;)</p>
+
+
+    
+    
+  </div>
+
+<div class="meta">
+  
+</div>
+</article>
+
+
+    <article class="post">
+  <h2 class="title">
+    
+    <a href="/blog/2011/03/06/rackoauth2-sample-server/">
+    
+      Rack::OAuth2 Sample Server</a>
+  </h2>
+  <div class="entry-content">
+    <div class="meta">
+  <div class="author">
+    Author: <a href="http://matake.jp">Nov Matake</a>
+    - 技術的な相談等、お仕事依頼は <a href="http://yauth.jp">YAuth.jp</a> までどうぞ。
+  </div>
+  <div class="date">Date: 
 
 
 
@@ -117,11 +201,9 @@
 
 
 <time datetime="2011-03-06T00:00:00+09:00" pubdate data-updated="true">Mar 6<span>th</span>, 2011</time></div>
-      <div class="tags">Tags: 
-
+  
 </div>
-    </div>
-		<p>@novです。</p>
+    <p>@novです。</p>
 
 
 <p>OAuth 2.0 draft v.13準拠のRack::OAuth2 version 0.3.0のリリースにあわせて、Rails3でSample Appを作りました。</p>
@@ -151,26 +233,30 @@
 <p>Resource Server =&gt; config/application.rb (Rack App) &amp; lib/authentication.rb</p>
 
 
-		
-		
-	</div>
+    
+    
+  </div>
 
 <div class="meta">
-	
+  
 </div>
 </article>
 
 
     <article class="post">
-	<h2 class="title">
-		
-		<a href="/blog/2011/01/31/oauth2-gemmixi-graph-api/">
-		
-			OAuth2 Gemを使ってmixi Graph APIにアクセス</a>
-	</h2>
-    <div class="entry-content">
+  <h2 class="title">
+    
+    <a href="/blog/2011/01/31/oauth2-gemmixi-graph-api/">
+    
+      OAuth2 Gemを使ってmixi Graph APIにアクセス</a>
+  </h2>
+  <div class="entry-content">
     <div class="meta">
-      <div class="date">Published on: 
+  <div class="author">
+    Author: <a href="http://matake.jp">Nov Matake</a>
+    - 技術的な相談等、お仕事依頼は <a href="http://yauth.jp">YAuth.jp</a> までどうぞ。
+  </div>
+  <div class="date">Date: 
 
 
 
@@ -183,11 +269,9 @@
 
 
 <time datetime="2011-01-31T00:00:00+09:00" pubdate data-updated="true">Jan 31<span>st</span>, 2011</time></div>
-      <div class="tags">Tags: 
-
+  
 </div>
-    </div>
-		<h2>OAuth2 gemのインストール</h2>
+    <h2>OAuth2 gemのインストール</h2>
 
 
 <p>現状OAuth2 gemはOAuth 2.0の古いspec (draft 0?) に準拠しているので、mixiがサポートしているdraft 10に対応したOAuth2 gemをここからgit clone &amp; rake installする。</p>
@@ -211,26 +295,30 @@
 <p>あと、&#8221;w_voice&#8221; のパーミッションを取得しても、&#8221;r_voice&#8221; のパーミッションは付いてこないので注意。</p>
 
 
-		
-		
-	</div>
+    
+    
+  </div>
 
 <div class="meta">
-	
+  
 </div>
 </article>
 
 
     <article class="post">
-	<h2 class="title">
-		
-		<a href="/blog/2010/12/15/oauth-hatena-developer-center/">
-		
-			はてな、OAuthに対応 開発者によるはてなのデータや機能の活用を容易に。「Hatena Developer Center」を公開</a>
-	</h2>
-    <div class="entry-content">
+  <h2 class="title">
+    
+    <a href="/blog/2010/12/15/oauth-hatena-developer-center/">
+    
+      はてな、OAuthに対応 開発者によるはてなのデータや機能の活用を容易に。「Hatena Developer Center」を公開</a>
+  </h2>
+  <div class="entry-content">
     <div class="meta">
-      <div class="date">Published on: 
+  <div class="author">
+    Author: <a href="http://matake.jp">Nov Matake</a>
+    - 技術的な相談等、お仕事依頼は <a href="http://yauth.jp">YAuth.jp</a> までどうぞ。
+  </div>
+  <div class="date">Date: 
 
 
 
@@ -243,32 +331,34 @@
 
 
 <time datetime="2010-12-15T00:00:00+09:00" pubdate data-updated="true">Dec 15<span>th</span>, 2010</time></div>
-      <div class="tags">Tags: 
-
+  
 </div>
-    </div>
-		<p>2010/12/13にはてなが開発者向けサイトHatena Developer <br/>Centerを開始し、OAuthとOAuth対応の４つのAPI「はてなブックマークAtom API」「はてなダイアリー <br/>AtomPub」「はてなココ スポットAPI」「はてなココ イマココAPI」を同時に公開しました。  Hatena Developer Center <br/><a href="http://developer.hatena.ne.jp/"><a href="http://developer.hatena.ne.jp/"><a href="http://developer.hatena.ne.jp/">http://developer.hatena.ne.jp/</a></a></a> <p></p> プレスリリース <br/><a href="http://hatena.g.hatena.ne.jp/hatenapress/20101213/1292222448"><a href="http://hatena.g.hatena.ne.jp/hatenapress/20101213/1292222448"><a href="http://hatena.g.hatena.ne.jp/hatenapress/20101213/1292222448">http://hatena.g.hatena.ne.jp/hatenapress/20101213/1292222448</a></a></a></p>
+    <p>2010/12/13にはてなが開発者向けサイトHatena Developer <br/>Centerを開始し、OAuthとOAuth対応の４つのAPI「はてなブックマークAtom API」「はてなダイアリー <br/>AtomPub」「はてなココ スポットAPI」「はてなココ イマココAPI」を同時に公開しました。  Hatena Developer Center <br/><a href="http://developer.hatena.ne.jp/"><a href="http://developer.hatena.ne.jp/"><a href="http://developer.hatena.ne.jp/">http://developer.hatena.ne.jp/</a></a></a> <p></p> プレスリリース <br/><a href="http://hatena.g.hatena.ne.jp/hatenapress/20101213/1292222448"><a href="http://hatena.g.hatena.ne.jp/hatenapress/20101213/1292222448"><a href="http://hatena.g.hatena.ne.jp/hatenapress/20101213/1292222448">http://hatena.g.hatena.ne.jp/hatenapress/20101213/1292222448</a></a></a></p>
 
-		
-		
-	</div>
+    
+    
+  </div>
 
 <div class="meta">
-	
+  
 </div>
 </article>
 
 
     <article class="post">
-	<h2 class="title">
-		
-		<a href="/blog/2010/12/15/oauth/">
-		
-			はてなのOAuthをさっそく使ってみました</a>
-	</h2>
-    <div class="entry-content">
+  <h2 class="title">
+    
+    <a href="/blog/2010/12/15/oauth/">
+    
+      はてなのOAuthをさっそく使ってみました</a>
+  </h2>
+  <div class="entry-content">
     <div class="meta">
-      <div class="date">Published on: 
+  <div class="author">
+    Author: <a href="http://matake.jp">Nov Matake</a>
+    - 技術的な相談等、お仕事依頼は <a href="http://yauth.jp">YAuth.jp</a> までどうぞ。
+  </div>
+  <div class="date">Date: 
 
 
 
@@ -281,11 +371,9 @@
 
 
 <time datetime="2010-12-15T00:00:00+09:00" pubdate data-updated="true">Dec 15<span>th</span>, 2010</time></div>
-      <div class="tags">Tags: 
-
+  
 </div>
-    </div>
-		<p>こんばんは、ritouです。 </p>
+    <p>こんばんは、ritouです。 </p>
 
 
 <p> はてなのOAuthですが、OAuth 1.0aに対応しているようです。 <br/>アプリケーション登録から動作確認まで試してみましたので、他の開発者のみな <br/>さんも是非トライしてみてはいかがでしょうか？ <p></p> はてなのAPIがOAuth対応したというので、早速試してみた！ <br/><a href="http://d.hatena.ne.jp/ritou/20101215/1292347014"><a href="http://d.hatena.ne.jp/ritou/20101215/1292347014"><a href="http://d.hatena.ne.jp/ritou/20101215/1292347014">http://d.hatena.ne.jp/ritou/20101215/1292347014</a></a></a></p>
@@ -299,77 +387,12 @@
 <p><a href="https://gist.github.com/741666"><a href="https://gist.github.com/741666">https://gist.github.com/741666</a></a></p>
 
 
-		
-		
-	</div>
+    
+    
+  </div>
 
 <div class="meta">
-	
-</div>
-</article>
-
-
-    <article class="post">
-	<h2 class="title">
-		
-		<a href="/blog/2010/11/16/oauth-20/">
-		
-			OAuth 2.0の仕様書を翻訳しました</a>
-	</h2>
-    <div class="entry-content">
-    <div class="meta">
-      <div class="date">Published on: 
-
-
-
-
-
-
-
-
   
-
-
-<time datetime="2010-11-16T00:00:00+09:00" pubdate data-updated="true">Nov 16<span>th</span>, 2010</time></div>
-      <div class="tags">Tags: 
-
-</div>
-    </div>
-		<p><a href="http://www.openid.or.jp/">OpenID Foundation Japan</a>の<a href="http://openid-foundation-japan.github.com/">翻訳・教育ワーキンググループ</a>を中心とした有志10名で、<a href="http://tools.ietf.org/html/draft-ietf-oauth-v2-10">The OAuth 2.0 Protocol draft v.10</a>を翻訳しました。</p>
-
-
-<p><span style="font-size: medium;"><strong><a href="http://openid-foundation-japan.github.com/draft-ietf-oauth-v2.ja.html">The OAuth 2.0 Protocol (翻訳版)</a></strong></span></p>
-
-
-<p>まだOAuth 2.0は仕様策定中なので、対象の原文はdraft v.10です。</p>
-
-
-<p>mixiもfacebookもOAuth 2.0のdraft 10をサポートしているので、DeveloperがOAuth 2.0対応のAPIを使う際には、このdraft v.10を使うことになるでしょう。</p>
-
-
-<p>この翻訳によって、日本のDeveloperのみなさんにOAuthがより身近になればと思います。</p>
-
-
-
-
-<p>原文は今後draft v.11-13を経てFinalになるという噂ですが、v.11の公開を前に、仕様書の分割や採用する署名方式に関する議論が長引いているようです。今月中にv.11が出てくることを祈りましょう。</p>
-
-
-<p>翻訳版は、国内外でのOAuth Serverの実装状況なども考慮し、今後もアップデートをしていく予定です。</p>
-
-
-<p>4月に公開したOAuth 1.0の翻訳版も<a href="http://tools.ietf.org/html/draft-hammer-oauth-10">OAuth 1.0 draft v.10</a>が対象なので、早く<a href="http://tools.ietf.org/html/rfc5849">RFC版</a>との<a href="http://tools.ietf.org/rfcdiff?url2=rfc5849">diff</a>も反映しなきゃですね。</p>
-
-
-<p><span style="font-size: medium;"><strong><a href="http://openid-foundation-japan.github.com/draft-hammer-oauth-10.html">The OAuth 1.0 Protocol (翻訳版)</a></strong></span></p>
-
-
-		
-		
-	</div>
-
-<div class="meta">
-	
 </div>
 </article>
 

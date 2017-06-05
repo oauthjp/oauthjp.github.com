@@ -4,7 +4,7 @@
   <title><![CDATA[OAuth.jp]]></title>
   <link href="http://oauth.jp/atom.xml" rel="self"/>
   <link href="http://oauth.jp/"/>
-  <updated>2017-06-05T15:24:40+09:00</updated>
+  <updated>2017-06-05T16:08:08+09:00</updated>
   <id>http://oauth.jp/</id>
   <author>
     <name><![CDATA[Nov Matake]]></name>
@@ -12,6 +12,53 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[PowerShell for AzureAD]]></title>
+    <link href="http://oauth.jp/blog/2017/05/18/powershell-for-azuread/"/>
+    <updated>2017-05-18T14:17:00+09:00</updated>
+    <id>http://oauth.jp/blog/2017/05/18/powershell-for-azuread</id>
+    <content type="html"><![CDATA[<p>Windows 10 で AzureAD Module インポート済の PowerShell を気軽に起動できるようにする方法メモ。</p>
+
+<h2>前提条件</h2>
+
+<p>前提として、PowerShell に AzureAD アクセスに必要な Module がインストールされているものとします。</p>
+
+<p>Module インストールは以下のコマンドを Administrator として実行するだけです。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ps1'><span class='line'><span class="n">Install-Module</span> <span class="n">MSOnline</span><span class="p">,</span> <span class="n">AzureAD</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><a href="https://msdn.microsoft.com/ja-jp/library/jj151815.aspx#bkmk_installmodule">こんな ext</a> は別にいらないです。以前はこいつのインストールでいろいろはまったんですが、あれはなんだったんでしょうか&hellip;</p>
+
+<h2>ショートカット作成</h2>
+
+<p>まずは PowerShell 自体のショートカットを作成します。</p>
+
+<p><img src="http://oauth.jp/images/posts/azure/powershell-for-azure-ad.png" alt="PowerShell for AzureAD" /></p>
+
+<p>そしておもむろに Target のところを下記の PowerShell Script に変更。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ps1'><span class='line'><span class="n">PowerShell</span> <span class="n">-noexit</span> <span class="s2">&quot;Import-Module MSOnline, AzureAD; Connect-MsolService&quot;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>そして Advanced Options の &ldquo;Run as Administrator&rdquo; にチェック。</p>
+
+<p>これで、このショートカットダブルクリックするだけで、自動でログイン画面まで Popup してくれるようになります。</p>
+
+<h2>ショートカット起動</h2>
+
+<p>起動したら自動でこうなります。</p>
+
+<p><img src="http://oauth.jp/images/posts/azure/powershell-for-azure-ad-launched.png" alt="PowerShell for AzureAD Launched" /></p>
+
+<p>またちょっと Windows 力上がった気がする。</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[OAuth2 in Action が Amazon にも]]></title>
@@ -154,7 +201,7 @@
 
 <p>動作確認用のユーザーも作っておきましたので、これが正常に動いてる間はご自由にお使いください。</p>
 
-<p>Username: <a href="&#x6d;&#97;&#105;&#x6c;&#x74;&#x6f;&#x3a;&#x79;&#x6f;&#x75;&#64;&#115;&#x74;&#115;&#x34;&#98;&#x32;&#x63;&#46;&#111;&#x6e;&#109;&#x69;&#x63;&#x72;&#x6f;&#x73;&#111;&#102;&#x74;&#x2e;&#x63;&#x6f;&#x6d;">&#121;&#111;&#117;&#x40;&#x73;&#x74;&#x73;&#52;&#x62;&#50;&#99;&#x2e;&#111;&#x6e;&#109;&#105;&#x63;&#x72;&#111;&#115;&#x6f;&#102;&#x74;&#46;&#99;&#x6f;&#x6d;</a>
+<p>Username: <a href="&#109;&#x61;&#105;&#108;&#116;&#x6f;&#x3a;&#x79;&#x6f;&#117;&#x40;&#115;&#116;&#x73;&#52;&#98;&#50;&#99;&#x2e;&#111;&#110;&#x6d;&#105;&#99;&#114;&#x6f;&#115;&#x6f;&#x66;&#x74;&#46;&#x63;&#111;&#109;">&#x79;&#x6f;&#x75;&#64;&#115;&#x74;&#x73;&#52;&#x62;&#x32;&#x63;&#46;&#111;&#110;&#109;&#x69;&#99;&#114;&#x6f;&#x73;&#x6f;&#x66;&#116;&#x2e;&#99;&#x6f;&#109;</a>
 Password: ]6]yzxXYG7uruM4p</p>
 
 <p>動かなくなったら、あきらめて自分で Azure AD B2C 環境セットアップしてください。</p>
@@ -307,13 +354,13 @@ Password: ]6]yzxXYG7uruM4p</p>
 
 <p>あと、Email 指定してもそのメアドのユーザーにログインできるわけでもないです。</p>
 
-<p><a href="&#109;&#97;&#x69;&#x6c;&#x74;&#111;&#58;&#x6e;&#x6f;&#x76;&#64;&#101;&#x78;&#97;&#x6d;&#x70;&#x6c;&#101;&#46;&#99;&#111;&#x6d;">&#110;&#111;&#118;&#x40;&#101;&#120;&#x61;&#x6d;&#x70;&#108;&#x65;&#46;&#x63;&#111;&#109;</a> の NameID を持つ SAML Assertion で、<a href="&#x6d;&#x61;&#x69;&#108;&#x74;&#x6f;&#58;&#x6e;&#111;&#x76;&#x40;&#109;&#x61;&#x74;&#x61;&#107;&#x65;&#x2e;&#106;&#x70;">&#x6e;&#111;&#118;&#64;&#x6d;&#97;&#x74;&#97;&#x6b;&#101;&#46;&#x6a;&#x70;</a> の GitHub アカウントにログインできたりします。</p>
+<p><a href="&#109;&#x61;&#x69;&#x6c;&#x74;&#x6f;&#x3a;&#110;&#x6f;&#x76;&#64;&#101;&#120;&#97;&#109;&#x70;&#108;&#101;&#46;&#99;&#111;&#x6d;">&#x6e;&#x6f;&#x76;&#64;&#101;&#x78;&#97;&#x6d;&#x70;&#108;&#x65;&#46;&#x63;&#111;&#x6d;</a> の NameID を持つ SAML Assertion で、<a href="&#109;&#97;&#105;&#108;&#116;&#x6f;&#58;&#x6e;&#x6f;&#x76;&#x40;&#x6d;&#97;&#x74;&#x61;&#x6b;&#101;&#46;&#x6a;&#112;">&#110;&#111;&#x76;&#64;&#x6d;&#x61;&#x74;&#x61;&#x6b;&#x65;&#46;&#x6a;&#x70;</a> の GitHub アカウントにログインできたりします。</p>
 
 <p>SAML Federation とか言うてるけど、結局既存の GitHub.com アカウントに SAML IdP 側のアカウントを Link するだけなんですよ。</p>
 
 <p>その紐付けは、SAML での初回ログイン時に GitHub.com 側の ID &amp; Password 入力して行います。</p>
 
-<p>つまり、<a href="&#109;&#x61;&#x69;&#x6c;&#x74;&#111;&#58;&#110;&#x6f;&#118;&#x40;&#101;&#x78;&#x61;&#109;&#112;&#x6c;&#x65;&#46;&#x63;&#x6f;&#109;">&#x6e;&#111;&#118;&#x40;&#x65;&#120;&#x61;&#109;&#x70;&#x6c;&#101;&#46;&#x63;&#x6f;&#x6d;</a> の NameID を持つ SAML Assertion をどの GitHub アカウントに紐づけるかは、エンドユーザーが決定権を持っています。</p>
+<p>つまり、<a href="&#109;&#x61;&#x69;&#x6c;&#116;&#111;&#58;&#x6e;&#x6f;&#x76;&#x40;&#101;&#x78;&#x61;&#109;&#x70;&#108;&#x65;&#46;&#99;&#111;&#109;">&#x6e;&#x6f;&#x76;&#64;&#101;&#120;&#97;&#109;&#x70;&#108;&#x65;&#46;&#99;&#x6f;&#x6d;</a> の NameID を持つ SAML Assertion をどの GitHub アカウントに紐づけるかは、エンドユーザーが決定権を持っています。</p>
 
 <p>情シスじゃないです。</p>
 
@@ -2273,84 +2320,6 @@ Mac から Remote Desktop 経由でいじりたかったんでね。</p>
 <p>Global の方の OpenID Foundation からも、Mike Jones が Hands-on 会場に来てくれるようなので、Mike の OpenID Connect Certification のセッションをみた後、そのまま Hands-on に参加すると良いと思います！</p>
 
 <p>ということで、<a href="https://openid.or.jp/summit/2015/index.html">申し込みはこちら</a>！</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[IETF JOSE WG と OAuth WG から一気に9本の RFC が！]]></title>
-    <link href="http://oauth.jp/blog/2015/05/20/jose-and-oauth-assertion-rfcs/"/>
-    <updated>2015-05-20T21:05:00+09:00</updated>
-    <id>http://oauth.jp/blog/2015/05/20/jose-and-oauth-assertion-rfcs</id>
-    <content type="html"><![CDATA[<p>一気に出ましたね。すでに過去にもいくつかは紹介したり翻訳したりしていますが、それぞれを簡単に紹介しておきます。</p>
-
-<h3>JOSE WG</h3>
-
-<ul>
-<li><a href="http://tools.ietf.org/html/rfc7515">RFC 7515</a> &ndash; JSON Web Signature (JWS)</li>
-<li><a href="http://tools.ietf.org/html/rfc7516">RFC 7516</a> &ndash; JSON Web Encryption (JWE)</li>
-<li><a href="http://tools.ietf.org/html/rfc7517">RFC 7517</a> &ndash; JSON Web Key (JWK)</li>
-<li><a href="http://tools.ietf.org/html/rfc7518">RFC 7518</a> &ndash; JSON Web Algorithms (JWA)</li>
-<li><a href="http://tools.ietf.org/html/rfc7520">RFC 7520</a> &ndash; Examples of Protecting Content Using JSON Object Signing and Encryption (JOSE)</li>
-</ul>
-
-
-<p>JWS は署名付きのデータを JSON (の Base64 URL Encode) 形式で表現するための仕様で、多くの場合は JSON Payload に対して署名するケースで利用されます。JSON じゃないデータに対して署名して、署名結果を JSON (の Base64 URL Encode) 形式で表現することもできますが&hellip;まぁ、細かい話は置いときましょう。OpenID Connect の ID Token とかは、JWS 仕様に従って署名されています。</p>
-
-<p>JWE は暗号化されたデータを JSON (の Base64 URL Encode) 形式で表現するための仕様です。現状では JWS よりは利用頻度低いかとは思いますが、SAML Assertion を暗号化してるようなユースケースを Connect に移行する時なんかには使うでしょう。</p>
-
-<p>JWK は JWS や JWE などで利用する鍵を JSON 形式で表現するための仕様です。上記2つとよくセットで利用されます。OpenID Connect でも、OpenID Connect Discovery をサポートしているような IdP では大体公開鍵を JWK Set 形式で公開していますね。</p>
-
-<p>JWA は、JWS や JWE で利用される各アルゴリズムおよびそれらの識別子を定義している仕様です。JWT, JWS, JWE をライブラリを通じて利用しているケースでは、あまり気にすることはないでしょうが、JOSE ライブラリ作者は読むことになるでしょう。</p>
-
-<p>最後のは、サンプルリストですね。これはまぁライブラリ作者が読むくらいでしょう。</p>
-
-<h3>OAuth WG</h3>
-
-<ul>
-<li><a href="http://tools.ietf.org/html/rfc7519">RFC 7519</a> &ndash; JSON Web Token (JWT)</li>
-<li><a href="http://tools.ietf.org/html/rfc7521">RFC 7521</a> &ndash; Assertion Framework for OAuth 2.0 Client Authentication and Authorization Grants</li>
-<li><a href="http://tools.ietf.org/html/rfc7522">RFC 7522</a> &ndash; Security Assertion Markup Language (SAML) 2.0 Profile for OAuth 2.0 Client Authentication and Authorization Grants</li>
-<li><a href="http://tools.ietf.org/html/rfc7523">RFC 7523</a> &ndash; JSON Web Token (JWT) Profile for OAuth 2.0 Client Authentication and Authorization Grants</li>
-</ul>
-
-
-<p>JWT は JSON (の Base64 URL Encode) 形式で Assertion を生成するための仕様です。OpenID Connect の ID Token などで利用されています。大抵は署名 (= JWS) とセットで利用されるでしょう。</p>
-
-<p>Assertion Framework for OAuth 2.0 (ry) は、任意の Assertion を OAuth 2.0 の Client Authentication で Client Credentials として使ったり、Authorization Grant として利用して Assertion を Access Token と交換するための仕様です。これ単体では利用できず、後の2つのサブ仕様の共通部分を抽象化した仕様になっています。</p>
-
-<p>SAML 2.0 Profile for OAuth 2.0 (ry) は、SAML Assertion を RFC 7521 の Assertion として利用するための仕様です。既存の SAML SP が持っている SAML Assertion を OAuth 2.0 の Access Token と交換して API Access させたいとか、そういう時に使います。「あぁ、それは SAML 単体じゃ無理なんで、ID-WSF 必要ですねぇ〜」って言われたら、多分 ID-WSF 無視してこれ使えば、OAuth 2.0 使えるようになるはずです。</p>
-
-<p>JWT Profile for OAuth 2.0 (ry) は、JWT を RFC 7521 の Assertion として利用するための仕様です。Client Authentication 目的で利用するケースは、ADFS / Azure AD とかであるはずですが、Authorization Grant として利用するケースは&hellip;あったかな？</p>
-
-<h3>Links</h3>
-
-<ul>
-<li><a href="http://oauth.jp/blog/2012/10/26/json-web-token-jwt/">JSON Web Token (JWT) &ndash; OAuth.jp</a>
-
-<ul>
-<li>もうこの記事書いてから、2年半経ってるんですね〜。感慨深い。</li>
-</ul>
-</li>
-<li><a href="http://oauth.jp/blog/2015/03/16/common-jws-implementation-vulnerability/">JWS 実装時に作りがちな脆弱性パターン &ndash; OAuth.jp</a>
-
-<ul>
-<li>すでに JOSE ライブラリは大体出揃ってるので、今後新しく作ることはあまりないかもしれませんが、もし自分で JWS 実装する時は、これ注意してくださいね。</li>
-</ul>
-</li>
-<li><a href="http://openid-foundation-japan.github.io">翻訳ドキュメント一覧 &ndash; OpenID Foundation Japan 翻訳 WG</a>
-
-<ul>
-<li>Draft 版の JOSE 仕様群は、こちらに翻訳版あります。</li>
-</ul>
-</li>
-<li><a href="http://www.sakimura.org/2015/05/2997/">JWSとJWTがRFCになりました！ &ndash; @_Nat Zone</a>
-
-<ul>
-<li>Nat さんはじめ、みなさんおつかれさまでした！</li>
-</ul>
-</li>
-</ul>
-
 ]]></content>
   </entry>
   

@@ -6,7 +6,7 @@
 	<title>OAuth.jp</title>
     <meta name="author" content="Nov Matake">
     
-	<meta name="description" content="Published on: Apr 9th, 2012 Tags: WebIntentsを使ってOpenID ConnectのDiscoveryをやってみました。 試すには、以下のステップを踏んでください。 https://connect-op.heroku.com/ にアクセス ( &hellip;">
+	<meta name="description" content="Author: Nov Matake - 技術的な相談等、お仕事依頼は YAuth.jp までどうぞ。 Date: Apr 9th, 2012 When you access to an OpenID Relying Party (RP), you&#8217;ll see 5 or more &hellip;">
 	
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
@@ -96,15 +96,19 @@
 
 
     <article class="post">
-	<h2 class="title">
-		
-		<a href="/blog/2012/04/09/webintents-openid-connect-discovery/">
-		
-			WebIntent X OpenID Connect</a>
-	</h2>
-    <div class="entry-content">
+  <h2 class="title">
+    
+    <a href="/blog/2012/04/09/when-you-access-to-an-openid-relying-party-rp/">
+    
+      WebIntent X OpenID Connect (En)</a>
+  </h2>
+  <div class="entry-content">
     <div class="meta">
-      <div class="date">Published on: 
+  <div class="author">
+    Author: <a href="http://matake.jp">Nov Matake</a>
+    - 技術的な相談等、お仕事依頼は <a href="http://yauth.jp">YAuth.jp</a> までどうぞ。
+  </div>
+  <div class="date">Date: 
 
 
 
@@ -117,11 +121,100 @@
 
 
 <time datetime="2012-04-09T00:00:00+09:00" pubdate data-updated="true">Apr 9<span>th</span>, 2012</time></div>
-      <div class="tags">Tags: 
-
+  
 </div>
-    </div>
-		<iframe src="http://www.slideshare.net/slideshow/embed_code/12296336" width="400" height="334" frameborder="0" marginwidth="0" marginheight="0" scrolling="no"></iframe>
+    <iframe src="http://www.slideshare.net/slideshow/embed_code/12296336" width="400" height="334" frameborder="0" marginwidth="0" marginheight="0" scrolling="no"></iframe>
+
+
+<br/><p>When you access to an OpenID Relying Party (RP), you&#8217;ll see 5 or more OpenID Provider (OP) logos at its login page. At worst, you can see 10+ OP logos, even though more than half of them are totally unknown for you. It&#8217;s called &#8220;NASCAR Problem&#8221;.</p>
+
+
+
+
+<p>OpenID community had been trying to solve the problem for a long time, but not much progress on it.</p>
+
+
+
+
+<p>Now, it&#8217;s the era of HTML5, and browsers-side functionality is improving very much.
+I found <a href="http://webintents.org/">HTML5&#8217;s WebIntents</a> [<a href="http://dvcs.w3.org/hg/web-intents/raw-file/tip/spec/Overview.html">W3C draft spec</a>] as a browser-based &#8220;discovery&#8221; protocol, which can be a solution for OpenID&#8217;s NASCAR problem.</p>
+
+
+
+
+<p>So that I made an OpenID Connect Provider &amp; Relying Party which relying on the discovery part to WebIntents.</p>
+
+
+
+
+<p>You can play my demo following the below steps.</p>
+
+
+
+
+<ol><li>Access to <a href="https://connect-op.heroku.com/">Nov OP</a> which has <intent> tag in its HTML  tag. Your browser will automatically register this site as a service provider of &#8220;OpenID Connect Discovery&#8221;.</intent></li>
+<li>Access to <a href="https://connect-rp.heroku.com/">Nov RP</a>.</li>
+<li>Click “Or Try WebIntents?” button, which initiate WebIntents-based OpenID Connect Discovery flow.</li>
+</ol>
+
+
+<p>Then you&#8217;ll see a small popup which let you choose an OP.
+After you choose Nov OP, you will go back to Nov OP and see an alert popup which shows raw OpenID Connect discovery result.
+Once RP received the response, it does normal OpenID Connect login flow.</p>
+
+
+
+
+<p>One of my friends, Ryo, made his <a href="https://openidconnect.info/">sample OP</a> &#8220;WebIntent-able&#8221;, so once you access to Ryo&#8217;s OP, you can see 2 OPs at the popup window of intent candidates.</p>
+
+
+
+
+<p><br/>
+ps.<br/>
+For some reason, this demo works only on Safari.
+(probably because of webintents.org&#8217;s JS shim issue?)</p>
+
+
+    
+    
+  </div>
+
+<div class="meta">
+  
+</div>
+</article>
+
+
+    <article class="post">
+  <h2 class="title">
+    
+    <a href="/blog/2012/04/09/webintents-openid-connect-discovery/">
+    
+      WebIntent X OpenID Connect</a>
+  </h2>
+  <div class="entry-content">
+    <div class="meta">
+  <div class="author">
+    Author: <a href="http://matake.jp">Nov Matake</a>
+    - 技術的な相談等、お仕事依頼は <a href="http://yauth.jp">YAuth.jp</a> までどうぞ。
+  </div>
+  <div class="date">Date: 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-04-09T00:00:00+09:00" pubdate data-updated="true">Apr 9<span>th</span>, 2012</time></div>
+  
+</div>
+    <iframe src="http://www.slideshare.net/slideshow/embed_code/12296336" width="400" height="334" frameborder="0" marginwidth="0" marginheight="0" scrolling="no"></iframe>
 
 
 <br/><p>WebIntentsを使ってOpenID ConnectのDiscoveryをやってみました。</p>
@@ -149,26 +242,30 @@
 webintents.orgのJSの問題なのか、なぜかSafariでしか動きません。</p>
 
 
-		
-		
-	</div>
+    
+    
+  </div>
 
 <div class="meta">
-	
+  
 </div>
 </article>
 
 
     <article class="post">
-	<h2 class="title">
-		
-		<a href="/blog/2012/03/16/the-as-rs-work-is-probably-simpler-and-more/">
-		
-			The AS->RS Work Is Probably Simpler and More Useful at This Point.</a>
-	</h2>
-    <div class="entry-content">
+  <h2 class="title">
+    
+    <a href="/blog/2012/03/16/the-as-rs-work-is-probably-simpler-and-more/">
+    
+      The AS->RS Work Is Probably Simpler and More Useful at This Point.</a>
+  </h2>
+  <div class="entry-content">
     <div class="meta">
-      <div class="date">Published on: 
+  <div class="author">
+    Author: <a href="http://matake.jp">Nov Matake</a>
+    - 技術的な相談等、お仕事依頼は <a href="http://yauth.jp">YAuth.jp</a> までどうぞ。
+  </div>
+  <div class="date">Date: 
 
 
 
@@ -181,11 +278,9 @@ webintents.orgのJSの問題なのか、なぜかSafariでしか動きません�
 
 
 <time datetime="2012-03-16T00:00:00+09:00" pubdate data-updated="true">Mar 16<span>th</span>, 2012</time></div>
-      <div class="tags">Tags: 
-
+  
 </div>
-    </div>
-		<blockquote><pre>The AS-&gt;RS work is probably simpler and more useful at this point.</pre></blockquote>
+    <blockquote><pre>The AS-&gt;RS work is probably simpler and more useful at this point.</pre></blockquote>
 
 
 <p>&#8212;<p><a href="https://www.ietf.org/mail-archive/web/oauth/current/msg08620.html">Re: [OAUTH-WG] OAuth WG Re-Chartering</a></p></p>
@@ -198,26 +293,30 @@ webintents.orgのJSの問題なのか、なぜかSafariでしか動きません�
 <p>(via <a href="http://tkudo.tumblr.com/" class="tumblr_blog">tkudo</a>)</p>
 
 
-		
-		
-	</div>
+    
+    
+  </div>
 
 <div class="meta">
-	
+  
 </div>
 </article>
 
 
     <article class="post">
-	<h2 class="title">
-		
-		<a href="/blog/2012/03/11/response-type-code/">
-		
-			OAuth 2.0でユーザーが認可をする”アプリケーション”とはサービス全体のことではない - R-weblife</a>
-	</h2>
-    <div class="entry-content">
+  <h2 class="title">
+    
+    <a href="/blog/2012/03/11/response-type-code/">
+    
+      OAuth 2.0でユーザーが認可をする”アプリケーション”とはサービス全体のことではない - R-weblife</a>
+  </h2>
+  <div class="entry-content">
     <div class="meta">
-      <div class="date">Published on: 
+  <div class="author">
+    Author: <a href="http://matake.jp">Nov Matake</a>
+    - 技術的な相談等、お仕事依頼は <a href="http://yauth.jp">YAuth.jp</a> までどうぞ。
+  </div>
+  <div class="date">Date: 
 
 
 
@@ -230,11 +329,9 @@ webintents.orgのJSの問題なのか、なぜかSafariでしか動きません�
 
 
 <time datetime="2012-03-11T00:00:00+09:00" pubdate data-updated="true">Mar 11<span>th</span>, 2012</time></div>
-      <div class="tags">Tags: 
-
+  
 </div>
-    </div>
-		<blockquote><p>response_type=code tokenとかあるので仕様曖昧だよな～と思っていたのですが、普通に書いてありました。</p>
+    <blockquote><p>response_type=code tokenとかあるので仕様曖昧だよな～と思っていたのですが、普通に書いてありました。</p>
 
 <p>A client application consisting of multiple components, each with its
 own client type (e.g. a distributed client with both a confidential
@@ -258,26 +355,30 @@ ConfidentialならAuthZ Code, PublicなのはImplicit使え。
 <p>(via <a href="http://kyomichi.tumblr.com/" class="tumblr_blog">kyomichi</a>)</p>
 
 
-		
-		
-	</div>
+    
+    
+  </div>
 
 <div class="meta">
-	
+  
 </div>
 </article>
 
 
     <article class="post">
-	<h2 class="title">
-		
-		<a href="/blog/2012/03/11/kyomichi-via-oauth-2-0-2/">
-		
-			Kyomichi: (via OAuth 2.0って知ってますかぁ？その2 - くらラボ研究記録)</a>
-	</h2>
-    <div class="entry-content">
+  <h2 class="title">
+    
+    <a href="/blog/2012/03/11/kyomichi-via-oauth-2-0-2/">
+    
+      Kyomichi: (via OAuth 2.0って知ってますかぁ？その2 - くらラボ研究記録)</a>
+  </h2>
+  <div class="entry-content">
     <div class="meta">
-      <div class="date">Published on: 
+  <div class="author">
+    Author: <a href="http://matake.jp">Nov Matake</a>
+    - 技術的な相談等、お仕事依頼は <a href="http://yauth.jp">YAuth.jp</a> までどうぞ。
+  </div>
+  <div class="date">Date: 
 
 
 
@@ -290,59 +391,16 @@ ConfidentialならAuthZ Code, PublicなのはImplicit使え。
 
 
 <time datetime="2012-03-11T00:00:00+09:00" pubdate data-updated="true">Mar 11<span>th</span>, 2012</time></div>
-      <div class="tags">Tags: 
-
-</div>
-    </div>
-		<p><img src="/tumblr_files/tumblr_m0o7oc4Th71rn7kcvo1_1280.png"/></p>
-
-		
-		
-	</div>
-
-<div class="meta">
-	
-</div>
-</article>
-
-
-    <article class="post">
-	<h2 class="title">
-		
-		<a href="/blog/2012/03/09/jso-a-javascript-oauth-library/">
-		
-			JSO - a Javascript OAuth Library</a>
-	</h2>
-    <div class="entry-content">
-    <div class="meta">
-      <div class="date">Published on: 
-
-
-
-
-
-
-
-
   
-
-
-<time datetime="2012-03-09T00:00:00+09:00" pubdate data-updated="true">Mar 9<span>th</span>, 2012</time></div>
-      <div class="tags">Tags: 
-
 </div>
-    </div>
-		<blockquote>JSO - a Javascript OAuth Library</blockquote>
+    <p><img src="/tumblr_files/tumblr_m0o7oc4Th71rn7kcvo1_1280.png"/></p>
 
-
-<p>&#8212;<a href="https://github.com/andreassolberg/jso">andreassolberg/jso</a></p>
-
-		
-		
-	</div>
+    
+    
+  </div>
 
 <div class="meta">
-	
+  
 </div>
 </article>
 

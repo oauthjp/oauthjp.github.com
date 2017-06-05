@@ -3,11 +3,10 @@
 <html>
 <head>
 	<meta charset="utf-8">
-	<title>「OAuth 2.0 (Implicit Flow) でログイン」の被害例 - OAuth.jp</title>
+	<title>OAuth.jp</title>
     <meta name="author" content="Nov Matake">
     
-	<meta name="description" content="Author: Nov Matake - 技術的な相談等、お仕事依頼は YAuth.jp までどうぞ。 Date: Feb 7th, 2012 。登場人物 OAuth 2.0対応してる某ゲームプラットフォーム
-某ゲームプラットフォーム上で占いゲームを運営してる攻撃者 &hellip;">
+	<meta name="description" content="Author: Nov Matake - 技術的な相談等、お仕事依頼は YAuth.jp までどうぞ。 Date: Jul 4th, 2010 つい先日Githubがリリースした「Organization」アカウントを、OAuth.jp用に用意しました。 http://github.com/ &hellip;">
 	
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
@@ -93,8 +92,16 @@
 <div id="toload">
 <!-- begin toload --> 
     <div id="content" class="inner">
-        <article class="post">
-  <h2 class="title">「OAuth 2.0 (Implicit Flow) でログイン」の被害例</h2>
+        
+
+
+    <article class="post">
+  <h2 class="title">
+    
+    <a href="/blog/2010/07/04/githuborganization/">
+    
+      GithubにOrganizationアカウントを作成</a>
+  </h2>
   <div class="entry-content">
     <div class="meta">
   <div class="author">
@@ -113,74 +120,21 @@
   
 
 
-<time datetime="2012-02-07T00:00:00+09:00" pubdate data-updated="true">Feb 7<span>th</span>, 2012</time></div>
+<time datetime="2010-07-04T00:00:00+09:00" pubdate data-updated="true">Jul 4<span>th</span>, 2010</time></div>
   
 </div>
-    <h3>。登場人物</h3>
+    <p>つい先日Githubがリリースした「Organization」アカウントを、OAuth.jp用に用意しました。</p>
 
+<p><a href="http://github.com/oauthjp">http://github.com/oauthjp</a></p>
 
-<ul><li>OAuth 2.0対応してる某ゲームプラットフォーム</li>
-<li>某ゲームプラットフォーム上で占いゲームを運営してる攻撃者</li>
-<li>某ゲームプラットフォーム上で運営されてる農園ゲーム（= 被害アプリ）</li>
-<li>某ゲームプラットフォーム上で無邪気に遊んでる被害ユーザ</li>
-</ul>
+<p>今はRuby/Railsまわりのライブラリと、OpenID Foundation Japanの翻訳プロジェクトで翻訳したOAuth1.0仕様の翻訳版、および過去にgihyo.jpでOAuthの記事を書いた時に作ったOAuthのサンプルConsumer&amp;Serverをforkしてきています。</p>
 
+<p>GithubのOrganizationアカウントは￼、Organization参加者の個人アカウントでそれぞれOrganizationのメンバー／管理者として活動できて、個人アカウントのDashboardに以下のように「Switch Context」というメニューが出てきて、参加しているOrganizationと個人アカウントのDashboardを行き来できます。</p>
 
-<p>※ 念のため、今回の話は特にゲームに限った話ではない。</p>
+<p>ちなみにいまforkしてきているコードは完全にRuby一色なので、ぜひ他の言語でもライブラリやサンプルなんかを集めたいところ。協力者募集中です！</p>
 
-
-<h3>前提</h3>
-
-
-<p>某ゲームプラットフォーム、農園ゲーム共に、XSS とか CSRF とかセッションハイジャックされるような脆弱性はない。</p>
-
-
-<p>農園ゲームはプラットフォームが発行するAccess TokenをOAuth 2.0のImplicit Flowを使って受け取り、同じくプラットフォームが提供するProfile API (GET /me とか) にアクセスして、レスポンスに含まれる user_id をもとにユーザを認証している。</p>
-
-
-<p>攻撃者は占いゲームのDBから任意のAccess Tokenを取得可能。</p>
-
-
-<h3>シナリオ</h3>
-
-
-<ol><li>被害ユーザが占いゲームに登録 (= 占いゲームに対するAccess Tokenが発行される)</li>
-<li>攻撃者が農園ゲームにアクセス、Authorization Flow開始</li>
-<li>攻撃者が某ゲームプラットフォーム -&gt; 農園ゲームへのRedirect Responseを中断させる</li>
-<li>攻撃者がFragment中のAccess Tokenを占いゲームのDBから持ってきた被害者のAccess Tokenに置き換え</li>
-<li>農園ゲームは受け取ったAccess Tokenをもとに、攻撃者を被害ユーザとして認証</li>
-<li>攻撃者が被害ユーザとして農園ゲームで遊ぶ</li>
-</ol>
-
-
-<h3>対策方法</h3>
-
-
-<p>農園ゲームの開発者は、受け取ったAccess Tokenが農園ゲームに対して発行されたものであることを確認すること。占いゲームに対して発行されたAccess Tokenを受け入れないこと。</p>
-
-
-<p>プラットフォームがFacebookの場合なら、以下のリクエストを行うことで、Access Tokenがどのクライアントに発行されたものかを検証可能。</p>
-
-
-<div class="CodeRay">
-  <div class="code"><pre>GET /app
-Authorization: OAuth replace_with_your_access_token</pre></div>
-</div>
-
-
-
-
-<p>急募&#160;: 他のプラットフォームの場合の対応策</p>
-
-
-<h3>参考文献</h3>
-
-
-<ul><li><a href="http://www.sakimura.org/2012/02/1487/">単なる OAuth 2.0 を認証に使うと、車が通れるほどのどでかいセキュリティー・ホールができる</a></li>
-<li><a href="http://d.hatena.ne.jp/ritou/20120206/1328484575">OAuth 2.0 Implicit Flowをユーザー認証に利用する際のリスクと対策方法について #idcon</a></li>
-</ul>
-
-
+    
+    
   </div>
 
 <div class="meta">
@@ -188,20 +142,13 @@ Authorization: OAuth replace_with_your_access_token</pre></div>
 </div>
 </article>
 
-	<div class="share">
-	<div class="addthis_toolbox addthis_default_style ">
-	
-	<a class="addthis_button_facebook_like" fb:like:layout="button_count"></a>
-	
-	
-	<a class="addthis_button_tweet"></a>
-	
-	
-	</div>
-  <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid="></script>
-</div>
-
-
+<nav id="pagenavi">
+    
+        <a href="/blog/page/19/" class="prev">Prev</a>
+    
+    
+    <div class="center"><a href="/blog/archives">Blog Archives</a></div>
+</nav>
 
     </div>
     <footer id="footer">

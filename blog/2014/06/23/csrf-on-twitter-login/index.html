@@ -6,7 +6,7 @@
 	<title>Twitter Login にも CSRF 脆弱性ができやすい罠が!? - OAuth.jp</title>
     <meta name="author" content="Nov Matake">
     
-	<meta name="description" content="OAuth 2.0 では state パラメータってのがあって、それをちゃんと使わないと CSRF 脆弱性ができちゃうよって話は、@ritou 先生のスライドなどでみなさん勉強したんではないでしょうか。state パラメータは RFC 6749 では RECOMMENDED 扱いで、 &hellip;">
+	<meta name="description" content="Author: Nov Matake - 技術的な相談等、お仕事依頼は YAuth.jp までどうぞ。 Date: Jun 23rd, 2014 OAuth 2.0 では state パラメータってのがあって、それをちゃんと使わないと CSRF 脆弱性ができちゃうよって話は、@ritou &hellip;">
 	
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
@@ -93,8 +93,29 @@
 <!-- begin toload --> 
     <div id="content" class="inner">
         <article class="post">
-	<h2 class="title">Twitter Login にも CSRF 脆弱性ができやすい罠が!?</h2>
-	<div class="entry-content"><p>OAuth 2.0 では state パラメータってのがあって、それをちゃんと使わないと CSRF 脆弱性ができちゃうよって話は、<a href="http://www.slideshare.net/ritou/idcon17-oauth2-csrfprotectionritou">@ritou 先生のスライド</a>などでみなさん勉強したんではないでしょうか。state パラメータは RFC 6749 では RECOMMENDED 扱いで、REQUIRED ではありませんが、OAuth 2.0 をログインに使う場合は REQUIRED にすべきでしょう。OAuth 2.0 をログインに使うの、Token 置換攻撃とか Covert Redirect + Code 置換攻撃とか、いろんな罠がありますねぇ〜。</p>
+  <h2 class="title">Twitter Login にも CSRF 脆弱性ができやすい罠が!?</h2>
+  <div class="entry-content">
+    <div class="meta">
+  <div class="author">
+    Author: <a href="http://matake.jp">Nov Matake</a>
+    - 技術的な相談等、お仕事依頼は <a href="http://yauth.jp">YAuth.jp</a> までどうぞ。
+  </div>
+  <div class="date">Date: 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-06-23T10:46:00+09:00" pubdate data-updated="true">Jun 23<span>rd</span>, 2014</time></div>
+  
+</div>
+    <p>OAuth 2.0 では state パラメータってのがあって、それをちゃんと使わないと CSRF 脆弱性ができちゃうよって話は、<a href="http://www.slideshare.net/ritou/idcon17-oauth2-csrfprotectionritou">@ritou 先生のスライド</a>などでみなさん勉強したんではないでしょうか。state パラメータは RFC 6749 では RECOMMENDED 扱いで、REQUIRED ではありませんが、OAuth 2.0 をログインに使う場合は REQUIRED にすべきでしょう。OAuth 2.0 をログインに使うの、Token 置換攻撃とか Covert Redirect + Code 置換攻撃とか、いろんな罠がありますねぇ〜。</p>
 
 <p>OAuth 1.0 ならそんなことないのに&hellip;</p>
 
@@ -152,10 +173,11 @@ https://client.example.com/callback?
 <p>ちなみに omniauth-twitter (というか omniauth-oauth) は Callback URL で Session に Request Token Secret が入ってなければエラーになるので Safe です。Gunosy とか Doorkeeper は omniauth-twitter 使ってるのか、Safe でした。</p>
 
 <p>そういや最近<a href="https://twitter.com/TSJ2010">日本ツイッター学会</a>って何してんすかね？</p>
-</div>
+
+  </div>
 
 <div class="meta">
-	
+  
 </div>
 </article>
 
