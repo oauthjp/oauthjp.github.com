@@ -6,7 +6,7 @@
 	<title>OAuth.jp</title>
     <meta name="author" content="Nov Matake">
     
-	<meta name="description" content="Published on: May 8th, 2014 Tags: OAuth 2.0 Implicit Flow では Covert Redirect 経由で access token が漏れる件については既に紹介しましたが、ここではみなさん大好き Facebook Login で OAuth &hellip;">
+	<meta name="description" content="Published on: May 8th, 2014 Tags: さて、OAuth 2.0 &amp; OpenID Connect における Covert Redirect の問題 についてはまとめたので、次は OpenID 2.0 についてです。 いいですか、OpenID Connect &hellip;">
 	
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
@@ -68,7 +68,7 @@
   
   <!-- GitHub -->
   <li>
-  <a href="https://github.com/oauthjp" class="github" title="Github"></a>
+  <a href="https://github.com/nov" class="github" title="Github"></a>
   </li>
   
   
@@ -93,84 +93,6 @@
 <!-- begin toload --> 
     <div id="content" class="inner">
         
-
-
-    <article class="post">
-	<h2 class="title">
-		
-		<a href="/blog/2014/05/08/facebook-login-and-covert-redirect/">
-		
-			Facebook Login で Covert Redirect を防止する</a>
-	</h2>
-    <div class="entry-content">
-    <div class="meta">
-      <div class="date">Published on: 
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2014-05-08T14:16:00+09:00" pubdate data-updated="true">May 8<span>th</span>, 2014</time></div>
-      <div class="tags">Tags: 
-
-</div>
-    </div>
-		<p><a href="http://oauth.jp/blog/2014/05/07/covert-redirect-in-implicit-flow/">OAuth 2.0 Implicit Flow では Covert Redirect 経由で access token が漏れる件</a>については既に紹介しましたが、ここではみなさん大好き Facebook Login で OAuth Client Developer ができる対策について紹介することにします。</p>
-
-<h3>攻撃方法</h3>
-
-<ol>
-<li>攻撃対象となる OAuth Client の FB client_id を取得
-
-<ul>
-<li>client_id は FB Login ボタンさえクリックすればアドレスバーに表示される。</li>
-</ul>
-</li>
-<li>Authorization Request URL を構築
-
-<ul>
-<li>対象 Client が通常 response_type=code を使ってる場合でも、問答無用で response_type=token にしてください。</li>
-<li><a href="https://www.facebook.com/dialog/oauth?client_id=relace-me&amp;redirect_uri=relace-me&amp;response_type=token">https://www.facebook.com/dialog/oauth?client_id=<em>&lt;client_id></em>&amp;redirect_uri=<em>&lt;redirect-url></em>&amp;response_type=token</a></li>
-</ul>
-</li>
-<li>被害者を2で作った URL にアクセスさせます
-
-<ul>
-<li>フィッシングがんばってください。</li>
-</ul>
-</li>
-<li>redirect_uri に指定しておいた URL で fragment に付いて来る access token を待ち構えます。</li>
-</ol>
-
-
-<p>以上、巧いフィッシング方法さえ思いつけば簡単ですね。</p>
-
-<h3>防御方法</h3>
-
-<p>防御方法は、大きく分けて3つあります。</p>
-
-<ol>
-<li>open redirector を撤廃する</li>
-<li>response_type=token を利用禁止にする</li>
-<li>redirect_uri を完全一致しか認めさせなくする</li>
-</ol>
-
-
-
-		
-		<a href="/blog/2014/05/08/facebook-login-and-covert-redirect/" class="more-link">Read on &rarr;</a>
-	</div>
-
-<div class="meta">
-	
-</div>
-</article>
 
 
     <article class="post">
@@ -406,6 +328,56 @@
 
 		
 		<a href="/blog/2014/01/30/globalsign-root-cert-expired/" class="more-link">Read on &rarr;</a>
+	</div>
+
+<div class="meta">
+	
+</div>
+</article>
+
+
+    <article class="post">
+	<h2 class="title">
+		
+		<a href="/blog/2013/10/25/jwe-draft-v17/">
+		
+			Ruby & PHP の JOSE 実装で JWE Draft V17 に追いつきました</a>
+	</h2>
+    <div class="entry-content">
+    <div class="meta">
+      <div class="date">Published on: 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-10-25T16:34:00+09:00" pubdate data-updated="true">Oct 25<span>th</span>, 2013</time></div>
+      <div class="tags">Tags: 
+
+</div>
+    </div>
+		<p>@nov です。</p>
+
+<p>JWE はまだまだ変わりそうな気がしてしばらく最新仕様への追随を怠っていたのですが、先日<a href="https://github.com/nov/json-jwt/issues/14">こんな pull request</a> をいただいたので、以下の2つのライブラリの JWE 実装を、JWE draft v17 に追随させました。</p>
+
+<ul>
+<li><a href="https://github.com/nov/json-jwt">Ruby json-jwt gem</a></li>
+<li><a href="https://github.com/nov/jose-php">PHP JOSE</a></li>
+</ul>
+
+
+<p>ところでその pull request 内でのやり取りで知ったのですが、Xbox One ってのが JWE を使ってるらしいですね。</p>
+
+<p>他にも Production で JWE 使ってるとことかあるんでしょうか？</p>
+
+		
+		
 	</div>
 
 <div class="meta">

@@ -6,7 +6,7 @@
 	<title>OAuth.jp</title>
     <meta name="author" content="Nov Matake">
     
-	<meta name="description" content="Published on: Apr 21st, 2011 Tags: @nov です。 先日 @ritou が「OAuth 2.0 MAC Tokenを使った署名付きリクエストの作り方」という記事を書いてたので、それを参考に Rack::OAuth2 でも MAC サポートを追加しました。 &hellip;">
+	<meta name="description" content="Published on: Mar 6th, 2011 Tags: @novです。 OAuth 2.0 draft v.13準拠のRack::OAuth2 version 0.3.0のリリースにあわせて、Rails3でSample Appを作りました。 http://rack-oauth2- &hellip;">
 	
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
@@ -68,7 +68,7 @@
   
   <!-- GitHub -->
   <li>
-  <a href="https://github.com/oauthjp" class="github" title="Github"></a>
+  <a href="https://github.com/nov" class="github" title="Github"></a>
   </li>
   
   
@@ -93,84 +93,6 @@
 <!-- begin toload --> 
     <div id="content" class="inner">
         
-
-
-    <article class="post">
-	<h2 class="title">
-		
-		<a href="/blog/2011/04/21/rackoauth2tokentypemac/">
-		
-			Rack::OAuth2 で Token_type=mac をサポート</a>
-	</h2>
-    <div class="entry-content">
-    <div class="meta">
-      <div class="date">Published on: 
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2011-04-21T00:00:00+09:00" pubdate data-updated="true">Apr 21<span>st</span>, 2011</time></div>
-      <div class="tags">Tags: 
-
-</div>
-    </div>
-		<p>@nov です。</p>
-
-
-<p>先日 @ritou が「<a href="http://d.hatena.ne.jp/ritou/20110418/1303055521">OAuth 2.0 MAC Tokenを使った署名付きリクエストの作り方</a>」という記事を書いてたので、それを参考に Rack::OAuth2 でも MAC サポートを追加しました。</p>
-
-
-<p>Sample Server はこちらです。</p>
-
-
-<p><a href="http://rack-oauth2-sample-mac.heroku.com/"><a href="http://rack-oauth2-sample-mac.heroku.com/">http://rack-oauth2-sample-mac.heroku.com/</a></a></p>
-
-
-<p><a href="https://github.com/nov/rack-oauth2"><a href="https://github.com/nov/rack-oauth2">https://github.com/nov/rack-oauth2</a></a></p>
-
-
-<p>そして早速 @ritou が Sample Client を作ってくれました。（おかげで Bug が一つ見つかりました。Thanks!）</p>
-
-
-<p><a href="http://www8322u.sakura.ne.jp/oauth2sample/"><a href="http://www8322u.sakura.ne.jp/oauth2sample/">http://www8322u.sakura.ne.jp/oauth2sample/</a></a></p>
-
-
-<p>ついでに Rack::OAuth2 にも AccessToken モデルを用意しました。</p>
-
-
-<p>Bearer、MAC ともに使い方はこんな感じです。</p>
-
-
-<p><a href="https://gist.github.com/933962"><a href="https://gist.github.com/933962">https://gist.github.com/933962</a></a></p>
-
-
-<p>そして密かに Legacy なアクセストークン (Facebook および mixi を想定) もサポートしだしました。 Bearer とか MAC とか言っても、誰もそんなの使ってないですからね。。</p>
-
-
-<p>Legacy の方も、こんな感じで使えるんでは無いでしょうか？（適当w）</p>
-
-
-<p><a href="https://gist.github.com/933954"><a href="https://gist.github.com/933954">https://gist.github.com/933954</a></a></p>
-
-
-<p>これで OAuth2 gem から Rack::OAuth2 に、いつでも乗り換えられますね ;)</p>
-
-
-		
-		
-	</div>
-
-<div class="meta">
-	
-</div>
-</article>
 
 
     <article class="post">
@@ -375,6 +297,71 @@
 
 
 <p><a href="https://gist.github.com/741666"><a href="https://gist.github.com/741666">https://gist.github.com/741666</a></a></p>
+
+
+		
+		
+	</div>
+
+<div class="meta">
+	
+</div>
+</article>
+
+
+    <article class="post">
+	<h2 class="title">
+		
+		<a href="/blog/2010/11/16/oauth-20/">
+		
+			OAuth 2.0の仕様書を翻訳しました</a>
+	</h2>
+    <div class="entry-content">
+    <div class="meta">
+      <div class="date">Published on: 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2010-11-16T00:00:00+09:00" pubdate data-updated="true">Nov 16<span>th</span>, 2010</time></div>
+      <div class="tags">Tags: 
+
+</div>
+    </div>
+		<p><a href="http://www.openid.or.jp/">OpenID Foundation Japan</a>の<a href="http://openid-foundation-japan.github.com/">翻訳・教育ワーキンググループ</a>を中心とした有志10名で、<a href="http://tools.ietf.org/html/draft-ietf-oauth-v2-10">The OAuth 2.0 Protocol draft v.10</a>を翻訳しました。</p>
+
+
+<p><span style="font-size: medium;"><strong><a href="http://openid-foundation-japan.github.com/draft-ietf-oauth-v2.ja.html">The OAuth 2.0 Protocol (翻訳版)</a></strong></span></p>
+
+
+<p>まだOAuth 2.0は仕様策定中なので、対象の原文はdraft v.10です。</p>
+
+
+<p>mixiもfacebookもOAuth 2.0のdraft 10をサポートしているので、DeveloperがOAuth 2.0対応のAPIを使う際には、このdraft v.10を使うことになるでしょう。</p>
+
+
+<p>この翻訳によって、日本のDeveloperのみなさんにOAuthがより身近になればと思います。</p>
+
+
+
+
+<p>原文は今後draft v.11-13を経てFinalになるという噂ですが、v.11の公開を前に、仕様書の分割や採用する署名方式に関する議論が長引いているようです。今月中にv.11が出てくることを祈りましょう。</p>
+
+
+<p>翻訳版は、国内外でのOAuth Serverの実装状況なども考慮し、今後もアップデートをしていく予定です。</p>
+
+
+<p>4月に公開したOAuth 1.0の翻訳版も<a href="http://tools.ietf.org/html/draft-hammer-oauth-10">OAuth 1.0 draft v.10</a>が対象なので、早く<a href="http://tools.ietf.org/html/rfc5849">RFC版</a>との<a href="http://tools.ietf.org/rfcdiff?url2=rfc5849">diff</a>も反映しなきゃですね。</p>
+
+
+<p><span style="font-size: medium;"><strong><a href="http://openid-foundation-japan.github.com/draft-hammer-oauth-10.html">The OAuth 1.0 Protocol (翻訳版)</a></strong></span></p>
 
 
 		

@@ -6,8 +6,9 @@
 	<title>OAuth.jp</title>
     <meta name="author" content="Nov Matake">
     
-	<meta name="description" content="Published on: Feb 8th, 2012 Tags: 昨日の続き。「ソーシャルゲームなんて3000万人の特殊な人しかやってない」という意見もあるようなので、今日は iOS アプリ版。 登場人物 iOS SDK 出してるプラットフォーム
-iOS SDK &hellip;">
+	<meta name="description" content="Published on: Feb 7th, 2012 Tags: 。登場人物 OAuth 2.0対応してる某ゲームプラットフォーム
+某ゲームプラットフォーム上で占いゲームを運営してる攻撃者
+某ゲームプラットフォーム上で運営されてる農園ゲーム（= 被害アプリ） &hellip;">
 	
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
@@ -69,7 +70,7 @@ iOS SDK &hellip;">
   
   <!-- GitHub -->
   <li>
-  <a href="https://github.com/oauthjp" class="github" title="Github"></a>
+  <a href="https://github.com/nov" class="github" title="Github"></a>
   </li>
   
   
@@ -94,124 +95,6 @@ iOS SDK &hellip;">
 <!-- begin toload --> 
     <div id="content" class="inner">
         
-
-
-    <article class="post">
-	<h2 class="title">
-		
-		<a href="/blog/2012/02/08/ios-sdk/">
-		
-			&#8220;なんちゃら iOS SDK&#8221; でありそうな被害例</a>
-	</h2>
-    <div class="entry-content">
-    <div class="meta">
-      <div class="date">Published on: 
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-02-08T00:00:00+09:00" pubdate data-updated="true">Feb 8<span>th</span>, 2012</time></div>
-      <div class="tags">Tags: 
-
-</div>
-    </div>
-		<p><a href="/blog/2012/02/07/oauth-20-implicit-flow">昨日の</a>続き。「ソーシャルゲームなんて3000万人の特殊な人しかやってない」という意見もあるようなので、今日は iOS アプリ版。</p>
-
-
-<h3>登場人物</h3>
-
-
-<ul><li>iOS SDK 出してるプラットフォーム</li>
-<li>iOS SDK と連携するプラットフォームの公式 iOS アプリ</li>
-<li>プラットフォーム上で “まっとうな” アプリを運営してる攻撃者</li>
-<li>攻撃者が自作した攻撃用アプリ</li>
-<li>iOS SDK 使って開発された被害アプリ</li>
-<li>あいかわらず無邪気な被害ユーザ</li>
-</ul>
-
-
-<h3>前提</h3>
-
-
-<p>プラットフォームが提供する iOS SDK は、</p>
-
-
-<ol><li>プラットフォームが指定するカスタムスキーマ (ex. “xyz-connect://”) で始まる URI にアクセスすることで</li>
-<li>プラットフォーム公式 iOS アプリに access token 取得のフローを delegate し</li>
-<li>公式アプリが被害アプリの指定するカスタムスキーマ (ex. “foobar-rowial://”) で始まる URI にユーザーを戻すことで、アプリに access token を返す。</li>
-</ol>
-
-
-<p>被害アプリは、</p>
-
-
-<ol><li>iOS SDK から受け取った access token を自身のバックエンドサーバに送り</li>
-<li>バックエンドサーバはプラットフォームが提供する Profile API (GET /me とか) にアクセスして</li>
-<li>レスポンスに含まれる user_id をもとにユーザを認証する。</li>
-</ol>
-
-
-<h3>シナリオ</h3>
-
-
-<ol><li>攻撃者はプラットフォームが指定するのと同じカスタムスキーマで delegate を受け取る攻撃用アプリを自作する (なり誰かから買うなり..)</li>
-<li>攻撃者は自分の iPhone/iPad に攻撃用アプリをインストール (xcode 経由だと、Apple の承認必要ないんですよね、たしか？)</li>
-<li>攻撃者は自分が運営する “まっとうな” なアプリの DB から被害ユーザのアクセストークンを取って来て攻撃用アプリに埋め込む</li>
-<li>攻撃者は被害アプリを起動して “なんちゃら ID でログイン” とかいうボタンを押す</li>
-<li>被害アプリはプラットフォーム攻撃者が自作した攻撃用アプリに delegate 開始</li>
-<li>攻撃用アプリは被害ユーザのアクセストークンを被害アプリに返す</li>
-<li>攻撃者は被害ユーザのアカウントで被害アプリを使う</li>
-</ol>
-
-
-<h3>対策方法</h3>
-
-
-<p>プラットフォームの iOS SDK は “response_type=token code” に対応する。</p>
-
-
-<p>被害アプリは、”response_type=token code” を使い、サーバーサイドへは access token ではなく authorization code を送る。(そしてサーバーサイドでは client authentication して code を token と交換する)</p>
-
-
-<p>ただいかんせんプラットフォーム側の iOS SDK が対応してくれなかったり、既にアプリを公開していて古いバージョンもサポートしなければならなかったりすることもあるので、そういう場合はバックエンドサーバーで対応。</p>
-
-
-<p>被害アプリのバックエンドサーバは、どうしてもアプリ側から access token を受け取らざるを得ないのであれば、<a href="/blog/2012/02/07/oauth-20-implicit-flow">昨日の記事</a>と同様に access token 発行先アプリが自身であることを確認する。</p>
-
-
-<h3>追記</h3>
-
-
-<p>いくつか気になるtweetがあったので、載せときます。</p>
-
-
-<blockquote class="twitter-tweet">
-<p>@<a href="https://twitter.com/7032">7032</a> 「そもそもそれ認証関係お任せライブラリでは無いから、勘違いするとこういう目にあうよ。」という話です。</p>
-<div><a href="https://twitter.com/oauthjp/status/167406152261443584">February 9, 2012</a></div>
-</blockquote>
-
-
-<blockquote class="twitter-tweet">
-<p>@<a href="https://twitter.com/7032">7032</a> コンポーネントというのがiOS SDKのことを指してるなら、それはちゃんと認可リクエストも送ってるしそのレスポンスも受け取ってるので、OAuthの仕様の範囲内では正常に動作しています。受け取ったトークンが、そもそも認証のために使えるものである保証が無いというだけです。</p>
-<div><a href="https://twitter.com/oauthjp/status/167439399196426240">February 9, 2012</a></div>
-</blockquote>
-
-
-		
-		
-	</div>
-
-<div class="meta">
-	
-</div>
-</article>
 
 
     <article class="post">
@@ -491,6 +374,148 @@ Authorization: OAuth replace_with_your_access_token</pre></div>
 
 
 <p>しかし、<a href="https://github.com/openid-foundation-japan">OpenID Foundation Japan の Github Organization</a> メンバーが、いつのまにか20人超えていてびっくりです。</p>
+
+
+		
+		
+	</div>
+
+<div class="meta">
+	
+</div>
+</article>
+
+
+    <article class="post">
+	<h2 class="title">
+		
+		<a href="/blog/2011/10/04/oauth-20-core-bearer-spec/">
+		
+			OAuth 2.0 Core & Bearer Spec を翻訳しませんか？</a>
+	</h2>
+    <div class="entry-content">
+    <div class="meta">
+      <div class="date">Published on: 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-10-04T00:00:00+09:00" pubdate data-updated="true">Oct 4<span>th</span>, 2011</time></div>
+      <div class="tags">Tags: 
+
+</div>
+    </div>
+		<p>@nov です。</p>
+
+
+<p>OAuth 2.0 も draft 22 を迎え、RFC 化も目の前に迫っています。</p>
+
+
+
+
+<p> </p>
+
+
+<p><strong><span style="font-size: xx-large;">いまこそ</span></strong></p>
+
+
+<p><strong><span style="font-size: xx-large;"> </span></strong><strong><span style="font-size: xx-large;">OAuth 2.0 Core &amp; Bearer を</span></strong></p>
+
+
+<p><strong><span style="font-size: xx-large;">翻訳するときではありませんか！</span></strong></p>
+
+
+
+
+<p><strong><span style="font-size: xx-large;"><br/></span></strong></p>
+
+
+<p>ということで、以下の2つを翻訳するプロジェクトを開始します。</p>
+
+
+<p><a href="http://tools.ietf.org/html/draft-ietf-oauth-v2-22">The OAuth 2.0 Authorization Protocol - draft-ietf-oauth-v2-22</a></p>
+
+
+<p><a href="http://tools.ietf.org/html/draft-ietf-oauth-v2-bearer-09">The OAuth 2.0 Authorization Protocol: Bearer Tokens - draft-ietf-oauth-v2-bearer-09</a></p>
+
+
+<p>このプロジェクトは <a href="http://openid-foundation-japan.github.com/">OpenID Foundation Japan 翻訳・教育 Wroking Group</a> の活動として、有志の参加者数名で進める予定です。</p>
+
+
+<p>具体的には、参加者を Core と Bearer の2グループに分け、各自が3日に1度くらい翻訳して、残りの2日は他の人の翻訳のレビューをするというのを、翻訳終了（Coreが2〜3週間くらい、Bearer は1〜1.5週間くらい？）続けようかと思っています。</p>
+
+
+
+
+<p> </p>
+
+
+<p><span style="font-size: xx-large;"><strong>が、メンバーが足りません！</strong></span></p>
+
+
+
+
+<p><span style="font-size: xx-large;"><strong><br/></strong></span></p>
+
+
+<p>現状参加予定は @phr_eidentity、@bkihara、@nov の3名です。</p>
+
+
+<p>3人だと、ちょっとしんどい。。。</p>
+
+
+
+
+<p> </p>
+
+
+<p><span style="font-size: xx-large;"><strong>そこで、協力者大募集です！</strong></span></p>
+
+
+
+
+<p><span style="font-size: xx-large;"><strong><br/></strong></span></p>
+
+
+<p>Kick-off は 10/26、都内のどこかで集まって、分担割り振ってから飲みましょう。</p>
+
+
+<p><span style="text-decoration: line-through;">ご協力いただける方は、Twitter で @nov に Mention いただけるとうれしいです。</span><strong><span style="color: #ff0000;"><span style="font-family: mceinline;">閉め切りました。</span></span></strong></p>
+
+
+
+
+<p>以上、宣伝でした m_ _m</p>
+
+
+
+
+<p> </p>
+
+
+<p>[追記]</p>
+
+
+<p>@ritou と@kthrtty が参加！引き続き協力者モトム :)</p>
+
+
+<p>[追記2]</p>
+
+
+<p>@konfoo と @bucchi76 と @kurumai と @bkihara の同僚の未成年も参加。</p>
+
+
+<p>人数も9人になったので、閉め切ります。</p>
+
+
+<p>ありがとうございました :)</p>
 
 
 		

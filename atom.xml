@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[OAuth.jp]]></title>
-  <link href="http://oauthjp.github.io/atom.xml" rel="self"/>
-  <link href="http://oauthjp.github.io/"/>
-  <updated>2017-05-18T14:34:53+09:00</updated>
-  <id>http://oauthjp.github.io/</id>
+  <link href="http://oauth.jp/atom.xml" rel="self"/>
+  <link href="http://oauth.jp/"/>
+  <updated>2017-06-05T15:24:40+09:00</updated>
+  <id>http://oauth.jp/</id>
   <author>
     <name><![CDATA[Nov Matake]]></name>
     
@@ -14,57 +14,10 @@
 
   
   <entry>
-    <title type="html"><![CDATA[PowerShell for AzureAD]]></title>
-    <link href="http://oauthjp.github.io/blog/2017/05/18/powershell-for-azuread/"/>
-    <updated>2017-05-18T14:17:00+09:00</updated>
-    <id>http://oauthjp.github.io/blog/2017/05/18/powershell-for-azuread</id>
-    <content type="html"><![CDATA[<p>Windows 10 で AzureAD Module インポート済の PowerShell を気軽に起動できるようにする方法メモ。</p>
-
-<h2>前提条件</h2>
-
-<p>前提として、PowerShell に AzureAD アクセスに必要な Module がインストールされているものとします。</p>
-
-<p>Module インストールは以下のコマンドを Administrator として実行するだけです。</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='ps1'><span class='line'><span class="n">Install-Module</span> <span class="n">MSOnline</span><span class="p">,</span> <span class="n">AzureAD</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p><a href="https://msdn.microsoft.com/ja-jp/library/jj151815.aspx#bkmk_installmodule">こんな ext</a> は別にいらないです。以前はこいつのインストールでいろいろはまったんですが、あれはなんだったんでしょうか&hellip;</p>
-
-<h2>ショートカット作成</h2>
-
-<p>まずは PowerShell 自体のショートカットを作成します。</p>
-
-<p><img src="http://oauthjp.github.io/images/posts/azure/powershell-for-azure-ad.png" alt="PowerShell for AzureAD" /></p>
-
-<p>そしておもむろに Target のところを下記の PowerShell Script に変更。</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='ps1'><span class='line'><span class="n">PowerShell</span> <span class="n">-noexit</span> <span class="s2">&quot;Import-Module MSOnline, AzureAD; Connect-MsolService&quot;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>そして Advanced Options の &ldquo;Run as Administrator&rdquo; にチェック。</p>
-
-<p>これで、このショートカットダブルクリックするだけで、自動でログイン画面まで Popup してくれるようになります。</p>
-
-<h2>ショートカット起動</h2>
-
-<p>起動したら自動でこうなります。</p>
-
-<p><img src="http://oauthjp.github.io/images/posts/azure/powershell-for-azure-ad-launched.png" alt="PowerShell for AzureAD Launched" /></p>
-
-<p>またちょっと Windows 力上がった気がする。</p>
-]]></content>
-  </entry>
-  
-  <entry>
     <title type="html"><![CDATA[OAuth2 in Action が Amazon にも]]></title>
-    <link href="http://oauthjp.github.io/blog/2017/04/01/oauth2-in-action/"/>
+    <link href="http://oauth.jp/blog/2017/04/01/oauth2-in-action/"/>
     <updated>2017-04-01T16:42:00+09:00</updated>
-    <id>http://oauthjp.github.io/blog/2017/04/01/oauth2-in-action</id>
+    <id>http://oauth.jp/blog/2017/04/01/oauth2-in-action</id>
     <content type="html"><![CDATA[<p>我らが Justin Richer がずっと執筆進めてた <a href="http://amzn.to/2nVbgRV">OAuth2 in Action が Amazon.co.jp に登場</a>してました。</p>
 
 <p>目次はこんな感じ。</p>
@@ -128,15 +81,15 @@
 
 <p>OAuth の本見ると、一度書き始めて途中で挫折した過去 (OAuth1.0 の部分書き終えたとこで放置してるw) が蘇りますが、もぅこれ翻訳すりゃいんじゃね？っていうね。</p>
 
-<p><a href="https://www.amazon.co.jp/OAuth-2-Action-Justin-Richer/dp/161729327X/ref=as_li_ss_il?ie=UTF8&qid=1491032403&sr=8-3&keywords=oauth&linkCode=li3&tag=bianca0b-22&linkId=99872d3ee518929dc6ee8ce757316cab" target="_blank"><img border="0" src="http://oauthjp.github.io//ws-fe.amazon-adsystem.com/widgets/q?_encoding=UTF8&ASIN=161729327X&Format=_SL250_&ID=AsinImage&MarketPlace=JP&ServiceVersion=20070822&WS=1&tag=bianca0b-22" ></a><img src="https://ir-jp.amazon-adsystem.com/e/ir?t=bianca0b-22&l=li3&o=9&a=161729327X" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" /></p>
+<p><a href="https://www.amazon.co.jp/OAuth-2-Action-Justin-Richer/dp/161729327X/ref=as_li_ss_il?ie=UTF8&qid=1491032403&sr=8-3&keywords=oauth&linkCode=li3&tag=bianca0b-22&linkId=99872d3ee518929dc6ee8ce757316cab" target="_blank"><img border="0" src="http://oauth.jp//ws-fe.amazon-adsystem.com/widgets/q?_encoding=UTF8&ASIN=161729327X&Format=_SL250_&ID=AsinImage&MarketPlace=JP&ServiceVersion=20070822&WS=1&tag=bianca0b-22" ></a><img src="https://ir-jp.amazon-adsystem.com/e/ir?t=bianca0b-22&l=li3&o=9&a=161729327X" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" /></p>
 ]]></content>
   </entry>
   
   <entry>
     <title type="html"><![CDATA[Azure AD B2C が外部 API 向けに払い出す JWT-formatted Access Token について]]></title>
-    <link href="http://oauthjp.github.io/blog/2017/03/24/azuread-b2c-jwt-accesstoken/"/>
+    <link href="http://oauth.jp/blog/2017/03/24/azuread-b2c-jwt-accesstoken/"/>
     <updated>2017-03-24T17:08:00+09:00</updated>
-    <id>http://oauthjp.github.io/blog/2017/03/24/azuread-b2c-jwt-accesstoken</id>
+    <id>http://oauth.jp/blog/2017/03/24/azuread-b2c-jwt-accesstoken</id>
     <content type="html"><![CDATA[<p><a href="https://azure.microsoft.com/ja-jp/blog/azure-ad-b2c-access-tokens-now-in-public-preview/">Azure AD B2C Access Tokens now in public preview</a></p>
 
 <p>ということで、さわって見ました。</p>
@@ -201,7 +154,7 @@
 
 <p>動作確認用のユーザーも作っておきましたので、これが正常に動いてる間はご自由にお使いください。</p>
 
-<p>Username: <a href="&#x6d;&#x61;&#105;&#108;&#116;&#x6f;&#58;&#x79;&#111;&#117;&#x40;&#115;&#x74;&#115;&#52;&#x62;&#50;&#x63;&#x2e;&#x6f;&#110;&#x6d;&#105;&#x63;&#x72;&#x6f;&#115;&#x6f;&#102;&#116;&#x2e;&#x63;&#x6f;&#x6d;">&#x79;&#x6f;&#117;&#64;&#x73;&#x74;&#115;&#52;&#x62;&#x32;&#99;&#x2e;&#x6f;&#x6e;&#109;&#105;&#99;&#114;&#111;&#115;&#x6f;&#x66;&#x74;&#x2e;&#99;&#x6f;&#x6d;</a>
+<p>Username: <a href="&#x6d;&#97;&#105;&#x6c;&#x74;&#x6f;&#x3a;&#x79;&#x6f;&#x75;&#64;&#115;&#x74;&#115;&#x34;&#98;&#x32;&#x63;&#46;&#111;&#x6e;&#109;&#x69;&#x63;&#x72;&#x6f;&#x73;&#111;&#102;&#x74;&#x2e;&#x63;&#x6f;&#x6d;">&#121;&#111;&#117;&#x40;&#x73;&#x74;&#x73;&#52;&#x62;&#50;&#99;&#x2e;&#111;&#x6e;&#109;&#105;&#x63;&#x72;&#111;&#115;&#x6f;&#102;&#x74;&#46;&#99;&#x6f;&#x6d;</a>
 Password: ]6]yzxXYG7uruM4p</p>
 
 <p>動かなくなったら、あきらめて自分で Azure AD B2C 環境セットアップしてください。</p>
@@ -257,9 +210,9 @@ Password: ]6]yzxXYG7uruM4p</p>
   
   <entry>
     <title type="html"><![CDATA[GitHub Business Plan 登場、GitHub.com ドメインで SCIM と SAML をサポート。]]></title>
-    <link href="http://oauthjp.github.io/blog/2017/03/07/github-support-saml-and-scim/"/>
+    <link href="http://oauth.jp/blog/2017/03/07/github-support-saml-and-scim/"/>
     <updated>2017-03-07T21:18:00+09:00</updated>
-    <id>http://oauthjp.github.io/blog/2017/03/07/github-support-saml-and-scim</id>
+    <id>http://oauth.jp/blog/2017/03/07/github-support-saml-and-scim</id>
     <content type="html"><![CDATA[<p>オンプレサーバーで GitHub Enterprise をお使いのみなさま。</p>
 
 <p>日々オンプレサーバーのメンテ、おつかれさまです。</p>
@@ -354,13 +307,13 @@ Password: ]6]yzxXYG7uruM4p</p>
 
 <p>あと、Email 指定してもそのメアドのユーザーにログインできるわけでもないです。</p>
 
-<p><a href="&#x6d;&#x61;&#x69;&#108;&#116;&#111;&#x3a;&#x6e;&#x6f;&#118;&#x40;&#101;&#x78;&#97;&#109;&#x70;&#108;&#x65;&#46;&#x63;&#x6f;&#109;">&#110;&#x6f;&#x76;&#x40;&#101;&#120;&#97;&#109;&#112;&#108;&#x65;&#46;&#99;&#111;&#109;</a> の NameID を持つ SAML Assertion で、<a href="&#109;&#x61;&#x69;&#108;&#x74;&#111;&#x3a;&#x6e;&#111;&#118;&#64;&#x6d;&#x61;&#x74;&#97;&#x6b;&#x65;&#x2e;&#106;&#x70;">&#110;&#111;&#x76;&#64;&#109;&#x61;&#116;&#97;&#107;&#101;&#46;&#106;&#x70;</a> の GitHub アカウントにログインできたりします。</p>
+<p><a href="&#109;&#97;&#x69;&#x6c;&#x74;&#111;&#58;&#x6e;&#x6f;&#x76;&#64;&#101;&#x78;&#97;&#x6d;&#x70;&#x6c;&#101;&#46;&#99;&#111;&#x6d;">&#110;&#111;&#118;&#x40;&#101;&#120;&#x61;&#x6d;&#x70;&#108;&#x65;&#46;&#x63;&#111;&#109;</a> の NameID を持つ SAML Assertion で、<a href="&#x6d;&#x61;&#x69;&#108;&#x74;&#x6f;&#58;&#x6e;&#111;&#x76;&#x40;&#109;&#x61;&#x74;&#x61;&#107;&#x65;&#x2e;&#106;&#x70;">&#x6e;&#111;&#118;&#64;&#x6d;&#97;&#x74;&#97;&#x6b;&#101;&#46;&#x6a;&#x70;</a> の GitHub アカウントにログインできたりします。</p>
 
 <p>SAML Federation とか言うてるけど、結局既存の GitHub.com アカウントに SAML IdP 側のアカウントを Link するだけなんですよ。</p>
 
 <p>その紐付けは、SAML での初回ログイン時に GitHub.com 側の ID &amp; Password 入力して行います。</p>
 
-<p>つまり、<a href="&#109;&#97;&#105;&#108;&#x74;&#111;&#58;&#x6e;&#111;&#x76;&#64;&#x65;&#120;&#x61;&#x6d;&#x70;&#x6c;&#101;&#x2e;&#x63;&#x6f;&#109;">&#110;&#x6f;&#118;&#64;&#x65;&#120;&#x61;&#x6d;&#x70;&#x6c;&#x65;&#46;&#x63;&#111;&#109;</a> の NameID を持つ SAML Assertion をどの GitHub アカウントに紐づけるかは、エンドユーザーが決定権を持っています。</p>
+<p>つまり、<a href="&#109;&#x61;&#x69;&#x6c;&#x74;&#111;&#58;&#110;&#x6f;&#118;&#x40;&#101;&#x78;&#x61;&#109;&#112;&#x6c;&#x65;&#46;&#x63;&#x6f;&#109;">&#x6e;&#111;&#118;&#x40;&#x65;&#120;&#x61;&#109;&#x70;&#x6c;&#101;&#46;&#x63;&#x6f;&#x6d;</a> の NameID を持つ SAML Assertion をどの GitHub アカウントに紐づけるかは、エンドユーザーが決定権を持っています。</p>
 
 <p>情シスじゃないです。</p>
 
@@ -437,18 +390,14 @@ Password: ]6]yzxXYG7uruM4p</p>
 <p>そこはすばらしいですけど。</p>
 
 <p><strong>お前それ致命的やろ。</strong></p>
-
-<p>Octocat はかわいいけども。</p>
-
-<p><a href="https://www.amazon.co.jp/Github-Octocat-Figurine-%E3%82%AA%E3%82%AF%E3%83%88%E3%82%AD%E3%83%A3%E3%83%83%E3%83%88-%E3%83%95%E3%82%A3%E3%82%AE%E3%83%A5%E3%82%A2/dp/B01L6VR96O/ref=as_li_ss_il?ie=UTF8&qid=1491031942&sr=8-7&keywords=github&linkCode=li3&tag=bianca0b-22&linkId=0a81153b8af09233c305993da8a2a3ee" target="_blank"><img border="0" src="http://oauthjp.github.io//ws-fe.amazon-adsystem.com/widgets/q?_encoding=UTF8&ASIN=B01L6VR96O&Format=_SL250_&ID=AsinImage&MarketPlace=JP&ServiceVersion=20070822&WS=1&tag=bianca0b-22" ></a><img src="https://ir-jp.amazon-adsystem.com/e/ir?t=bianca0b-22&l=li3&o=9&a=B01L6VR96O" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" /></p>
 ]]></content>
   </entry>
   
   <entry>
     <title type="html"><![CDATA[MacOS Sierra (10.12.x) でマイナポータルにログイン]]></title>
-    <link href="http://oauthjp.github.io/blog/2017/01/26/myna-on-mac-os-sierra/"/>
+    <link href="http://oauth.jp/blog/2017/01/26/myna-on-mac-os-sierra/"/>
     <updated>2017-01-26T21:37:00+09:00</updated>
-    <id>http://oauthjp.github.io/blog/2017/01/26/myna-on-mac-os-sierra</id>
+    <id>http://oauth.jp/blog/2017/01/26/myna-on-mac-os-sierra</id>
     <content type="html"><![CDATA[<p>お久しぶりです、nov です。</p>
 
 <p>おかげで無事12月末で <a href="http://yauth.jp">YAuth.jp</a> も初年度を終え、2期目に突入しております。</p>
@@ -498,7 +447,7 @@ Password: ]6]yzxXYG7uruM4p</p>
 
 <p>この記事執筆時点では、以下の一番下のやつです。</p>
 
-<p><a href="https://www.sanwa.co.jp/support/download/dl_driver_ichiran.asp?code=ADR-MNICUBK"><img src="http://oauthjp.github.io/images/posts/myna/card-reader-drivers.png" alt="ADR-MNICUBK Deivers" /></a></p>
+<p><a href="https://www.sanwa.co.jp/support/download/dl_driver_ichiran.asp?code=ADR-MNICUBK"><img src="http://oauth.jp/images/posts/myna/card-reader-drivers.png" alt="ADR-MNICUBK Deivers" /></a></p>
 
 <p>これでカードリーダーのセットアップは完了です。</p>
 
@@ -510,7 +459,7 @@ Password: ]6]yzxXYG7uruM4p</p>
 
 <p>ということで、とりあえず現時点での最新の Java 入れときましょう。</p>
 
-<p><img src="http://oauthjp.github.io/images/posts/myna/java8-121.png" alt="Java 8 Update 121" /></p>
+<p><img src="http://oauth.jp/images/posts/myna/java8-121.png" alt="Java 8 Update 121" /></p>
 
 <p>Oracle Java 入れたことあれば　MacOS の設定アプリに屈辱の &ldquo;Java&rdquo; メニュー現れてるはずなんで、そっからアップデートできるはずです。</p>
 
@@ -538,13 +487,13 @@ Password: ]6]yzxXYG7uruM4p</p>
 
 <p>よくわかんないけど「はい」にしときましょう。</p>
 
-<p><img src="http://oauthjp.github.io/images/posts/myna/jpki-cert-expiry-notification.png" alt="JPKI 証明書有効期限通知設定" /></p>
+<p><img src="http://oauth.jp/images/posts/myna/jpki-cert-expiry-notification.png" alt="JPKI 証明書有効期限通知設定" /></p>
 
 <p>Retina 対応してないやつ、久々にみました。</p>
 
 <p>最後にインストールされた全アプリが表示されます。</p>
 
-<p><img src="http://oauthjp.github.io/images/posts/myna/jpki-applications.png" alt="JPKI アプリ一覧" /></p>
+<p><img src="http://oauth.jp/images/posts/myna/jpki-applications.png" alt="JPKI アプリ一覧" /></p>
 
 <p>この中の「Java実行環境への登録」ってのだけ実行しといてください。</p>
 
@@ -570,7 +519,7 @@ Password: ]6]yzxXYG7uruM4p</p>
 
 <p>マイナンバーカード取得時に設定した PIN コードの入力を求める Popup が出て来たら、成功です。</p>
 
-<p><img src="http://oauthjp.github.io/images/posts/myna/myna-pin-input.png" alt="マイナポータルログイン" /></p>
+<p><img src="http://oauth.jp/images/posts/myna/myna-pin-input.png" alt="マイナポータルログイン" /></p>
 
 <p>PIN を入れてログイン成功したことを確認したら、あとはご自由にマイナポータルで遊んでみてください。</p>
 
@@ -590,9 +539,9 @@ Password: ]6]yzxXYG7uruM4p</p>
   
   <entry>
     <title type="html"><![CDATA[HTTPS でも Full URL が漏れる？OAuth の code も漏れるんじゃね？？]]></title>
-    <link href="http://oauthjp.github.io/blog/2016/07/27/https-full-url-leaks/"/>
+    <link href="http://oauth.jp/blog/2016/07/27/https-full-url-leaks/"/>
     <updated>2016-07-27T10:48:00+09:00</updated>
-    <id>http://oauthjp.github.io/blog/2016/07/27/https-full-url-leaks</id>
+    <id>http://oauth.jp/blog/2016/07/27/https-full-url-leaks</id>
     <content type="html"><![CDATA[<p>なんですかこれは！</p>
 
 <p><a href="http://arstechnica.com/security/2016/07/new-attack-that-cripples-https-crypto-works-on-macs-windows-and-linux/">New attack bypasses HTTPS protection on Macs, Windows, and Linux</a></p>
@@ -699,9 +648,9 @@ Password: ]6]yzxXYG7uruM4p</p>
   
   <entry>
     <title type="html"><![CDATA[NIST 800-63C を翻訳しました]]></title>
-    <link href="http://oauthjp.github.io/blog/2016/07/15/nist-800-63c/"/>
+    <link href="http://oauth.jp/blog/2016/07/15/nist-800-63c/"/>
     <updated>2016-07-15T15:06:00+09:00</updated>
-    <id>http://oauthjp.github.io/blog/2016/07/15/nist-800-63c</id>
+    <id>http://oauth.jp/blog/2016/07/15/nist-800-63c</id>
     <content type="html"><![CDATA[<p>先日このブログでも紹介した <a href="http://oauth.jp/blog/2016/07/01/jwk-and-oauth-revocation-translated/">OAuth Revocation, JWK JWK Thumbprint 仕様の翻訳版</a> に引き続き、OpenID Foundation Japan 翻訳・教育 WG リーダーとしての Nov です。</p>
 
 <p>先日 <a href="https://www.facebook.com/OpenIDTrans/posts/1226159194083566">翻訳 WG の Facebook Page</a> でも告知したように、現在 <a href="https://pages.nist.gov/800-63-3/">NIST SP 800-63-3 &ndash; Digital Authentication Guideline</a> の翻訳を開始しています。</p>
@@ -843,9 +792,9 @@ Password: ]6]yzxXYG7uruM4p</p>
   
   <entry>
     <title type="html"><![CDATA[Office 365 と外部 SAML IdP との連携設定]]></title>
-    <link href="http://oauthjp.github.io/blog/2016/07/01/o365-saml-federation/"/>
+    <link href="http://oauth.jp/blog/2016/07/01/o365-saml-federation/"/>
     <updated>2016-07-01T11:03:00+09:00</updated>
-    <id>http://oauthjp.github.io/blog/2016/07/01/o365-saml-federation</id>
+    <id>http://oauth.jp/blog/2016/07/01/o365-saml-federation</id>
     <content type="html"><![CDATA[<p>どうも、事務局長の Nov です。</p>
 
 <p>どうも、ジムキョクチョのノブです。</p>
@@ -871,7 +820,7 @@ Password: ]6]yzxXYG7uruM4p</p>
 
 <p>あとはこの本もおすすめ。</p>
 
-<p><a href="https://www.amazon.co.jp/%E8%84%B1%E3%82%AA%E3%83%B3%E3%83%97%E3%83%AC%E3%83%9F%E3%82%B9-%E3%82%AF%E3%83%A9%E3%82%A6%E3%83%89%E6%99%82%E4%BB%A3%E3%81%AE%E8%AA%8D%E8%A8%BC%E5%9F%BA%E7%9B%A4-Active-Directory-%E3%83%9E%E3%82%A4%E3%82%AF%E3%83%AD%E3%82%BD%E3%83%95%E3%83%88%E9%96%A2%E9%80%A3%E6%9B%B8-ebook/dp/B01IB6Q79W/ref=as_li_ss_il?ie=UTF8&qid=1491030816&sr=8-7&keywords=azure&linkCode=li3&tag=bianca0b-22&linkId=6d34dacc7b28dbb8de4dc560a0ad084f" target="_blank"><img border="0" src="http://oauthjp.github.io//ws-fe.amazon-adsystem.com/widgets/q?_encoding=UTF8&ASIN=B01IB6Q79W&Format=_SL250_&ID=AsinImage&MarketPlace=JP&ServiceVersion=20070822&WS=1&tag=bianca0b-22" ></a><img src="https://ir-jp.amazon-adsystem.com/e/ir?t=bianca0b-22&l=li3&o=9&a=B01IB6Q79W" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" /></p>
+<p><a href="https://www.amazon.co.jp/%E8%84%B1%E3%82%AA%E3%83%B3%E3%83%97%E3%83%AC%E3%83%9F%E3%82%B9-%E3%82%AF%E3%83%A9%E3%82%A6%E3%83%89%E6%99%82%E4%BB%A3%E3%81%AE%E8%AA%8D%E8%A8%BC%E5%9F%BA%E7%9B%A4-Active-Directory-%E3%83%9E%E3%82%A4%E3%82%AF%E3%83%AD%E3%82%BD%E3%83%95%E3%83%88%E9%96%A2%E9%80%A3%E6%9B%B8-ebook/dp/B01IB6Q79W/ref=as_li_ss_il?ie=UTF8&qid=1491030816&sr=8-7&keywords=azure&linkCode=li3&tag=bianca0b-22&linkId=6d34dacc7b28dbb8de4dc560a0ad084f" target="_blank"><img border="0" src="http://oauth.jp//ws-fe.amazon-adsystem.com/widgets/q?_encoding=UTF8&ASIN=B01IB6Q79W&Format=_SL250_&ID=AsinImage&MarketPlace=JP&ServiceVersion=20070822&WS=1&tag=bianca0b-22" ></a><img src="https://ir-jp.amazon-adsystem.com/e/ir?t=bianca0b-22&l=li3&o=9&a=B01IB6Q79W" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" /></p>
 
 <!-- more -->
 
@@ -888,7 +837,7 @@ Password: ]6]yzxXYG7uruM4p</p>
 
 <p>こうなった。</p>
 
-<p><img src="http://oauthjp.github.io/images/posts/azure/azure-ad-directories.png" alt="Azure AD Directories" /></p>
+<p><img src="http://oauth.jp/images/posts/azure/azure-ad-directories.png" alt="Azure AD Directories" /></p>
 
 <p>消せないけどいらん <code>yauth.onmicrosoft.com</code> 側のディレクトリを &ldquo;remove-me&rdquo; にリネームして、そっちから <code>yauth.jp</code> の紐付け解除して <code>yauthjp.onmicrosoft.com</code> 側のディレクトリに紐付け直した。</p>
 
@@ -987,9 +936,9 @@ Mac から Remote Desktop 経由でいじりたかったんでね。</p>
   
   <entry>
     <title type="html"><![CDATA[OAuth Revocation と JWK を翻訳しました]]></title>
-    <link href="http://oauthjp.github.io/blog/2016/07/01/jwk-and-oauth-revocation-translated/"/>
+    <link href="http://oauth.jp/blog/2016/07/01/jwk-and-oauth-revocation-translated/"/>
     <updated>2016-07-01T10:14:00+09:00</updated>
-    <id>http://oauthjp.github.io/blog/2016/07/01/jwk-and-oauth-revocation-translated</id>
+    <id>http://oauth.jp/blog/2016/07/01/jwk-and-oauth-revocation-translated</id>
     <content type="html"><![CDATA[<p>どうも、この度 OpenID Foundation Japan の事務局長になった Nov です。</p>
 
 <p>事務局長就任のご挨拶的なポエムを書けというオーラをふつふつと感じながら、ガン無視してこの記事を書いております。</p>
@@ -1108,9 +1057,9 @@ Mac から Remote Desktop 経由でいじりたかったんでね。</p>
   
   <entry>
     <title type="html"><![CDATA[Office 365 SAML implementation vulnerability]]></title>
-    <link href="http://oauthjp.github.io/blog/2016/05/14/office-365-saml-implementation-vulnerability/"/>
+    <link href="http://oauth.jp/blog/2016/05/14/office-365-saml-implementation-vulnerability/"/>
     <updated>2016-05-14T10:32:00+09:00</updated>
-    <id>http://oauthjp.github.io/blog/2016/05/14/office-365-saml-implementation-vulnerability</id>
+    <id>http://oauth.jp/blog/2016/05/14/office-365-saml-implementation-vulnerability</id>
     <content type="html"><![CDATA[<p>先日 Office 365 のこんな記事見つけたので、一応まとめておきますかね。</p>
 
 <p><a href="http://www.economyofmechanism.com/office365-authbypass.html">The road to hell is paved with SAML Assertions</a></p>
@@ -1331,9 +1280,9 @@ Mac から Remote Desktop 経由でいじりたかったんでね。</p>
   
   <entry>
     <title type="html"><![CDATA[OAuth / Connect における CSRF Attack の新パターン]]></title>
-    <link href="http://oauthjp.github.io/blog/2016/05/06/another-csrf-attack/"/>
+    <link href="http://oauth.jp/blog/2016/05/06/another-csrf-attack/"/>
     <updated>2016-05-06T14:19:00+09:00</updated>
-    <id>http://oauthjp.github.io/blog/2016/05/06/another-csrf-attack</id>
+    <id>http://oauth.jp/blog/2016/05/06/another-csrf-attack</id>
     <content type="html"><![CDATA[<p>昨日こんなのが OAuth ML に流れてました。</p>
 
 <p><a href="https://mailarchive.ietf.org/arch/search/?email_list=oauth&amp;gbt=1&amp;index=G4J3H1BMyIN01FCOLKqLjrx7AZ4">[OAUTH-WG] Another CSRF attack</a></p>
@@ -1394,22 +1343,22 @@ Mac から Remote Desktop 経由でいじりたかったんでね。</p>
   
   <entry>
     <title type="html"><![CDATA[FB Message API Callback as an Azure Function]]></title>
-    <link href="http://oauthjp.github.io/blog/2016/04/19/fb-message-callback-with-azure-function/"/>
+    <link href="http://oauth.jp/blog/2016/04/19/fb-message-callback-with-azure-function/"/>
     <updated>2016-04-19T10:56:00+09:00</updated>
-    <id>http://oauthjp.github.io/blog/2016/04/19/fb-message-callback-with-azure-function</id>
+    <id>http://oauth.jp/blog/2016/04/19/fb-message-callback-with-azure-function</id>
     <content type="html"><![CDATA[<p>今日は Azure Function で FB Message API Callback を作ってみます。</p>
 
 <p>Azure Function は、Azure Portal の Marketplace で &ldquo;Function App&rdquo; って検索すると出てきますね。</p>
 
-<p><img src="http://oauthjp.github.io/images/posts/azure/azure-function-in-marketplace.png" alt="Azure Function in Marketplace" /></p>
+<p><img src="http://oauth.jp/images/posts/azure/azure-function-in-marketplace.png" alt="Azure Function in Marketplace" /></p>
 
 <p>Function App の Deploy がおわったら、QuickStart から &ldquo;Webhook + API&rdquo; を選びましょう。</p>
 
-<p><img src="http://oauthjp.github.io/images/posts/azure/azure-function-quickstart.png" alt="Azure Function QuickStart" /></p>
+<p><img src="http://oauth.jp/images/posts/azure/azure-function-quickstart.png" alt="Azure Function QuickStart" /></p>
 
 <p>以下の様な Node.js のテンプレートアプリが出来上がります。</p>
 
-<p><img src="http://oauthjp.github.io/images/posts/azure/azure-function-template.png" alt="Azure Function Template" /></p>
+<p><img src="http://oauth.jp/images/posts/azure/azure-function-template.png" alt="Azure Function Template" /></p>
 
 <p>まずは FB Message の WebHook としてこの Function を登録します。</p>
 
@@ -1418,7 +1367,7 @@ Mac から Remote Desktop 経由でいじりたかったんでね。</p>
 
 <p>Azure Function の <code>Function URL</code> を FB Message API の <code>WebHook Callback URL</code> に登録して、適当な <code>verify_token</code> を設定します。</p>
 
-<p><img src="http://oauthjp.github.io/images/posts/azure/fb-message-callback.png" alt="FB Message API Callback (FB WebHook)" /></p>
+<p><img src="http://oauth.jp/images/posts/azure/fb-message-callback.png" alt="FB Message API Callback (FB WebHook)" /></p>
 
 <p>WebHook Verification のために、テンプレの Azure Function を以下の様に書き換えます。</p>
 
@@ -1449,7 +1398,7 @@ Mac から Remote Desktop 経由でいじりたかったんでね。</p>
 
 <p>この時に使う FB Page Token は、先ほど WebHook を登録したページ (FB Messenger API の設定ページ) で取得したものを使う様にしてください。そこで取得した FB Page Token は Expire しません。</p>
 
-<p><img src="http://oauthjp.github.io/images/posts/azure/azure-function-env.png" alt="Azure Function Env" /></p>
+<p><img src="http://oauth.jp/images/posts/azure/azure-function-env.png" alt="Azure Function Env" /></p>
 
 <p>あとは Azure Function 側を以下の様に書き換えてやれば OK です。</p>
 
@@ -1528,9 +1477,9 @@ Mac から Remote Desktop 経由でいじりたかったんでね。</p>
   
   <entry>
     <title type="html"><![CDATA[Windows Server 2016 版 ADFS を触ってみた]]></title>
-    <link href="http://oauthjp.github.io/blog/2016/04/17/oidc-on-adfs-2016/"/>
+    <link href="http://oauth.jp/blog/2016/04/17/oidc-on-adfs-2016/"/>
     <updated>2016-04-17T19:38:00+09:00</updated>
-    <id>http://oauthjp.github.io/blog/2016/04/17/oidc-on-adfs-2016</id>
+    <id>http://oauth.jp/blog/2016/04/17/oidc-on-adfs-2016</id>
     <content type="html"><![CDATA[<p>MVP になったことですし、早速 Azure 常に Windows Server 2016 の VM 立ち上げて、次期バージョンの ADFS を動かしてみました。</p>
 
 <p>想定ユースケースは、Native App とその Backend Server があって、Backend Server が Native App 向けに提供している API 用の Access Token も、ADFS が発行するというものです。</p>
@@ -1541,11 +1490,11 @@ Mac から Remote Desktop 経由でいじりたかったんでね。</p>
 
 <p>ADFS Manager に &ldquo;Application Groups&rdquo; っていう設定が増えてるんで、そこから &ldquo;Native Application and Web API&rdquo; ってのを選択して、Connect RP (= OAuth Client) を登録します。</p>
 
-<p><img src="http://oauthjp.github.io/images/posts/adfs/hybrid-client-new.png" alt="New Hybrid Client" /></p>
+<p><img src="http://oauth.jp/images/posts/adfs/hybrid-client-new.png" alt="New Hybrid Client" /></p>
 
 <p>スクショいっぱい撮るのが面倒なのですっ飛ばしますが、こんな感じで Native App とその Backend Server を ADFS に &ldquo;Application Group&rdquo; として登録しました。</p>
 
-<p><img src="http://oauthjp.github.io/images/posts/adfs/hybrid-client.png" alt="Registered Hybrid Client" /></p>
+<p><img src="http://oauth.jp/images/posts/adfs/hybrid-client.png" alt="Registered Hybrid Client" /></p>
 
 <p>ちなみに、この時 Backend には特に Native App と別の client_id が発行されたりはしません。</p>
 
@@ -1903,9 +1852,9 @@ Mac から Remote Desktop 経由でいじりたかったんでね。</p>
   
   <entry>
     <title type="html"><![CDATA[Microsoft MVP Award を受賞しました]]></title>
-    <link href="http://oauthjp.github.io/blog/2016/04/02/microsoft-mvp/"/>
+    <link href="http://oauth.jp/blog/2016/04/02/microsoft-mvp/"/>
     <updated>2016-04-02T18:02:00+09:00</updated>
-    <id>http://oauthjp.github.io/blog/2016/04/02/microsoft-mvp</id>
+    <id>http://oauth.jp/blog/2016/04/02/microsoft-mvp</id>
     <content type="html"><![CDATA[<p>2016年度の Microsoft MVP Award を受賞させていただきました。</p>
 
 <p>これもひとえにあんのパパのおかげです。パパは<a href="https://blogs.technet.microsoft.com/junichia/2016/04/01/%E5%98%98%E3%81%AE%E3%82%88%E3%81%86%E3%81%AA%E6%9C%AA%E6%9D%A5%E3%81%AE%E5%A7%8B%E3%81%BE%E3%82%8A%E3%81%A7%E3%81%99%EF%BC%81/">2007年4月 Microsoft 入社</a>ということなので、僕が新卒になったころからの MS エバンジェリストってことっすよ。</p>
@@ -1929,9 +1878,9 @@ Mac から Remote Desktop 経由でいじりたかったんでね。</p>
   
   <entry>
     <title type="html"><![CDATA[独立 & YAuth.jp 設立]]></title>
-    <link href="http://oauthjp.github.io/blog/2016/03/26/yauth-dot-jp-founded/"/>
+    <link href="http://oauth.jp/blog/2016/03/26/yauth-dot-jp-founded/"/>
     <updated>2016-03-26T12:27:00+09:00</updated>
-    <id>http://oauthjp.github.io/blog/2016/03/26/yauth-dot-jp-founded</id>
+    <id>http://oauth.jp/blog/2016/03/26/yauth-dot-jp-founded</id>
     <content type="html"><![CDATA[<p>昨日を最終出社日として、GREE 正社員生活を終えました。4月からは独り会社作って独立します。</p>
 
 <p>転職じゃなくて独立で、契約形態変えて GREE さんともお仕事する可能性十分あるので、あまり退職っていう実感はないのですが、これもまぁ一応退職エントリー&hellip;ですかね？</p>
@@ -1955,9 +1904,9 @@ Mac から Remote Desktop 経由でいじりたかったんでね。</p>
   
   <entry>
     <title type="html"><![CDATA[「OAuth 認証」を定義しよう]]></title>
-    <link href="http://oauthjp.github.io/blog/2016/02/25/oauth-authentication/"/>
+    <link href="http://oauth.jp/blog/2016/02/25/oauth-authentication/"/>
     <updated>2016-02-25T11:27:00+09:00</updated>
-    <id>http://oauthjp.github.io/blog/2016/02/25/oauth-authentication</id>
+    <id>http://oauth.jp/blog/2016/02/25/oauth-authentication</id>
     <content type="html"><![CDATA[<p>「OAuth 認証」って言葉が出てくると、「認証と認可は違う」とか言い出す人が出てきて、大体の場合「OAuth 認証」言ってた人たちがやりたいことの話とはズレた議論が始まるので、もういっその事「OAuth 認証」とは何かを定義してみましょうかね。</p>
 
 <h2>「OAuth 認証」で Relying Party (RP) がやりたかったこと</h2>
@@ -1968,7 +1917,7 @@ Mac から Remote Desktop 経由でいじりたかったんでね。</p>
 
 <p>いきなり Entity とか Identity とかいう専門用語が出てきてアレですが、そのあたりのことは先日の OpenID TechNight #13 でもお話ししたので、以下のスライドの Entity・Identity・Authentication・Authorization のあたりのページを見てください。</p>
 
-<iframe src="http://oauthjp.github.io//www.slideshare.net/slideshow/embed_code/key/Lw5OsZp5n6qwXb" width="595" height="485" frameborder="0" marginwidth="0" marginheight="0" scrolling="no" style="border:1px solid #CCC; border-width:1px; margin-bottom:5px; max-width: 100%;" allowfullscreen> </iframe>
+<iframe src="http://oauth.jp//www.slideshare.net/slideshow/embed_code/key/Lw5OsZp5n6qwXb" width="595" height="485" frameborder="0" marginwidth="0" marginheight="0" scrolling="no" style="border:1px solid #CCC; border-width:1px; margin-bottom:5px; max-width: 100%;" allowfullscreen> </iframe>
 
 
 <p>で、あるサービスが End-User を認証したいって思った時って、普通は当該サービスが事前に当該 Entity に対して ID と Password を登録させて Identity Record (「サービスアカウント」と言ってもいい) を作成し、後日当該 Entity が当該サービスに訪れた際は登録済みの ID と Password を提示させて当該 Entity に紐づく Identity を確定するわけです。</p>
@@ -2042,9 +1991,9 @@ Mac から Remote Desktop 経由でいじりたかったんでね。</p>
   
   <entry>
     <title type="html"><![CDATA[OpenID Connectはそんなに大変かね？]]></title>
-    <link href="http://oauthjp.github.io/blog/2016/02/24/is-openid-connect-far-from-oauth2/"/>
+    <link href="http://oauth.jp/blog/2016/02/24/is-openid-connect-far-from-oauth2/"/>
     <updated>2016-02-24T11:14:00+09:00</updated>
-    <id>http://oauthjp.github.io/blog/2016/02/24/is-openid-connect-far-from-oauth2</id>
+    <id>http://oauth.jp/blog/2016/02/24/is-openid-connect-far-from-oauth2</id>
     <content type="html"><![CDATA[<p><a href="http://qiita.com/TakahikoKawasaki/items/f2a0d25a4f05790b3baa">OAuth 2.0 + OpenID Connect のフルスクラッチ実装者が知見を語る &ndash; Qiita</a> ってのになんかフォローアップしろよ的なのが来たので。</p>
 
 <p>ざっと読んだ感想としては、「OpenID Connect の OPTIONAL な機能全部実装したら、そら大変ですね」という感じ。（Authlete に関しては、OpenAM みたいな感じで使われる、OpenAM よりはるかに簡単に使える代わりに有料の何かなんだろうな、というイメージです）</p>
@@ -2158,9 +2107,9 @@ Mac から Remote Desktop 経由でいじりたかったんでね。</p>
   
   <entry>
     <title type="html"><![CDATA[OAuth IdP Mix-up Attack - part II]]></title>
-    <link href="http://oauthjp.github.io/blog/2016/01/25/oauth-idp-mix-up-attack-part-ii/"/>
+    <link href="http://oauth.jp/blog/2016/01/25/oauth-idp-mix-up-attack-part-ii/"/>
     <updated>2016-01-25T15:59:00+09:00</updated>
-    <id>http://oauthjp.github.io/blog/2016/01/25/oauth-idp-mix-up-attack-part-ii</id>
+    <id>http://oauth.jp/blog/2016/01/25/oauth-idp-mix-up-attack-part-ii</id>
     <content type="html"><![CDATA[<p><a href="http://oauth.jp/blog/2016/01/12/oauth-idp-mix-up-attack/">OAuth IdP Mix-Up Attack とは？</a> のつづき。</p>
 
 <p>OAuth ML上で、以下のどちらを採用すべきかについての議論が収まる気配のない昨今です。</p>
@@ -2210,9 +2159,9 @@ Mac から Remote Desktop 経由でいじりたかったんでね。</p>
   
   <entry>
     <title type="html"><![CDATA[OAuth IdP Mix-Up Attack とは？]]></title>
-    <link href="http://oauthjp.github.io/blog/2016/01/12/oauth-idp-mix-up-attack/"/>
+    <link href="http://oauth.jp/blog/2016/01/12/oauth-idp-mix-up-attack/"/>
     <updated>2016-01-12T15:51:00+09:00</updated>
-    <id>http://oauthjp.github.io/blog/2016/01/12/oauth-idp-mix-up-attack</id>
+    <id>http://oauth.jp/blog/2016/01/12/oauth-idp-mix-up-attack</id>
     <content type="html"><![CDATA[<p>成人式を迎えられたID厨の皆様におかれましては、大変おめでとうございます。成人前からID厨とか、キモカワですね。</p>
 
 <p>さて、今日は、成人式直前にOAuth MLに投下された以下のpostで「OAuth 2.0の脆弱性」として紹介されている &ldquo;IdP Mix-Up Attack&rdquo; について紹介します。</p>
@@ -2237,7 +2186,7 @@ Mac から Remote Desktop 経由でいじりたかったんでね。</p>
 
 <p>以下、Attackerの管理下にあるIdPをAIdP (Attacker IdP)、その他の悪意ないIdPをHIdP (Honest IdP) と呼ぶことにします。</p>
 
-<p><img src="http://oauthjp.github.io/images/posts/oauth-idp-mixup.png" alt="OAuth IdP Mix-Up Attack" /></p>
+<p><img src="http://oauth.jp/images/posts/oauth-idp-mixup.png" alt="OAuth IdP Mix-Up Attack" /></p>
 
 <ol>
 <li>End-UserはRPの任意のページから「HIdPでログイン」ボタンをクリック。</li>
@@ -2297,9 +2246,9 @@ Mac から Remote Desktop 経由でいじりたかったんでね。</p>
   
   <entry>
     <title type="html"><![CDATA[[PR] OpenID Summit Tokyo 2015 やります！]]></title>
-    <link href="http://oauthjp.github.io/blog/2015/10/19/openid-summit-tokyo-2015/"/>
+    <link href="http://oauth.jp/blog/2015/10/19/openid-summit-tokyo-2015/"/>
     <updated>2015-10-19T11:58:00+09:00</updated>
-    <id>http://oauthjp.github.io/blog/2015/10/19/openid-summit-tokyo-2015</id>
+    <id>http://oauth.jp/blog/2015/10/19/openid-summit-tokyo-2015</id>
     <content type="html"><![CDATA[<p>Identity 界隈の皆様は、11/10 に <a href="https://openid.or.jp/summit/2015/index.html">OpenID Summit 2015</a> が開催されることはすでにご存知かと思いますが、OAuth / JWT 愛なみなさまの中にはまだご存知ない方もおられるかもしれないので、こちらでも告知しておきますね。</p>
 
 <p>はい、やります！</p>
@@ -2324,6 +2273,84 @@ Mac から Remote Desktop 経由でいじりたかったんでね。</p>
 <p>Global の方の OpenID Foundation からも、Mike Jones が Hands-on 会場に来てくれるようなので、Mike の OpenID Connect Certification のセッションをみた後、そのまま Hands-on に参加すると良いと思います！</p>
 
 <p>ということで、<a href="https://openid.or.jp/summit/2015/index.html">申し込みはこちら</a>！</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[IETF JOSE WG と OAuth WG から一気に9本の RFC が！]]></title>
+    <link href="http://oauth.jp/blog/2015/05/20/jose-and-oauth-assertion-rfcs/"/>
+    <updated>2015-05-20T21:05:00+09:00</updated>
+    <id>http://oauth.jp/blog/2015/05/20/jose-and-oauth-assertion-rfcs</id>
+    <content type="html"><![CDATA[<p>一気に出ましたね。すでに過去にもいくつかは紹介したり翻訳したりしていますが、それぞれを簡単に紹介しておきます。</p>
+
+<h3>JOSE WG</h3>
+
+<ul>
+<li><a href="http://tools.ietf.org/html/rfc7515">RFC 7515</a> &ndash; JSON Web Signature (JWS)</li>
+<li><a href="http://tools.ietf.org/html/rfc7516">RFC 7516</a> &ndash; JSON Web Encryption (JWE)</li>
+<li><a href="http://tools.ietf.org/html/rfc7517">RFC 7517</a> &ndash; JSON Web Key (JWK)</li>
+<li><a href="http://tools.ietf.org/html/rfc7518">RFC 7518</a> &ndash; JSON Web Algorithms (JWA)</li>
+<li><a href="http://tools.ietf.org/html/rfc7520">RFC 7520</a> &ndash; Examples of Protecting Content Using JSON Object Signing and Encryption (JOSE)</li>
+</ul>
+
+
+<p>JWS は署名付きのデータを JSON (の Base64 URL Encode) 形式で表現するための仕様で、多くの場合は JSON Payload に対して署名するケースで利用されます。JSON じゃないデータに対して署名して、署名結果を JSON (の Base64 URL Encode) 形式で表現することもできますが&hellip;まぁ、細かい話は置いときましょう。OpenID Connect の ID Token とかは、JWS 仕様に従って署名されています。</p>
+
+<p>JWE は暗号化されたデータを JSON (の Base64 URL Encode) 形式で表現するための仕様です。現状では JWS よりは利用頻度低いかとは思いますが、SAML Assertion を暗号化してるようなユースケースを Connect に移行する時なんかには使うでしょう。</p>
+
+<p>JWK は JWS や JWE などで利用する鍵を JSON 形式で表現するための仕様です。上記2つとよくセットで利用されます。OpenID Connect でも、OpenID Connect Discovery をサポートしているような IdP では大体公開鍵を JWK Set 形式で公開していますね。</p>
+
+<p>JWA は、JWS や JWE で利用される各アルゴリズムおよびそれらの識別子を定義している仕様です。JWT, JWS, JWE をライブラリを通じて利用しているケースでは、あまり気にすることはないでしょうが、JOSE ライブラリ作者は読むことになるでしょう。</p>
+
+<p>最後のは、サンプルリストですね。これはまぁライブラリ作者が読むくらいでしょう。</p>
+
+<h3>OAuth WG</h3>
+
+<ul>
+<li><a href="http://tools.ietf.org/html/rfc7519">RFC 7519</a> &ndash; JSON Web Token (JWT)</li>
+<li><a href="http://tools.ietf.org/html/rfc7521">RFC 7521</a> &ndash; Assertion Framework for OAuth 2.0 Client Authentication and Authorization Grants</li>
+<li><a href="http://tools.ietf.org/html/rfc7522">RFC 7522</a> &ndash; Security Assertion Markup Language (SAML) 2.0 Profile for OAuth 2.0 Client Authentication and Authorization Grants</li>
+<li><a href="http://tools.ietf.org/html/rfc7523">RFC 7523</a> &ndash; JSON Web Token (JWT) Profile for OAuth 2.0 Client Authentication and Authorization Grants</li>
+</ul>
+
+
+<p>JWT は JSON (の Base64 URL Encode) 形式で Assertion を生成するための仕様です。OpenID Connect の ID Token などで利用されています。大抵は署名 (= JWS) とセットで利用されるでしょう。</p>
+
+<p>Assertion Framework for OAuth 2.0 (ry) は、任意の Assertion を OAuth 2.0 の Client Authentication で Client Credentials として使ったり、Authorization Grant として利用して Assertion を Access Token と交換するための仕様です。これ単体では利用できず、後の2つのサブ仕様の共通部分を抽象化した仕様になっています。</p>
+
+<p>SAML 2.0 Profile for OAuth 2.0 (ry) は、SAML Assertion を RFC 7521 の Assertion として利用するための仕様です。既存の SAML SP が持っている SAML Assertion を OAuth 2.0 の Access Token と交換して API Access させたいとか、そういう時に使います。「あぁ、それは SAML 単体じゃ無理なんで、ID-WSF 必要ですねぇ〜」って言われたら、多分 ID-WSF 無視してこれ使えば、OAuth 2.0 使えるようになるはずです。</p>
+
+<p>JWT Profile for OAuth 2.0 (ry) は、JWT を RFC 7521 の Assertion として利用するための仕様です。Client Authentication 目的で利用するケースは、ADFS / Azure AD とかであるはずですが、Authorization Grant として利用するケースは&hellip;あったかな？</p>
+
+<h3>Links</h3>
+
+<ul>
+<li><a href="http://oauth.jp/blog/2012/10/26/json-web-token-jwt/">JSON Web Token (JWT) &ndash; OAuth.jp</a>
+
+<ul>
+<li>もうこの記事書いてから、2年半経ってるんですね〜。感慨深い。</li>
+</ul>
+</li>
+<li><a href="http://oauth.jp/blog/2015/03/16/common-jws-implementation-vulnerability/">JWS 実装時に作りがちな脆弱性パターン &ndash; OAuth.jp</a>
+
+<ul>
+<li>すでに JOSE ライブラリは大体出揃ってるので、今後新しく作ることはあまりないかもしれませんが、もし自分で JWS 実装する時は、これ注意してくださいね。</li>
+</ul>
+</li>
+<li><a href="http://openid-foundation-japan.github.io">翻訳ドキュメント一覧 &ndash; OpenID Foundation Japan 翻訳 WG</a>
+
+<ul>
+<li>Draft 版の JOSE 仕様群は、こちらに翻訳版あります。</li>
+</ul>
+</li>
+<li><a href="http://www.sakimura.org/2015/05/2997/">JWSとJWTがRFCになりました！ &ndash; @_Nat Zone</a>
+
+<ul>
+<li>Nat さんはじめ、みなさんおつかれさまでした！</li>
+</ul>
+</li>
+</ul>
+
 ]]></content>
   </entry>
   
