@@ -4,7 +4,7 @@
   <title><![CDATA[OAuth.jp]]></title>
   <link href="http://oauth.jp/atom.xml" rel="self"/>
   <link href="http://oauth.jp/"/>
-  <updated>2017-06-09T12:46:14+09:00</updated>
+  <updated>2017-06-09T17:50:36+09:00</updated>
   <id>http://oauth.jp/</id>
   <author>
     <name><![CDATA[Nov Matake]]></name>
@@ -12,6 +12,159 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Android O AutoFill Framework]]></title>
+    <link href="http://oauth.jp/blog/2017/06/09/android-o-autofill-framework/"/>
+    <updated>2017-06-09T12:47:00+09:00</updated>
+    <id>http://oauth.jp/blog/2017/06/09/android-o-autofill-framework</id>
+    <content type="html"><![CDATA[<p>どうも、iPhone ユーザーの Nov です。</p>
+
+<p>Android OS の進化は素晴らしいと思います。<br/>
+個人的には、普段使いのスマホじゃなければ Android 一択です。</p>
+
+<p>Chrome の進化も素晴らしいと思います。<br/>
+個人的には、普段使いの (ry</p>
+
+<p>最近は Android O から登場した <a href="https://developer.android.com/preview/features/autofill.html">Autofill Framework</a> ってのが気になってます。</p>
+
+<p>Developer Document で <em>&ldquo;Apps that use standard views work with the Autofill Framework out of the box&rdquo;</em> とか言われてるんで、Android App で普通にログインフォーム作れば、勝手に ID &amp; Password が Autofill されるっぽいですね。</p>
+
+<p>え？ID &amp; Password 以外にも、住所やクレカ番号も Autofill されるって？</p>
+
+<p><strong>でしょうね。</strong></p>
+
+<h2>Autofill Framework Sample App 動かしてみよう</h2>
+
+<p>ということで、<a href="https://www.google.com/android/beta">Android O Beta</a> 入れて、<a href="https://github.com/googlesamples/android-AutofillFramework">Autofill Framework Sample</a> 動かしてみましょう。</p>
+
+<p><a href="https://developer.android.com/studio/preview/index.html">Android Studio 3.0 Preview</a> とかいうのもダウンロード必要なようです。</p>
+
+<p>なんかいろいろ足りねぇとかエラー出るけど Java も Kotlin も Android Studio もよぉわからんので、まぁポチポチしていろいろインストールします。</p>
+
+<p>で、Android O Beta をインストールした Nexus 5X (普段使いではない) をターゲットにしてアプリをビルド&hellip;</p>
+
+<p>ジャジャーン！！</p>
+
+<!-- more -->
+
+
+<p><img src="http://oauth.jp/images/posts/android/autofill-framework/sample-build-error.png" alt="Autofill Framework Sample Build Error" /></p>
+
+<p>&hellip;はい、端末側の Android O Beta が古かったです。アップデートします。</p>
+
+<p>普段使いじゃないから電池残量が不足してアップデートするまえにまず充電しろとか言われる。</p>
+
+<p>これだから Android は&hellip; #違</p>
+
+<p>で、もろもろ整えて、再チャレンジ！！</p>
+
+<p>ジャジャーン！！</p>
+
+<p><img src="http://oauth.jp/images/posts/android/autofill-framework/sample-build-error2.png" alt="Autofill Framework Sample Build Error 2" /></p>
+
+<p>この Sample App の最新版リリース以降に、Android 側の API が変わったのか&hellip;?</p>
+
+<p>Android Studio 3.0 Canary 2 を入れれば解決しそうな気もするが、Canary 2 が見つからない&hellip;</p>
+
+<p><strong>もういぃ！！その辺に転がってるアプリで試す！！</strong></p>
+
+<h2>Cookpad で試してみよう</h2>
+
+<p>ジャジャーン！！</p>
+
+<p><img src="http://oauth.jp/images/posts/android/autofill-framework/cookpad.png" alt="Cookpad" /></p>
+
+<p>ここ数年いろいろ大変そうな Cookpad さん (普段使いではない)。</p>
+
+<p><img src="http://oauth.jp/images/posts/android/autofill-framework/cookpad-login.png" alt="Cookpad - Login" /></p>
+
+<p>ログイン画面&hellip;うん、普通に実装されてそう。 #適当</p>
+
+<p>で、ログインしてみると&hellip;</p>
+
+<p><img src="http://oauth.jp/images/posts/android/autofill-framework/cookpad-store-credentials.png" alt="Cookpad - Store Credentials" /></p>
+
+<p>おぉ！なんかパスワード保存しおる！！</p>
+
+<p>もちろん「OK」</p>
+
+<p>さて、ここでおもむろに <a href="https://passwords.google.com">passwords.google.com</a> にアクセスしてみましょう。</p>
+
+<p>ありましたね、Cookpad。</p>
+
+<p><img src="http://oauth.jp/images/posts/android/autofill-framework/passwords-google-com.png" alt="passwords.google.com" /></p>
+
+<p>ただ、Cookpad さんは <a href="https://developers.google.com/identity/smartlock-passwords/android/">SmartLock for Password on Android</a> も使ってるぽいので、そちら経由で passwords.google.com にパスワード保存したんじゃね？って疑惑をもたれるかもしれません。</p>
+
+<p>もひとつ別アプリでもやってみましょう。</p>
+
+<h2>Hotpepper グルメで試してみよう</h2>
+
+<p>ジャジャーン！！</p>
+
+<p><img src="http://oauth.jp/images/posts/android/autofill-framework/hotpepper.png" alt="Hotpepper グルメ" /></p>
+
+<p>Hotpepper グルメ。普段使い。 <strong>#決してステマではない</strong></p>
+
+<p><img src="http://oauth.jp/images/posts/android/autofill-framework/hotpepper-login.png" alt="Hotpepper グルメ - Login" /></p>
+
+<p>ログイン画面&hellip;うん、普通に実装されてそう。 #適当</p>
+
+<p>で、ログインしてみると&hellip;</p>
+
+<p><img src="http://oauth.jp/images/posts/android/autofill-framework/hotpepper-store-credentials.png" alt="Hotpepper グルメ - Store Credentials" /></p>
+
+<p>おぉ！なんかパスワード保存しおる！！ <strong>#デジャブ</strong></p>
+
+<p><img src="http://oauth.jp/images/posts/android/autofill-framework/hotpepper-login-autofill.png" alt="Hotpepper グルメ - Login Autofill" /></p>
+
+<p>ログアウトしなおして再度ログインしてみたら、Autofill 効いてますね。</p>
+
+<p><img src="http://oauth.jp/images/posts/android/autofill-framework/passwords-google-com2.png" alt="passwords.google.com" /></p>
+
+<p>passwords.google.com にも保存されてる。</p>
+
+<p>うん、Chrome のパスワードマネージャーとほぼ同じ挙動が、Native App 内のログインフォームにもやってきました。</p>
+
+<p>あとは、Hotpepper グルメの Android App に紐づいて保存されたパスワードを、Chrome で <a href="https://www.hotpepper.jp">hotpepper.jp</a> ドメイン開いた時にも使えて、その逆もまた可能であれば、SmartLock for Password on Android と同じことが、特にアプリ側で特別な実装しなくても実現できますね。</p>
+
+<p>また、<a href="http://juggly.cn/archives/223100.html">1PasswordによるAndroid OのAutofillフレームワークの動作デモ</a> とかみると、1Password に保存したパスワードを Autofill Framework 経由で各アプリが受け取れるようです。</p>
+
+<p>Android の設定アプリの <em>System > Languages &amp; input > Advanced > Input assistance > Autofill service</em> にいくと、いまのところ Google (= passwords.google.com) しか選択肢ないけど、きっとここに 1Password とかが出てくるんでしょう。</p>
+
+<p>1Password ユーザーとしては嬉しい限りですが、ここでも twitter.com ドメインに紐づいたパスワードを Twitter Android App から呼び出せるのか、は気になるところです。</p>
+
+<p>まぁ、SmartLock for Password on Android でできて、Autofill Framework でできない理由なんてどこにもないですし、できるんでしょうけど。</p>
+
+<h2>SmartLock for Passwords on Android 対応アプリで試してみた</h2>
+
+<p>ようするに Cookpad ね。</p>
+
+<p>Autofill Framework 経由で保存されたパスワードが、Chrome で cookpad.com 行ってみても補完されるか試してみたんですが&hellip;</p>
+
+<p><strong>うんともすんとも言わなかったです。</strong></p>
+
+<p>別の Android 端末で別の Google アカウントに SmartLock for Passwords on Android 経由で保存されたパスワードは補完されたんですけどねぇ&hellip;</p>
+
+<p>現時点の Android O では、SmartLock for Passwords on Android 対応時にサイトとアプリ紐付けしてあっても、Autofill Framework には反映されないようです。</p>
+
+<p>ちぇっ&hellip;</p>
+
+<h2>補足</h2>
+
+<p>ちなみに Google さんは、OpenID Foundation で <a href="http://openid.net/wg/ac/">OpenYOLO</a> っていうプロジェクトもやってて、OpenYOLO プロトコルに従ったパスワードマネージャーアプリ (1Password etc.) を Android OS 経由で呼び出せるようにしようとしたりもしてますが、これが Autofill Framework とどういう関係性にあるのかは、気になるところです。</p>
+
+<p>Google さん、おんなじようなことできるもの複数実装して、命名規則もなにもあったもんじゃない感じで、ワクワクハラハラです。</p>
+
+<p>最後に <a href="https://developers.google.com/identity/smartlock-passwords/android/">SmartLock for Passwords on Android 担当イケメン</a> で同じみの <a href="https://twitter.com/agektmr">@agektmr</a> を晒して、締めさせていただきます。</p>
+
+<p>ありがとうございました。</p>
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/cY77sSctzec" frameborder="0" allowfullscreen></iframe>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[PowerShell for AzureAD]]></title>
@@ -201,7 +354,7 @@
 
 <p>動作確認用のユーザーも作っておきましたので、これが正常に動いてる間はご自由にお使いください。</p>
 
-<p>Username: <a href="&#x6d;&#x61;&#105;&#108;&#116;&#x6f;&#x3a;&#x79;&#111;&#117;&#64;&#115;&#116;&#x73;&#x34;&#98;&#x32;&#x63;&#x2e;&#x6f;&#x6e;&#109;&#105;&#x63;&#114;&#111;&#x73;&#111;&#102;&#116;&#46;&#99;&#x6f;&#109;">&#121;&#x6f;&#117;&#x40;&#x73;&#116;&#115;&#x34;&#98;&#50;&#99;&#x2e;&#111;&#x6e;&#x6d;&#x69;&#99;&#114;&#x6f;&#115;&#111;&#x66;&#x74;&#x2e;&#x63;&#x6f;&#x6d;</a>
+<p>Username: <a href="&#109;&#97;&#x69;&#x6c;&#116;&#x6f;&#58;&#121;&#111;&#117;&#x40;&#115;&#x74;&#115;&#52;&#98;&#50;&#x63;&#x2e;&#x6f;&#110;&#109;&#105;&#x63;&#114;&#111;&#x73;&#111;&#x66;&#116;&#x2e;&#x63;&#111;&#109;">&#121;&#x6f;&#117;&#64;&#x73;&#116;&#115;&#52;&#98;&#x32;&#x63;&#46;&#x6f;&#x6e;&#109;&#x69;&#x63;&#114;&#x6f;&#x73;&#x6f;&#x66;&#x74;&#x2e;&#x63;&#111;&#x6d;</a>
 Password: ]6]yzxXYG7uruM4p</p>
 
 <p>動かなくなったら、あきらめて自分で Azure AD B2C 環境セットアップしてください。</p>
@@ -354,13 +507,13 @@ Password: ]6]yzxXYG7uruM4p</p>
 
 <p>あと、Email 指定してもそのメアドのユーザーにログインできるわけでもないです。</p>
 
-<p><a href="&#x6d;&#97;&#x69;&#108;&#116;&#111;&#58;&#110;&#111;&#x76;&#64;&#x65;&#x78;&#x61;&#109;&#x70;&#108;&#x65;&#46;&#x63;&#111;&#x6d;">&#x6e;&#111;&#118;&#x40;&#x65;&#x78;&#x61;&#109;&#112;&#108;&#101;&#x2e;&#99;&#x6f;&#x6d;</a> の NameID を持つ SAML Assertion で、<a href="&#109;&#x61;&#105;&#x6c;&#x74;&#x6f;&#58;&#110;&#111;&#x76;&#x40;&#x6d;&#x61;&#116;&#x61;&#107;&#x65;&#x2e;&#x6a;&#112;">&#110;&#111;&#x76;&#64;&#x6d;&#x61;&#x74;&#97;&#x6b;&#101;&#46;&#106;&#x70;</a> の GitHub アカウントにログインできたりします。</p>
+<p><a href="&#x6d;&#x61;&#x69;&#x6c;&#x74;&#111;&#58;&#110;&#x6f;&#118;&#64;&#x65;&#120;&#97;&#109;&#112;&#108;&#101;&#x2e;&#x63;&#111;&#109;">&#x6e;&#x6f;&#x76;&#64;&#101;&#120;&#97;&#x6d;&#x70;&#x6c;&#x65;&#46;&#99;&#111;&#109;</a> の NameID を持つ SAML Assertion で、<a href="&#109;&#97;&#105;&#108;&#x74;&#x6f;&#58;&#x6e;&#111;&#118;&#x40;&#109;&#x61;&#x74;&#97;&#x6b;&#101;&#x2e;&#106;&#112;">&#x6e;&#x6f;&#118;&#64;&#109;&#x61;&#x74;&#x61;&#x6b;&#x65;&#x2e;&#x6a;&#112;</a> の GitHub アカウントにログインできたりします。</p>
 
 <p>SAML Federation とか言うてるけど、結局既存の GitHub.com アカウントに SAML IdP 側のアカウントを Link するだけなんですよ。</p>
 
 <p>その紐付けは、SAML での初回ログイン時に GitHub.com 側の ID &amp; Password 入力して行います。</p>
 
-<p>つまり、<a href="&#109;&#x61;&#105;&#x6c;&#116;&#111;&#x3a;&#x6e;&#x6f;&#118;&#x40;&#x65;&#x78;&#x61;&#x6d;&#x70;&#108;&#x65;&#x2e;&#x63;&#x6f;&#109;">&#110;&#111;&#x76;&#64;&#101;&#x78;&#97;&#109;&#112;&#108;&#x65;&#46;&#99;&#x6f;&#109;</a> の NameID を持つ SAML Assertion をどの GitHub アカウントに紐づけるかは、エンドユーザーが決定権を持っています。</p>
+<p>つまり、<a href="&#x6d;&#97;&#x69;&#x6c;&#116;&#111;&#x3a;&#x6e;&#x6f;&#x76;&#64;&#101;&#x78;&#97;&#x6d;&#112;&#108;&#x65;&#x2e;&#x63;&#111;&#x6d;">&#110;&#x6f;&#x76;&#x40;&#x65;&#120;&#97;&#109;&#112;&#108;&#101;&#x2e;&#x63;&#x6f;&#x6d;</a> の NameID を持つ SAML Assertion をどの GitHub アカウントに紐づけるかは、エンドユーザーが決定権を持っています。</p>
 
 <p>情シスじゃないです。</p>
 
@@ -2288,38 +2441,6 @@ Mac から Remote Desktop 経由でいじりたかったんでね。</p>
 <h2>最後に</h2>
 
 <p>ID厨で本当に今年成人式を迎えられたあなた！次回の <a href="http://idcon.org">#idcon</a> の懇親会タダにするんでご容赦くださいm<em> </em>m</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[[PR] OpenID Summit Tokyo 2015 やります！]]></title>
-    <link href="http://oauth.jp/blog/2015/10/19/openid-summit-tokyo-2015/"/>
-    <updated>2015-10-19T11:58:00+09:00</updated>
-    <id>http://oauth.jp/blog/2015/10/19/openid-summit-tokyo-2015</id>
-    <content type="html"><![CDATA[<p>Identity 界隈の皆様は、11/10 に <a href="https://openid.or.jp/summit/2015/index.html">OpenID Summit 2015</a> が開催されることはすでにご存知かと思いますが、OAuth / JWT 愛なみなさまの中にはまだご存知ない方もおられるかもしれないので、こちらでも告知しておきますね。</p>
-
-<p>はい、やります！</p>
-
-<p><a href="https://openid.or.jp/summit/2015/index.html#schedule-timetable">タイムスケジュール</a> みていただいてもおわかりのように、IETF 横浜の翌週というタイミングで、かつ OpenID Foundation (Global の方) の全面協力もあり、OpenID Foundation から主要な外タレ勢揃いな感じでございます。JWT Love なみなさんは、もちろん Mike Jones への愛を忘れたことはないでしょうし、強面やのになぜかプーさんキャラな John Bradley は IETF OAuth WG の各種最新 RFC および draft の解説をしてくれます。</p>
-
-<p>もちろんメインホールでは日本語のセッションもやっとります。日本語セッションは、Identity 技術活用事例とか FINTECH とかマイナンバーとか IDaaS とか&hellip;</p>
-
-<p>あと、毎度おなじみエバ企画、今回は OpenID Connect Certification の体験 Hands-on です。</p>
-
-<ul>
-<li>OpenID Connect IdP を実装したけど、本当に自分の実装が OpenID Connect 仕様に準拠してるのか確認したい方</li>
-<li>OpenID Connect ライブラリを実装したけど、Connect 準拠の IdP を作るのに事足りるライブラリになってるか確認したい方</li>
-<li>なんちゃって Connect 実装とか、なんちゃって OAuth 認証実装したけど、あとどれくらいで Connect 準拠になるのか知りたい方</li>
-</ul>
-
-
-<p>そんな方々に、IdP 実装の Connect 準拠具合をテストするためのツールがあります。</p>
-
-<p>OpenID Connect Certification Hands-on では、テストツールの使い方を紹介後、実際みなさんの実装に対してテストを実行していただき、テストが失敗したものに関する Debug のお手伝い等もさせていただきます。</p>
-
-<p>Global の方の OpenID Foundation からも、Mike Jones が Hands-on 会場に来てくれるようなので、Mike の OpenID Connect Certification のセッションをみた後、そのまま Hands-on に参加すると良いと思います！</p>
-
-<p>ということで、<a href="https://openid.or.jp/summit/2015/index.html">申し込みはこちら</a>！</p>
 ]]></content>
   </entry>
   
