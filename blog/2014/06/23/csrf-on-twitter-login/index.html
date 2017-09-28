@@ -6,7 +6,7 @@
 	<title>Twitter Login にも CSRF 脆弱性ができやすい罠が!? - OAuth.jp</title>
     <meta name="author" content="Nov Matake">
     
-	<meta name="description" content="Author: Nov Matake Date: Jun 23rd, 2014 OAuth 2.0 では state パラメータってのがあって、それをちゃんと使わないと CSRF 脆弱性ができちゃうよって話は、@ritou 先生のスライドなどでみなさん勉強したんではないでしょうか。state &hellip;">
+	<meta name="description" content="Author: Nov Matake - 技術的な相談等、お仕事依頼は YAuth.jp までどうぞ。 Date: Jun 23rd, 2014 OAuth 2.0 では state パラメータってのがあって、それをちゃんと使わないと CSRF 脆弱性ができちゃうよって話は、@ritou &hellip;">
 	
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
@@ -98,6 +98,7 @@
     <div class="meta">
   <div class="author">
     Author: <a href="http://matake.jp">Nov Matake</a>
+    - 技術的な相談等、お仕事依頼は <a href="http://yauth.jp">YAuth.jp</a> までどうぞ。
   </div>
   <div class="date">Date: 
 
@@ -114,7 +115,6 @@
 <time datetime="2014-06-23T10:46:00+09:00" pubdate data-updated="true">Jun 23<span>rd</span>, 2014</time></div>
   
 </div>
-
     <p>OAuth 2.0 では state パラメータってのがあって、それをちゃんと使わないと CSRF 脆弱性ができちゃうよって話は、<a href="http://www.slideshare.net/ritou/idcon17-oauth2-csrfprotectionritou">@ritou 先生のスライド</a>などでみなさん勉強したんではないでしょうか。state パラメータは RFC 6749 では RECOMMENDED 扱いで、REQUIRED ではありませんが、OAuth 2.0 をログインに使う場合は REQUIRED にすべきでしょう。OAuth 2.0 をログインに使うの、Token 置換攻撃とか Covert Redirect + Code 置換攻撃とか、いろんな罠がありますねぇ〜。</p>
 
 <p>OAuth 1.0 ならそんなことないのに&hellip;</p>
@@ -204,15 +204,12 @@ https://client.example.com/callback?
 
     </div>
     <footer id="footer">
-    <div>
-  <p>
-    Copyright &copy; 2017 <a href="http://matake.jp">Nov Matake</a> -
-    技術的な相談等、お仕事依頼は <a href="http://yauth.jp">YAuth.jp</a> まで
-  </p>
-  <p>
-    Powered by <a href="http://octopress.org">Octopress</a>,
+    <div style="display:inline">
+    Copyright &copy; 2017
+
+    Nov Matake
+. Powered by <a href="http://octopress.org">Octopress</a> | 
     Theme <a href="http://github.com/panks/fabric">fabric</a> by <a href="http://panks.me">Pankaj Kumar</a>
-  </p>
 </div>
 
 

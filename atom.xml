@@ -4,7 +4,7 @@
   <title><![CDATA[OAuth.jp]]></title>
   <link href="http://oauth.jp/atom.xml" rel="self"/>
   <link href="http://oauth.jp/"/>
-  <updated>2017-06-09T17:50:36+09:00</updated>
+  <updated>2017-09-28T23:20:59+09:00</updated>
   <id>http://oauth.jp/</id>
   <author>
     <name><![CDATA[Nov Matake]]></name>
@@ -14,155 +14,56 @@
 
   
   <entry>
-    <title type="html"><![CDATA[Android O AutoFill Framework]]></title>
-    <link href="http://oauth.jp/blog/2017/06/09/android-o-autofill-framework/"/>
-    <updated>2017-06-09T12:47:00+09:00</updated>
-    <id>http://oauth.jp/blog/2017/06/09/android-o-autofill-framework</id>
-    <content type="html"><![CDATA[<p>どうも、iPhone ユーザーの Nov です。</p>
+    <title type="html"><![CDATA[LINE ID Login]]></title>
+    <link href="http://oauth.jp/blog/2017/09/28/line-id-login/"/>
+    <updated>2017-09-28T22:52:00+09:00</updated>
+    <id>http://oauth.jp/blog/2017/09/28/line-id-login</id>
+    <content type="html"><![CDATA[<p>LINE が OpenID Connect サポートしたみたいですね。</p>
 
-<p>Android OS の進化は素晴らしいと思います。<br/>
-個人的には、普段使いのスマホじゃなければ Android 一択です。</p>
+<p>なんか前からしてんだと思ってたんですが、まぁいいや。</p>
 
-<p>Chrome の進化も素晴らしいと思います。<br/>
-個人的には、普段使いの (ry</p>
+<p>ということで、早速触ってみました。</p>
 
-<p>最近は Android O から登場した <a href="https://developer.android.com/preview/features/autofill.html">Autofill Framework</a> ってのが気になってます。</p>
+<p>こちらに<a href="https://gist.github.com/nov/58912dda45a65768d8f05343225780b2">今回使った Ruby のサンプルスクリプト</a>置いておきます。</p>
 
-<p>Developer Document で <em>&ldquo;Apps that use standard views work with the Autofill Framework out of the box&rdquo;</em> とか言われてるんで、Android App で普通にログインフォーム作れば、勝手に ID &amp; Password が Autofill されるっぽいですね。</p>
+<p>まぁ、ちょっと特殊な点がいくつかありますが、十分 OpenID Connect です。</p>
 
-<p>え？ID &amp; Password 以外にも、住所やクレカ番号も Autofill されるって？</p>
-
-<p><strong>でしょうね。</strong></p>
-
-<h2>Autofill Framework Sample App 動かしてみよう</h2>
-
-<p>ということで、<a href="https://www.google.com/android/beta">Android O Beta</a> 入れて、<a href="https://github.com/googlesamples/android-AutofillFramework">Autofill Framework Sample</a> 動かしてみましょう。</p>
-
-<p><a href="https://developer.android.com/studio/preview/index.html">Android Studio 3.0 Preview</a> とかいうのもダウンロード必要なようです。</p>
-
-<p>なんかいろいろ足りねぇとかエラー出るけど Java も Kotlin も Android Studio もよぉわからんので、まぁポチポチしていろいろインストールします。</p>
-
-<p>で、Android O Beta をインストールした Nexus 5X (普段使いではない) をターゲットにしてアプリをビルド&hellip;</p>
-
-<p>ジャジャーン！！</p>
+<p>気になった点は以下の通り。</p>
 
 <!-- more -->
 
 
-<p><img src="http://oauth.jp/images/posts/android/autofill-framework/sample-build-error.png" alt="Autofill Framework Sample Build Error" /></p>
+<h3>ID Token の署名アルゴリズムが HS256 (HMAC-SHA256)</h3>
 
-<p>&hellip;はい、端末側の Android O Beta が古かったです。アップデートします。</p>
+<p>HMAC ってことは、署名検証するために client_secret が必要ということです。</p>
 
-<p>普段使いじゃないから電池残量が不足してアップデートするまえにまず充電しろとか言われる。</p>
+<p>Native App で検証しようとすると、Native App に client_secret を埋め込まなければならない訳ですが、それはありえないので、要するに Native App で ID Token の署名検証はできないということです。</p>
 
-<p>これだから Android は&hellip; #違</p>
+<p>まぁ別に Native App で ID Token の署名検証するケースなんてそうそう無いとは思いますが。</p>
 
-<p>で、もろもろ整えて、再チャレンジ！！</p>
+<h3>scope=openid だけでは動かない</h3>
 
-<p>ジャジャーン！！</p>
+<p>LINE の User ID さえもらえればいいよってケースでも、Display Name とか Profile Picture とか取らないといけないっぽいです。</p>
 
-<p><img src="http://oauth.jp/images/posts/android/autofill-framework/sample-build-error2.png" alt="Autofill Framework Sample Build Error 2" /></p>
+<p>ちょっと OpenID Connect の思想からはずれていますね。</p>
 
-<p>この Sample App の最新版リリース以降に、Android 側の API が変わったのか&hellip;?</p>
+<h3>state が必須</h3>
 
-<p>Android Studio 3.0 Canary 2 を入れれば解決しそうな気もするが、Canary 2 が見つからない&hellip;</p>
+<p>まぁ仕様的には OPTIONAL なんですけど、これはセキュリティ上はいいことなのではないでしょうか。</p>
 
-<p><strong>もういぃ！！その辺に転がってるアプリで試す！！</strong></p>
+<h3>Client 認証に Basic Auth は使えない</h3>
 
-<h2>Cookpad で試してみよう</h2>
+<p>これじゃ OpenID Certification は通らないんですね。</p>
 
-<p>ジャジャーン！！</p>
+<p>UserInfo API もまだ無いようなんで、Certification 取得とかはもう少し先の話でしょうか。</p>
 
-<p><img src="http://oauth.jp/images/posts/android/autofill-framework/cookpad.png" alt="Cookpad" /></p>
+<h3>Access Token は JWS で署名された非 JWT で Lifetime は1ヶ月</h3>
 
-<p>ここ数年いろいろ大変そうな Cookpad さん (普段使いではない)。</p>
+<p>ちょっと長く無いすか？裏に独自の Revoke の仕組みがあるんなら別にいいんですけど&hellip;</p>
 
-<p><img src="http://oauth.jp/images/posts/android/autofill-framework/cookpad-login.png" alt="Cookpad - Login" /></p>
+<p>Refresh Token 発行しておいて、Access Token の有効期限が1ヶ月ってのは、結構違和感あります。</p>
 
-<p>ログイン画面&hellip;うん、普通に実装されてそう。 #適当</p>
-
-<p>で、ログインしてみると&hellip;</p>
-
-<p><img src="http://oauth.jp/images/posts/android/autofill-framework/cookpad-store-credentials.png" alt="Cookpad - Store Credentials" /></p>
-
-<p>おぉ！なんかパスワード保存しおる！！</p>
-
-<p>もちろん「OK」</p>
-
-<p>さて、ここでおもむろに <a href="https://passwords.google.com">passwords.google.com</a> にアクセスしてみましょう。</p>
-
-<p>ありましたね、Cookpad。</p>
-
-<p><img src="http://oauth.jp/images/posts/android/autofill-framework/passwords-google-com.png" alt="passwords.google.com" /></p>
-
-<p>ただ、Cookpad さんは <a href="https://developers.google.com/identity/smartlock-passwords/android/">SmartLock for Password on Android</a> も使ってるぽいので、そちら経由で passwords.google.com にパスワード保存したんじゃね？って疑惑をもたれるかもしれません。</p>
-
-<p>もひとつ別アプリでもやってみましょう。</p>
-
-<h2>Hotpepper グルメで試してみよう</h2>
-
-<p>ジャジャーン！！</p>
-
-<p><img src="http://oauth.jp/images/posts/android/autofill-framework/hotpepper.png" alt="Hotpepper グルメ" /></p>
-
-<p>Hotpepper グルメ。普段使い。 <strong>#決してステマではない</strong></p>
-
-<p><img src="http://oauth.jp/images/posts/android/autofill-framework/hotpepper-login.png" alt="Hotpepper グルメ - Login" /></p>
-
-<p>ログイン画面&hellip;うん、普通に実装されてそう。 #適当</p>
-
-<p>で、ログインしてみると&hellip;</p>
-
-<p><img src="http://oauth.jp/images/posts/android/autofill-framework/hotpepper-store-credentials.png" alt="Hotpepper グルメ - Store Credentials" /></p>
-
-<p>おぉ！なんかパスワード保存しおる！！ <strong>#デジャブ</strong></p>
-
-<p><img src="http://oauth.jp/images/posts/android/autofill-framework/hotpepper-login-autofill.png" alt="Hotpepper グルメ - Login Autofill" /></p>
-
-<p>ログアウトしなおして再度ログインしてみたら、Autofill 効いてますね。</p>
-
-<p><img src="http://oauth.jp/images/posts/android/autofill-framework/passwords-google-com2.png" alt="passwords.google.com" /></p>
-
-<p>passwords.google.com にも保存されてる。</p>
-
-<p>うん、Chrome のパスワードマネージャーとほぼ同じ挙動が、Native App 内のログインフォームにもやってきました。</p>
-
-<p>あとは、Hotpepper グルメの Android App に紐づいて保存されたパスワードを、Chrome で <a href="https://www.hotpepper.jp">hotpepper.jp</a> ドメイン開いた時にも使えて、その逆もまた可能であれば、SmartLock for Password on Android と同じことが、特にアプリ側で特別な実装しなくても実現できますね。</p>
-
-<p>また、<a href="http://juggly.cn/archives/223100.html">1PasswordによるAndroid OのAutofillフレームワークの動作デモ</a> とかみると、1Password に保存したパスワードを Autofill Framework 経由で各アプリが受け取れるようです。</p>
-
-<p>Android の設定アプリの <em>System > Languages &amp; input > Advanced > Input assistance > Autofill service</em> にいくと、いまのところ Google (= passwords.google.com) しか選択肢ないけど、きっとここに 1Password とかが出てくるんでしょう。</p>
-
-<p>1Password ユーザーとしては嬉しい限りですが、ここでも twitter.com ドメインに紐づいたパスワードを Twitter Android App から呼び出せるのか、は気になるところです。</p>
-
-<p>まぁ、SmartLock for Password on Android でできて、Autofill Framework でできない理由なんてどこにもないですし、できるんでしょうけど。</p>
-
-<h2>SmartLock for Passwords on Android 対応アプリで試してみた</h2>
-
-<p>ようするに Cookpad ね。</p>
-
-<p>Autofill Framework 経由で保存されたパスワードが、Chrome で cookpad.com 行ってみても補完されるか試してみたんですが&hellip;</p>
-
-<p><strong>うんともすんとも言わなかったです。</strong></p>
-
-<p>別の Android 端末で別の Google アカウントに SmartLock for Passwords on Android 経由で保存されたパスワードは補完されたんですけどねぇ&hellip;</p>
-
-<p>現時点の Android O では、SmartLock for Passwords on Android 対応時にサイトとアプリ紐付けしてあっても、Autofill Framework には反映されないようです。</p>
-
-<p>ちぇっ&hellip;</p>
-
-<h2>補足</h2>
-
-<p>ちなみに Google さんは、OpenID Foundation で <a href="http://openid.net/wg/ac/">OpenYOLO</a> っていうプロジェクトもやってて、OpenYOLO プロトコルに従ったパスワードマネージャーアプリ (1Password etc.) を Android OS 経由で呼び出せるようにしようとしたりもしてますが、これが Autofill Framework とどういう関係性にあるのかは、気になるところです。</p>
-
-<p>Google さん、おんなじようなことできるもの複数実装して、命名規則もなにもあったもんじゃない感じで、ワクワクハラハラです。</p>
-
-<p>最後に <a href="https://developers.google.com/identity/smartlock-passwords/android/">SmartLock for Passwords on Android 担当イケメン</a> で同じみの <a href="https://twitter.com/agektmr">@agektmr</a> を晒して、締めさせていただきます。</p>
-
-<p>ありがとうございました。</p>
-
-<iframe width="560" height="315" src="https://www.youtube.com/embed/cY77sSctzec" frameborder="0" allowfullscreen></iframe>
-
+<p><em>&hellip;で、こういうの書いとくと、「LINE API Expert」ってやつになって有料スタンプ使い放題になったりするんでしょうか？</em></p>
 ]]></content>
   </entry>
   
@@ -354,7 +255,7 @@
 
 <p>動作確認用のユーザーも作っておきましたので、これが正常に動いてる間はご自由にお使いください。</p>
 
-<p>Username: <a href="&#109;&#97;&#x69;&#x6c;&#116;&#x6f;&#58;&#121;&#111;&#117;&#x40;&#115;&#x74;&#115;&#52;&#98;&#50;&#x63;&#x2e;&#x6f;&#110;&#109;&#105;&#x63;&#114;&#111;&#x73;&#111;&#x66;&#116;&#x2e;&#x63;&#111;&#109;">&#121;&#x6f;&#117;&#64;&#x73;&#116;&#115;&#52;&#98;&#x32;&#x63;&#46;&#x6f;&#x6e;&#109;&#x69;&#x63;&#114;&#x6f;&#x73;&#x6f;&#x66;&#x74;&#x2e;&#x63;&#111;&#x6d;</a>
+<p>Username: <a href="&#x6d;&#97;&#x69;&#x6c;&#116;&#111;&#58;&#121;&#111;&#117;&#x40;&#x73;&#116;&#x73;&#52;&#x62;&#50;&#99;&#x2e;&#x6f;&#x6e;&#x6d;&#105;&#99;&#x72;&#x6f;&#115;&#x6f;&#102;&#116;&#x2e;&#99;&#111;&#109;">&#x79;&#111;&#x75;&#x40;&#115;&#x74;&#x73;&#52;&#x62;&#50;&#x63;&#x2e;&#x6f;&#x6e;&#109;&#105;&#99;&#x72;&#x6f;&#115;&#x6f;&#102;&#116;&#x2e;&#99;&#111;&#x6d;</a>
 Password: ]6]yzxXYG7uruM4p</p>
 
 <p>動かなくなったら、あきらめて自分で Azure AD B2C 環境セットアップしてください。</p>
@@ -507,13 +408,13 @@ Password: ]6]yzxXYG7uruM4p</p>
 
 <p>あと、Email 指定してもそのメアドのユーザーにログインできるわけでもないです。</p>
 
-<p><a href="&#x6d;&#x61;&#x69;&#x6c;&#x74;&#111;&#58;&#110;&#x6f;&#118;&#64;&#x65;&#120;&#97;&#109;&#112;&#108;&#101;&#x2e;&#x63;&#111;&#109;">&#x6e;&#x6f;&#x76;&#64;&#101;&#120;&#97;&#x6d;&#x70;&#x6c;&#x65;&#46;&#99;&#111;&#109;</a> の NameID を持つ SAML Assertion で、<a href="&#109;&#97;&#105;&#108;&#x74;&#x6f;&#58;&#x6e;&#111;&#118;&#x40;&#109;&#x61;&#x74;&#97;&#x6b;&#101;&#x2e;&#106;&#112;">&#x6e;&#x6f;&#118;&#64;&#109;&#x61;&#x74;&#x61;&#x6b;&#x65;&#x2e;&#x6a;&#112;</a> の GitHub アカウントにログインできたりします。</p>
+<p><a href="&#109;&#97;&#x69;&#108;&#x74;&#111;&#58;&#110;&#111;&#x76;&#64;&#x65;&#120;&#x61;&#109;&#112;&#108;&#101;&#46;&#x63;&#111;&#x6d;">&#110;&#111;&#118;&#64;&#101;&#120;&#x61;&#x6d;&#x70;&#x6c;&#x65;&#46;&#x63;&#111;&#109;</a> の NameID を持つ SAML Assertion で、<a href="&#109;&#97;&#x69;&#x6c;&#x74;&#111;&#x3a;&#110;&#111;&#x76;&#x40;&#x6d;&#x61;&#116;&#x61;&#107;&#101;&#x2e;&#106;&#x70;">&#x6e;&#111;&#118;&#64;&#x6d;&#x61;&#x74;&#97;&#107;&#101;&#46;&#106;&#112;</a> の GitHub アカウントにログインできたりします。</p>
 
 <p>SAML Federation とか言うてるけど、結局既存の GitHub.com アカウントに SAML IdP 側のアカウントを Link するだけなんですよ。</p>
 
 <p>その紐付けは、SAML での初回ログイン時に GitHub.com 側の ID &amp; Password 入力して行います。</p>
 
-<p>つまり、<a href="&#x6d;&#97;&#x69;&#x6c;&#116;&#111;&#x3a;&#x6e;&#x6f;&#x76;&#64;&#101;&#x78;&#97;&#x6d;&#112;&#108;&#x65;&#x2e;&#x63;&#111;&#x6d;">&#110;&#x6f;&#x76;&#x40;&#x65;&#120;&#97;&#109;&#112;&#108;&#101;&#x2e;&#x63;&#x6f;&#x6d;</a> の NameID を持つ SAML Assertion をどの GitHub アカウントに紐づけるかは、エンドユーザーが決定権を持っています。</p>
+<p>つまり、<a href="&#x6d;&#x61;&#x69;&#108;&#x74;&#111;&#58;&#110;&#x6f;&#x76;&#64;&#x65;&#x78;&#97;&#109;&#112;&#x6c;&#x65;&#46;&#x63;&#x6f;&#109;">&#x6e;&#111;&#118;&#x40;&#101;&#120;&#x61;&#x6d;&#112;&#x6c;&#101;&#46;&#x63;&#x6f;&#109;</a> の NameID を持つ SAML Assertion をどの GitHub アカウントに紐づけるかは、エンドユーザーが決定権を持っています。</p>
 
 <p>情シスじゃないです。</p>
 
