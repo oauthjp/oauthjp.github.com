@@ -122,6 +122,7 @@
 <time datetime="2017-09-28T22:52:00+09:00" pubdate data-updated="true">Sep 28<span>th</span>, 2017</time></div>
   
 </div>
+
     <p>LINE が OpenID Connect サポートしたみたいですね。</p>
 
 <p>なんか前からしてんだと思ってたんですが、まぁいいや。</p>
@@ -137,6 +138,73 @@
 
     
     <a href="/blog/2017/09/28/line-id-login/" class="more-link">Read on &rarr;</a>
+  </div>
+
+<div class="meta">
+  
+</div>
+</article>
+
+
+    <article class="post">
+  <h2 class="title">
+    
+    <a href="/blog/2017/06/09/android-o-autofill-framework/">
+    
+      Android O AutoFill Framework</a>
+  </h2>
+  <div class="entry-content">
+    <div class="meta">
+  <div class="author">
+    Author: <a href="http://matake.jp">Nov Matake</a>
+  </div>
+  <div class="date">Date: 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2017-06-09T12:47:00+09:00" pubdate data-updated="true">Jun 9<span>th</span>, 2017</time></div>
+  
+</div>
+
+    <p>どうも、iPhone ユーザーの Nov です。</p>
+
+<p>Android OS の進化は素晴らしいと思います。<br/>
+個人的には、普段使いのスマホじゃなければ Android 一択です。</p>
+
+<p>Chrome の進化も素晴らしいと思います。<br/>
+個人的には、普段使いの (ry</p>
+
+<p>最近は Android O から登場した <a href="https://developer.android.com/preview/features/autofill.html">Autofill Framework</a> ってのが気になってます。</p>
+
+<p>Developer Document で <em>&ldquo;Apps that use standard views work with the Autofill Framework out of the box&rdquo;</em> とか言われてるんで、Android App で普通にログインフォーム作れば、勝手に ID &amp; Password が Autofill されるっぽいですね。</p>
+
+<p>え？ID &amp; Password 以外にも、住所やクレカ番号も Autofill されるって？</p>
+
+<p><strong>でしょうね。</strong></p>
+
+<h2>Autofill Framework Sample App 動かしてみよう</h2>
+
+<p>ということで、<a href="https://www.google.com/android/beta">Android O Beta</a> 入れて、<a href="https://github.com/googlesamples/android-AutofillFramework">Autofill Framework Sample</a> 動かしてみましょう。</p>
+
+<p><a href="https://developer.android.com/studio/preview/index.html">Android Studio 3.0 Preview</a> とかいうのもダウンロード必要なようです。</p>
+
+<p>なんかいろいろ足りねぇとかエラー出るけど Java も Kotlin も Android Studio もよぉわからんので、まぁポチポチしていろいろインストールします。</p>
+
+<p>で、Android O Beta をインストールした Nexus 5X (普段使いではない) をターゲットにしてアプリをビルド&hellip;</p>
+
+<p>ジャジャーン！！</p>
+
+
+    
+    <a href="/blog/2017/06/09/android-o-autofill-framework/" class="more-link">Read on &rarr;</a>
   </div>
 
 <div class="meta">
@@ -172,6 +240,7 @@
 <time datetime="2017-05-18T14:17:00+09:00" pubdate data-updated="true">May 18<span>th</span>, 2017</time></div>
   
 </div>
+
     <p>Windows 10 で AzureAD Module インポート済の PowerShell を気軽に起動できるようにする方法メモ。</p>
 
 <h2>前提条件</h2>
@@ -249,6 +318,7 @@
 <time datetime="2017-04-01T16:42:00+09:00" pubdate data-updated="true">Apr 1<span>st</span>, 2017</time></div>
   
 </div>
+
     <p>我らが Justin Richer がずっと執筆進めてた <a href="http://amzn.to/2nVbgRV">OAuth2 in Action が Amazon.co.jp に登場</a>してました。</p>
 
 <p>目次はこんな感じ。</p>
@@ -331,6 +401,7 @@
 <time datetime="2017-03-24T17:08:00+09:00" pubdate data-updated="true">Mar 24<span>th</span>, 2017</time></div>
   
 </div>
+
     <p><a href="https://azure.microsoft.com/ja-jp/blog/azure-ad-b2c-access-tokens-now-in-public-preview/">Azure AD B2C Access Tokens now in public preview</a></p>
 
 <p>ということで、さわって見ました。</p>
@@ -376,72 +447,6 @@
 </div>
 </article>
 
-
-    <article class="post">
-  <h2 class="title">
-    
-    <a href="/blog/2017/03/07/github-support-saml-and-scim/">
-    
-      GitHub Business Plan 登場、GitHub.com ドメインで SCIM と SAML をサポート。</a>
-  </h2>
-  <div class="entry-content">
-    <div class="meta">
-  <div class="author">
-    Author: <a href="http://matake.jp">Nov Matake</a>
-  </div>
-  <div class="date">Date: 
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2017-03-07T21:18:00+09:00" pubdate data-updated="true">Mar 7<span>th</span>, 2017</time></div>
-  
-</div>
-    <p>オンプレサーバーで GitHub Enterprise をお使いのみなさま。</p>
-
-<p>日々オンプレサーバーのメンテ、おつかれさまです。</p>
-
-<p>GitHub.com の Business Plan っての、良さそうですよね。</p>
-
-<p>SCIM と SAML サポートしてて、いままでオンプレ版でしかできなかった Provisioning と Federation (SSO といった方が伝わるか？) が、GitHub.com ドメインでできるようになったんですよ。</p>
-
-<p>これで GitHub.com が生きてればいつでも Deploy できますよ。</p>
-
-<p>死ぬもんね、オンプレ。てか、一旦死んだら結構しばらくの間死ぬもんね、オンプレ。</p>
-
-<p>GitHub.com なら、AWS が生き返ればきっと生き返るよ。</p>
-
-<p>ということで、Business Plan の SAML と SCIM、ちょっと試してみましたよ。</p>
-
-<h1>SAML 設定</h1>
-
-<p>GitHub Help の <a href="https://help.github.com/articles/managing-member-identity-and-access-in-your-organization-with-saml-single-sign-on/">この一連のドキュメント</a> を読む限り、SAML 設定しないと SCIM 使えないようです。</p>
-
-<p>あ、SAML の SP Entity ID とかはドキュメントには書いてないです。</p>
-
-<p>Business Plan 契約して設定画面行かないと、SP Entity ID も Assertion Consumer Service (ACS) URL もわかんないです。</p>
-
-<p>まず金払ってからしか試せません。</p>
-
-<p><strong>ファーストひどい。</strong></p>
-
-
-    
-    <a href="/blog/2017/03/07/github-support-saml-and-scim/" class="more-link">Read on &rarr;</a>
-  </div>
-
-<div class="meta">
-  
-</div>
-</article>
-
 <nav id="pagenavi">
     
     
@@ -452,12 +457,15 @@
 
     </div>
     <footer id="footer">
-    <div style="display:inline">
-    Copyright &copy; 2017
-
-    <a href="http://matake.jp">Nov Matake</a>
-. Powered by <a href="http://octopress.org">Octopress</a> |
+    <div>
+  <p>
+    Copyright &copy; 2017 <a href="http://matake.jp">Nov Matake</a> -
+    技術的な相談等、お仕事依頼は <a href="http://yauth.jp">YAuth.jp</a> まで
+  </p>
+  <p>
+    Powered by <a href="http://octopress.org">Octopress</a>,
     Theme <a href="http://github.com/panks/fabric">fabric</a> by <a href="http://panks.me">Pankaj Kumar</a>
+  </p>
 </div>
 
 

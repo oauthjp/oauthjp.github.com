@@ -6,7 +6,7 @@
 	<title>OAuth.jp</title>
     <meta name="author" content="Nov Matake">
     
-	<meta name="description" content=" Author: Nov Matake Date: Mar 11th, 2012 ">
+	<meta name="description" content="Author: Nov Matake Date: Mar 11th, 2012 response_type=code tokenとかあるので仕様曖昧だよな～と思っていたのですが、普通に書いてありました。 A client application consisting of multiple &hellip;">
 	
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
@@ -98,6 +98,68 @@
     <article class="post">
   <h2 class="title">
     
+    <a href="/blog/2012/03/11/response-type-code/">
+    
+      OAuth 2.0でユーザーが認可をする”アプリケーション”とはサービス全体のことではない - R-weblife</a>
+  </h2>
+  <div class="entry-content">
+    <div class="meta">
+  <div class="author">
+    Author: <a href="http://matake.jp">Nov Matake</a>
+  </div>
+  <div class="date">Date: 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-03-11T00:00:00+09:00" pubdate data-updated="true">Mar 11<span>th</span>, 2012</time></div>
+  
+</div>
+
+    <blockquote><p>response_type=code tokenとかあるので仕様曖昧だよな～と思っていたのですが、普通に書いてありました。</p>
+
+<p>A client application consisting of multiple components, each with its
+own client type (e.g. a distributed client with both a confidential
+server-based component and a public browser-based component), MUST
+register each component separately as a different client to ensure
+proper handling by the authorization server.</p>
+
+<p>Clientはユーザーに代わって保護リソースにアクセスするアプリケーション。
+Client Typesとして、秘密鍵を安全に管理できるconfidential、クライアントサイドで動いて管理できないのはpublic。
+ConfidentialならAuthZ Code, PublicなのはImplicit使え。
+サーバーサイドとクライアントサイドの両方のComponentから構成されている場合、別々で登録しろ！</p></blockquote>
+
+
+<p>&#8212;<p><a href="http://d.hatena.ne.jp/ritou/20120311/1331444771">OAuth 2.0でユーザーが認可をする”アプリケーション”とはサービス全体のことではない &ndash; r-weblife</a></p></p>
+
+<p>で、そういう状況でどうやって効率的に同意を取るかは、AuthZ Serverの実装依存、か。。。</p>
+
+
+
+
+<p>(via <a href="http://kyomichi.tumblr.com/" class="tumblr_blog">kyomichi</a>)</p>
+
+
+    
+    
+  </div>
+
+<div class="meta">
+  
+</div>
+</article>
+
+
+    <article class="post">
+  <h2 class="title">
+    
     <a href="/blog/2012/03/11/kyomichi-via-oauth-2-0-2/">
     
       Kyomichi: (via OAuth 2.0って知ってますかぁ？その2 - くらラボ研究記録)</a>
@@ -122,6 +184,7 @@
 <time datetime="2012-03-11T00:00:00+09:00" pubdate data-updated="true">Mar 11<span>th</span>, 2012</time></div>
   
 </div>
+
     <p><img src="/tumblr_files/tumblr_m0o7oc4Th71rn7kcvo1_1280.png"/></p>
 
     
@@ -161,6 +224,7 @@
 <time datetime="2012-03-09T00:00:00+09:00" pubdate data-updated="true">Mar 9<span>th</span>, 2012</time></div>
   
 </div>
+
     <blockquote>JSO - a Javascript OAuth Library</blockquote>
 
 
@@ -203,6 +267,7 @@
 <time datetime="2012-03-06T00:00:00+09:00" pubdate data-updated="true">Mar 6<span>th</span>, 2012</time></div>
   
 </div>
+
     <blockquote><p>研究の第一弾では学生IDを民間サービスで安全に利用するための「Student Identity Trust Framework」を策定。2012年中に、民間企業がフレームワークに準拠した学生向けサービスを提供できるよう支援する。</p>
 
 <p>これにより、学生は大学が発行するIDで民間企業のサービスにログインして、学割などの特典サービスをオンラインで受けられるようになるほか、企業側は自社でID管理や資格確認などの仕組みを構築しなくても、大学が提供する「その人が学生である」という情報を基に学生へ自社サービスを提供できる。</p></blockquote>
@@ -250,6 +315,7 @@
 <time datetime="2012-03-05T00:00:00+09:00" pubdate data-updated="true">Mar 5<span>th</span>, 2012</time></div>
   
 </div>
+
     <blockquote><p>代理アクセスを認可するOAuth仕様の進展        宮川 寧夫, 砂原 秀樹    </p>
 
 <p>公開日: 2012/02/26</p></blockquote>
@@ -275,48 +341,6 @@
 </div>
 </article>
 
-
-    <article class="post">
-  <h2 class="title">
-    
-    <a href="/blog/2012/03/04/here-is-a-table-that-describes-this-relationship/">
-    
-      Here Is a Table That Describes This Relationship in OpenID Connect When Scope Includes “openid”.</a>
-  </h2>
-  <div class="entry-content">
-    <div class="meta">
-  <div class="author">
-    Author: <a href="http://matake.jp">Nov Matake</a>
-  </div>
-  <div class="date">Date: 
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-03-04T00:00:00+09:00" pubdate data-updated="true">Mar 4<span>th</span>, 2012</time></div>
-  
-</div>
-    <blockquote>Here is a table that describes this relationship in OpenID Connect when scope includes “openid”.</blockquote>
-
-
-<p>&#8212;<a href="http://nat.sakimura.org/2012/02/22/the-relationship-between-endpoint-responses-and-response_type-scope-pair/">The relationship between endpoint responses and response_type, scope pair&#160;: =nat</a></p>
-
-    
-    
-  </div>
-
-<div class="meta">
-  
-</div>
-</article>
-
 <nav id="pagenavi">
     
         <a href="/blog/page/12/" class="prev">Prev</a>
@@ -329,12 +353,15 @@
 
     </div>
     <footer id="footer">
-    <div style="display:inline">
-    Copyright &copy; 2017
-
-    <a href="http://matake.jp">Nov Matake</a>
-. Powered by <a href="http://octopress.org">Octopress</a> |
+    <div>
+  <p>
+    Copyright &copy; 2017 <a href="http://matake.jp">Nov Matake</a> -
+    技術的な相談等、お仕事依頼は <a href="http://yauth.jp">YAuth.jp</a> まで
+  </p>
+  <p>
+    Powered by <a href="http://octopress.org">Octopress</a>,
     Theme <a href="http://github.com/panks/fabric">fabric</a> by <a href="http://panks.me">Pankaj Kumar</a>
+  </p>
 </div>
 
 

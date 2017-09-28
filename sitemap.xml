@@ -389,8 +389,12 @@
         <lastmod>2017-06-05T16:00:36+09:00</lastmod>
     </url>
     <url>
+        <loc>http://oauth.jp/blog/2017/06/09/android-o-autofill-framework/</loc>
+        <lastmod>2017-09-28T23:29:25+09:00</lastmod>
+    </url>
+    <url>
         <loc>http://oauth.jp/blog/2017/09/28/line-id-login/</loc>
-        <lastmod>2017-09-28T23:20:23+09:00</lastmod>
+        <lastmod>2017-09-28T23:29:25+09:00</lastmod>
     </url>
     <url>
         <loc>http://oauth.jp/404.html</loc>
@@ -398,10 +402,10 @@
     </url>
     <url>
         <loc>http://oauth.jp/blog/archives/</loc>
-        <lastmod>2017-09-28T23:20:23+09:00</lastmod>
+        <lastmod>2017-09-28T23:29:25+09:00</lastmod>
     </url>
     <url>
         <loc>http://oauth.jp/</loc>
-        <lastmod>2017-09-28T23:20:23+09:00</lastmod>
+        <lastmod>2017-09-28T23:29:25+09:00</lastmod>
     </url>
 </urlset>

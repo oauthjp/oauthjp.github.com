@@ -6,7 +6,7 @@
 	<title>OAuth.jp</title>
     <meta name="author" content="Nov Matake">
     
-	<meta name="description" content="Author: Nov Matake Date: Sep 13th, 2010 @novです。 先週、RubyのOpenIDライブラリの1つ、rack-openidにOpenID/OAuth Hybridサポートを追加しました。 こんな感じで使えます。 https://gist.github. &hellip;">
+	<meta name="description" content="Author: Nov Matake Date: Sep 18th, 2010 そろそろ毎回「@nov です」で始めるのが寂しくなってきましたが、@novです。 表題の通りです。 ソースはこちら。 http://github.com/nov/rack-oauth2 &hellip;">
 	
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
@@ -98,6 +98,80 @@
     <article class="post">
   <h2 class="title">
     
+    <a href="/blog/2010/09/18/rack-oauth2oauth-20server/">
+    
+      rack-oauth2というOAuth 2.0のServer側のライブラリをリリースしました</a>
+  </h2>
+  <div class="entry-content">
+    <div class="meta">
+  <div class="author">
+    Author: <a href="http://matake.jp">Nov Matake</a>
+  </div>
+  <div class="date">Date: 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2010-09-18T00:00:00+09:00" pubdate data-updated="true">Sep 18<span>th</span>, 2010</time></div>
+  
+</div>
+
+    <p>そろそろ毎回「@nov です」で始めるのが寂しくなってきましたが、@novです。</p>
+
+
+<p>表題の通りです。</p>
+
+
+<p>ソースはこちら。</p>
+
+
+<p><a href="http://github.com/nov/rack-oauth2"><a href="http://github.com/nov/rack-oauth2">http://github.com/nov/rack-oauth2</a></a></p>
+
+
+<p>こんな感じで使ってやってください。</p>
+
+
+<p><span style="font-family: helvetica, arial, freesans, clean, sans-serif; line-height: 18px;"> </span></p>
+
+
+<h4 style="line-height: 1.4em; padding: 0px; margin: 0px;">Resource Owner Authorization &amp; Token Endpoint</h4>
+
+
+<p><a href="https://gist.github.com/584594"><a href="https://gist.github.com/584594">https://gist.github.com/584594</a></a></p>
+
+
+<p><span style="font-family: helvetica, arial, freesans, clean, sans-serif; line-height: 18px;"> </span></p>
+
+
+<h4 class=" aptureTMMSelection" style="line-height: 1.4em; padding: 0px; margin: 0px;">Protected Resource Middleware Setting</h4>
+
+
+<p><a href="https://gist.github.com/584565"><a href="https://gist.github.com/584565">https://gist.github.com/584565</a></a></p>
+
+
+<p>基本的には、「エラーハンドリングとかレスポンスの整形とかはrack-oauth2がやるんで、ポリシーの部分とかを自分たちで決めて使ってください。」というスタンスです。</p>
+
+
+    
+    
+  </div>
+
+<div class="meta">
+  
+</div>
+</article>
+
+
+    <article class="post">
+  <h2 class="title">
+    
     <a href="/blog/2010/09/13/rack-openidopenidoauth-hybrid/">
     
       rack-openidにOpenID/OAuth Hybridを追加しました</a>
@@ -122,6 +196,7 @@
 <time datetime="2010-09-13T00:00:00+09:00" pubdate data-updated="true">Sep 13<span>th</span>, 2010</time></div>
   
 </div>
+
     <p><a href="http://twitter.com/nov">@nov</a>です。</p>
 
 
@@ -177,6 +252,7 @@
 <time datetime="2010-09-02T00:00:00+09:00" pubdate data-updated="true">Sep 2<span>nd</span>, 2010</time></div>
   
 </div>
+
     <p><a href="http://twitter.com/nov">@nov</a>です。</p>
 
 
@@ -238,6 +314,7 @@
 <time datetime="2010-09-02T00:00:00+09:00" pubdate data-updated="true">Sep 2<span>nd</span>, 2010</time></div>
   
 </div>
+
     <p><a href="http://twitter.com/nov">@nov</a>です。</p>
 
 
@@ -313,6 +390,7 @@
 <time datetime="2010-08-07T00:00:00+09:00" pubdate data-updated="true">Aug 7<span>th</span>, 2010</time></div>
   
 </div>
+
     <p><a href="http://twitter.com/nov">@nov</a> です。</p>
 
 
@@ -343,73 +421,6 @@
 </div>
 </article>
 
-
-    <article class="post">
-  <h2 class="title">
-    
-    <a href="/blog/2010/07/04/oauthjp-96284/">
-    
-      OAuth.jpで何をする？</a>
-  </h2>
-  <div class="entry-content">
-    <div class="meta">
-  <div class="author">
-    Author: <a href="http://matake.jp">Nov Matake</a>
-  </div>
-  <div class="date">Date: 
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2010-07-04T00:00:00+09:00" pubdate data-updated="true">Jul 4<span>th</span>, 2010</time></div>
-  
-</div>
-    <p>さて、ドメインが開いていたという安易なきっかけでスタートしたOAuth.jp、当然具体的に何をするかなんて決まってません。</p>
-
-
-<p>ただ、以前からOpenIDコミュニティにおける<a href="http://openid.or.jp">OpenID Foundation Japan</a>のように、OAuthにも日本国内で何かしら組織なりグループなりがあるといいなぁとは思っていて、OAuth.jpがそういう場になればなぁと漠然と思っています。</p>
-
-
-
-
-<p>ということで、まずは僕が考えている方針をまとめてみます。 いまのところ質問は来ていませんが、日本語でOAuthに関する質問ができる場としてはちょっと前に<a href="http://groups.google.co.jp/group/oauth-japan">OAuth Japan</a>というGoogleグループを作りました。また<a href="/blog/2010/07/04/githuborganization">直前の記事</a>で紹介したように、Githubには<a href="http://github.com/oauthjp">OAuth.jpのOrganizationアカウント</a>も用意しています。</p>
-
-
-
-
-<p>そして、有志のContributorが主体になってOAuth関連の記事をアップしていける場がこのサイトなのかなぁと思っています。</p>
-
-
-<p>ということで、質問はGoogleグループ、情報発信はこのブログ、そして必要があればGithubにコードをあげる、という感じで進めて行けばいいのかなぁ？</p>
-
-
-<p>いろいろご意見ご要望いただけるとうれしいです。</p>
-
-
-<p>ps. ちなみに、Contributorにならなくても、<a href="mailto:post@oauthjp.posterous.com">post@oauthjp.posterous.com</a>にメールすれば誰でもこのブログに記事を書けます。メール経由のみ、かつ承認制という制限はありますが。この記事もメールで書いてます。</p>
-
-
-
-
-<p>追記: 2013年のposterousサービス終了に伴い、サイトをTumblrに移行しました。Contributeの方法もかわっていますので、ご了承ください。</p>
-
-
-    
-    
-  </div>
-
-<div class="meta">
-  
-</div>
-</article>
-
 <nav id="pagenavi">
     
         <a href="/blog/page/18/" class="prev">Prev</a>
@@ -422,12 +433,15 @@
 
     </div>
     <footer id="footer">
-    <div style="display:inline">
-    Copyright &copy; 2017
-
-    <a href="http://matake.jp">Nov Matake</a>
-. Powered by <a href="http://octopress.org">Octopress</a> |
+    <div>
+  <p>
+    Copyright &copy; 2017 <a href="http://matake.jp">Nov Matake</a> -
+    技術的な相談等、お仕事依頼は <a href="http://yauth.jp">YAuth.jp</a> まで
+  </p>
+  <p>
+    Powered by <a href="http://octopress.org">Octopress</a>,
     Theme <a href="http://github.com/panks/fabric">fabric</a> by <a href="http://panks.me">Pankaj Kumar</a>
+  </p>
 </div>
 
 
