@@ -4,7 +4,7 @@
   <title><![CDATA[OAuth.jp]]></title>
   <link href="http://oauth.jp/atom.xml" rel="self"/>
   <link href="http://oauth.jp/"/>
-  <updated>2017-11-02T15:55:29+09:00</updated>
+  <updated>2017-11-02T16:03:54+09:00</updated>
   <id>http://oauth.jp/</id>
   <author>
     <name><![CDATA[Nov Matake]]></name>
@@ -103,6 +103,60 @@
 <p>Windows 10 上では <code>Connect-MsolService</code> ってやるとブラウザポップアップ開くのに、なぜかブラウザ内で <code>Connect-MsolService</code> するとブラウザが立ち上がらないのです。</p>
 
 <p>不思議なこともあるものです。</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[LINE ID Login]]></title>
+    <link href="http://oauth.jp/blog/2017/09/28/line-id-login/"/>
+    <updated>2017-09-28T22:52:00+09:00</updated>
+    <id>http://oauth.jp/blog/2017/09/28/line-id-login</id>
+    <content type="html"><![CDATA[<p>LINE が OpenID Connect サポートしたみたいですね。</p>
+
+<p>なんか前からしてんだと思ってたんですが、まぁいいや。</p>
+
+<p>ということで、早速触ってみました。</p>
+
+<p>こちらに<a href="https://gist.github.com/nov/58912dda45a65768d8f05343225780b2">今回使った Ruby のサンプルスクリプト</a>置いておきます。</p>
+
+<p>まぁ、ちょっと特殊な点がいくつかありますが、十分 OpenID Connect です。</p>
+
+<p>気になった点は以下の通り。</p>
+
+<!-- more -->
+
+
+<h3>ID Token の署名アルゴリズムが HS256 (HMAC-SHA256)</h3>
+
+<p>HMAC ってことは、署名検証するために client_secret が必要ということです。</p>
+
+<p>Native App で検証しようとすると、Native App に client_secret を埋め込まなければならない訳ですが、それはありえないので、要するに Native App で ID Token の署名検証はできないということです。</p>
+
+<p>まぁ別に Native App で ID Token の署名検証するケースなんてそうそう無いとは思いますが。</p>
+
+<h3>scope=openid だけでは動かない</h3>
+
+<p>LINE の User ID さえもらえればいいよってケースでも、Display Name とか Profile Picture とか取らないといけないっぽいです。</p>
+
+<p>ちょっと OpenID Connect の思想からはずれていますね。</p>
+
+<h3>state が必須</h3>
+
+<p>まぁ仕様的には OPTIONAL なんですけど、これはセキュリティ上はいいことなのではないでしょうか。</p>
+
+<h3>Client 認証に Basic Auth は使えない</h3>
+
+<p>これじゃ OpenID Certification は通らないんですね。</p>
+
+<p>UserInfo API もまだ無いようなんで、Certification 取得とかはもう少し先の話でしょうか。</p>
+
+<h3>Access Token は JWS で署名された非 JWT で Lifetime は1ヶ月</h3>
+
+<p>ちょっと長く無いすか？裏に独自の Revoke の仕組みがあるんなら別にいいんですけど&hellip;</p>
+
+<p>Refresh Token 発行しておいて、Access Token の有効期限が1ヶ月ってのは、結構違和感あります。</p>
+
+<p><em>&hellip;で、こういうの書いとくと、「LINE API Expert」ってやつになって有料スタンプ使い放題になったりするんでしょうか？</em></p>
 ]]></content>
   </entry>
   
@@ -447,7 +501,7 @@
 
 <p>動作確認用のユーザーも作っておきましたので、これが正常に動いてる間はご自由にお使いください。</p>
 
-<p>Username: <a href="&#x6d;&#97;&#x69;&#x6c;&#116;&#x6f;&#x3a;&#121;&#x6f;&#117;&#64;&#115;&#x74;&#115;&#x34;&#98;&#x32;&#99;&#x2e;&#x6f;&#110;&#109;&#x69;&#x63;&#x72;&#x6f;&#x73;&#x6f;&#x66;&#x74;&#x2e;&#x63;&#x6f;&#109;">&#121;&#x6f;&#117;&#x40;&#x73;&#x74;&#115;&#x34;&#98;&#x32;&#x63;&#x2e;&#x6f;&#110;&#x6d;&#105;&#x63;&#x72;&#111;&#115;&#x6f;&#x66;&#x74;&#46;&#99;&#111;&#x6d;</a>
+<p>Username: <a href="&#109;&#x61;&#105;&#108;&#116;&#111;&#x3a;&#121;&#x6f;&#x75;&#64;&#115;&#x74;&#115;&#52;&#98;&#x32;&#99;&#46;&#x6f;&#x6e;&#x6d;&#105;&#99;&#114;&#x6f;&#115;&#111;&#x66;&#x74;&#x2e;&#x63;&#111;&#x6d;">&#x79;&#111;&#x75;&#64;&#x73;&#x74;&#x73;&#x34;&#x62;&#50;&#99;&#46;&#x6f;&#x6e;&#109;&#x69;&#x63;&#x72;&#111;&#x73;&#x6f;&#102;&#x74;&#46;&#x63;&#111;&#x6d;</a>
 Password: ]6]yzxXYG7uruM4p</p>
 
 <p>動かなくなったら、あきらめて自分で Azure AD B2C 環境セットアップしてください。</p>
@@ -600,13 +654,13 @@ Password: ]6]yzxXYG7uruM4p</p>
 
 <p>あと、Email 指定してもそのメアドのユーザーにログインできるわけでもないです。</p>
 
-<p><a href="&#109;&#97;&#x69;&#108;&#116;&#x6f;&#58;&#110;&#x6f;&#x76;&#x40;&#101;&#120;&#x61;&#109;&#112;&#108;&#101;&#46;&#x63;&#111;&#109;">&#x6e;&#111;&#118;&#x40;&#x65;&#120;&#x61;&#x6d;&#x70;&#x6c;&#x65;&#46;&#99;&#111;&#x6d;</a> の NameID を持つ SAML Assertion で、<a href="&#109;&#97;&#105;&#x6c;&#x74;&#111;&#x3a;&#110;&#111;&#x76;&#x40;&#x6d;&#x61;&#116;&#x61;&#107;&#101;&#46;&#106;&#x70;">&#x6e;&#111;&#118;&#64;&#x6d;&#x61;&#116;&#x61;&#x6b;&#101;&#46;&#x6a;&#112;</a> の GitHub アカウントにログインできたりします。</p>
+<p><a href="&#x6d;&#97;&#x69;&#x6c;&#x74;&#111;&#x3a;&#110;&#x6f;&#x76;&#x40;&#x65;&#120;&#x61;&#x6d;&#112;&#x6c;&#x65;&#x2e;&#x63;&#111;&#109;">&#110;&#111;&#x76;&#x40;&#101;&#120;&#x61;&#x6d;&#x70;&#108;&#x65;&#46;&#99;&#111;&#109;</a> の NameID を持つ SAML Assertion で、<a href="&#x6d;&#97;&#x69;&#108;&#x74;&#111;&#58;&#110;&#111;&#118;&#64;&#x6d;&#x61;&#x74;&#x61;&#107;&#101;&#46;&#x6a;&#x70;">&#110;&#111;&#x76;&#x40;&#x6d;&#x61;&#116;&#x61;&#x6b;&#101;&#x2e;&#106;&#112;</a> の GitHub アカウントにログインできたりします。</p>
 
 <p>SAML Federation とか言うてるけど、結局既存の GitHub.com アカウントに SAML IdP 側のアカウントを Link するだけなんですよ。</p>
 
 <p>その紐付けは、SAML での初回ログイン時に GitHub.com 側の ID &amp; Password 入力して行います。</p>
 
-<p>つまり、<a href="&#109;&#97;&#105;&#108;&#x74;&#111;&#x3a;&#110;&#x6f;&#118;&#64;&#101;&#x78;&#97;&#109;&#x70;&#108;&#x65;&#46;&#99;&#x6f;&#x6d;">&#x6e;&#111;&#x76;&#64;&#101;&#x78;&#97;&#x6d;&#x70;&#108;&#101;&#x2e;&#99;&#x6f;&#109;</a> の NameID を持つ SAML Assertion をどの GitHub アカウントに紐づけるかは、エンドユーザーが決定権を持っています。</p>
+<p>つまり、<a href="&#109;&#97;&#x69;&#108;&#116;&#111;&#58;&#x6e;&#111;&#118;&#64;&#x65;&#x78;&#97;&#x6d;&#x70;&#108;&#x65;&#46;&#99;&#111;&#x6d;">&#x6e;&#x6f;&#118;&#64;&#x65;&#120;&#x61;&#x6d;&#x70;&#x6c;&#101;&#46;&#x63;&#111;&#109;</a> の NameID を持つ SAML Assertion をどの GitHub アカウントに紐づけるかは、エンドユーザーが決定権を持っています。</p>
 
 <p>情シスじゃないです。</p>
 
@@ -2395,58 +2449,6 @@ Mac から Remote Desktop 経由でいじりたかったんでね。</p>
 <p>OpenID Foundation にもそういうユースケース集作るモチベーションはあると思うので、そういうところで Authlete が活動するメリットを見出せると良いのでしょうね。</p>
 
 <p>あと、どこかのタイミングで「Authlete では結局一度も選択されなかった機能一覧」とか提供してもらって、それらがどういうときに使われるのかを議論するのとかおもしろそう :)</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[OAuth IdP Mix-up Attack - part II]]></title>
-    <link href="http://oauth.jp/blog/2016/01/25/oauth-idp-mix-up-attack-part-ii/"/>
-    <updated>2016-01-25T15:59:00+09:00</updated>
-    <id>http://oauth.jp/blog/2016/01/25/oauth-idp-mix-up-attack-part-ii</id>
-    <content type="html"><![CDATA[<p><a href="http://oauth.jp/blog/2016/01/12/oauth-idp-mix-up-attack/">OAuth IdP Mix-Up Attack とは？</a> のつづき。</p>
-
-<p>OAuth ML上で、以下のどちらを採用すべきかについての議論が収まる気配のない昨今です。</p>
-
-<ul>
-<li><a href="http://tools.ietf.org/html/draft-jones-oauth-mix-up-mitigation">http://tools.ietf.org/html/draft-jones-oauth-mix-up-mitigation</a></li>
-<li><a href="http://tools.ietf.org/html/draft-sakimura-oauth-meta">http://tools.ietf.org/html/draft-sakimura-oauth-meta</a></li>
-</ul>
-
-
-<p>そんななか、もうちょっとややこしいというか致命的なケースが出て来ました。</p>
-
-<ul>
-<li><a href="http://nat.sakimura.org/2016/01/22/code-phishing-attack-on-oauth-2-0-rfc6749/">Code phishing attack on OAuth 2.0 [RFC6749] | .Nat Zone</a></li>
-</ul>
-
-
-<p>&ldquo;Mix-up Attack&rdquo; っていうやつの話をしてたはずが、いつのまにか &ldquo;Code Phishing Attack&rdquo; って名前になっててもはや2つの違いがよく分かんなくなってきますが、ブログ記事中では「フィッシングメールをRP Developerに送って、Client DeveloperにToken Endpointを書き変えさせる」というパターンが例示されています。</p>
-
-<p>いや、そんなんに騙されるやつおらへんやろ〜、ってのがだいたいの反応かとは思いますし、RP Developerのみなさんがちゃんと注意しれてばそれで十分な話ではあるかと思います。</p>
-
-<p>が、IdP視点でいうと、アホなRPからユーザーさんのTokenとかそのRPのclient_secretとかがだだ漏れになっちゃうとIdPのレピュテーションにひびいたりするので、なかなかつらいところです。</p>
-
-<p>もはやここまで騙されてる状況では、Authorization Response以外何も信用できない訳で、Authorization Endpointにiss含んでも、issに紐付いたIdP Configがstaticにhard-codeされてるなら、そのhard-codeされてるconfig自体信用できないということになります。</p>
-
-<p>「IdPごとに別のredirect_uriを使う」なんてのも、もはや無意味ですね。</p>
-
-<p>response_type=code+id_tokenとして、fragmentについてきたID Tokenをチェックしても、Discovery無しだとダメでしょう。</p>
-
-<p>そのため、IdPが取れる対応策は以下の2つのどちらかになるでしょう。</p>
-
-<ul>
-<li>issを返しつつ、OAuth Discoveryをサポートする</li>
-<li>OAuth MetaのようにToken Endpoint URLをAuthZ Responseに含める</li>
-</ul>
-
-
-<p>前者は <a href="http://tools.ietf.org/html/draft-jones-oauth-mix-up-mitigation">http://tools.ietf.org/html/draft-jones-oauth-mix-up-mitigation</a> をより厳しくしたもので、後者は <a href="http://tools.ietf.org/html/draft-sakimura-oauth-meta">http://tools.ietf.org/html/draft-sakimura-oauth-meta</a> そのものです。</p>
-
-<p>個人的にはOAuth Discoveryが必須になるとHTTP Requestが増えるので、IdP的にはあまり嬉しくないなぁと思います。</p>
-
-<p>ps.</p>
-
-<p>Implicit FlowにおいてResource Endpointが書き換えられていることを想定したケースでは、AuthZ ResponseにResource Endpoint(s) を含めることになって、Code Flowよりさらにややこしい話になるわけですが、それはまた別の機会に&hellip;書く&hellip;かも。</p>
 ]]></content>
   </entry>
   

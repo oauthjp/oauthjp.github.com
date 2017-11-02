@@ -6,7 +6,7 @@
 	<title>OAuth.jp</title>
     <meta name="author" content="Nov Matake">
     
-	<meta name="description" content="Author: Nov Matake Date: Mar 7th, 2017 オンプレサーバーで GitHub Enterprise をお使いのみなさま。 日々オンプレサーバーのメンテ、おつかれさまです。 GitHub.com の Business Plan っての、良さそうですよね。 SCIM &hellip;">
+	<meta name="description" content="Author: Nov Matake Date: Mar 24th, 2017 Azure AD B2C Access Tokens now in public preview ということで、さわって見ました。 Step.1 Azure AD B2C テナントの作成 まずは Azure AD &hellip;">
 	
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
@@ -93,6 +93,80 @@
 <!-- begin toload --> 
     <div id="content" class="inner">
         
+
+
+    <article class="post">
+  <h2 class="title">
+    
+    <a href="/blog/2017/03/24/azuread-b2c-jwt-accesstoken/">
+    
+      Azure AD B2C が外部 API 向けに払い出す JWT-formatted Access Token について</a>
+  </h2>
+  <div class="entry-content">
+    <div class="meta">
+  <div class="author">
+    Author: <a href="http://matake.jp">Nov Matake</a>
+  </div>
+  <div class="date">Date: 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2017-03-24T17:08:00+09:00" pubdate data-updated="true">Mar 24<span>th</span>, 2017</time></div>
+  
+</div>
+
+    <p><a href="https://azure.microsoft.com/ja-jp/blog/azure-ad-b2c-access-tokens-now-in-public-preview/">Azure AD B2C Access Tokens now in public preview</a></p>
+
+<p>ということで、さわって見ました。</p>
+
+<h2>Step.1 Azure AD B2C テナントの作成</h2>
+
+<p>まずは Azure AD B2C テナントを作成します。なんか portal.azure.com から行くと Classic Portal ベースのドキュメントに飛ばされるので、新しい方の Portal ベースのドキュメントをリンクしときますね。</p>
+
+<p><a href="https://docs.microsoft.com/en-us/azure/active-directory-b2c/active-directory-b2c-get-started">Azure Active Directory B2C: Create an Azure AD B2C tenant</a></p>
+
+<p>テナントを Subscription と紐づけるとかいう処理は Production Use でない限り Skip で OK です。</p>
+
+<h2>Step.2 Web API (Resource Server) および Client の登録</h2>
+
+<p><a href="https://azure.microsoft.com/ja-jp/blog/azure-ad-b2c-access-tokens-now-in-public-preview/">Azure AD B2C Access Tokens now in public preview</a> にしたがって、Web API と Client を登録します。</p>
+
+<p>Web API の登録には Scope の定義もセットです。</p>
+
+<p>Client の登録には Key (Client Secret) の作成と利用可能な API &amp; Scope の設定がセットです。</p>
+
+<p>ちなみに、Resource Server と Client がどちらも同じメニューから作成し、横並びで表示されるのはちょっと違和感ありますね。</p>
+
+<p>Resource Server に Redirect URI (Reply URL) の登録が必須だったり、Implicit を使えるようにするかの選択は Client 側の設定項目で Resource Server 側にそれ設定してもなんの意味もなかったりというのは、MS さんらしいというかなんというか。</p>
+
+<p>なお、</p>
+
+<ul>
+<li>App ID URI を登録した Application は固有の scope を定義できるようになり、Resource Server になれる。</li>
+<li>App ID URI を登録しない Application は Key (Client Secret) しか作成できず、Client にしかなれない。</li>
+<li>Resource Server は Key (Client Secret) も作成できるので同時に Client にもなれる。</li>
+</ul>
+
+
+<p>というルールになっているようですが、3つめの Resource Server かつ Client というのは同じ aud を持つ Access Token と ID Token が生成されることに繋がるので、よほどの事情がない限りやめるべきです。</p>
+
+
+    
+    <a href="/blog/2017/03/24/azuread-b2c-jwt-accesstoken/" class="more-link">Read on &rarr;</a>
+  </div>
+
+<div class="meta">
+  
+</div>
+</article>
 
 
     <article class="post">
@@ -468,72 +542,6 @@
 
     
     
-  </div>
-
-<div class="meta">
-  
-</div>
-</article>
-
-
-    <article class="post">
-  <h2 class="title">
-    
-    <a href="/blog/2016/07/01/o365-saml-federation/">
-    
-      Office 365 と外部 SAML IdP との連携設定</a>
-  </h2>
-  <div class="entry-content">
-    <div class="meta">
-  <div class="author">
-    Author: <a href="http://matake.jp">Nov Matake</a>
-  </div>
-  <div class="date">Date: 
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2016-07-01T11:03:00+09:00" pubdate data-updated="true">Jul 1<span>st</span>, 2016</time></div>
-  
-</div>
-
-    <p>どうも、事務局長の Nov です。</p>
-
-<p>どうも、ジムキョクチョのノブです。</p>
-
-<p>どうも、ノブキョクチョです。</p>
-
-<p>どうも、のぶチョです。</p>
-
-<p>そう、のぶ千代です。</p>
-
-<p>最近歳のせいか、Rails で SAML IdP とか作ってます。</p>
-
-<p>今日は自作 SAML IdP を Office 365 と連携させてみたので、その格闘の記録を残しておきます。</p>
-
-<p>Office 365 の制約とか Azure AD の制約とか全く前提知識なしに格闘した記録なんで、そういうのいいから手っ取り早くやり方教えろやって人は我らがふぁらおぅ兄さんのこちらの連載をご覧ください。</p>
-
-<ul>
-<li><a href="http://idmlab.eidentity.jp/2014/11/office365azureadopenamid.html">Office365/AzureAD &ndash; OpenAMとのID連携 (1)</a></li>
-<li><a href="http://idmlab.eidentity.jp/2014/12/office365azureadopenamid.html">Office365/AzureAD &ndash; OpenAMとのID連携 (2)</a></li>
-<li><a href="http://idmlab.eidentity.jp/2014/12/office365azureadopenamid_25.html">Office365/AzureAD &ndash; OpenAMとのID連携 (3)</a></li>
-</ul>
-
-
-<p>あとはこの本もおすすめ。</p>
-
-<p><a href="https://www.amazon.co.jp/%E8%84%B1%E3%82%AA%E3%83%B3%E3%83%97%E3%83%AC%E3%83%9F%E3%82%B9-%E3%82%AF%E3%83%A9%E3%82%A6%E3%83%89%E6%99%82%E4%BB%A3%E3%81%AE%E8%AA%8D%E8%A8%BC%E5%9F%BA%E7%9B%A4-Active-Directory-%E3%83%9E%E3%82%A4%E3%82%AF%E3%83%AD%E3%82%BD%E3%83%95%E3%83%88%E9%96%A2%E9%80%A3%E6%9B%B8-ebook/dp/B01IB6Q79W/ref=as_li_ss_il?ie=UTF8&qid=1491030816&sr=8-7&keywords=azure&linkCode=li3&tag=bianca0b-22&linkId=6d34dacc7b28dbb8de4dc560a0ad084f" target="_blank"><img border="0" src="//ws-fe.amazon-adsystem.com/widgets/q?_encoding=UTF8&ASIN=B01IB6Q79W&Format=_SL250_&ID=AsinImage&MarketPlace=JP&ServiceVersion=20070822&WS=1&tag=bianca0b-22" ></a><img src="https://ir-jp.amazon-adsystem.com/e/ir?t=bianca0b-22&l=li3&o=9&a=B01IB6Q79W" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" /></p>
-
-
-    
-    <a href="/blog/2016/07/01/o365-saml-federation/" class="more-link">Read on &rarr;</a>
   </div>
 
 <div class="meta">
