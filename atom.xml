@@ -4,7 +4,7 @@
   <title><![CDATA[OAuth.jp]]></title>
   <link href="http://oauth.jp/atom.xml" rel="self"/>
   <link href="http://oauth.jp/"/>
-  <updated>2017-11-03T09:35:33+09:00</updated>
+  <updated>2018-03-02T11:00:11+09:00</updated>
   <id>http://oauth.jp/</id>
   <author>
     <name><![CDATA[Nov Matake]]></name>
@@ -12,6 +12,31 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[SAML Authentication Bypass Vulnerability]]></title>
+    <link href="http://oauth.jp/blog/2018/03/02/saml-authentication-bypass-vulnerability/"/>
+    <updated>2018-03-02T10:42:00+09:00</updated>
+    <id>http://oauth.jp/blog/2018/03/02/saml-authentication-bypass-vulnerability</id>
+    <content type="html"><![CDATA[<p>脆弱性の内容に関する <a href="http://idmlab.eidentity.jp/2018/03/saml-idp.html">日本語解説はこちら</a>。</p>
+
+<p>で、実際に脆弱性が存在してた実装もみてみると、OneLogin 製の ruby-saml だと、街灯の脆弱性はここで修正されてます。</p>
+
+<p><a href="https://github.com/onelogin/ruby-saml/commit/048a544730930f86e46804387a6b6fad50d8176f">Fix vulnerability CVE-2017-11428. Process text of nodes properly, ign… · onelogin/ruby-saml@048a544</a></p>
+
+<p><a href="https://github.com/onelogin/ruby-saml/commit/048a544730930f86e46804387a6b6fad50d8176f#diff-d3e2c1bdc6c1e8b207dd7ded3ae35320R288">この行</a> がまさにメインの修正箇所なんですが、いままで <code>REXML::Element#text</code> 呼んでいたものを、すべて <code>REXML::Element#texts</code> を <code>join</code> するように変更してますね。</p>
+
+<p>でも、そもそもこれ署名検証の部分の修正が含まれてないのはなぜでしょう？</p>
+
+<p><a href="https://github.com/onelogin/ruby-saml/blob/048a544730930f86e46804387a6b6fad50d8176f/lib/xml_security.rb#L271">署名検証してるのはここ</a> なんですが、これ、よくみると <code>REXML</code> じゃなくて <code>Nokogiri</code> 使ってますね。</p>
+
+<p>2つの XML Parser を1つの実装の中で混在させてる時点で、すごいやな香りしますよね。<code>ruby-saml</code> は今回の脆弱性修正でも、その状況は変わってないので、Ruby で SAML 実装するなら <a href="https://github.com/digidentity/libsaml"><code>libsaml</code></a> に移行した方が良さそうですね。</p>
+
+<p>ちなみに、OpenID Connect ならそんなことないのかっていうと、当然あります。<code>ruby-jwt</code> と <code>json-jwt</code> を混在させてる <a href="https://github.com/18F/identity-openidconnect-sinatra/blob/master/Gemfile#L10">NIST の RP サンプル</a> とかね。</p>
+
+<p><code>ruby-jwt</code> に JWK まわりの機能がないから <code>json-jwt</code> を JWK のためだけに使ってて、それ自体はまぁそんな悪い予感しないけど、なら全部 <code>json-jwt</code> 使えやとは思いますよね。うん。</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Azure Portal 上の PowerShell から O365 SAML 設定]]></title>
@@ -501,7 +526,7 @@
 
 <p>動作確認用のユーザーも作っておきましたので、これが正常に動いてる間はご自由にお使いください。</p>
 
-<p>Username: <a href="&#x6d;&#97;&#x69;&#x6c;&#116;&#x6f;&#58;&#x79;&#x6f;&#x75;&#x40;&#115;&#116;&#x73;&#52;&#98;&#50;&#99;&#46;&#111;&#110;&#109;&#105;&#x63;&#x72;&#x6f;&#115;&#x6f;&#x66;&#116;&#x2e;&#99;&#111;&#109;">&#121;&#111;&#117;&#64;&#x73;&#x74;&#x73;&#x34;&#98;&#50;&#99;&#46;&#111;&#110;&#x6d;&#x69;&#99;&#x72;&#x6f;&#115;&#x6f;&#102;&#116;&#x2e;&#99;&#x6f;&#109;</a>
+<p>Username: <a href="&#x6d;&#97;&#x69;&#108;&#x74;&#111;&#x3a;&#121;&#111;&#117;&#x40;&#115;&#x74;&#x73;&#52;&#x62;&#50;&#x63;&#46;&#111;&#110;&#109;&#x69;&#99;&#x72;&#x6f;&#115;&#x6f;&#x66;&#x74;&#46;&#99;&#x6f;&#x6d;">&#121;&#111;&#x75;&#x40;&#x73;&#116;&#115;&#52;&#98;&#x32;&#x63;&#46;&#x6f;&#110;&#109;&#x69;&#99;&#114;&#x6f;&#x73;&#x6f;&#102;&#116;&#x2e;&#99;&#x6f;&#109;</a>
 Password: ]6]yzxXYG7uruM4p</p>
 
 <p>動かなくなったら、あきらめて自分で Azure AD B2C 環境セットアップしてください。</p>
@@ -654,13 +679,13 @@ Password: ]6]yzxXYG7uruM4p</p>
 
 <p>あと、Email 指定してもそのメアドのユーザーにログインできるわけでもないです。</p>
 
-<p><a href="&#x6d;&#x61;&#x69;&#x6c;&#116;&#111;&#x3a;&#x6e;&#111;&#118;&#64;&#101;&#120;&#97;&#x6d;&#112;&#x6c;&#101;&#x2e;&#x63;&#111;&#x6d;">&#110;&#111;&#118;&#x40;&#101;&#x78;&#97;&#x6d;&#112;&#x6c;&#x65;&#x2e;&#99;&#x6f;&#x6d;</a> の NameID を持つ SAML Assertion で、<a href="&#x6d;&#97;&#105;&#x6c;&#116;&#111;&#x3a;&#x6e;&#x6f;&#x76;&#64;&#109;&#97;&#116;&#97;&#x6b;&#101;&#x2e;&#x6a;&#x70;">&#x6e;&#x6f;&#x76;&#x40;&#x6d;&#97;&#116;&#x61;&#107;&#x65;&#46;&#x6a;&#112;</a> の GitHub アカウントにログインできたりします。</p>
+<p><a href="&#109;&#97;&#x69;&#108;&#116;&#x6f;&#x3a;&#110;&#111;&#x76;&#64;&#101;&#120;&#97;&#109;&#112;&#108;&#101;&#46;&#99;&#x6f;&#109;">&#x6e;&#111;&#118;&#x40;&#x65;&#x78;&#x61;&#x6d;&#112;&#x6c;&#x65;&#46;&#x63;&#x6f;&#x6d;</a> の NameID を持つ SAML Assertion で、<a href="&#x6d;&#97;&#x69;&#108;&#116;&#x6f;&#58;&#110;&#111;&#118;&#64;&#109;&#97;&#x74;&#97;&#107;&#101;&#46;&#x6a;&#x70;">&#x6e;&#111;&#x76;&#x40;&#109;&#97;&#116;&#97;&#107;&#101;&#x2e;&#x6a;&#112;</a> の GitHub アカウントにログインできたりします。</p>
 
 <p>SAML Federation とか言うてるけど、結局既存の GitHub.com アカウントに SAML IdP 側のアカウントを Link するだけなんですよ。</p>
 
 <p>その紐付けは、SAML での初回ログイン時に GitHub.com 側の ID &amp; Password 入力して行います。</p>
 
-<p>つまり、<a href="&#109;&#97;&#105;&#108;&#x74;&#x6f;&#58;&#110;&#111;&#118;&#64;&#101;&#120;&#x61;&#109;&#x70;&#108;&#x65;&#x2e;&#x63;&#111;&#109;">&#x6e;&#111;&#118;&#64;&#101;&#x78;&#97;&#x6d;&#x70;&#x6c;&#x65;&#46;&#x63;&#111;&#x6d;</a> の NameID を持つ SAML Assertion をどの GitHub アカウントに紐づけるかは、エンドユーザーが決定権を持っています。</p>
+<p>つまり、<a href="&#x6d;&#x61;&#105;&#108;&#116;&#111;&#58;&#110;&#111;&#x76;&#x40;&#x65;&#x78;&#x61;&#109;&#x70;&#108;&#x65;&#x2e;&#99;&#111;&#109;">&#x6e;&#x6f;&#118;&#x40;&#x65;&#120;&#x61;&#109;&#112;&#108;&#x65;&#46;&#99;&#x6f;&#109;</a> の NameID を持つ SAML Assertion をどの GitHub アカウントに紐づけるかは、エンドユーザーが決定権を持っています。</p>
 
 <p>情シスじゃないです。</p>
 
@@ -2333,122 +2358,6 @@ Mac から Remote Desktop 経由でいじりたかったんでね。</p>
 
 
 <p>なので、「OAuth と OpenID Connect」の比較の流れで出てくる「認証と認可」っていう議論に関しては、生暖かく見守っております :p</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[OpenID Connectはそんなに大変かね？]]></title>
-    <link href="http://oauth.jp/blog/2016/02/24/is-openid-connect-far-from-oauth2/"/>
-    <updated>2016-02-24T11:14:00+09:00</updated>
-    <id>http://oauth.jp/blog/2016/02/24/is-openid-connect-far-from-oauth2</id>
-    <content type="html"><![CDATA[<p><a href="http://qiita.com/TakahikoKawasaki/items/f2a0d25a4f05790b3baa">OAuth 2.0 + OpenID Connect のフルスクラッチ実装者が知見を語る &ndash; Qiita</a> ってのになんかフォローアップしろよ的なのが来たので。</p>
-
-<p>ざっと読んだ感想としては、「OpenID Connect の OPTIONAL な機能全部実装したら、そら大変ですね」という感じ。（Authlete に関しては、OpenAM みたいな感じで使われる、OpenAM よりはるかに簡単に使える代わりに有料の何かなんだろうな、というイメージです）</p>
-
-<h2>OAuth は必要なのか？</h2>
-
-<ul>
-<li>Basic 認証は死んだ。</li>
-<li>ユーザー単位での API のアクセスコントロールがしたいです。</li>
-</ul>
-
-
-<p>っていう前提で話すると、OAuth 以外まともな選択肢が無いんじゃないでしょうか。</p>
-
-<p>OAuth の各種 Extension (RFC 6749 &amp; 6750 以外にいろいろある) に関しては、適宜必要なのを実装すればいいんだけど、どれが必要なのかを選ぶのが大変なのは事実で、そこのベストプラクティスとかユースケースごとのガイドラインは今後の課題。IETF OAuth WG の中の人たちも、それは認識している。</p>
-
-<h2>「OAuth 認証」とは</h2>
-
-<p>OAuth は「End-User (に信頼された OAuth Server) が OAuth Client のアクセス権限をコントロールする」というコンテキストにおいての標準化されたプロトコルであって、「Identity Provider (IdP) が End-User を認証した結果を受け取って、Relying Party (RP) が (IdP への信頼を元に) End-User を認証する」というコンテキストで OAuth を使うユースケースが「OAuth 認証」と呼ばれるやつです。</p>
-
-<p>後者のコンテキストで、OAuth は何も標準的な仕様を定めてはいません。</p>
-
-<p>IdP が End-User を認証した結果を RP に伝える方法 (ID Token 相当) や、そのコンテキストで求められることが多い認証されたユーザー属性情報の取得方法 (UserInfo 相当) については、完全に各 Platform が独自に API を提供してるだけなので、そういう意味では「OAuth 認証」ってのは「オレオレ Connect」みたいなもんですね。</p>
-
-<p>まぁでも「オレオレ OAuth」の上で「オレオレ Connect」やる「JWT 認証」よりはマシなんじゃないかなっていう気はします。</p>
-
-<!-- more -->
-
-
-<h2>OpenID Connect 関連仕様、多すぎ問題</h2>
-
-<p>うん、OpenID Connect の仕様群は、全部読むと大変ですね。</p>
-
-<p>Authlete の人も Dynamic Client Registration は読む必要無かったと思うけど、読む必要あるかどうかを判断するのがまず大変。</p>
-
-<p>そして、そこは OAuth の各種 Extension を全部理解して使いこなすのも、同じように大変。</p>
-
-<p>OAuth の各種 Extension を読まずに OAuth 実装して、その状態から OpenID Connect 仕様を全部実装しようとしたら、一回全部作り直しになってもしょうがないかなとは思います。</p>
-
-<p>でも、自分で IdP 実装する人は、基本 <a href="http://openid.net/specs/openid-connect-core-1_0.html">OpenID Connect Core 1.0</a> だけ読めば十分ですよ。それでも十分大変だけど。</p>
-
-<p>RP 実装する人は、その RP が Web サイトなら <a href="http://openid.net/specs/openid-connect-basic-1_0.html">OpenID Connect Basic Client Implementer&rsquo;s Guide 1.0</a> だけで十分。</p>
-
-<p>Native アプリなら&hellip;Native アプリのケースって Backend Server 含めると 4-party ですし、3-party を想定して策定されてる OAuth や OpenID Connect の範囲を超えているので、今後の課題ですかね。（そういや <a href="http://labs.gree.jp/blog/2015/12/14831/">OAuth for Native Apps</a> てのを先日書きました）</p>
-
-<p>で、ちょっと話がそれましたが、結論としては、IdP 作るのは RP より大変で、Authlete みたいなの作るのは IdP 作るよりさらに大変、というだけのことなのではないでしょうか。</p>
-
-<p>必要な Extension については具体的なユースケース聞かない限りなんとも言えないので、そこは Authlete 的に「とりあえず実装する」という方針だと、Authlete が大変なのはよくわかります。</p>
-
-<p>一方で、ほとんどの IdP 実装は、既存 OAuth 実装に scope=openid と ID Token だけ追加実装すれば十分じゃね？とも思います。</p>
-
-<p>具体的なユースケース聞かない限りなんとも言えないのですが。</p>
-
-<h2>response_type 増えてる問題</h2>
-
-<p>これはまぁ RFC 6749 策定時には「実装はあるけどまだ標準化するレベルになかった」ものが、OpenID Connect の時代には標準化レベルに達していて、OpenID Foundation が Connect 策定するついでに <a href="http://openid.net/specs/oauth-v2-multiple-response-types-1_0.html">OAuth 2.0 Multiple Response Type Encoding Practices</a> にまとめた、っていうのが実際のところ。</p>
-
-<p>「現実の OAuth がとっくに RFC 6749 を超えていたのだよ」という感じでしょうか。</p>
-
-<p>みんなが当時 IETF OAuth WG のスピード感に満足していれば、<a href="http://openid.net/specs/oauth-v2-multiple-response-types-1_0.html">OAuth 2.0 Multiple Response Type Encoding Practices</a> は IETF 側でまとめられていたよね、というのもあるし、RFC 6749 があそこまで時間かかるんだったら、response_type=code+token は Core に入れられたよね、ってのもあるにはあるけど、いまさら言ってもしゃーないすね。</p>
-
-<h2>クライアントアプリケーションのメタ情報、多すぎ問題</h2>
-
-<p>えっと、そもそも、Dynamic Client Registration、きっと使わないです。</p>
-
-<p>Dynamic Client Registration を検討してるって人がもしいたら、まずは <a href="https://tools.ietf.org/html/rfc7636">OAuth PKCE</a> ってので代用できないか検討するがいいかと思います。</p>
-
-<p>Dynamic Client Registration をセキュアにやる方法は、OAuth WG と OpenID Connect の関連仕様を全部読んでもまだ足りないはず。</p>
-
-<p>それでも Dynamic Client Registration したいんだ！って人は&hellip;PKI まわりの技術一通り把握したら、使いこなせる&hellip;のかな&hellip;？</p>
-
-<p>という前提の元で Dynamic Client Registration で登録された Client を Public / Confidential どちらにするかという話をすると、grant_types に implicit 以外が含まれてたら Confidential ですね。</p>
-
-<p>そもそも Dynamic Client Registration で Public Client 登録する意義がよくわかんないですけど。</p>
-
-<h2>Unsigned JWT 作れない問題</h2>
-
-<p>UserInfo Response を Unsigned JWT にするってのも、きっと使わないです。</p>
-
-<p>署名の無い URL-safe Base64 Encoded な JSON (= Unsigned JWT) とか、素の JSON より decode がちょっとめんどいっていう以外に、どんな意義があるというのでしょうか？</p>
-
-<p>UserInfo Response を Singed and/or Encrypted JWT にするってのも、まず使わないでしょう。</p>
-
-<p>「Aggregated Claims が使いたいんだ！」っていう人は検討してもいいですが、「Aggregated Claims って何？」っていう人は、きっと Aggregated Claims も使うこと無いでしょう。</p>
-
-<h2>redirect_uri は必須か？</h2>
-
-<p>これに関しては、<a href="http://openid.net/specs/openid-connect-core-1_0.html#TokenRequestValidation">Token Request Validation</a> では redirect_uri の省略を許しつつも Authentication Request の Section では REQUIRED としか書いてない Connect Core が、読みづらいですね。</p>
-
-<p>Connect でも OAuth との整合性を保つため redirect_uri が1つの場合は省略可能としてもいいですが、OAuth Server のポリシーとして Authorization Request に redirect_uri を必須にしても良いです。</p>
-
-<p>scope=openid の有無でそこが切り替わるっていう実装が、一番わかりづらいんじゃないでしょうか？</p>
-
-<h2>さいごに</h2>
-
-<p>OpenID Connect にしろ OAuth にしろ、何が大変って IdP / Server 向けのオフィシャルなガイドラインが皆無なことですよね。（最近の Google Identity Platform のドキュメント群はなかなかいい感じだと思うけど）</p>
-
-<p>その影響で、関連仕様全部読んで必要なのだけピックアップする仕様理解力か、Core だけ読んで他全部無視するスルー力のどちらかが必要になる。</p>
-
-<p>Qiita の記事を読む限り、Authlete では RP が幅広い OPTIONAL な機能を選択できるようなので、Authlete 実装者は関連仕様全部読む必要あるでしょうし、それら全部実装して Authlete 利用者が必要な機能選択してるんだとしたら、Authlete 利用者にもなかなか高度な仕様理解を求められそうです。</p>
-
-<p>どういうユースケースの場合はどういう OPTIONAL が選択された、っていうノウハウが Authlete に溜まっていくと、そこは Authlete の強みになるんでしょうね。</p>
-
-<p>特に Consumer 向けサービスやってる事業者さん向けには、そういうニーズはありそうな気がします。</p>
-
-<p>OpenID Foundation にもそういうユースケース集作るモチベーションはあると思うので、そういうところで Authlete が活動するメリットを見出せると良いのでしょうね。</p>
-
-<p>あと、どこかのタイミングで「Authlete では結局一度も選択されなかった機能一覧」とか提供してもらって、それらがどういうときに使われるのかを議論するのとかおもしろそう :)</p>
 ]]></content>
   </entry>
   

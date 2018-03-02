@@ -6,7 +6,7 @@
 	<title>OAuth.jp</title>
     <meta name="author" content="Nov Matake">
     
-	<meta name="description" content="Author: Nov Matake Date: May 7th, 2014 この記事は、先ほど書いたこちらの記事の訂正版です。 記事に入る前に、まずは全シンガポールにお詫び申し上げますm m さて、Covert Redirect についての説明は&hellip; &hellip;">
+	<meta name="description" content="Author: Nov Matake Date: May 8th, 2014 さて、OAuth 2.0 &amp; OpenID Connect における Covert Redirect の問題 についてはまとめたので、次は OpenID 2.0 についてです。 いいですか、OpenID &hellip;">
 	
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
@@ -93,6 +93,65 @@
 <!-- begin toload --> 
     <div id="content" class="inner">
         
+
+
+    <article class="post">
+  <h2 class="title">
+    
+    <a href="/blog/2014/05/08/covert-redirect-and-openid-2-dot-0/">
+    
+      OpenID 2.0 における Covert Redirect と RP Discovery</a>
+  </h2>
+  <div class="entry-content">
+    <div class="meta">
+  <div class="author">
+    Author: <a href="http://matake.jp">Nov Matake</a>
+  </div>
+  <div class="date">Date: 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-05-08T10:57:00+09:00" pubdate data-updated="true">May 8<span>th</span>, 2014</time></div>
+  
+</div>
+
+    <p>さて、<a href="/blog/2014/05/07/covert-redirect-in-implicit-flow/">OAuth 2.0 &amp; OpenID Connect における Covert Redirect の問題</a> についてはまとめたので、次は OpenID 2.0 についてです。</p>
+
+<p>いいですか、OpenID Connect ではなく、OpenID 2.0 ですよ。古い方です。懐かしいですね、<a href="http://openid.net/specs/openid-authentication-2_0.html">OpenID Authentication 2.0 &ndash; Final</a>。</p>
+
+<p>そういえば、OpenID Foundation Japan の翻訳 WG を立ち上げて、一番最初に翻訳したのが <a href="http://openid-foundation-japan.github.io/openid-authentication.html">OpenID Authentication 2.0 の 日本語訳</a>でしたね&hellip;(遠い目</p>
+
+<p>と、昔話はそれくらいにして、本題に入りましょう。</p>
+
+<h3>まずは Covert Redirect 発生条件について</h3>
+
+<p>OpenID 2.0 では、レスポンスパラメータは query に引っ付いてきます。fragment は使いません。</p>
+
+<p>なので、open redirector のリダイレクト先には、通常はレスポンスパラメータは渡りません。</p>
+
+<p>全ての query パラメータをリダイレクト先に引き継いでしまうという、奇妙な open redirector を用意してる場合にのみレスポンスパラメータが外部に漏洩します。</p>
+
+<p>まずはこの時点でそんなに心配することはなさそうですね。</p>
+
+<p>まぁでもせっかくなんで、話続けますね。</p>
+
+
+    
+    <a href="/blog/2014/05/08/covert-redirect-and-openid-2-dot-0/" class="more-link">Read on &rarr;</a>
+  </div>
+
+<div class="meta">
+  
+</div>
+</article>
 
 
     <article class="post">
@@ -336,78 +395,6 @@
 </div>
 </article>
 
-
-    <article class="post">
-  <h2 class="title">
-    
-    <a href="/blog/2013/09/26/rails-session-cookie/">
-    
-      Rails SessionにCookieStore使った時の問題点</a>
-  </h2>
-  <div class="entry-content">
-    <div class="meta">
-  <div class="author">
-    Author: <a href="http://matake.jp">Nov Matake</a>
-  </div>
-  <div class="date">Date: 
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-09-26T12:45:00+09:00" pubdate data-updated="true">Sep 26<span>th</span>, 2013</time></div>
-  
-</div>
-
-    <p>今日 @mad_p さんからRT来てたこのツイートに関して、ちょっと調べたのでまとめときます。</p>
-
-<blockquote class="twitter-tweet"><p>Security Issue in Ruby on Rails Could Expose Cookies <a href="http://t.co/JlsXVEn4rZ">http://t.co/JlsXVEn4rZ</a></p>&mdash; Ruby on Rails News (@RubyonRailsNews) <a href="https://twitter.com/RubyonRailsNews/statuses/383002160654336000">September 25, 2013</a></blockquote>
-
-
-<script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
-
-
-<h3>前提条件</h3>
-
-<p>Railsではデフォルトでsessionをcookieにのみ保存して、DBなりmemcacheなりのserver-side storageには何も保存しません。
-これがCookieStoreとか呼ばれてるやつです。</p>
-
-<p>この場合のsession cookieは、Railsのsession object (Hash object) をMarshal.dumpしてそれに署名を付けたtokenです。
-rails 4では署名付ける代わりに暗号化してるけど、ここで述べる問題に関してはsignedなのかencryptedなのかは関係ないのでその点は無視していいです。</p>
-
-<p>「current user identifierを含むSigned JSONをcookieに入れてるのと同じなので、OpenID ConnectのID Tokenがcookieに入ってるようなもんだと思えばいい」と言えば、#idcon に来たり定期的にOAuth.jp読んだりしてる人には通じるだろうと期待します。</p>
-
-<h3>問題点</h3>
-
-<p>server-sideではstate管理しないので、当然remoteでセッションの無効化はできません。
-つまりログアウトしてもsession cookieのtoken自体は無効化されません。</p>
-
-<p>これを確認するには、サイトにログインしてCookie Headerから_foo_cookieってやつ見つけ出してその値をコピーして、CharlesでRequest Cookie Headerの_foo_sessionの値を常にそのコピーした値に書き換えてやるようなRewriteルールを設定してやって、サイトからログアウトしてみるとよいです。
-通常server-sideでsession管理してるサービスだとこれでログアウトされるけど、CookieStoreを使ってる場合はこの条件の元ではログアウトしてもログイン状態のままになります。</p>
-
-<p>でもまぁこれはCookieStoreの仕組み上どうしようもないのです。</p>
-
-<p>問題は、session cookieが無効化できないのに、それが永遠に有効であること。
-FBとかY!Jとかでやってる「パスワード変更したら既存のsessionが無効になる」ってのはRailsは一切面倒見てくれないので、パスワード変えても漏洩したsession cookieは有効なままです。
-なので、ひとたびsession cookieが漏れたら、完全にアウト。
-なにやってもアカウント乗っ取られたまんま。永遠に。</p>
-
-
-    
-    <a href="/blog/2013/09/26/rails-session-cookie/" class="more-link">Read on &rarr;</a>
-  </div>
-
-<div class="meta">
-  
-</div>
-</article>
-
 <nav id="pagenavi">
     
         <a href="/blog/page/7/" class="prev">Prev</a>
@@ -422,7 +409,7 @@ FBとかY!Jとかでやってる「パスワード変更したら既存のsessio
     <footer id="footer">
     <div style="display:inline">
   <p>
-    Copyright &copy; 2017
+    Copyright &copy; 2018
     
       <a href="http://matake.jp">Nov Matake</a> - 技術的な相談等、お仕事依頼は <a href="http://yauth.jp">YAuth.jp</a> まで.
     

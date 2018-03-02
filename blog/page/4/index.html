@@ -6,7 +6,7 @@
 	<title>OAuth.jp</title>
     <meta name="author" content="Nov Matake">
     
-	<meta name="description" content="Author: Nov Matake Date: Apr 17th, 2016 MVP になったことですし、早速 Azure 常に Windows Server 2016 の VM 立ち上げて、次期バージョンの ADFS を動かしてみました。 想定ユースケースは、Native App とその &hellip;">
+	<meta name="description" content="Author: Nov Matake Date: Apr 19th, 2016 今日は Azure Function で FB Message API Callback を作ってみます。 Azure Function は、Azure Portal の Marketplace で &ldquo; &hellip;">
 	
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
@@ -93,6 +93,61 @@
 <!-- begin toload --> 
     <div id="content" class="inner">
         
+
+
+    <article class="post">
+  <h2 class="title">
+    
+    <a href="/blog/2016/04/19/fb-message-callback-with-azure-function/">
+    
+      FB Message API Callback as an Azure Function</a>
+  </h2>
+  <div class="entry-content">
+    <div class="meta">
+  <div class="author">
+    Author: <a href="http://matake.jp">Nov Matake</a>
+  </div>
+  <div class="date">Date: 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2016-04-19T10:56:00+09:00" pubdate data-updated="true">Apr 19<span>th</span>, 2016</time></div>
+  
+</div>
+
+    <p>今日は Azure Function で FB Message API Callback を作ってみます。</p>
+
+<p>Azure Function は、Azure Portal の Marketplace で &ldquo;Function App&rdquo; って検索すると出てきますね。</p>
+
+<p><img src="/images/posts/azure/azure-function-in-marketplace.png" alt="Azure Function in Marketplace" /></p>
+
+<p>Function App の Deploy がおわったら、QuickStart から &ldquo;Webhook + API&rdquo; を選びましょう。</p>
+
+<p><img src="/images/posts/azure/azure-function-quickstart.png" alt="Azure Function QuickStart" /></p>
+
+<p>以下の様な Node.js のテンプレートアプリが出来上がります。</p>
+
+<p><img src="/images/posts/azure/azure-function-template.png" alt="Azure Function Template" /></p>
+
+<p>まずは FB Message の WebHook としてこの Function を登録します。</p>
+
+
+    
+    <a href="/blog/2016/04/19/fb-message-callback-with-azure-function/" class="more-link">Read on &rarr;</a>
+  </div>
+
+<div class="meta">
+  
+</div>
+</article>
 
 
     <article class="post">
@@ -317,71 +372,6 @@
 </div>
 </article>
 
-
-    <article class="post">
-  <h2 class="title">
-    
-    <a href="/blog/2016/02/24/is-openid-connect-far-from-oauth2/">
-    
-      OpenID Connectはそんなに大変かね？</a>
-  </h2>
-  <div class="entry-content">
-    <div class="meta">
-  <div class="author">
-    Author: <a href="http://matake.jp">Nov Matake</a>
-  </div>
-  <div class="date">Date: 
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2016-02-24T11:14:00+09:00" pubdate data-updated="true">Feb 24<span>th</span>, 2016</time></div>
-  
-</div>
-
-    <p><a href="http://qiita.com/TakahikoKawasaki/items/f2a0d25a4f05790b3baa">OAuth 2.0 + OpenID Connect のフルスクラッチ実装者が知見を語る &ndash; Qiita</a> ってのになんかフォローアップしろよ的なのが来たので。</p>
-
-<p>ざっと読んだ感想としては、「OpenID Connect の OPTIONAL な機能全部実装したら、そら大変ですね」という感じ。（Authlete に関しては、OpenAM みたいな感じで使われる、OpenAM よりはるかに簡単に使える代わりに有料の何かなんだろうな、というイメージです）</p>
-
-<h2>OAuth は必要なのか？</h2>
-
-<ul>
-<li>Basic 認証は死んだ。</li>
-<li>ユーザー単位での API のアクセスコントロールがしたいです。</li>
-</ul>
-
-
-<p>っていう前提で話すると、OAuth 以外まともな選択肢が無いんじゃないでしょうか。</p>
-
-<p>OAuth の各種 Extension (RFC 6749 &amp; 6750 以外にいろいろある) に関しては、適宜必要なのを実装すればいいんだけど、どれが必要なのかを選ぶのが大変なのは事実で、そこのベストプラクティスとかユースケースごとのガイドラインは今後の課題。IETF OAuth WG の中の人たちも、それは認識している。</p>
-
-<h2>「OAuth 認証」とは</h2>
-
-<p>OAuth は「End-User (に信頼された OAuth Server) が OAuth Client のアクセス権限をコントロールする」というコンテキストにおいての標準化されたプロトコルであって、「Identity Provider (IdP) が End-User を認証した結果を受け取って、Relying Party (RP) が (IdP への信頼を元に) End-User を認証する」というコンテキストで OAuth を使うユースケースが「OAuth 認証」と呼ばれるやつです。</p>
-
-<p>後者のコンテキストで、OAuth は何も標準的な仕様を定めてはいません。</p>
-
-<p>IdP が End-User を認証した結果を RP に伝える方法 (ID Token 相当) や、そのコンテキストで求められることが多い認証されたユーザー属性情報の取得方法 (UserInfo 相当) については、完全に各 Platform が独自に API を提供してるだけなので、そういう意味では「OAuth 認証」ってのは「オレオレ Connect」みたいなもんですね。</p>
-
-<p>まぁでも「オレオレ OAuth」の上で「オレオレ Connect」やる「JWT 認証」よりはマシなんじゃないかなっていう気はします。</p>
-
-
-    
-    <a href="/blog/2016/02/24/is-openid-connect-far-from-oauth2/" class="more-link">Read on &rarr;</a>
-  </div>
-
-<div class="meta">
-  
-</div>
-</article>
-
 <nav id="pagenavi">
     
         <a href="/blog/page/3/" class="prev">Prev</a>
@@ -396,7 +386,7 @@
     <footer id="footer">
     <div style="display:inline">
   <p>
-    Copyright &copy; 2017
+    Copyright &copy; 2018
     
       <a href="http://matake.jp">Nov Matake</a> - 技術的な相談等、お仕事依頼は <a href="http://yauth.jp">YAuth.jp</a> まで.
     

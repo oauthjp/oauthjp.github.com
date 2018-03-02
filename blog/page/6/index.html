@@ -6,7 +6,7 @@
 	<title>OAuth.jp</title>
     <meta name="author" content="Nov Matake">
     
-	<meta name="description" content="Author: Nov Matake Date: Mar 16th, 2015 JOSE (Javascript Object Signing and Encryption) 愛で満ち溢れる ID 厨界隈において、燦々と輝く JWS (JSON Web Signature)、美しいですよね！ &hellip;">
+	<meta name="description" content="Author: Nov Matake Date: Mar 30th, 2015 先日の「属性単位のトレーサビリティについて」という記事でも取り上げましたが、個人情報保護法改正案では、第二十五条に「第三者提供に係る記録の作成等」という規定が設けられ、 &hellip;">
 	
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
@@ -93,6 +93,70 @@
 <!-- begin toload --> 
     <div id="content" class="inner">
         
+
+
+    <article class="post">
+  <h2 class="title">
+    
+    <a href="/blog/2015/03/30/traceability-and-cross-border-data-transportation/">
+    
+      個人情報保護法改正案に見る第三者提供記録義務と越境問題</a>
+  </h2>
+  <div class="entry-content">
+    <div class="meta">
+  <div class="author">
+    Author: <a href="http://matake.jp">Nov Matake</a>
+  </div>
+  <div class="date">Date: 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2015-03-30T14:19:00+09:00" pubdate data-updated="true">Mar 30<span>th</span>, 2015</time></div>
+  
+</div>
+
+    <p>先日の「<a href="http://oauth.jp/blog/2015/02/28/traceability-on-each-attributes/">属性単位のトレーサビリティについて</a>」という記事でも取り上げましたが、<a href="http://www.cas.go.jp/jp/houan/150310/siryou3.pdf">個人情報保護法改正案</a>では、第二十五条に「第三者提供に係る記録の作成等」という規定が設けられ、第三者提供時に提供者受療者双方に記録義務が発生することとなっています。</p>
+
+<p>また土曜日に行われた情報法制研究会第1回シンポジウムこの提供記録義務と、同じく改正案第二十四条の「外国にある第三者への提供の制限」を組み合わせると、AWSにデータ保存 (委託行為？) するだけで、第三者提供扱いとなり、記録義務が発生してしまうのではという指摘がありました。(まとめからのリンク先、板倉先生の資料参照。パスワードは空気読んで頑張って探してください。)</p>
+
+<p><a href="http://togetter.com/li/801181?page=1">20150328情報法制研究会 第1回シンポジウム「改正個人情報保護法の内容と今後の課題」関連まとめ(私家版)</a></p>
+
+<p>確かに第二十四条では、認定国もしくは認定事業者以外の外国事業者に対するデータ提供の場合は、下記のように第二十三条の例外規定 (委託や共同利用を第三者提供として扱わないという規定含む) を適用しないと明記しているので、委託の場合でも第三者提供扱いとなり、記録義務が発生することになりそうです。</p>
+
+<blockquote>この場合においては、同条の規定は、適用しない。</blockquote>
+
+
+<p>さらに外国事業者への提供時には、通常の同意とは別に外国事業者への提供であることを明記した上での同意を取得する必要があるため、海外のRPを相手にする国内IdPは、</p>
+
+<ul>
+<li>RPが国内事業者であるか否か</li>
+<li>RPが海外事業者である場合には認定国の事業者であるか否か</li>
+<li>RPが非認定国の事業者である場合には認定事業者であるか否か</li>
+</ul>
+
+
+<p>を判断した上で、いずれにも当てはまらない場合は通常とは別の同意文言を提示する必要が出てきそうです。</p>
+
+<p>いやぁ〜、Dynamic Registrationとかしてる場合じゃないっすね！</p>
+
+<p>どうしましょか、これ？w (ノーアイデァなぅ)</p>
+
+    
+    
+  </div>
+
+<div class="meta">
+  
+</div>
+</article>
 
 
     <article class="post">
@@ -340,61 +404,6 @@
 </div>
 </article>
 
-
-    <article class="post">
-  <h2 class="title">
-    
-    <a href="/blog/2014/10/15/fido-alliance/">
-    
-      FIDO Alliance</a>
-  </h2>
-  <div class="entry-content">
-    <div class="meta">
-  <div class="author">
-    Author: <a href="http://matake.jp">Nov Matake</a>
-  </div>
-  <div class="date">Date: 
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2014-10-15T11:28:00+09:00" pubdate data-updated="true">Oct 15<span>th</span>, 2014</time></div>
-  
-</div>
-
-    <p>先週末、FIDO Alliance　のメンバーが来日して、<a href="http://www.dds.co.jp/fido_tokyoseminar/">FIDO Alliance Tokyo Seminar</a> というセミナーが開催されていました。僕も今春の <a href="http://idcon.doorkeeper.jp/events/10195">#idcon vol.18</a> で <a href="http://www.slideshare.net/matake/fido-alliance">FIDO Alliance について紹介した</a> 時にまだいろいろ不明点が多かったのもあって、このセミナーに参加してきました。</p>
-
-<p>で、参加してみて分かった事。</p>
-
-<h2>生体認証押し</h2>
-
-<p>まぁ、これは FIDO Alliance のサイト見ても、元々そうっちゃそうなんですが。</p>
-
-<p>FIDO は仕様的には特に生体認証センサーとか必要ないし、FIDO に準拠してない Apple TouchID みたいなセンサーモジュールと連携したソフトウェアモジュールさえ積んでればFIDO 仕様に沿った実装は可能です。</p>
-
-<p>ひとことで言うと、エンドユーザーが「端末のセキュア領域に保存されている秘密鍵にアクセスして assertion に署名できる存在」であることを認証しているに過ぎないので、その秘密鍵のロック解除に指紋使ってもいいし、PIN Code 使ってもいいはずです。</p>
-
-<p>が、やはり Alliance Member には生体認証ハードウェアモジュールのベンダーが多い事もあってか、発表ではヤケに生体認証を押していました。</p>
-
-<p>その影響か、Twitter とか現地での Q&amp;A でも、生体認証のセキュリティについての質問が多かったように思います。</p>
-
-
-    
-    <a href="/blog/2014/10/15/fido-alliance/" class="more-link">Read on &rarr;</a>
-  </div>
-
-<div class="meta">
-  
-</div>
-</article>
-
 <nav id="pagenavi">
     
         <a href="/blog/page/5/" class="prev">Prev</a>
@@ -409,7 +418,7 @@
     <footer id="footer">
     <div style="display:inline">
   <p>
-    Copyright &copy; 2017
+    Copyright &copy; 2018
     
       <a href="http://matake.jp">Nov Matake</a> - 技術的な相談等、お仕事依頼は <a href="http://yauth.jp">YAuth.jp</a> まで.
     
