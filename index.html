@@ -133,13 +133,17 @@
 
 <p>でも、そもそもこれ署名検証の部分の修正が含まれてないのはなぜでしょう？</p>
 
-<p><a href="https://github.com/onelogin/ruby-saml/blob/048a544730930f86e46804387a6b6fad50d8176f/lib/xml_security.rb#L271">署名検証してるのはここ</a> なんですが、これ、よくみると <code>REXML</code> じゃなくて <code>Nokogiri</code> 使ってますね。</p>
+<p><a href="https://github.com/onelogin/ruby-saml/blob/048a544730930f86e46804387a6b6fad50d8176f/lib/xml_security.rb#L271">署名検証してるのはここ</a> なんですが、これ、よくみると <code>REXML</code> じゃなくて <code>Nokogiri</code> 使ってますね。<code>REXML</code> には XML 正規化の機能がなかったから、その部分だけ <code>Nokogiri</code> 使ったんですかね。</p>
 
-<p>2つの XML Parser を1つの実装の中で混在させてる時点で、すごいやな香りしますよね。<code>ruby-saml</code> は今回の脆弱性修正でも、その状況は変わってないので、Ruby で SAML 実装するなら <a href="https://github.com/digidentity/libsaml"><code>libsaml</code></a> に移行した方が良さそうですね。</p>
+<p><strong>なら全部 <code>Nokogiri</code> 使えや。</strong></p>
+
+<p>2つの XML Parser を1つの実装の中で混在させてる時点で、すごいやな香りしますよね。<code>ruby-saml</code> は今回の脆弱性修正でも、その状況は変わってないので、Ruby で SAML 実装するなら <code>libsaml</code> (<a href="https://github.com/digidentity/libsaml">digidentity/libsaml</a>) に移行した方が良さそうですね。</p>
 
 <p>ちなみに、OpenID Connect ならそんなことないのかっていうと、当然あります。<code>ruby-jwt</code> と <code>json-jwt</code> を混在させてる <a href="https://github.com/18F/identity-openidconnect-sinatra/blob/master/Gemfile#L10">NIST の RP サンプル</a> とかね。</p>
 
-<p><code>ruby-jwt</code> に JWK まわりの機能がないから <code>json-jwt</code> を JWK のためだけに使ってて、それ自体はまぁそんな悪い予感しないけど、なら全部 <code>json-jwt</code> 使えやとは思いますよね。うん。</p>
+<p><code>ruby-jwt</code> に JWK まわりの機能がないから <code>json-jwt</code> を JWK のためだけに使ってて、それ自体はまぁそんな悪い予感しないけど&hellip;</p>
+
+<p><strong>なら全部 <code>json-jwt</code> 使えや。</strong></p>
 
     
     
