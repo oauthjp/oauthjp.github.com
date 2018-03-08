@@ -6,7 +6,7 @@
 	<title>OAuth.jp</title>
     <meta name="author" content="Nov Matake">
     
-	<meta name="description" content="Author: Nov Matake Date: Mar 2nd, 2018 脆弱性の内容に関する 日本語解説はこちら。 で、実際に脆弱性が存在してた実装もみてみると、OneLogin 製の ruby-saml だと、該当の脆弱性はここで修正されてます。 Fix vulnerability &hellip;">
+	<meta name="description" content="Author: Nov Matake Date: Mar 9th, 2018 ついに Amazon Echo Plus の購入券当選通知が来たので、Echo Plus と一緒に Nature Remo を買いました。 エアコン推しですが、テレビのリモコン等、 &hellip;">
 	
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
@@ -93,6 +93,59 @@
 <!-- begin toload --> 
     <div id="content" class="inner">
         
+
+
+    <article class="post">
+  <h2 class="title">
+    
+    <a href="/blog/2018/03/09/alexa-and-nature-remo/">
+    
+      Alexa と Nature Remo の Account Linking</a>
+  </h2>
+  <div class="entry-content">
+    <div class="meta">
+  <div class="author">
+    Author: <a href="http://matake.jp">Nov Matake</a>
+  </div>
+  <div class="date">Date: 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2018-03-09T20:24:00+09:00" pubdate data-updated="true">Mar 9<span>th</span>, 2018</time></div>
+  
+</div>
+
+    <p>ついに <a href="http://amzn.to/2HjU7Yp">Amazon Echo Plus</a> の購入券当選通知が来たので、Echo Plus と一緒に <a href="http://amzn.to/2oVl4Ls">Nature Remo</a> を買いました。</p>
+
+<p><a href="https://www.amazon.co.jp/Nature-Inc-Remo-01-Remo/dp/B06XCQFP96/ref=as_li_ss_il?s=aps&ie=UTF8&qid=1520594772&sr=1-1-catcorr&keywords=nature+remo&linkCode=li3&tag=bianca0b-22&linkId=13d9bc61ca409c43ab2dc391c559aa12" target="_blank"><img border="0" src="//ws-fe.amazon-adsystem.com/widgets/q?_encoding=UTF8&ASIN=B06XCQFP96&Format=_SL250_&ID=AsinImage&MarketPlace=JP&ServiceVersion=20070822&WS=1&tag=bianca0b-22" ></a><img src="https://ir-jp.amazon-adsystem.com/e/ir?t=bianca0b-22&l=li3&o=9&a=B06XCQFP96" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" /></p>
+
+<p>エアコン推しですが、テレビのリモコン等、赤外線飛ばすリモコンならなんでも対応できる、素敵な「スマートリモコン」です。</p>
+
+<p>Nature Remo アプリでセットアップして、アプリからリモコンつけたり消したりできるのも素敵ですし、アプリで設定しといたら iPhone が Nature Remo から 30m 以上離れたら自動でエアコン切るルールとか設定しとけるのも素敵です。</p>
+
+<p>が、やはりここは</p>
+
+<p><strong>「Alexa、エアコンをつけて」</strong></p>
+
+<p>ってやりたいですよね。</p>
+
+
+    
+    <a href="/blog/2018/03/09/alexa-and-nature-remo/" class="more-link">Read on &rarr;</a>
+  </div>
+
+<div class="meta">
+  
+</div>
+</article>
 
 
     <article class="post">
@@ -322,84 +375,6 @@
 
     
     <a href="/blog/2017/06/09/android-o-autofill-framework/" class="more-link">Read on &rarr;</a>
-  </div>
-
-<div class="meta">
-  
-</div>
-</article>
-
-
-    <article class="post">
-  <h2 class="title">
-    
-    <a href="/blog/2017/05/18/powershell-for-azuread/">
-    
-      PowerShell for AzureAD</a>
-  </h2>
-  <div class="entry-content">
-    <div class="meta">
-  <div class="author">
-    Author: <a href="http://matake.jp">Nov Matake</a>
-  </div>
-  <div class="date">Date: 
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2017-05-18T14:17:00+09:00" pubdate data-updated="true">May 18<span>th</span>, 2017</time></div>
-  
-</div>
-
-    <p>Windows 10 で AzureAD Module インポート済の PowerShell を気軽に起動できるようにする方法メモ。</p>
-
-<h2>前提条件</h2>
-
-<p>前提として、PowerShell に AzureAD アクセスに必要な Module がインストールされているものとします。</p>
-
-<p>Module インストールは以下のコマンドを Administrator として実行するだけです。</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='ps1'><span class='line'><span class="n">Install-Module</span> <span class="n">MSOnline</span><span class="p">,</span> <span class="n">AzureAD</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p><a href="https://msdn.microsoft.com/ja-jp/library/jj151815.aspx#bkmk_installmodule">こんな ext</a> は別にいらないです。以前はこいつのインストールでいろいろはまったんですが、あれはなんだったんでしょうか&hellip;</p>
-
-<h2>ショートカット作成</h2>
-
-<p>まずは PowerShell 自体のショートカットを作成します。</p>
-
-<p><img src="/images/posts/azure/powershell-for-azure-ad.png" alt="PowerShell for AzureAD" /></p>
-
-<p>そしておもむろに Target のところを下記の PowerShell Script に変更。</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='ps1'><span class='line'><span class="n">PowerShell</span> <span class="n">-noexit</span> <span class="s2">&quot;Import-Module MSOnline, AzureAD; Connect-MsolService&quot;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>そして Advanced Options の &ldquo;Run as Administrator&rdquo; にチェック。</p>
-
-<p>これで、このショートカットダブルクリックするだけで、自動でログイン画面まで Popup してくれるようになります。</p>
-
-<h2>ショートカット起動</h2>
-
-<p>起動したら自動でこうなります。</p>
-
-<p><img src="/images/posts/azure/powershell-for-azure-ad-launched.png" alt="PowerShell for AzureAD Launched" /></p>
-
-<p>またちょっと Windows 力上がった気がする。</p>
-
-    
-    
   </div>
 
 <div class="meta">

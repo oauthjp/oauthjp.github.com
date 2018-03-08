@@ -4,7 +4,7 @@
   <title><![CDATA[OAuth.jp]]></title>
   <link href="http://oauth.jp/atom.xml" rel="self"/>
   <link href="http://oauth.jp/"/>
-  <updated>2018-03-02T11:05:07+09:00</updated>
+  <updated>2018-03-09T20:43:20+09:00</updated>
   <id>http://oauth.jp/</id>
   <author>
     <name><![CDATA[Nov Matake]]></name>
@@ -12,6 +12,52 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Alexa と Nature Remo の Account Linking]]></title>
+    <link href="http://oauth.jp/blog/2018/03/09/alexa-and-nature-remo/"/>
+    <updated>2018-03-09T20:24:00+09:00</updated>
+    <id>http://oauth.jp/blog/2018/03/09/alexa-and-nature-remo</id>
+    <content type="html"><![CDATA[<p>ついに <a href="http://amzn.to/2HjU7Yp">Amazon Echo Plus</a> の購入券当選通知が来たので、Echo Plus と一緒に <a href="http://amzn.to/2oVl4Ls">Nature Remo</a> を買いました。</p>
+
+<p><a href="https://www.amazon.co.jp/Nature-Inc-Remo-01-Remo/dp/B06XCQFP96/ref=as_li_ss_il?s=aps&ie=UTF8&qid=1520594772&sr=1-1-catcorr&keywords=nature+remo&linkCode=li3&tag=bianca0b-22&linkId=13d9bc61ca409c43ab2dc391c559aa12" target="_blank"><img border="0" src="http://oauth.jp//ws-fe.amazon-adsystem.com/widgets/q?_encoding=UTF8&ASIN=B06XCQFP96&Format=_SL250_&ID=AsinImage&MarketPlace=JP&ServiceVersion=20070822&WS=1&tag=bianca0b-22" ></a><img src="https://ir-jp.amazon-adsystem.com/e/ir?t=bianca0b-22&l=li3&o=9&a=B06XCQFP96" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" /></p>
+
+<p>エアコン推しですが、テレビのリモコン等、赤外線飛ばすリモコンならなんでも対応できる、素敵な「スマートリモコン」です。</p>
+
+<p>Nature Remo アプリでセットアップして、アプリからリモコンつけたり消したりできるのも素敵ですし、アプリで設定しといたら iPhone が Nature Remo から 30m 以上離れたら自動でエアコン切るルールとか設定しとけるのも素敵です。</p>
+
+<p>が、やはりここは</p>
+
+<p><strong>「Alexa、エアコンをつけて」</strong></p>
+
+<p>ってやりたいですよね。</p>
+
+<!-- more -->
+
+
+<p>そのためには、Alexa アプリで「Nature Remo Smart Home Skill」ってのをインストールして、アカウントリンキングを設定する必要があります。Nature Remo に紐づいた Nature Remo アカウントと、Alexa に紐づいた Amazon アカウントを紐づける処理ですね。</p>
+
+<p>で、これ、Alexa アプリから OAuth Authorization Request をスタートさせて、Nature Remo 側の Authorization Server にログインして、Alexa アプリ (というか Alexa 側の Redirect URI) に戻ってくる必要があります。</p>
+
+<p>ここで、Nature Remo 側で必ずエラーになります。</p>
+
+<p>Nature Remo アカウントって、パスワードがなくて、毎回登録したメアドに送られてくるマジックリンクをクリックしてログインするんですよ。</p>
+
+<p>でね、Alexa アプリの SafariViewController でメアド入力して、外部 Safari でメール中のリンククリックすると、両者のセッションがずれちゃうから、CSRF エラーかなんかになってるんですよ。</p>
+
+<p>US の Alexa の場合は、Amazon.com サイトから Skill インストールできるから、PC/Mac で設定してやればうまくいくのかもしれませんが、日本の場合は Alexa アプリからアカウントリンクスタートするしかないんで、これ絶対にログイン成功しませんよね&hellip;</p>
+
+<p>でもまぁ、僕はちょっと OAuth とか iOS とか詳しいんで、やってやりましたよ。</p>
+
+<p>絶妙なタイミングで、SafariViewController の下の方にある外部 Safari 開くボタンを、押してやりましたよ。</p>
+
+<p>そう、OAuth Authorization Request が Remo サーバーに届く前に、外部 Safari に遷移してしまうんです。</p>
+
+<p>で、なんとかうまくいきました。</p>
+
+<p><strong>これ一般ユーザーには無理ゲーすぎやろ。</strong></p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[SAML Authentication Bypass Vulnerability]]></title>
@@ -530,7 +576,7 @@
 
 <p>動作確認用のユーザーも作っておきましたので、これが正常に動いてる間はご自由にお使いください。</p>
 
-<p>Username: <a href="&#109;&#97;&#x69;&#108;&#116;&#x6f;&#58;&#121;&#111;&#x75;&#64;&#115;&#116;&#115;&#x34;&#98;&#50;&#x63;&#46;&#111;&#x6e;&#x6d;&#105;&#x63;&#114;&#111;&#115;&#111;&#102;&#116;&#46;&#x63;&#x6f;&#x6d;">&#x79;&#x6f;&#x75;&#x40;&#x73;&#x74;&#115;&#52;&#x62;&#50;&#99;&#46;&#111;&#110;&#x6d;&#105;&#99;&#x72;&#x6f;&#115;&#111;&#102;&#116;&#46;&#99;&#x6f;&#x6d;</a>
+<p>Username: <a href="&#109;&#97;&#105;&#108;&#116;&#111;&#x3a;&#121;&#111;&#117;&#64;&#115;&#x74;&#x73;&#x34;&#x62;&#50;&#x63;&#46;&#111;&#x6e;&#109;&#x69;&#x63;&#x72;&#111;&#x73;&#x6f;&#x66;&#x74;&#x2e;&#99;&#x6f;&#x6d;">&#121;&#x6f;&#x75;&#64;&#115;&#116;&#115;&#52;&#98;&#50;&#x63;&#x2e;&#x6f;&#x6e;&#109;&#x69;&#x63;&#x72;&#x6f;&#115;&#111;&#x66;&#116;&#x2e;&#99;&#111;&#109;</a>
 Password: ]6]yzxXYG7uruM4p</p>
 
 <p>動かなくなったら、あきらめて自分で Azure AD B2C 環境セットアップしてください。</p>
@@ -683,13 +729,13 @@ Password: ]6]yzxXYG7uruM4p</p>
 
 <p>あと、Email 指定してもそのメアドのユーザーにログインできるわけでもないです。</p>
 
-<p><a href="&#x6d;&#97;&#x69;&#x6c;&#x74;&#111;&#58;&#110;&#111;&#118;&#x40;&#101;&#120;&#x61;&#x6d;&#112;&#x6c;&#101;&#x2e;&#x63;&#x6f;&#x6d;">&#110;&#111;&#118;&#x40;&#x65;&#120;&#97;&#x6d;&#x70;&#x6c;&#x65;&#x2e;&#x63;&#111;&#x6d;</a> の NameID を持つ SAML Assertion で、<a href="&#x6d;&#x61;&#105;&#x6c;&#116;&#111;&#x3a;&#x6e;&#x6f;&#118;&#64;&#x6d;&#x61;&#116;&#97;&#x6b;&#101;&#x2e;&#x6a;&#112;">&#110;&#111;&#118;&#x40;&#x6d;&#x61;&#x74;&#97;&#107;&#x65;&#46;&#x6a;&#112;</a> の GitHub アカウントにログインできたりします。</p>
+<p><a href="&#x6d;&#x61;&#105;&#x6c;&#116;&#x6f;&#x3a;&#110;&#x6f;&#118;&#64;&#x65;&#120;&#x61;&#109;&#112;&#x6c;&#101;&#46;&#99;&#111;&#109;">&#110;&#x6f;&#118;&#64;&#101;&#x78;&#97;&#109;&#112;&#x6c;&#x65;&#46;&#x63;&#111;&#109;</a> の NameID を持つ SAML Assertion で、<a href="&#109;&#97;&#x69;&#108;&#116;&#111;&#58;&#x6e;&#111;&#118;&#64;&#x6d;&#x61;&#116;&#x61;&#x6b;&#101;&#46;&#x6a;&#x70;">&#110;&#111;&#x76;&#64;&#109;&#x61;&#116;&#x61;&#107;&#101;&#x2e;&#106;&#112;</a> の GitHub アカウントにログインできたりします。</p>
 
 <p>SAML Federation とか言うてるけど、結局既存の GitHub.com アカウントに SAML IdP 側のアカウントを Link するだけなんですよ。</p>
 
 <p>その紐付けは、SAML での初回ログイン時に GitHub.com 側の ID &amp; Password 入力して行います。</p>
 
-<p>つまり、<a href="&#109;&#97;&#105;&#108;&#116;&#x6f;&#58;&#110;&#111;&#x76;&#x40;&#101;&#120;&#97;&#109;&#x70;&#108;&#101;&#x2e;&#99;&#111;&#109;">&#x6e;&#111;&#x76;&#64;&#101;&#x78;&#97;&#109;&#x70;&#108;&#101;&#46;&#99;&#111;&#x6d;</a> の NameID を持つ SAML Assertion をどの GitHub アカウントに紐づけるかは、エンドユーザーが決定権を持っています。</p>
+<p>つまり、<a href="&#109;&#97;&#105;&#108;&#116;&#x6f;&#x3a;&#110;&#x6f;&#118;&#x40;&#101;&#x78;&#97;&#109;&#x70;&#108;&#x65;&#x2e;&#99;&#x6f;&#x6d;">&#x6e;&#111;&#x76;&#64;&#101;&#x78;&#x61;&#109;&#x70;&#x6c;&#101;&#x2e;&#x63;&#111;&#109;</a> の NameID を持つ SAML Assertion をどの GitHub アカウントに紐づけるかは、エンドユーザーが決定権を持っています。</p>
 
 <p>情シスじゃないです。</p>
 
@@ -2275,93 +2321,6 @@ Mac から Remote Desktop 経由でいじりたかったんでね。</p>
 <p>現在絶賛法人登記手続き中ですが、きっと来週頭には法人番号がもらえるはず！来週中は法務局とか税務署とかいろいろ行く予定！税務署ってどこにあるんすか、いったい！</p>
 
 <p>ということで、今後は OAuth.jp 共々、<a href="http://yauth.jp">YAuth.jp</a> もよろしくお願い致しますm<em> </em>m</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[「OAuth 認証」を定義しよう]]></title>
-    <link href="http://oauth.jp/blog/2016/02/25/oauth-authentication/"/>
-    <updated>2016-02-25T11:27:00+09:00</updated>
-    <id>http://oauth.jp/blog/2016/02/25/oauth-authentication</id>
-    <content type="html"><![CDATA[<p>「OAuth 認証」って言葉が出てくると、「認証と認可は違う」とか言い出す人が出てきて、大体の場合「OAuth 認証」言ってた人たちがやりたいことの話とはズレた議論が始まるので、もういっその事「OAuth 認証」とは何かを定義してみましょうかね。</p>
-
-<h2>「OAuth 認証」で Relying Party (RP) がやりたかったこと</h2>
-
-<p>RP (OAuth Client) は、ブラウザの前にいる人を、認証したかったんですよね？</p>
-
-<p>もう少し正確にいうと、ブラウザの前にいる Entity が、RP 側で把握しているどの Identity と紐付いているか、というのを知りたかったんですよね？</p>
-
-<p>いきなり Entity とか Identity とかいう専門用語が出てきてアレですが、そのあたりのことは先日の OpenID TechNight #13 でもお話ししたので、以下のスライドの Entity・Identity・Authentication・Authorization のあたりのページを見てください。</p>
-
-<iframe src="http://oauth.jp//www.slideshare.net/slideshow/embed_code/key/Lw5OsZp5n6qwXb" width="595" height="485" frameborder="0" marginwidth="0" marginheight="0" scrolling="no" style="border:1px solid #CCC; border-width:1px; margin-bottom:5px; max-width: 100%;" allowfullscreen> </iframe>
-
-
-<p>で、あるサービスが End-User を認証したいって思った時って、普通は当該サービスが事前に当該 Entity に対して ID と Password を登録させて Identity Record (「サービスアカウント」と言ってもいい) を作成し、後日当該 Entity が当該サービスに訪れた際は登録済みの ID と Password を提示させて当該 Entity に紐づく Identity を確定するわけです。</p>
-
-<p>でも Identity Federation (上記スライドでは「ID 連携」と表現している) という手法を使うと、外部のサービス (Identity Provider, IdP) の Identity を当該サービス (Relying Party, RP)の Identity と紐付けて管理することで、End-User から直接パスワードを預からなくても、ブラウザの前にいる Entity (= End-User) に紐づく IdP 側の Identity に紐付いた RP 側の Identity を確定できるので、結果として End-User に紐づく RP 側の Identity を確定することができます。</p>
-
-<p>で、どうやって IdP と RP がそれぞれに管理している Identity を紐付けるのか、というのが、Federation Protocol の肝なわけですが、「OAuth 認証」というのはその一種です。</p>
-
-<!-- more -->
-
-
-<h2>「OAuth 認証」とは</h2>
-
-<p>OAuth 自体は「End-User が OAuth Server に管理を委託している Resource に対して、OAuth Client がアクセスすることを許可する方法」を標準化した OAuth Core (RFC 6749) と、「End-User の許可を得た OAuth Client が実際に OAuth Server 上の Resource にアクセスする方法」を標準化した OAuth Bearer (RFC 6750) を核とした標準仕様群なので、Federation Protocol に必要な「IdP 上の Identity をどう表現し RP に伝えるか、という仕組み」は持っていません。</p>
-
-<p>しかし、「IdP 上の Identity をどう表現し RP に伝えるか、という仕組み」は別に標準化されていなくてもいいんですよ。どうせみなさんほとんど Facebook Login しかしないんだから。</p>
-
-<p>っていうことで、「IdP (OAuth Server) 上の Identity 情報にアクセスする API へのアクセス権だけを OAuth Protocol に従って RP (OAuth Client) に渡しましょう。Identity 情報にアクセスする API は、まぁ JSON に user_id とか含めりゃだいたい動くでしょ。」っていうノリでできあがったのが、「OAuth 認証」です。</p>
-
-<p>標準化された方法ではないけども、Identity Federation はしてますね。</p>
-
-<p>Identity 情報にアクセスする API って各 IdP で仕様バラバラなんですけど、みんな OAuth 使ってアクセス権やり取りするってところは共通です。</p>
-
-<p>実際には Identity Federation に必要な多くの部分がそのバラバラな部分に依存したりしてるわけで、とても標準的な Federation Protocol とは呼べない代物ですけども。</p>
-
-<p>ということで、「OAuth 認証」の定義としては、</p>
-
-<p><b>「RP が、IdP の提供する任意の Identity 情報取得 API に対して OAuth Protocol に従ってアクセスすることで、Identity Federation を行う方法の総称」</b></p>
-
-<p>とかでいかがでしょうか？</p>
-
-<p>ちなみに、OpenID Connect においては、UserInfo API ってのが標準化された Identity 情報取得 API で、Identity 情報に加えて IdP 側の認証セッション情報をやり取りする手段が ID Token です。</p>
-
-<p>Identity Federation に必要な情報の多くの部分は実は IdP 側の認証セッションに関する情報だったりするわけですが、その辺の話は、また今度にしましょう。</p>
-
-<h2>補足) 結局「認証か認可か」という議論は何だったのか？</h2>
-
-<p>さて、OAuth は「End-User が OAuth Server に管理を委託している Resource に対して、OAuth Client がアクセスすることを許可する方法」でしたね。</p>
-
-<p>「End-User が OAuth Client 上の Resource へのアクセス権を持つかどうかを、OAuth Client が判断する方法」ではなくて。</p>
-
-<p>普通「認証か認可か」について議論するときって、以下のように主語と目的語が揃っていて、動詞だけが違う条件の元で議論すると思うんですよ。</p>
-
-<ul>
-<li>IdP authenticates End-User</li>
-<li>IdP authorizes End-User&rsquo;s access (to Resource on IdP)</li>
-</ul>
-
-
-<p>でも「OAuth を利用した認証」と「OAuth における認可」っていう比較をする時って、以下の2つを比較してませんか？</p>
-
-<ul>
-<li>RP authenticates End-User (relying on IdP&rsquo;s help)</li>
-<li>End-User authorizes RP&rsquo;s access (to Resource on IdP) / IdP authorizes RP&rsquo;s access (to Resource on IdP, on behalf of End-User)</li>
-</ul>
-
-
-<p>いや、それ比較してもいいんですよ。いいんですけど、よほどの前提知識がない限り、主語と目的語と動詞が全部違う2つのコンテキストを比較して、意味のある結論を導き出すことは困難なんじゃないかと思うんです。</p>
-
-<p>本当に「認証か認可か」って比較をするのであれば、以下のコンテキストで比較して意義ある答えにたどり着くようなコンテキストで議論したほうがいいよなぁ、と。</p>
-
-<ul>
-<li>Service X authenticates End-User Y</li>
-<li>Service X authorizes End-User Y&rsquo;s access (to Resource Z)</li>
-</ul>
-
-
-<p>なので、「OAuth と OpenID Connect」の比較の流れで出てくる「認証と認可」っていう議論に関しては、生暖かく見守っております :p</p>
 ]]></content>
   </entry>
   
