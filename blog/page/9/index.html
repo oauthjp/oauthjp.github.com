@@ -6,7 +6,7 @@
 	<title>OAuth.jp</title>
     <meta name="author" content="Nov Matake">
     
-	<meta name="description" content="Author: Nov Matake Date: Oct 25th, 2013 @nov です。 JWE はまだまだ変わりそうな気がしてしばらく最新仕様への追随を怠っていたのですが、先日こんな pull request をいただいたので、以下の2つのライブラリの JWE 実装を、JWE &hellip;">
+	<meta name="description" content="Author: Nov Matake Date: Jan 30th, 2014 昨日あたりから、Yahoo! Wallet や YConnect といった、Yahoo! Japan の API にアクセスできなくなったって人、ちらほらいるかもしれませんね。 僕もちょっとそういうケース見かけました &hellip;">
 	
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
@@ -93,6 +93,64 @@
 <!-- begin toload --> 
     <div id="content" class="inner">
         
+
+
+    <article class="post">
+  <h2 class="title">
+    
+    <a href="/blog/2014/01/30/globalsign-root-cert-expired/">
+    
+      Y!J API が止まった日 - GlobalSign の Root 証明書切れから学んだこと</a>
+  </h2>
+  <div class="entry-content">
+    <div class="meta">
+  <div class="author">
+    Author: <a href="https://matake.jp">Nov Matake</a>
+  </div>
+  <div class="date">Date: 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-01-30T11:28:00+09:00" pubdate data-updated="true">Jan 30<span>th</span>, 2014</time></div>
+  
+</div>
+
+    <p>昨日あたりから、Yahoo! Wallet や YConnect といった、Yahoo! Japan の API にアクセスできなくなったって人、ちらほらいるかもしれませんね。</p>
+
+<p>僕もちょっとそういうケース見かけました。</p>
+
+<p>なんか Yahoo! Japan がポカしちゃったの？とか、まぁ昨日まで健康に動いてたシステムが突然 Yahoo! Japan の API にアクセスできなくなっちゃったんだし、そらそう思うのもムリはない。</p>
+
+<p><strong>が、今回のケース、Yahoo! は全く悪くない！<br>プライバシーフリークはどうかと思うがな！！</strong></p>
+
+<p>では早速、今回起こったことを、振り返ってみましょう。</p>
+
+<h3>Yahoo! API にアクセスできなくなった</h3>
+
+<p>Yahoo! Japan は、<b>yahoo.co.jp</b> 以外にも、CDN 用や API 用など、用途ごとにいくつかのドメインを持ってます。
+今回止まったのは、その中の API 用の <b>*.yahooapis.jp</b> というドメイン。</p>
+
+<p>Yahoo! Wallet はよく知らないけど、YConnect だと <b>userinfo.yahooapis.jp</b> っていうドメインがあって、そこにアクセスできなくなった。</p>
+
+<p>ただし、API サーバーが止まったとかそういうのではなく、API にリクエスト投げる側での、SSL エラーによって。</p>
+
+
+    
+    <a href="/blog/2014/01/30/globalsign-root-cert-expired/" class="more-link">Read on &rarr;</a>
+  </div>
+
+<div class="meta">
+  
+</div>
+</article>
 
 
     <article class="post">
@@ -333,62 +391,6 @@ FBとかY!Jとかでやってる「パスワード変更したら既存のsessio
 </div>
 </article>
 
-
-    <article class="post">
-  <h2 class="title">
-    
-    <a href="/blog/2013/08/17/jwt-jws-trans/">
-    
-      JWT & JWS 翻訳プロジェクトスタート & イベント紹介</a>
-  </h2>
-  <div class="entry-content">
-    <div class="meta">
-  <div class="author">
-    Author: <a href="https://matake.jp">Nov Matake</a>
-  </div>
-  <div class="date">Date: 
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-08-17T19:15:00+09:00" pubdate data-updated="true">Aug 17<span>th</span>, 2013</time></div>
-  
-</div>
-
-    <p>先週から, JWxファミリーの以下の3つの仕様書の翻訳を始めています.</p>
-
-<ul>
-<li><a href="http://tools.ietf.org/html/draft-ietf-oauth-json-web-token-11">JSON Web Token (JWT)</a></li>
-<li><a href="http://tools.ietf.org/html/draft-ietf-jose-json-web-signature-14">JSON Web Signature (JWS)</a></li>
-<li><a href="http://tools.ietf.org/html/draft-ietf-jose-use-cases-03">JOSE UseCases</a></li>
-</ul>
-
-
-<p>翻訳資料の公開は <a href="http://openid.doorkeeper.jp/events/5373">OpenID TechNight Vol.10</a> のある 9/4 に予定してます.
-<a href="http://openid.doorkeeper.jp/events/5373">OpenID TechNight Vol.10</a> では僕から簡単にこれら各仕様の概要についてもご紹介しますので, 興味ある方はぜひご参加を.</p>
-
-<p>また <a href="https://github.com/openid-foundation-japan/draft-ietf-jose">JWx 翻訳プロジェクト GitHub レポジトリ</a>にはこの他にも JSON Web Encryption や JWT Bearer といった関連仕様も含まれていて, これらも同様に翻訳予定です.
-これらの翻訳公開時期はまだ未定ですが, 9/20 の <a href="http://nosurrender.jp/idit2013/">ID &amp; IT 2013</a> に合わせて公開できればなと考えています.
-こちらのカンファレンスもエンタープライズ業界で Identity に携わっている人には必見です!</p>
-
-<p><strong>要するに, 9月がアツイ!</strong></p>
-
-    
-    
-  </div>
-
-<div class="meta">
-  
-</div>
-</article>
-
 <nav id="pagenavi">
     
         <a href="/blog/page/8/" class="prev">Prev</a>
@@ -403,7 +405,7 @@ FBとかY!Jとかでやってる「パスワード変更したら既存のsessio
     <footer id="footer">
     <div style="display:inline">
   <p>
-    Copyright &copy; 2018
+    Copyright &copy; 2019
     
       <a href="https://matake.jp">Nov Matake</a> - 技術的な相談等、お仕事依頼は <a href="https://yauth.jp">YAuth.jp</a> まで.
     

@@ -4,7 +4,7 @@
   <title><![CDATA[OAuth.jp]]></title>
   <link href="https://oauth.jp/atom.xml" rel="self"/>
   <link href="https://oauth.jp/"/>
-  <updated>2018-05-02T15:07:12+09:00</updated>
+  <updated>2019-06-04T22:40:42+09:00</updated>
   <id>https://oauth.jp/</id>
   <author>
     <name><![CDATA[Nov Matake]]></name>
@@ -12,6 +12,32 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Sign in with Apple 用の Ruby Gem をリリースして Rails でサンプル実装してみました]]></title>
+    <link href="https://oauth.jp/blog/2019/06/04/sign-in-with-apple/"/>
+    <updated>2019-06-04T22:38:00+09:00</updated>
+    <id>https://oauth.jp/blog/2019/06/04/sign-in-with-apple</id>
+    <content type="html"><![CDATA[<p>iOS App に Apple ID でログインできたらいいのになぁ〜と思い続けてはや数年、ついにそんな時代がやってきましたね！</p>
+
+<p>ということで、FB Connect 登場時の fb_graph gem リリース以来のスピード感で、Sign in with Apple 用の ruby gem をリリースしてみました。
+<a href="https://github.com/nov/apple_id">github.com/nov/apple_id</a></p>
+
+<p>ついでに Rails のサンプルアプリも。
+<a href="https://github.com/nov/signin-with-apple">github.com/nov/signin-with-apple</a></p>
+
+<p>このサンプルアプリはこちらで動かしてるので、試したい方はどうぞ。
+<a href="https://signin-with-apple.herokuapp.com/">signin-with-apple.herokuapp.com/</a></p>
+
+<p>Sign in with Apple は OpenID Connect を採用してるんですが、現状では Native SDK でしか email や fullName は取れないようです。</p>
+
+<p>そのうち UserInfo API が出てくると思うんで、出てきたら apple_id gem でもサポートしようかと思います。</p>
+
+<p>ps.
+とりあえず Terminal で動かすだけでいいよって方はこちらのサンプルをどうぞ。
+<a href="https://gist.github.com/nov/993a303aa6badd8447f7b96fb952088e">https://gist.github.com/nov/993a303aa6badd8447f7b96fb952088e</a></p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Alexa と Nature Remo の Account Linking]]></title>
@@ -576,7 +602,7 @@
 
 <p>動作確認用のユーザーも作っておきましたので、これが正常に動いてる間はご自由にお使いください。</p>
 
-<p>Username: <a href="&#x6d;&#x61;&#x69;&#x6c;&#116;&#x6f;&#x3a;&#121;&#x6f;&#117;&#x40;&#x73;&#116;&#x73;&#x34;&#x62;&#50;&#x63;&#46;&#111;&#110;&#109;&#105;&#99;&#114;&#111;&#115;&#111;&#102;&#x74;&#x2e;&#x63;&#x6f;&#109;">&#121;&#x6f;&#117;&#x40;&#x73;&#x74;&#x73;&#x34;&#98;&#x32;&#99;&#x2e;&#x6f;&#110;&#109;&#x69;&#x63;&#114;&#x6f;&#x73;&#x6f;&#102;&#x74;&#x2e;&#99;&#x6f;&#109;</a>
+<p>Username: <a href="&#109;&#x61;&#x69;&#x6c;&#x74;&#111;&#58;&#x79;&#111;&#x75;&#x40;&#x73;&#116;&#x73;&#52;&#98;&#50;&#x63;&#x2e;&#x6f;&#x6e;&#109;&#x69;&#99;&#x72;&#111;&#115;&#111;&#102;&#x74;&#46;&#99;&#111;&#x6d;">&#x79;&#x6f;&#x75;&#x40;&#115;&#x74;&#115;&#x34;&#x62;&#x32;&#x63;&#x2e;&#x6f;&#x6e;&#109;&#105;&#x63;&#114;&#x6f;&#115;&#111;&#102;&#x74;&#46;&#99;&#x6f;&#x6d;</a>
 Password: ]6]yzxXYG7uruM4p</p>
 
 <p>動かなくなったら、あきらめて自分で Azure AD B2C 環境セットアップしてください。</p>
@@ -729,13 +755,13 @@ Password: ]6]yzxXYG7uruM4p</p>
 
 <p>あと、Email 指定してもそのメアドのユーザーにログインできるわけでもないです。</p>
 
-<p><a href="&#109;&#x61;&#105;&#x6c;&#x74;&#111;&#x3a;&#x6e;&#111;&#x76;&#x40;&#101;&#x78;&#x61;&#109;&#x70;&#108;&#101;&#x2e;&#x63;&#111;&#x6d;">&#110;&#111;&#x76;&#64;&#101;&#120;&#x61;&#109;&#112;&#x6c;&#101;&#46;&#x63;&#x6f;&#x6d;</a> の NameID を持つ SAML Assertion で、<a href="&#109;&#97;&#x69;&#x6c;&#116;&#x6f;&#x3a;&#x6e;&#x6f;&#118;&#x40;&#109;&#x61;&#x74;&#97;&#107;&#x65;&#x2e;&#106;&#x70;">&#x6e;&#111;&#118;&#x40;&#109;&#97;&#x74;&#97;&#x6b;&#101;&#x2e;&#x6a;&#x70;</a> の GitHub アカウントにログインできたりします。</p>
+<p><a href="&#109;&#x61;&#x69;&#108;&#x74;&#x6f;&#x3a;&#110;&#x6f;&#118;&#x40;&#x65;&#120;&#x61;&#109;&#112;&#108;&#101;&#x2e;&#99;&#111;&#x6d;">&#110;&#111;&#x76;&#64;&#101;&#120;&#97;&#x6d;&#112;&#108;&#101;&#x2e;&#99;&#x6f;&#x6d;</a> の NameID を持つ SAML Assertion で、<a href="&#109;&#97;&#105;&#108;&#x74;&#x6f;&#58;&#110;&#111;&#118;&#64;&#109;&#97;&#x74;&#97;&#x6b;&#x65;&#x2e;&#106;&#x70;">&#x6e;&#111;&#x76;&#64;&#109;&#x61;&#116;&#97;&#107;&#x65;&#x2e;&#106;&#x70;</a> の GitHub アカウントにログインできたりします。</p>
 
 <p>SAML Federation とか言うてるけど、結局既存の GitHub.com アカウントに SAML IdP 側のアカウントを Link するだけなんですよ。</p>
 
 <p>その紐付けは、SAML での初回ログイン時に GitHub.com 側の ID &amp; Password 入力して行います。</p>
 
-<p>つまり、<a href="&#109;&#x61;&#x69;&#108;&#116;&#111;&#x3a;&#110;&#x6f;&#x76;&#x40;&#101;&#120;&#x61;&#109;&#x70;&#x6c;&#x65;&#46;&#x63;&#111;&#x6d;">&#x6e;&#111;&#x76;&#64;&#x65;&#x78;&#x61;&#109;&#112;&#108;&#x65;&#x2e;&#99;&#x6f;&#x6d;</a> の NameID を持つ SAML Assertion をどの GitHub アカウントに紐づけるかは、エンドユーザーが決定権を持っています。</p>
+<p>つまり、<a href="&#x6d;&#97;&#105;&#108;&#116;&#x6f;&#58;&#110;&#x6f;&#x76;&#64;&#101;&#x78;&#x61;&#109;&#112;&#108;&#x65;&#x2e;&#99;&#x6f;&#x6d;">&#x6e;&#111;&#x76;&#x40;&#101;&#x78;&#97;&#109;&#112;&#x6c;&#101;&#x2e;&#x63;&#111;&#109;</a> の NameID を持つ SAML Assertion をどの GitHub アカウントに紐づけるかは、エンドユーザーが決定権を持っています。</p>
 
 <p>情シスじゃないです。</p>
 
@@ -2295,32 +2321,6 @@ Mac から Remote Desktop 経由でいじりたかったんでね。</p>
 
 <p>ps.<br>
 新規ファイル作成は、右クリックじゃなく、メモ帳開いて <code>[Ctrl] + [S]</code> な。</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[独立 & YAuth.jp 設立]]></title>
-    <link href="https://oauth.jp/blog/2016/03/26/yauth-dot-jp-founded/"/>
-    <updated>2016-03-26T12:27:00+09:00</updated>
-    <id>https://oauth.jp/blog/2016/03/26/yauth-dot-jp-founded</id>
-    <content type="html"><![CDATA[<p>昨日を最終出社日として、GREE 正社員生活を終えました。4月からは独り会社作って独立します。</p>
-
-<p>転職じゃなくて独立で、契約形態変えて GREE さんともお仕事する可能性十分あるので、あまり退職っていう実感はないのですが、これもまぁ一応退職エントリー&hellip;ですかね？</p>
-
-<p>新会社での業務内容としては、Identity まわりのコンサルとか技術支援とかをメインでやる予定。</p>
-
-<p>ありがたいことにすでに数件4月以降の仕事依頼もいただいており、気軽に新しい案件受けづらい状況なのですが、もし興味あれば<a href="mailto:nov@yauth.jp">ご連絡いただければ</a>と思います。</p>
-
-<p>ID の専門家として仕事しつづけるとしたら、1社に閉じるより数社の仕事同時にこなす方がいいんじゃないかとか、そういう流動的に動ける人もこの国に数人いたほうがいいんじゃないかとか、そういうのが独立のきっかけとしてあるので、いろんな会社のお話聞いてみたいです。</p>
-
-<!-- more -->
-
-
-<p>ちなみに、新しく作る会社は <a href="http://yauth.jp">YAuth.jp 合同会社</a> という名前です。「本当にその名前でやるの？」とか言われたりもしましたが、結構響きも好きなんですよ。YAuth.jp、いい名前でしょ？</p>
-
-<p>現在絶賛法人登記手続き中ですが、きっと来週頭には法人番号がもらえるはず！来週中は法務局とか税務署とかいろいろ行く予定！税務署ってどこにあるんすか、いったい！</p>
-
-<p>ということで、今後は OAuth.jp 共々、<a href="http://yauth.jp">YAuth.jp</a> もよろしくお願い致しますm<em> </em>m</p>
 ]]></content>
   </entry>
   

@@ -18,7 +18,7 @@
     </url>
     <url>
         <loc>https://oauth.jp/blog/2010/09/02/socialweb-conference-vol6-oauth-night/</loc>
-        <lastmod>2018-05-02T15:06:40+09:00</lastmod>
+        <lastmod>2019-06-04T22:15:20+09:00</lastmod>
     </url>
     <url>
         <loc>https://oauth.jp/blog/2010/09/02/the-oauth-10-protocol-draft-hammer-oauth-10/</loc>
@@ -409,8 +409,12 @@
         <lastmod>2018-03-09T20:43:08+09:00</lastmod>
     </url>
     <url>
+        <loc>https://oauth.jp/blog/2019/06/04/sign-in-with-apple/</loc>
+        <lastmod>2019-06-04T22:40:25+09:00</lastmod>
+    </url>
+    <url>
         <loc>https://oauth.jp/</loc>
-        <lastmod>2018-05-02T15:06:40+09:00</lastmod>
+        <lastmod>2019-06-04T22:40:25+09:00</lastmod>
     </url>
     <url>
         <loc>https://oauth.jp/404.html</loc>
@@ -418,6 +422,6 @@
     </url>
     <url>
         <loc>https://oauth.jp/blog/archives/</loc>
-        <lastmod>2018-05-02T15:06:40+09:00</lastmod>
+        <lastmod>2019-06-04T22:40:25+09:00</lastmod>
     </url>
 </urlset>

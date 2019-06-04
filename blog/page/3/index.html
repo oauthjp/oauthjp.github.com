@@ -6,7 +6,7 @@
 	<title>OAuth.jp</title>
     <meta name="author" content="Nov Matake">
     
-	<meta name="description" content="Author: Nov Matake Date: Jul 27th, 2016 なんですかこれは！ New attack bypasses HTTPS protection on Macs, Windows, and Linux DHCP につなぐと PAC ファイルがダウンロードされて &hellip;">
+	<meta name="description" content="Author: Nov Matake Date: Jan 26th, 2017 お久しぶりです、nov です。 おかげで無事12月末で YAuth.jp も初年度を終え、2期目に突入しております。 MVP は意気込み送ってこいや的なメールが来ており、いいかげんそろそろ Windows 10 &hellip;">
 	
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
@@ -93,6 +93,63 @@
 <!-- begin toload --> 
     <div id="content" class="inner">
         
+
+
+    <article class="post">
+  <h2 class="title">
+    
+    <a href="/blog/2017/01/26/myna-on-mac-os-sierra/">
+    
+      MacOS Sierra (10.12.x) でマイナポータルにログイン</a>
+  </h2>
+  <div class="entry-content">
+    <div class="meta">
+  <div class="author">
+    Author: <a href="https://matake.jp">Nov Matake</a>
+  </div>
+  <div class="date">Date: 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2017-01-26T21:37:00+09:00" pubdate data-updated="true">Jan 26<span>th</span>, 2017</time></div>
+  
+</div>
+
+    <p>お久しぶりです、nov です。</p>
+
+<p>おかげで無事12月末で <a href="http://yauth.jp">YAuth.jp</a> も初年度を終え、2期目に突入しております。</p>
+
+<p>MVP は意気込み送ってこいや的なメールが来ており、いいかげんそろそろ Windows 10 でドメインジョイン (正直 UX とかよくわかってない) せんとなぁとか思いつつ、今日は MacOS です。</p>
+
+<p>MacOS でマイナポータルにログインするお話です。</p>
+
+<p>みなさん、知ってましたか？マイナポータルって OpenID Connect の IdP なんですよ！もしかしたら Access Token とか払い出しちゃう機能なんかもあるんですよ！</p>
+
+<p>ということで、まぁその辺を調べるにも、ログインせんことには何も始まりません。</p>
+
+<p><strong>え？マイナンバーカード持ってないだって？？んなやつぁしらん！！！</strong></p>
+
+<p>そんな人は <a href="https://openid-foundation-japan.github.io/800-63-3/index.ja.html">NIST SP 800-63-3 翻訳版</a> でも読んで、Identity Proofing とかハードウェアトークンとかに思いをはせつつ市役所いって取って来てください。</p>
+
+<p>マイナンバーカード取る時、NIST SP 800-63-3 の3ページ目テストに出ますからね。</p>
+
+
+    
+    <a href="/blog/2017/01/26/myna-on-mac-os-sierra/" class="more-link">Read on &rarr;</a>
+  </div>
+
+<div class="meta">
+  
+</div>
+</article>
 
 
     <article class="post">
@@ -482,101 +539,6 @@
 </div>
 </article>
 
-
-    <article class="post">
-  <h2 class="title">
-    
-    <a href="/blog/2016/05/14/office-365-saml-implementation-vulnerability/">
-    
-      Office 365 SAML Implementation Vulnerability</a>
-  </h2>
-  <div class="entry-content">
-    <div class="meta">
-  <div class="author">
-    Author: <a href="https://matake.jp">Nov Matake</a>
-  </div>
-  <div class="date">Date: 
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2016-05-14T10:32:00+09:00" pubdate data-updated="true">May 14<span>th</span>, 2016</time></div>
-  
-</div>
-
-    <p>先日 Office 365 のこんな記事見つけたので、一応まとめておきますかね。</p>
-
-<p><a href="http://www.economyofmechanism.com/office365-authbypass.html">The road to hell is paved with SAML Assertions</a></p>
-
-<p>タイトルだけ見るとまた SAML is DEAD 案件かと思いきや、Office 365 の脆弱性の話です。</p>
-
-<p>SAML 悪く無いです。</p>
-
-<p>SAML isn&rsquo;t vulnerable, just DEAD.</p>
-
-<h2>SAML SP としての Office 365</h2>
-
-<p>Office 365 は SAML Service Provider (SP) として動作するので、みなさんがお持ちの Identity Provider (IdP) を SAML IdP として動作することができれば、みなさんの IdP に登録されてるアカウントを使って Office 365 にログインすることができます。</p>
-
-<p>みなさんの社内の ADFS とか、Ping Federate / Okta / OneLogin &hellip; みたいな IDaaS とか、そういうのは大抵 SAML IdP として動作するので、そういう製品を使ってるなら、みなさんの会社のアカウントでそのまま Office 365 にログインできます。</p>
-
-<p>通常 SAML SP は、IdP から返ってくる SAML Response に含まれる IdP 側のユーザー識別子 (Subject Identifier) と IdP 自身の識別子 (Issuer Identifier) のペアを元に、SP 側のアカウントにログインさせます。</p>
-
-<p>がしかし、Office 365 の場合は、IdP が渡してくる Email アドレスと Office 365 がローカルで持ってる Email アドレスの一致だけを見て Office 365 ローカルのユーザーを認証していたようです。Subject Identifier も Issuer Identifier も無視していた、と。</p>
-
-<p>(実際には、SAML IdP と Office 365 の間に Azure AD が介在しており、SAML Assertion の検証は Azure ADがやるようなアーキテクチャになっていて、Azure AD では Subject Identifier &amp; Issuer Identifier をちゃんと見ているようですが、全体として見ると Office 365 が SAML IdP の Issuer と Subject をガン無視した形になってます。この辺の話しだすとややこしい割に MS 以外の人にはあまり関係無い話になっちゃうので、今回はスルー)</p>
-
-<h2>Office 365 の脆弱性概要</h2>
-
-<p>これで何が起こっていたかというと、<code>nov@victim.example.com</code> という Email アドレスを持つ Office 365 ユーザーのアカウントにログインする際に、<code>attacker.example.com</code> という IdP が <code>nov@victim.example.com</code> という Email アドレスを含んだ SAML Assertion を発行すると、Office 365 がその Assertion を受け入れて <code>nov@victim.example.com</code> の Office 365 アカウントへのログインを許可してしまっていました。</p>
-
-<p>よって、以下の2つのパターンが、どちらも同じ Office 365 アカウントにログイン可能になっていました。</p>
-
-<table>
-<thead>
-<tr>
-<th></th>
-<th> Issuer Identifier    </th>
-<th> Subject Identifier  </th>
-<th> Email Address          </th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td></td>
-<td> attacker.example.com </td>
-<td> 58df3c9b2c32ca86f.. </td>
-<td> <code>nov@victim.example.com</code></td>
-</tr>
-<tr>
-<td></td>
-<td> victim.example.com   </td>
-<td> 20166f0c077c1f6c1.. </td>
-<td> <code>nov@victim.example.com</code></td>
-</tr>
-</tbody>
-</table>
-
-
-<p>うん、これは最悪ですね。</p>
-
-
-    
-    <a href="/blog/2016/05/14/office-365-saml-implementation-vulnerability/" class="more-link">Read on &rarr;</a>
-  </div>
-
-<div class="meta">
-  
-</div>
-</article>
-
 <nav id="pagenavi">
     
         <a href="/blog/page/2/" class="prev">Prev</a>
@@ -591,7 +553,7 @@
     <footer id="footer">
     <div style="display:inline">
   <p>
-    Copyright &copy; 2018
+    Copyright &copy; 2019
     
       <a href="https://matake.jp">Nov Matake</a> - 技術的な相談等、お仕事依頼は <a href="https://yauth.jp">YAuth.jp</a> まで.
     

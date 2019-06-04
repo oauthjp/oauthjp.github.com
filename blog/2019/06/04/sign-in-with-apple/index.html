@@ -3,10 +3,10 @@
 <html>
 <head>
 	<meta charset="utf-8">
-	<title>モバイルアプリを書いているプログラマはデバイスとサーバ間のコミュニケーションの、とくに確認/認証の部分を管理するやり方を知らない - OAuth.jp</title>
+	<title>Sign in with Apple 用の Ruby Gem をリリースして Rails でサンプル実装してみました - OAuth.jp</title>
     <meta name="author" content="Nov Matake">
     
-	<meta name="description" content="Author: Nov Matake Date: Mar 3rd, 2012 モバイルアプリを書いているプログラマはデバイスとサーバ間のコミュニケーションの、とくに確認/認証の部分を管理するやり方を知らない &#8212;モバイルプログラマはセキュリティにルーズ– &hellip;">
+	<meta name="description" content="Author: Nov Matake Date: Jun 4th, 2019 iOS App に Apple ID でログインできたらいいのになぁ〜と思い続けてはや数年、ついにそんな時代がやってきましたね！ ということで、FB Connect 登場時の fb_graph gem &hellip;">
 	
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
@@ -93,7 +93,7 @@
 <!-- begin toload --> 
     <div id="content" class="inner">
         <article class="post">
-  <h2 class="title">モバイルアプリを書いているプログラマはデバイスとサーバ間のコミュニケーションの、とくに確認/認証の部分を管理するやり方を知らない</h2>
+  <h2 class="title">Sign in With Apple 用の Ruby Gem をリリースして Rails でサンプル実装してみました</h2>
   <div class="entry-content">
     <div class="meta">
   <div class="author">
@@ -111,14 +111,28 @@
   
 
 
-<time datetime="2012-03-03T00:00:00+09:00" pubdate data-updated="true">Mar 3<span>rd</span>, 2012</time></div>
+<time datetime="2019-06-04T22:38:00+09:00" pubdate data-updated="true">Jun 4<span>th</span>, 2019</time></div>
   
 </div>
 
-    <blockquote>モバイルアプリを書いているプログラマはデバイスとサーバ間のコミュニケーションの、とくに確認/認証の部分を管理するやり方を知らない</blockquote>
+    <p>iOS App に Apple ID でログインできたらいいのになぁ〜と思い続けてはや数年、ついにそんな時代がやってきましたね！</p>
 
+<p>ということで、FB Connect 登場時の fb_graph gem リリース以来のスピード感で、Sign in with Apple 用の ruby gem をリリースしてみました。
+<a href="https://github.com/nov/apple_id">github.com/nov/apple_id</a></p>
 
-<p>&#8212;<a href="http://jp.techcrunch.com/archives/20120221to-lock-down-mobile-apps-cenzic-launches-new-app-testing-tools/">モバイルプログラマはセキュリティにルーズ–Cenzicがアプリ試験ツールを立ち上げ</a> (via <a href="http://kyomichi.tumblr.com/" class="tumblr_blog">kyomichi</a>)</p>
+<p>ついでに Rails のサンプルアプリも。
+<a href="https://github.com/nov/signin-with-apple">github.com/nov/signin-with-apple</a></p>
+
+<p>このサンプルアプリはこちらで動かしてるので、試したい方はどうぞ。
+<a href="https://signin-with-apple.herokuapp.com/">signin-with-apple.herokuapp.com/</a></p>
+
+<p>Sign in with Apple は OpenID Connect を採用してるんですが、現状では Native SDK でしか email や fullName は取れないようです。</p>
+
+<p>そのうち UserInfo API が出てくると思うんで、出てきたら apple_id gem でもサポートしようかと思います。</p>
+
+<p>ps.
+とりあえず Terminal で動かすだけでいいよって方はこちらのサンプルをどうぞ。
+<a href="https://gist.github.com/nov/993a303aa6badd8447f7b96fb952088e">https://gist.github.com/nov/993a303aa6badd8447f7b96fb952088e</a></p>
 
   </div>
 
@@ -141,6 +155,12 @@
 </div>
 
 
+
+<section id="comment">
+    <h2 class="title">Comments</h2>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+</section>
 
     </div>
     <footer id="footer">
@@ -172,7 +192,10 @@
       var disqus_shortname = 'oauthjp';
       
         
-        var disqus_script = 'count.js';
+        // var disqus_developer = 1;
+        var disqus_identifier = 'https://oauth.jp/blog/2019/06/04/sign-in-with-apple/';
+        var disqus_url = 'https://oauth.jp/blog/2019/06/04/sign-in-with-apple/';
+        var disqus_script = 'embed.js';
       
     (function () {
       var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
