@@ -6,7 +6,7 @@
 	<title>OAuth.jp</title>
     <meta name="author" content="Nov Matake">
     
-	<meta name="description" content="Author: Nov Matake Date: Jun 4th, 2019 iOS App に Apple ID でログインできたらいいのになぁ〜と思い続けてはや数年、ついにそんな時代がやってきましたね！ ということで、FB Connect 登場時の fb_graph gem &hellip;">
+	<meta name="description" content="Author: Nov Matake Date: Jun 8th, 2019 前記事 で書いたように、ここ数日 Sign in with Apple 用の RubyGem 作りながら、Sign in with Apple の特徴というか、他の IdP との違いみたいなところいろいろ調査したので、 &hellip;">
 	
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
@@ -98,6 +98,73 @@
     <article class="post">
   <h2 class="title">
     
+    <a href="/blog/2019/06/08/sign-in-with-apple-analysis/">
+    
+      Sign in With Apple 特徴 (1)</a>
+  </h2>
+  <div class="entry-content">
+    <div class="meta">
+  <div class="author">
+    Author: <a href="https://matake.jp">Nov Matake</a>
+  </div>
+  <div class="date">Date: 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2019-06-08T21:04:00+09:00" pubdate data-updated="true">Jun 8<span>th</span>, 2019</time></div>
+  
+</div>
+
+    <p><a href="https://oauth.jp/blog/2019/06/04/sign-in-with-apple/">前記事</a> で書いたように、ここ数日 Sign in with Apple 用の RubyGem 作りながら、Sign in with Apple の特徴というか、他の IdP との違いみたいなところいろいろ調査したので、現時点での Sign in with Apple に対する雑感をまとめておきます。</p>
+
+<h2>Client ID と Team ID および App ID との関係</h2>
+
+<p>個人として Apple Developer Account 使ったことしかないんで、会社として Developer 登録してる時の Team の扱いとかよくわかってないんですが、Apple Developer Account 登録すると Team ID ってのが割り振られます。個人だと 1 Developer Account に 1 Team ID。</p>
+
+<p>この1つの Team ID の下に、複数の子 App ID が登録可能です。1 iOS App についき 1 App ID。</p>
+
+<p>さらに、App ID には &ldquo;Primary&rdquo; という概念もあり、1つの Primary App ID の下に複数の App ID を登録することができます。</p>
+
+<p>ここまでは、お仕事で実際に iOS App 作ってる人たちにはきっと当たり前な話なんだと思います。</p>
+
+<p>そして、Primary App ID の下に App ID の代わりに Service ID っていうのが登録できます。</p>
+
+<p>Service ID っての設定画面には Sign in with Apple 関連の設定項目しかないから、これは今回初めて出てきたものなのかもしれませんね。</p>
+
+<p>で、iOS App で Sign in with Apple 使う場合は App ID というのが OAuth Client に該当し、Web とか Android とかで Sign in with Apple 使う時は、 Service ID というのが OAuth Client に該当するようです。</p>
+
+<p>1 Team ID の下に複数 App ID が登録され、1 App ID の下に複数の子 App ID と Service ID が登録され、iOS/Mac Native の世界では App ID が、それ以外では Service ID が OAuth Client となる。</p>
+
+<p>ここまではいいですね？いや、正直間違ってるかもしれんけどw</p>
+
+<p>そして、Client の鍵 (Client Secret を生成する為の秘密鍵、詳しくは後述) を別途生成するのですが、この鍵は Primary App ID 毎に登録することになります。</p>
+
+<p>鍵は Key Rotation のことも考慮してか、1 Primary App ID に複数同時に登録できます。</p>
+
+<p>ただ、1 OAuth Client に 1 Private Key、という単位ではないので、鍵管理のやり方は普通の OAuth Client の場合と異なるやり方が必要になる Developer さんもいるかもしれませんね。</p>
+
+
+    
+    <a href="/blog/2019/06/08/sign-in-with-apple-analysis/" class="more-link">Read on &rarr;</a>
+  </div>
+
+<div class="meta">
+  
+</div>
+</article>
+
+
+    <article class="post">
+  <h2 class="title">
+    
     <a href="/blog/2019/06/04/sign-in-with-apple/">
     
       Rubygem for Sign in With Apple & Rails Sample App</a>
@@ -135,7 +202,7 @@
 
 <p>このサンプルアプリはこちらで動かしてるので、試したい方はどうぞ。</p>
 
-<p><a href="https://signin-with-apple.herokuapp.com/">signin-with-apple.herokuapp.com/</a></p>
+<p><a href="https://signin-with-apple.herokuapp.com/">signin-with-apple.herokuapp.com</a></p>
 
 <p>Sign in with Apple は OpenID Connect を採用してるんですが、現状では Native SDK でしか email や fullName は取れないようです。</p>
 
@@ -318,57 +385,6 @@
 
     
     <a href="/blog/2017/11/02/o365-saml-setting-via-in-browser-powershell/" class="more-link">Read on &rarr;</a>
-  </div>
-
-<div class="meta">
-  
-</div>
-</article>
-
-
-    <article class="post">
-  <h2 class="title">
-    
-    <a href="/blog/2017/09/28/line-id-login/">
-    
-      LINE ID Login</a>
-  </h2>
-  <div class="entry-content">
-    <div class="meta">
-  <div class="author">
-    Author: <a href="https://matake.jp">Nov Matake</a>
-  </div>
-  <div class="date">Date: 
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2017-09-28T22:52:00+09:00" pubdate data-updated="true">Sep 28<span>th</span>, 2017</time></div>
-  
-</div>
-
-    <p>LINE が OpenID Connect サポートしたみたいですね。</p>
-
-<p>なんか前からしてんだと思ってたんですが、まぁいいや。</p>
-
-<p>ということで、早速触ってみました。</p>
-
-<p>こちらに<a href="https://gist.github.com/nov/58912dda45a65768d8f05343225780b2">今回使った Ruby のサンプルスクリプト</a>置いておきます。</p>
-
-<p>まぁ、ちょっと特殊な点がいくつかありますが、十分 OpenID Connect です。</p>
-
-<p>気になった点は以下の通り。</p>
-
-
-    
-    <a href="/blog/2017/09/28/line-id-login/" class="more-link">Read on &rarr;</a>
   </div>
 
 <div class="meta">

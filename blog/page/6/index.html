@@ -6,7 +6,7 @@
 	<title>OAuth.jp</title>
     <meta name="author" content="Nov Matake">
     
-	<meta name="description" content="Author: Nov Matake Date: Oct 19th, 2015 Identity 界隈の皆様は、11/10 に OpenID Summit 2015 が開催されることはすでにご存知かと思いますが、OAuth / JWT &hellip;">
+	<meta name="description" content="Author: Nov Matake Date: Jan 12th, 2016 成人式を迎えられたID厨の皆様におかれましては、大変おめでとうございます。成人前からID厨とか、キモカワですね。 さて、今日は、成人式直前にOAuth MLに投下された以下のpostで「OAuth 2.0の脆弱性」 &hellip;">
 	
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
@@ -93,6 +93,82 @@
 <!-- begin toload --> 
     <div id="content" class="inner">
         
+
+
+    <article class="post">
+  <h2 class="title">
+    
+    <a href="/blog/2016/01/12/oauth-idp-mix-up-attack/">
+    
+      OAuth IdP Mix-Up Attack とは？</a>
+  </h2>
+  <div class="entry-content">
+    <div class="meta">
+  <div class="author">
+    Author: <a href="https://matake.jp">Nov Matake</a>
+  </div>
+  <div class="date">Date: 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2016-01-12T15:51:00+09:00" pubdate data-updated="true">Jan 12<span>th</span>, 2016</time></div>
+  
+</div>
+
+    <p>成人式を迎えられたID厨の皆様におかれましては、大変おめでとうございます。成人前からID厨とか、キモカワですね。</p>
+
+<p>さて、今日は、成人式直前にOAuth MLに投下された以下のpostで「OAuth 2.0の脆弱性」として紹介されている &ldquo;IdP Mix-Up Attack&rdquo; について紹介します。</p>
+
+<p><a href="https://mailarchive.ietf.org/arch/msg/oauth/JIVxFBGsJBVtm7ljwJhPUm3Fr-w">[OAUTH-WG] OAuth Security Advisory: Authorization Server Mix-Up</a></p>
+
+<h2>前提条件</h2>
+
+<ul>
+<li>End-UserとRPの間の (TLS-protectedでない) HTTP Request/ResponseをAttackerがproxy可能。</li>
+<li>RPが2つ以上のOAuth Server (IdP) と接続しており、そのいずれかが攻撃者の管理下にある。(IdPの中の人が実は攻撃者だった etc.)</li>
+<li>RPは複数のIdPに対して共通のredirect_uriを利用しており、そこへのcallbackを受け取った時にstate値を元にIdPを特定する。
+
+<ul>
+<li>ただしIdP側のredirect_uri検証が「事前登録済の値との完全一致」でない場合は、この通りではない。</li>
+</ul>
+</li>
+</ul>
+
+
+<h2>攻撃フロー</h2>
+
+<p>以下、Attackerの管理下にあるIdPをAIdP (Attacker IdP)、その他の悪意ないIdPをHIdP (Honest IdP) と呼ぶことにします。</p>
+
+<p><img src="/images/posts/oauth-idp-mixup.png" alt="OAuth IdP Mix-Up Attack" /></p>
+
+<ol>
+<li>End-UserはRPの任意のページから「HIdPでログイン」ボタンをクリック。</li>
+<li>Browser->RPへの (TLS-protectedでない) リクエストをProxyしたAttackerは、RPに「AIdPでログイン」するリクエストを送信し、AIdPのAuthorization EndpointへのRedirect Responseを受け取る。</li>
+<li>AttackerはBrowserにHIdPのAuthorization EndpointへのRedirect Responseを返す。ただしstate値は2で受け取った「AIdP向けのAuthorization Requestとひもづいた」値を利用する。(これ以降全リクエストはTLS-protectedであるためAttackerのProxyは介入不可)</li>
+<li>End-UserはHIdPでApproveボタンをクリック。</li>
+<li>HIdPはstateとcode/tokenをquery/fragmentにつけた状態で、End-UserをRPのredirect_uriに戻す。</li>
+<li>code/tokenを受け取ったRPは、state値を元に受け取ったAuthorization ResponseがAIdPからのものだと判断する。</li>
+<li>RPはAIdPのToken EndpointやAPI Endpointにcodeやtokenを送りつけてしまい、HIdPのcodeやtokenがAIdP (攻撃者) の手に渡る。</li>
+</ol>
+
+
+
+    
+    <a href="/blog/2016/01/12/oauth-idp-mix-up-attack/" class="more-link">Read on &rarr;</a>
+  </div>
+
+<div class="meta">
+  
+</div>
+</article>
 
 
     <article class="post">
@@ -380,63 +456,6 @@
 
     
     <a href="/blog/2015/03/16/common-jws-implementation-vulnerability/" class="more-link">Read on &rarr;</a>
-  </div>
-
-<div class="meta">
-  
-</div>
-</article>
-
-
-    <article class="post">
-  <h2 class="title">
-    
-    <a href="/blog/2015/02/28/traceability-on-each-attributes/">
-    
-      [PR] 属性単位のトレーサビリティについて</a>
-  </h2>
-  <div class="entry-content">
-    <div class="meta">
-  <div class="author">
-    Author: <a href="https://matake.jp">Nov Matake</a>
-  </div>
-  <div class="date">Date: 
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2015-02-28T23:10:00+09:00" pubdate data-updated="true">Feb 28<span>th</span>, 2015</time></div>
-  
-</div>
-
-    <p>来週月曜 (2015/03/02) <a href="http://www.openid.or.jp/news/2015/02/OpenIDBizDay-8.html">OpenID BizDay vol.8</a> が開催され、ひろみちゅせんせ・まさともせんせ・Nat さんの3名を中心に、個人情報改正を控え、「炎上レスでパーソナルデータ活用ビジネスを進めるためにどこまでが許容範囲なのか、個人情報保護法改正に関して現時点で何をどこまで気にしておけば良いか」といった内容についてみんなで考える機会が設けられます。</p>
-
-<p>なんと、いつもは OpenID Foundation Japan 会員限定の BizDay が、今回は 5,000 円さえ払えば非会員でも参加できるんです！！</p>
-
-<p>こらぁ上司の承認とか後回しで、<a href="http://www.openid.or.jp/seminar/entry.html">いますぐ申し込まないとダメですね</a>！！！</p>
-
-<p>と、前置きはこれくらいにして、個人情報保護法改正項目の中でも、今日は「第三者提供時に提供元 &amp; 提供先双方でその記録義務が追加される」という点について、OpenID Connect や Facebook Connect などの「外部 ID 連携」時の影響範囲について、考えてみましょう。</p>
-
-<p>僕の感覚だと、普通に外部 ID 連携した場合、属性も IdP から引っ張ってくるけど、引っ張ってきた属性 (氏名とかメアドとか) はユーザーが後から編集可能な状況になっていると思います。</p>
-
-<p>そんな状況で、任意の時点でユーザーから「この氏名データ、どこから来たの？」って聞かれたら答えられるトレーサビリティを確保する&hellip;</p>
-
-<p>一つのアカウントに複数 IdP が紐づけ可能で、任意の IdP との紐づけを任意のタイミングで解除できる、そんな状況でもトレーサビリティを確保する&hellip;</p>
-
-<p>すでにそれが可能な実装にしているものだけが、SAMLer に石を投げなさい。</p>
-
-<p>これ、実装どうするかって話もあるんですが、そもそもそんなケースでもトレーサビリティ必要なんでしたっけ？って疑問が湧きますよね。</p>
-
-
-    
-    <a href="/blog/2015/02/28/traceability-on-each-attributes/" class="more-link">Read on &rarr;</a>
   </div>
 
 <div class="meta">

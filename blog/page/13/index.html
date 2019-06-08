@@ -6,7 +6,7 @@
 	<title>OAuth.jp</title>
     <meta name="author" content="Nov Matake">
     
-	<meta name="description" content="Author: Nov Matake Date: Apr 22nd, 2012 Important: OAuth 1.0 has been officially deprecated as of April 20, 2012. It will continue to work as per &hellip;">
+	<meta name="description" content="Author: Nov Matake Date: May 4th, 2012 Debugging OAuth2 SSL Connections &#8212;http://ignisvulpis.blogspot.jp/2012/05/debugging-oauth2-ssl- &hellip;">
 	
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
@@ -93,6 +93,52 @@
 <!-- begin toload --> 
     <div id="content" class="inner">
         
+
+
+    <article class="post">
+  <h2 class="title">
+    
+    <a href="/blog/2012/05/04/debugging-oauth2-ssl-connections/">
+    
+      Debugging OAuth2 SSL Connections</a>
+  </h2>
+  <div class="entry-content">
+    <div class="meta">
+  <div class="author">
+    Author: <a href="https://matake.jp">Nov Matake</a>
+  </div>
+  <div class="date">Date: 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-05-04T00:00:00+09:00" pubdate data-updated="true">May 4<span>th</span>, 2012</time></div>
+  
+</div>
+
+    <blockquote>Debugging OAuth2 SSL Connections</blockquote>
+
+
+<p>&#8212;<p><a href="http://ignisvulpis.blogspot.jp/2012/05/debugging-oauth2-ssl-connections.html?m=1"><a href="http://ignisvulpis.blogspot.jp/2012/05/debugging-oauth2-ssl-connections.html?m=1"><a href="http://ignisvulpis.blogspot.jp/2012/05/debugging-oauth2-ssl-connections.html?m=1">http://ignisvulpis.blogspot.jp/2012/05/debugging-oauth2-ssl-connections.html?m=1</a></a></a> (via <a href="http://eidentity.tumblr.com/" class="tumblr_blog">eidentity</a>)</p></p>
+
+<p>Too long. Just use Charles.</p>
+
+
+    
+    
+  </div>
+
+<div class="meta">
+  
+</div>
+</article>
 
 
     <article class="post">
@@ -334,68 +380,6 @@ webintents.orgのJSの問題なのか、なぜかSafariでしか動きません�
 
 
 <p>(via <a href="http://tkudo.tumblr.com/" class="tumblr_blog">tkudo</a>)</p>
-
-
-    
-    
-  </div>
-
-<div class="meta">
-  
-</div>
-</article>
-
-
-    <article class="post">
-  <h2 class="title">
-    
-    <a href="/blog/2012/03/11/response-type-code/">
-    
-      OAuth 2.0でユーザーが認可をする”アプリケーション”とはサービス全体のことではない - R-weblife</a>
-  </h2>
-  <div class="entry-content">
-    <div class="meta">
-  <div class="author">
-    Author: <a href="https://matake.jp">Nov Matake</a>
-  </div>
-  <div class="date">Date: 
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-03-11T00:00:00+09:00" pubdate data-updated="true">Mar 11<span>th</span>, 2012</time></div>
-  
-</div>
-
-    <blockquote><p>response_type=code tokenとかあるので仕様曖昧だよな～と思っていたのですが、普通に書いてありました。</p>
-
-<p>A client application consisting of multiple components, each with its
-own client type (e.g. a distributed client with both a confidential
-server-based component and a public browser-based component), MUST
-register each component separately as a different client to ensure
-proper handling by the authorization server.</p>
-
-<p>Clientはユーザーに代わって保護リソースにアクセスするアプリケーション。
-Client Typesとして、秘密鍵を安全に管理できるconfidential、クライアントサイドで動いて管理できないのはpublic。
-ConfidentialならAuthZ Code, PublicなのはImplicit使え。
-サーバーサイドとクライアントサイドの両方のComponentから構成されている場合、別々で登録しろ！</p></blockquote>
-
-
-<p>&#8212;<p><a href="http://d.hatena.ne.jp/ritou/20120311/1331444771">OAuth 2.0でユーザーが認可をする”アプリケーション”とはサービス全体のことではない &ndash; r-weblife</a></p></p>
-
-<p>で、そういう状況でどうやって効率的に同意を取るかは、AuthZ Serverの実装依存、か。。。</p>
-
-
-
-
-<p>(via <a href="http://kyomichi.tumblr.com/" class="tumblr_blog">kyomichi</a>)</p>
 
 
     
