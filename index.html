@@ -6,7 +6,7 @@
 	<title>OAuth.jp</title>
     <meta name="author" content="Nov Matake">
     
-	<meta name="description" content="Author: Nov Matake Date: Jun 8th, 2019 前記事 で書いたように、ここ数日 Sign in with Apple 用の RubyGem 作りながら、Sign in with Apple の特徴というか、他の IdP との違いみたいなところいろいろ調査したので、 &hellip;">
+	<meta name="description" content="Author: Nov Matake Date: Jun 12th, 2019 Sign in With Apple の特徴分析 (1) のつづき。 各種 ID とその対象 (?) 範囲 Developer が使う IDs 等 Team ID 個人向け Apple Developer &hellip;">
 	
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
@@ -93,6 +93,267 @@
 <!-- begin toload --> 
     <div id="content" class="inner">
         
+
+
+    <article class="post">
+  <h2 class="title">
+    
+    <a href="/blog/2019/06/12/sign-in-with-apple-analysis-2/">
+    
+      Sign in With Apple の特徴分析 (2)</a>
+  </h2>
+  <div class="entry-content">
+    <div class="meta">
+  <div class="author">
+    Author: <a href="https://matake.jp">Nov Matake</a>
+  </div>
+  <div class="date">Date: 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2019-06-12T15:14:00+09:00" pubdate data-updated="true">Jun 12<span>th</span>, 2019</time></div>
+  
+</div>
+
+    <p><a href="https://oauth.jp/blog/2019/06/08/sign-in-with-apple-analysis/">Sign in With Apple の特徴分析 (1)</a> のつづき。</p>
+
+<h2>各種 ID とその対象 (?) 範囲</h2>
+
+<h3>Developer が使う IDs 等</h3>
+
+<ul>
+<li>Team ID
+
+<ul>
+<li>個人向け Apple Developer Account では Developer Account に1つ</li>
+<li>Enterprise 向け Apple Developer Account での話はしらない</li>
+</ul>
+</li>
+<li>App ID
+
+<ul>
+<li>App Store に並べるアプリ毎に1つ</li>
+<li>MacOS App と iOS App では別 App ID</li>
+<li>Native SDK で Sign in with Apple する場合の Client ID に相当</li>
+<li>App ID に対して Sign in with Apple の設定をする際には以下が必要
+
+<ul>
+<li>Primary App ID の指定</li>
+</ul>
+</li>
+<li>Sign in with Apple の設定を通じて Primary App ID に紐づく</li>
+</ul>
+</li>
+<li>Service ID
+
+<ul>
+<li>App Store に並べるアプリには紐づかない ID</li>
+<li>現状この Service ID を使ってできることは Sign in with Apple のみ</li>
+<li>Service ID に対して Sign in with Apple の設定をする際には以下が必要
+
+<ul>
+<li>Primary App ID の指定</li>
+<li>Web Domain の設定と Domain Verification</li>
+<li>Return URIs (= redirect_uri) の指定
+
+<ul>
+<li>複数可</li>
+<li>上記 Verified Domain 外の URL でも指定可
+
+<ul>
+<li>Domain Verification の存在意義は不明..</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Native SDK の外で Sign in with Apple する場合の Client ID に相当</li>
+<li>Sign in with Apple の設定を通じて Primary App ID に紐づく</li>
+</ul>
+</li>
+<li>Primary App ID
+
+<ul>
+<li>App ID および Service ID に対して Sign in with Apple の設定をする際に指定</li>
+<li>Primary App ID 単位で Key を発行</li>
+</ul>
+</li>
+<li>Key
+
+<ul>
+<li>Client Secret に指定する JWT に署名するための EC 秘密鍵</li>
+<li>Primary App ID に紐づく</li>
+<li>1つの Primary App ID に複数の Key を発行可能</li>
+</ul>
+</li>
+<li>Client Secret に指定する JWT
+
+<ul>
+<li>iss
+
+<ul>
+<li>Team ID</li>
+</ul>
+</li>
+<li>aud
+
+<ul>
+<li>Apple IdP の Issuer Identifier</li>
+</ul>
+</li>
+<li>sub
+
+<ul>
+<li>Native SDK で code を受け取った場合は当該アプリの App ID</li>
+<li>Native SDK 以外で code を受け取った場合は当該サービスの Service ID</li>
+<li>code を access_token と交換する役目を負う Backend Server の Client ID とは限らない点に注意</li>
+</ul>
+</li>
+<li>iat
+
+<ul>
+<li>現在時刻 (UNIX Timestamp)</li>
+</ul>
+</li>
+<li>exp
+
+<ul>
+<li>現在より未来かつ6ヶ月以内の時刻 (UNIX Timestamp)</li>
+<li>通常は Token Request 毎に動的に JWT を生成し数分後くらいの exp を指定するものと思われる</li>
+</ul>
+</li>
+<li>署名鍵
+
+<ul>
+<li>当該 Client Secret JWT の sub に紐づく Primary App ID に紐づいた Key</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Private Email Relay Service 設定
+
+<ul>
+<li>Team ID に紐づく</li>
+<li>当該 Team ID 配下の全 App ID / Service ID に対して発行された Private Email Address にメール送信できる送信元ドメイン &amp; メールアドレスを指定</li>
+<li>10 ドメインまでしか登録できない</li>
+</ul>
+</li>
+</ul>
+
+
+<h2>User に紐づく IDs 等</h2>
+
+<ul>
+<li>ID Token の sub
+
+<ul>
+<li>Team ID 単位で異なる PPID</li>
+</ul>
+</li>
+<li>Private Email
+
+<ul>
+<li>現状これがどの単位で異なる値となるのか不明 (実機の iOS 13 beta も Simulator も挙動が不安定)
+
+<ul>
+<li>Team ID 単位？</li>
+<li>Primary App ID 単位？ &lt;= Revoke 単位見る限りたぶんこれ</li>
+<li>App ID 単位？</li>
+<li>Primary App ID 単位？</li>
+</ul>
+</li>
+<li>Revoke 毎に変わる
+
+<ul>
+<li>sub は Revoke 前後でも変わらないんだしメアドだけ変わる意味は無いのだが&hellip;</li>
+</ul>
+</li>
+<li>単一 Team ID 内に複数の Primary App ID がある場合は単一 sub に複数 Private Email を紐づけて保存する必要あり
+
+<ul>
+<li>sub は Team ID 単位でメアドは Primary App ID 単位であることからくる現象
+
+<ul>
+<li>注) あくまで Private Email が Primary App ID 単位で発行されるという前提で話をしている</li>
+</ul>
+</li>
+<li>Email の転送 ON/OFF 設定は Revokation 単位 (= Primary App ID 単位) なので、転送 OFF したつもりが別アプリ向けメアドにメール来たりすると問題</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Client Access の Revokation
+
+<ul>
+<li>Primary App ID 単位</li>
+</ul>
+</li>
+</ul>
+
+
+<h2>その他調べるべき項目</h2>
+
+<ul>
+<li>Touch ID / Face ID 使えるパターン・使えないパターン
+
+<ul>
+<li>iOS
+
+<ul>
+<li>SDK (ASAuthorizationAppleID*) => 使える</li>
+<li>ASWebAuthenticationSession => <em>要調査</em></li>
+<li>SFAuthenticationSession => <em>要調査</em></li>
+<li>SFSafariViewController => <em>要調査</em></li>
+<li>WKWebView => <em>要調査</em></li>
+<li>UIWebView => <em>要調査？</em> まだこれいるの？</li>
+</ul>
+</li>
+<li>MacOS
+
+<ul>
+<li>SDK (ASAuthorizationAppleID<em>) => </em>要調査* たぶん使える</li>
+<li>ASWebAuthenticationSession => <em>要調査</em></li>
+<li>WebView => <em>要調査</em> そもそも MacOS の場合の WebView とかさっぱりわからん</li>
+</ul>
+</li>
+<li>Safari
+
+<ul>
+<li>w/ Apple JS SDK => 使える</li>
+<li>w/o Apple JS SDK => 使えない
+
+<ul>
+<li>ただし近い将来 appleid.apple.com ドメイン全体で Touch ID / Face ID が使えるようになる兆しあり</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Android => 使えない</li>
+<li>Safari 以外のブラウザ => 使えない</li>
+</ul>
+</li>
+</ul>
+
+
+<p>ということで、要調査のところはそろそろめんどくさくなってきたんでわかった人教えていただけるとありがたいですw</p>
+
+    
+    
+  </div>
+
+<div class="meta">
+  
+</div>
+</article>
 
 
     <article class="post">
@@ -328,63 +589,6 @@
 
     
     
-  </div>
-
-<div class="meta">
-  
-</div>
-</article>
-
-
-    <article class="post">
-  <h2 class="title">
-    
-    <a href="/blog/2017/11/02/o365-saml-setting-via-in-browser-powershell/">
-    
-      Azure Portal 上の PowerShell から O365 SAML 設定</a>
-  </h2>
-  <div class="entry-content">
-    <div class="meta">
-  <div class="author">
-    Author: <a href="https://matake.jp">Nov Matake</a>
-  </div>
-  <div class="date">Date: 
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2017-11-02T15:22:00+09:00" pubdate data-updated="true">Nov 2<span>nd</span>, 2017</time></div>
-  
-</div>
-
-    <p>どうも、MS MVP (Enterprise Mobility) の Nov です。</p>
-
-<p>普段もっぱら O365 の SAML 設定をいじって、自作 SAML IdP と Federation する毎日です。</p>
-
-<p>いや、年に6回くらいかな。</p>
-
-<p>で、毎回 PowerShell の使い方忘れるので、メモ代わりに過去にもこんな記事書いてきました。</p>
-
-<ul>
-<li><a href="/blog/2016/07/01/o365-saml-federation/">Office 365 と外部 SAML IdP との連携設定</a></li>
-<li><a href="/blog/2017/05/18/powershell-for-azuread/">PowerShell for AzureAD</a></li>
-</ul>
-
-
-<p>そんな、普段はもっぱら Azure 上の Windows 10 VM から PowerShell いじってる僕ですが&hellip;</p>
-
-<p>今日気づいてしまったんです！！<a href="portal.azure.com">Azure Portal</a> 上で In-Browser PowerShell が動くようになってるってことに！！</p>
-
-
-    
-    <a href="/blog/2017/11/02/o365-saml-setting-via-in-browser-powershell/" class="more-link">Read on &rarr;</a>
   </div>
 
 <div class="meta">

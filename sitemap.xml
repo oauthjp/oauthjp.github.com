@@ -18,7 +18,7 @@
     </url>
     <url>
         <loc>https://oauth.jp/blog/2010/09/02/socialweb-conference-vol6-oauth-night/</loc>
-        <lastmod>2019-06-04T22:15:20+09:00</lastmod>
+        <lastmod>2018-05-02T15:06:40+09:00</lastmod>
     </url>
     <url>
         <loc>https://oauth.jp/blog/2010/09/02/the-oauth-10-protocol-draft-hammer-oauth-10/</loc>
@@ -394,7 +394,7 @@
     </url>
     <url>
         <loc>https://oauth.jp/blog/2017/09/28/line-id-login/</loc>
-        <lastmod>2017-09-28T23:29:25+09:00</lastmod>
+        <lastmod>2017-09-28T23:20:23+09:00</lastmod>
     </url>
     <url>
         <loc>https://oauth.jp/blog/2017/11/02/o365-saml-setting-via-in-browser-powershell/</loc>
@@ -414,11 +414,15 @@
     </url>
     <url>
         <loc>https://oauth.jp/blog/2019/06/08/sign-in-with-apple-analysis/</loc>
-        <lastmod>2019-06-08T22:18:36+09:00</lastmod>
+        <lastmod>2019-06-12T16:28:03+09:00</lastmod>
+    </url>
+    <url>
+        <loc>https://oauth.jp/blog/2019/06/12/sign-in-with-apple-analysis-2/</loc>
+        <lastmod>2019-06-12T16:27:24+09:00</lastmod>
     </url>
     <url>
         <loc>https://oauth.jp/</loc>
-        <lastmod>2019-06-08T22:18:36+09:00</lastmod>
+        <lastmod>2019-06-12T16:28:03+09:00</lastmod>
     </url>
     <url>
         <loc>https://oauth.jp/404.html</loc>
@@ -426,6 +430,6 @@
     </url>
     <url>
         <loc>https://oauth.jp/blog/archives/</loc>
-        <lastmod>2019-06-08T22:18:36+09:00</lastmod>
+        <lastmod>2019-06-12T16:28:03+09:00</lastmod>
     </url>
 </urlset>

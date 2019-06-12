@@ -6,7 +6,7 @@
 	<title>OAuth.jp</title>
     <meta name="author" content="Nov Matake">
     
-	<meta name="description" content="Author: Nov Matake Date: Feb 28th, 2015 来週月曜 (2015/03/02) OpenID BizDay vol.8 が開催され、ひろみちゅせんせ・まさともせんせ・Nat さんの3名を中心に、個人情報改正を控え、「 &hellip;">
+	<meta name="description" content="Author: Nov Matake Date: Mar 16th, 2015 JOSE (Javascript Object Signing and Encryption) 愛で満ち溢れる ID 厨界隈において、燦々と輝く JWS (JSON Web Signature)、美しいですよね！ &hellip;">
 	
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
@@ -93,6 +93,63 @@
 <!-- begin toload --> 
     <div id="content" class="inner">
         
+
+
+    <article class="post">
+  <h2 class="title">
+    
+    <a href="/blog/2015/03/16/common-jws-implementation-vulnerability/">
+    
+      JWS 実装時に作りがちな脆弱性パターン</a>
+  </h2>
+  <div class="entry-content">
+    <div class="meta">
+  <div class="author">
+    Author: <a href="https://matake.jp">Nov Matake</a>
+  </div>
+  <div class="date">Date: 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2015-03-16T11:45:00+09:00" pubdate data-updated="true">Mar 16<span>th</span>, 2015</time></div>
+  
+</div>
+
+    <p>JOSE (Javascript Object Signing and Encryption) 愛で満ち溢れる ID 厨界隈において、燦々と輝く JWS (JSON Web Signature)、美しいですよね！</p>
+
+<p>JWT がジャニーズなら、JWE は EXILE、JWS は石原さとみと言ったところでしょうか？</p>
+
+<p>と、冗談はさておき、JWT をお使いの皆さんは、当然署名付けてますよね？署名検証しますよね？</p>
+
+<p>そんなあなたに一言いいたい！</p>
+
+<p>まだ HMAC で消耗してるの？</p>
+
+<p>いや、決して HMAC オワコンとかは言ってないですよ？スマホアプリでの署名検証のために、アプリに共通鍵埋め込むのはナンセンスってだけで。</p>
+
+<p>ということで、今日は JWS をお使いのみなさんに、実装時に作りがちな脆弱性パターンを2つご紹介します。</p>
+
+<p>今日紹介する脆弱性の2つのうち、1つめは HMAC, RSA, ECDSA のどれを使っても対象になるパターン、2つめは公開鍵暗号 (RSA / ECDSA) を使っている場合にのみ対象になるパターンです。</p>
+
+<p>では、さっそく行ってみましょう。</p>
+
+
+    
+    <a href="/blog/2015/03/16/common-jws-implementation-vulnerability/" class="more-link">Read on &rarr;</a>
+  </div>
+
+<div class="meta">
+  
+</div>
+</article>
 
 
     <article class="post">
@@ -331,53 +388,6 @@
 
     
     <a href="/blog/2014/10/15/fido-alliance/" class="more-link">Read on &rarr;</a>
-  </div>
-
-<div class="meta">
-  
-</div>
-</article>
-
-
-    <article class="post">
-  <h2 class="title">
-    
-    <a href="/blog/2014/06/23/csrf-on-twitter-login/">
-    
-      Twitter Login にも CSRF 脆弱性ができやすい罠が!?</a>
-  </h2>
-  <div class="entry-content">
-    <div class="meta">
-  <div class="author">
-    Author: <a href="https://matake.jp">Nov Matake</a>
-  </div>
-  <div class="date">Date: 
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2014-06-23T10:46:00+09:00" pubdate data-updated="true">Jun 23<span>rd</span>, 2014</time></div>
-  
-</div>
-
-    <p>OAuth 2.0 では state パラメータってのがあって、それをちゃんと使わないと CSRF 脆弱性ができちゃうよって話は、<a href="http://www.slideshare.net/ritou/idcon17-oauth2-csrfprotectionritou">@ritou 先生のスライド</a>などでみなさん勉強したんではないでしょうか。state パラメータは RFC 6749 では RECOMMENDED 扱いで、REQUIRED ではありませんが、OAuth 2.0 をログインに使う場合は REQUIRED にすべきでしょう。OAuth 2.0 をログインに使うの、Token 置換攻撃とか Covert Redirect + Code 置換攻撃とか、いろんな罠がありますねぇ〜。</p>
-
-<p>OAuth 1.0 ならそんなことないのに&hellip;</p>
-
-<p>そう思ってた時期が、僕にもありました。</p>
-
-<p>でも @ritou 先生よく言ってるじゃないですか。「Twitter の OAuth 実装クソや」って。でね、ほんとにクソやったんすよ、コレが。</p>
-
-
-    
-    <a href="/blog/2014/06/23/csrf-on-twitter-login/" class="more-link">Read on &rarr;</a>
   </div>
 
 <div class="meta">

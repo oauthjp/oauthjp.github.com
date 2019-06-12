@@ -6,7 +6,7 @@
 	<title>OAuth.jp</title>
     <meta name="author" content="Nov Matake">
     
-	<meta name="description" content="Author: Nov Matake Date: Jul 4th, 2010 さて、ドメインが開いていたという安易なきっかけでスタートしたOAuth.jp、当然具体的に何をするかなんて決まってません。 ただ、以前からOpenIDコミュニティにおけるOpenID Foundation &hellip;">
+	<meta name="description" content="Author: Nov Matake Date: Aug 7th, 2010 @nov です。 自分で作ってる fb_graph という Facebook Graph API の Ruby ライブラリを OAuth 対応したついでに、Railsでサンプルアプリを作りました。 デモサイトはこちら &hellip;">
 	
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
@@ -93,6 +93,65 @@
 <!-- begin toload --> 
     <div id="content" class="inner">
         
+
+
+    <article class="post">
+  <h2 class="title">
+    
+    <a href="/blog/2010/08/07/facebookoauth-rails/">
+    
+      FacebookのOAuthを使うサンプルアプリ (Rails)</a>
+  </h2>
+  <div class="entry-content">
+    <div class="meta">
+  <div class="author">
+    Author: <a href="https://matake.jp">Nov Matake</a>
+  </div>
+  <div class="date">Date: 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2010-08-07T00:00:00+09:00" pubdate data-updated="true">Aug 7<span>th</span>, 2010</time></div>
+  
+</div>
+
+    <p><a href="http://twitter.com/nov">@nov</a> です。</p>
+
+
+<p>自分で作ってる <a href="http://github.com/nov/fb_graph">fb_graph</a> という Facebook Graph API の Ruby ライブラリを OAuth 対応したついでに、Railsでサンプルアプリを作りました。</p>
+
+
+<p><a href="http://fbgraphsample.heroku.com/">デモサイトはこちら。</a></p>
+
+
+<p><a href="http://github.com/nov/fb_graph_sample">ソースコードはこちら。</a></p>
+
+
+<p>ソースコード内には localhost:3000 で使える API Key&amp;Secret も埋め込んであるので、特に Facebook にアプリ登録しなくても動きます。（localhost:3000 以外で動かす場合は自分でアプリ登録してください）</p>
+
+
+<p>いまのところRailsのバージョンは3.0.0.RCです。</p>
+
+
+<p>app/models/facebook.rb と app/controllers/facebooks_controller.rb を見れば、Facebook 独自の JavaScript SDK と通常の OAuth2 の Web Server provile の使い方が分かるかと思います。</p>
+
+
+    
+    
+  </div>
+
+<div class="meta">
+  
+</div>
+</article>
 
 
     <article class="post">

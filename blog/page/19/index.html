@@ -6,7 +6,7 @@
 	<title>OAuth.jp</title>
     <meta name="author" content="Nov Matake">
     
-	<meta name="description" content="Author: Nov Matake Date: Dec 15th, 2010 2010/12/13にはてなが開発者向けサイトHatena Developer Centerを開始し、OAuthとOAuth対応の４つのAPI「はてなブックマークAtom API」「はてなダイアリー AtomPub &hellip;">
+	<meta name="description" content="Author: Nov Matake Date: Jan 31st, 2011 OAuth2 gemのインストール 現状OAuth2 gemはOAuth 2.0の古いspec (draft 0?) に準拠しているので、mixiがサポートしているdraft 10に対応したOAuth2 &hellip;">
 	
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
@@ -93,6 +93,68 @@
 <!-- begin toload --> 
     <div id="content" class="inner">
         
+
+
+    <article class="post">
+  <h2 class="title">
+    
+    <a href="/blog/2011/01/31/oauth2-gemmixi-graph-api/">
+    
+      OAuth2 Gemを使ってmixi Graph APIにアクセス</a>
+  </h2>
+  <div class="entry-content">
+    <div class="meta">
+  <div class="author">
+    Author: <a href="https://matake.jp">Nov Matake</a>
+  </div>
+  <div class="date">Date: 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-01-31T00:00:00+09:00" pubdate data-updated="true">Jan 31<span>st</span>, 2011</time></div>
+  
+</div>
+
+    <h2>OAuth2 gemのインストール</h2>
+
+
+<p>現状OAuth2 gemはOAuth 2.0の古いspec (draft 0?) に準拠しているので、mixiがサポートしているdraft 10に対応したOAuth2 gemをここからgit clone &amp; rake installする。</p>
+
+
+<p><a href="https://github.com/nov/oauth2"><a href="https://github.com/nov/oauth2">https://github.com/nov/oauth2</a></a></p>
+
+
+<p>あとはこんな感じ。</p>
+
+
+<p><a href="https://gist.github.com/803773"><a href="https://gist.github.com/803773">https://gist.github.com/803773</a></a></p>
+
+
+<h3>注意事項</h3>
+
+
+<p>mixiのドキュメントの「<a href="http://developer.mixi.co.jp/connect/mixi_graph_api/api_auth#toc-api1">認証認可手順 &gt; リフレッシュトークン、アクセストークンの入手</a>」によると、mixiのaccess tokenは15分でexpireされ、refresh tokenも「常に同意する」のチェック有無によって3ヶ月 or 6時間でexpireされるので、TwitterのOAuthの用にaccess tokenをずっと使い続けることはできません。</p>
+
+
+<p>あと、&#8221;w_voice&#8221; のパーミッションを取得しても、&#8221;r_voice&#8221; のパーミッションは付いてこないので注意。</p>
+
+
+    
+    
+  </div>
+
+<div class="meta">
+  
+</div>
+</article>
 
 
     <article class="post">
@@ -283,77 +345,6 @@
 </div>
 
     <p>@ritouです。  なぜか、Contributorになれる気がしないので、メールで投稿にチャレンジですｗ <br/>自分のブログで、OAuth 2.0ベースで考えられているOpenID Connectの仕様を少しまとめました。 <p></p> <a href="http://d.hatena.ne.jp/ritou/20100919/1284822456"><a href="http://d.hatena.ne.jp/ritou/20100919/1284822456"><a href="http://d.hatena.ne.jp/ritou/20100919/1284822456">http://d.hatena.ne.jp/ritou/20100919/1284822456</a></a></a>  OpenID Connectは次のバージョンのOpenID/OAuthの関係においてキーになる仕様だと思っています。 <br/>興味がある方はどーぞ。 <p></p> （投稿の仕方、これでいいのかなぁ。。。不安）</p>
-
-    
-    
-  </div>
-
-<div class="meta">
-  
-</div>
-</article>
-
-
-    <article class="post">
-  <h2 class="title">
-    
-    <a href="/blog/2010/09/19/live-apioauth-10/">
-    
-      サイボウズ Live APIがOAuth 1.0に対応したようです</a>
-  </h2>
-  <div class="entry-content">
-    <div class="meta">
-  <div class="author">
-    Author: <a href="https://matake.jp">Nov Matake</a>
-  </div>
-  <div class="date">Date: 
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2010-09-19T00:00:00+09:00" pubdate data-updated="true">Sep 19<span>th</span>, 2010</time></div>
-  
-</div>
-
-    <p>今朝Twitterで <a href="http://twitter.com/nakajiman/status/24887989061">@nakajiman</a> さんに教えて頂いたのですが、サイボウズ Live APIがOAuth 1.0を採用したようです。</p>
-
-
-<p>サイボウズ Live APIのドキュメントはこちらです。</p>
-
-
-<p><a href="https://developer.cybozulive.com/doc/current/pub/authorize.html"><a href="https://developer.cybozulive.com/doc/current/pub/authorize.html">https://developer.cybozulive.com/doc/current/pub/authorize.html</a></a></p>
-
-
-<p>ドキュメントの中に出てくる用語がRFC版のものとコミュニティ版のものとまじっていて混乱するかもしれませんが、ruby-oauth使うとこんな感じになります。</p>
-
-
-<p><strong>リクエストトークン (テンポラリクレデンシャル) 取得 &amp; ユーザ (リソースオーナー) をサイボウズLiveへリダイレクト</strong></p>
-
-
-<p><a href="https://gist.github.com/586267"><a href="https://gist.github.com/586267">https://gist.github.com/586267</a></a></p>
-
-
-<p><strong>アクセストークン (トークンクレデンシャル) 取得</strong></p>
-
-
-<p><a href="https://gist.github.com/586272"><a href="https://gist.github.com/586272">https://gist.github.com/586272</a></a></p>
-
-
-<p>xAuthもサポートしているようですが、ホワイトリストに関する記述はないですね。どのclientでも使える、のかな？あと、エラーを503で返されると、ライブラリは対応しきれないかも知れませんね。</p>
-
-
-<p>ちなみにここにあるアクセスレベルってのは、client単位でscopeが設定される (=Y!方式) ってことでしょうかね？</p>
-
-
-<p><a href="https://developer.cybozulive.com/doc/current/pub/overview.html"><a href="https://developer.cybozulive.com/doc/current/pub/overview.html">https://developer.cybozulive.com/doc/current/pub/overview.html</a></a></p>
-
 
     
     

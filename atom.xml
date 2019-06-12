@@ -4,7 +4,7 @@
   <title><![CDATA[OAuth.jp]]></title>
   <link href="https://oauth.jp/atom.xml" rel="self"/>
   <link href="https://oauth.jp/"/>
-  <updated>2019-06-08T22:18:49+09:00</updated>
+  <updated>2019-06-12T16:28:25+09:00</updated>
   <id>https://oauth.jp/</id>
   <author>
     <name><![CDATA[Nov Matake]]></name>
@@ -12,6 +12,236 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Sign in With Apple の特徴分析 (2)]]></title>
+    <link href="https://oauth.jp/blog/2019/06/12/sign-in-with-apple-analysis-2/"/>
+    <updated>2019-06-12T15:14:00+09:00</updated>
+    <id>https://oauth.jp/blog/2019/06/12/sign-in-with-apple-analysis-2</id>
+    <content type="html"><![CDATA[<p><a href="https://oauth.jp/blog/2019/06/08/sign-in-with-apple-analysis/">Sign in With Apple の特徴分析 (1)</a> のつづき。</p>
+
+<h2>各種 ID とその対象 (?) 範囲</h2>
+
+<h3>Developer が使う IDs 等</h3>
+
+<ul>
+<li>Team ID
+
+<ul>
+<li>個人向け Apple Developer Account では Developer Account に1つ</li>
+<li>Enterprise 向け Apple Developer Account での話はしらない</li>
+</ul>
+</li>
+<li>App ID
+
+<ul>
+<li>App Store に並べるアプリ毎に1つ</li>
+<li>MacOS App と iOS App では別 App ID</li>
+<li>Native SDK で Sign in with Apple する場合の Client ID に相当</li>
+<li>App ID に対して Sign in with Apple の設定をする際には以下が必要
+
+<ul>
+<li>Primary App ID の指定</li>
+</ul>
+</li>
+<li>Sign in with Apple の設定を通じて Primary App ID に紐づく</li>
+</ul>
+</li>
+<li>Service ID
+
+<ul>
+<li>App Store に並べるアプリには紐づかない ID</li>
+<li>現状この Service ID を使ってできることは Sign in with Apple のみ</li>
+<li>Service ID に対して Sign in with Apple の設定をする際には以下が必要
+
+<ul>
+<li>Primary App ID の指定</li>
+<li>Web Domain の設定と Domain Verification</li>
+<li>Return URIs (= redirect_uri) の指定
+
+<ul>
+<li>複数可</li>
+<li>上記 Verified Domain 外の URL でも指定可
+
+<ul>
+<li>Domain Verification の存在意義は不明..</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Native SDK の外で Sign in with Apple する場合の Client ID に相当</li>
+<li>Sign in with Apple の設定を通じて Primary App ID に紐づく</li>
+</ul>
+</li>
+<li>Primary App ID
+
+<ul>
+<li>App ID および Service ID に対して Sign in with Apple の設定をする際に指定</li>
+<li>Primary App ID 単位で Key を発行</li>
+</ul>
+</li>
+<li>Key
+
+<ul>
+<li>Client Secret に指定する JWT に署名するための EC 秘密鍵</li>
+<li>Primary App ID に紐づく</li>
+<li>1つの Primary App ID に複数の Key を発行可能</li>
+</ul>
+</li>
+<li>Client Secret に指定する JWT
+
+<ul>
+<li>iss
+
+<ul>
+<li>Team ID</li>
+</ul>
+</li>
+<li>aud
+
+<ul>
+<li>Apple IdP の Issuer Identifier</li>
+</ul>
+</li>
+<li>sub
+
+<ul>
+<li>Native SDK で code を受け取った場合は当該アプリの App ID</li>
+<li>Native SDK 以外で code を受け取った場合は当該サービスの Service ID</li>
+<li>code を access_token と交換する役目を負う Backend Server の Client ID とは限らない点に注意</li>
+</ul>
+</li>
+<li>iat
+
+<ul>
+<li>現在時刻 (UNIX Timestamp)</li>
+</ul>
+</li>
+<li>exp
+
+<ul>
+<li>現在より未来かつ6ヶ月以内の時刻 (UNIX Timestamp)</li>
+<li>通常は Token Request 毎に動的に JWT を生成し数分後くらいの exp を指定するものと思われる</li>
+</ul>
+</li>
+<li>署名鍵
+
+<ul>
+<li>当該 Client Secret JWT の sub に紐づく Primary App ID に紐づいた Key</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Private Email Relay Service 設定
+
+<ul>
+<li>Team ID に紐づく</li>
+<li>当該 Team ID 配下の全 App ID / Service ID に対して発行された Private Email Address にメール送信できる送信元ドメイン &amp; メールアドレスを指定</li>
+<li>10 ドメインまでしか登録できない</li>
+</ul>
+</li>
+</ul>
+
+
+<h2>User に紐づく IDs 等</h2>
+
+<ul>
+<li>ID Token の sub
+
+<ul>
+<li>Team ID 単位で異なる PPID</li>
+</ul>
+</li>
+<li>Private Email
+
+<ul>
+<li>現状これがどの単位で異なる値となるのか不明 (実機の iOS 13 beta も Simulator も挙動が不安定)
+
+<ul>
+<li>Team ID 単位？</li>
+<li>Primary App ID 単位？ &lt;= Revoke 単位見る限りたぶんこれ</li>
+<li>App ID 単位？</li>
+<li>Primary App ID 単位？</li>
+</ul>
+</li>
+<li>Revoke 毎に変わる
+
+<ul>
+<li>sub は Revoke 前後でも変わらないんだしメアドだけ変わる意味は無いのだが&hellip;</li>
+</ul>
+</li>
+<li>単一 Team ID 内に複数の Primary App ID がある場合は単一 sub に複数 Private Email を紐づけて保存する必要あり
+
+<ul>
+<li>sub は Team ID 単位でメアドは Primary App ID 単位であることからくる現象
+
+<ul>
+<li>注) あくまで Private Email が Primary App ID 単位で発行されるという前提で話をしている</li>
+</ul>
+</li>
+<li>Email の転送 ON/OFF 設定は Revokation 単位 (= Primary App ID 単位) なので、転送 OFF したつもりが別アプリ向けメアドにメール来たりすると問題</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Client Access の Revokation
+
+<ul>
+<li>Primary App ID 単位</li>
+</ul>
+</li>
+</ul>
+
+
+<h2>その他調べるべき項目</h2>
+
+<ul>
+<li>Touch ID / Face ID 使えるパターン・使えないパターン
+
+<ul>
+<li>iOS
+
+<ul>
+<li>SDK (ASAuthorizationAppleID*) => 使える</li>
+<li>ASWebAuthenticationSession => <em>要調査</em></li>
+<li>SFAuthenticationSession => <em>要調査</em></li>
+<li>SFSafariViewController => <em>要調査</em></li>
+<li>WKWebView => <em>要調査</em></li>
+<li>UIWebView => <em>要調査？</em> まだこれいるの？</li>
+</ul>
+</li>
+<li>MacOS
+
+<ul>
+<li>SDK (ASAuthorizationAppleID<em>) => </em>要調査* たぶん使える</li>
+<li>ASWebAuthenticationSession => <em>要調査</em></li>
+<li>WebView => <em>要調査</em> そもそも MacOS の場合の WebView とかさっぱりわからん</li>
+</ul>
+</li>
+<li>Safari
+
+<ul>
+<li>w/ Apple JS SDK => 使える</li>
+<li>w/o Apple JS SDK => 使えない
+
+<ul>
+<li>ただし近い将来 appleid.apple.com ドメイン全体で Touch ID / Face ID が使えるようになる兆しあり</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Android => 使えない</li>
+<li>Safari 以外のブラウザ => 使えない</li>
+</ul>
+</li>
+</ul>
+
+
+<p>ということで、要調査のところはそろそろめんどくさくなってきたんでわかった人教えていただけるとありがたいですw</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Sign in with Apple の特徴分析 (1)]]></title>
@@ -165,6 +395,9 @@
 <p><a href="https://news.yahoo.co.jp/byline/fujisiro/20190604-00128752/">ユーザーの行動や消費を“格付け”「Yahoo!スコア」の作成・利用を拒否する方法</a></p>
 
 <p>それではいい週末を。</p>
+
+<p>追記)<br/>
+<a href="https://oauth.jp/blog/2019/06/08/sign-in-with-apple-analysis-2/">Sign in With Apple の特徴分析 (2)</a> 書きました。</p>
 ]]></content>
   </entry>
   
@@ -761,7 +994,7 @@
 
 <p>動作確認用のユーザーも作っておきましたので、これが正常に動いてる間はご自由にお使いください。</p>
 
-<p>Username: <a href="&#109;&#97;&#105;&#108;&#x74;&#111;&#x3a;&#121;&#111;&#117;&#64;&#115;&#116;&#x73;&#52;&#98;&#50;&#x63;&#46;&#111;&#x6e;&#x6d;&#x69;&#x63;&#114;&#x6f;&#x73;&#111;&#102;&#x74;&#46;&#x63;&#x6f;&#109;">&#x79;&#x6f;&#117;&#64;&#x73;&#116;&#115;&#x34;&#98;&#50;&#99;&#x2e;&#111;&#110;&#109;&#x69;&#x63;&#x72;&#111;&#115;&#111;&#102;&#x74;&#x2e;&#99;&#x6f;&#109;</a>
+<p>Username: <a href="&#x6d;&#97;&#x69;&#x6c;&#x74;&#x6f;&#x3a;&#x79;&#x6f;&#117;&#64;&#115;&#116;&#x73;&#x34;&#98;&#x32;&#x63;&#x2e;&#x6f;&#110;&#x6d;&#105;&#99;&#x72;&#x6f;&#x73;&#x6f;&#102;&#x74;&#x2e;&#x63;&#x6f;&#x6d;">&#121;&#111;&#117;&#x40;&#115;&#116;&#x73;&#52;&#98;&#50;&#99;&#x2e;&#111;&#x6e;&#x6d;&#x69;&#99;&#x72;&#111;&#x73;&#x6f;&#102;&#116;&#46;&#x63;&#111;&#x6d;</a>
 Password: ]6]yzxXYG7uruM4p</p>
 
 <p>動かなくなったら、あきらめて自分で Azure AD B2C 環境セットアップしてください。</p>
@@ -914,13 +1147,13 @@ Password: ]6]yzxXYG7uruM4p</p>
 
 <p>あと、Email 指定してもそのメアドのユーザーにログインできるわけでもないです。</p>
 
-<p><a href="&#x6d;&#x61;&#105;&#x6c;&#x74;&#111;&#x3a;&#x6e;&#x6f;&#118;&#64;&#x65;&#120;&#97;&#x6d;&#x70;&#x6c;&#x65;&#46;&#99;&#x6f;&#x6d;">&#110;&#x6f;&#118;&#64;&#x65;&#x78;&#97;&#109;&#x70;&#x6c;&#101;&#46;&#99;&#x6f;&#109;</a> の NameID を持つ SAML Assertion で、<a href="&#x6d;&#97;&#x69;&#x6c;&#116;&#111;&#x3a;&#x6e;&#x6f;&#118;&#64;&#109;&#97;&#116;&#x61;&#x6b;&#101;&#46;&#x6a;&#x70;">&#110;&#x6f;&#x76;&#64;&#109;&#97;&#116;&#97;&#107;&#101;&#46;&#x6a;&#112;</a> の GitHub アカウントにログインできたりします。</p>
+<p><a href="&#109;&#x61;&#105;&#x6c;&#116;&#x6f;&#x3a;&#110;&#x6f;&#118;&#x40;&#101;&#120;&#x61;&#x6d;&#x70;&#108;&#x65;&#46;&#x63;&#x6f;&#109;">&#x6e;&#111;&#118;&#x40;&#101;&#x78;&#97;&#109;&#112;&#108;&#x65;&#46;&#99;&#x6f;&#x6d;</a> の NameID を持つ SAML Assertion で、<a href="&#x6d;&#x61;&#x69;&#x6c;&#116;&#x6f;&#58;&#110;&#111;&#x76;&#64;&#x6d;&#97;&#x74;&#97;&#107;&#101;&#x2e;&#106;&#x70;">&#x6e;&#111;&#x76;&#x40;&#109;&#97;&#116;&#x61;&#107;&#x65;&#46;&#x6a;&#112;</a> の GitHub アカウントにログインできたりします。</p>
 
 <p>SAML Federation とか言うてるけど、結局既存の GitHub.com アカウントに SAML IdP 側のアカウントを Link するだけなんですよ。</p>
 
 <p>その紐付けは、SAML での初回ログイン時に GitHub.com 側の ID &amp; Password 入力して行います。</p>
 
-<p>つまり、<a href="&#x6d;&#97;&#x69;&#x6c;&#116;&#111;&#x3a;&#110;&#111;&#x76;&#x40;&#101;&#x78;&#97;&#109;&#x70;&#108;&#x65;&#x2e;&#x63;&#111;&#109;">&#x6e;&#111;&#118;&#64;&#101;&#120;&#97;&#x6d;&#x70;&#108;&#101;&#46;&#x63;&#111;&#109;</a> の NameID を持つ SAML Assertion をどの GitHub アカウントに紐づけるかは、エンドユーザーが決定権を持っています。</p>
+<p>つまり、<a href="&#x6d;&#x61;&#x69;&#108;&#x74;&#x6f;&#58;&#110;&#x6f;&#x76;&#64;&#101;&#120;&#97;&#109;&#x70;&#x6c;&#x65;&#46;&#x63;&#111;&#109;">&#x6e;&#111;&#118;&#64;&#101;&#120;&#x61;&#109;&#112;&#108;&#x65;&#x2e;&#x63;&#111;&#109;</a> の NameID を持つ SAML Assertion をどの GitHub アカウントに紐づけるかは、エンドユーザーが決定権を持っています。</p>
 
 <p>情シスじゃないです。</p>
 
@@ -2079,381 +2312,6 @@ Mac から Remote Desktop 経由でいじりたかったんでね。</p>
 <p>早速該当 FB Page にメッセージを送ってみましょう。Echo が返ってくると思います。</p>
 
 <p>さてと、YAuth.jp の問い合わせ対応 Bot を作ってみるかな。</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Windows Server 2016 版 ADFS を触ってみた]]></title>
-    <link href="https://oauth.jp/blog/2016/04/17/oidc-on-adfs-2016/"/>
-    <updated>2016-04-17T19:38:00+09:00</updated>
-    <id>https://oauth.jp/blog/2016/04/17/oidc-on-adfs-2016</id>
-    <content type="html"><![CDATA[<p>MVP になったことですし、早速 Azure 常に Windows Server 2016 の VM 立ち上げて、次期バージョンの ADFS を動かしてみました。</p>
-
-<p>想定ユースケースは、Native App とその Backend Server があって、Backend Server が Native App 向けに提供している API 用の Access Token も、ADFS が発行するというものです。</p>
-
-<p>まさしく今後エンプラで増えていくであろうパターンですね。</p>
-
-<h2>Setup Hybrid Client on ADFS</h2>
-
-<p>ADFS Manager に &ldquo;Application Groups&rdquo; っていう設定が増えてるんで、そこから &ldquo;Native Application and Web API&rdquo; ってのを選択して、Connect RP (= OAuth Client) を登録します。</p>
-
-<p><img src="https://oauth.jp/images/posts/adfs/hybrid-client-new.png" alt="New Hybrid Client" /></p>
-
-<p>スクショいっぱい撮るのが面倒なのですっ飛ばしますが、こんな感じで Native App とその Backend Server を ADFS に &ldquo;Application Group&rdquo; として登録しました。</p>
-
-<p><img src="https://oauth.jp/images/posts/adfs/hybrid-client.png" alt="Registered Hybrid Client" /></p>
-
-<p>ちなみに、この時 Backend には特に Native App と別の client_id が発行されたりはしません。</p>
-
-<p>ここまでで、ADFS 側の準備は完了です。以降、<a href="https://gist.github.com/nov/3f284aa8cec5ed6bc332e9a5c9d93851">こちらの gist</a> に沿って、Step by Step で見ていきます。</p>
-
-<!-- more -->
-
-
-<h2>GET /.well-known/openid-configuration</h2>
-
-<p>まずは ADFS の OpenID Configuration を取得しましょう。</p>
-
-<p>あいにく ADFS の Webfinger は<a href="https://gist.github.com/nov/577c25a1ece53bc97d962d5e74c06496">まともに動いてる気配がしない</a>ので、issuer は <code>https://&lt;your-adfs-domain&gt;/adfs</code> をハードコードします。</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">config</span> <span class="o">=</span> <span class="ss">OpenIDConnect</span><span class="p">:</span><span class="ss">:Discovery</span><span class="o">::</span><span class="ss">Provider</span><span class="p">:</span><span class="ss">:Config</span><span class="o">.</span><span class="n">discover!</span><span class="p">(</span>
-</span><span class='line'>  <span class="s1">&#39;https://sts.example.com/adfs&#39;</span>
-</span><span class='line'><span class="p">)</span> <span class="c1"># GET https://sts.example.com/adfs/.well-known/openid-configuration</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>すると、こんな JSON が返ってきます。</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-<span class='line-number'>32</span>
-<span class='line-number'>33</span>
-<span class='line-number'>34</span>
-<span class='line-number'>35</span>
-<span class='line-number'>36</span>
-<span class='line-number'>37</span>
-<span class='line-number'>38</span>
-<span class='line-number'>39</span>
-<span class='line-number'>40</span>
-<span class='line-number'>41</span>
-<span class='line-number'>42</span>
-<span class='line-number'>43</span>
-<span class='line-number'>44</span>
-<span class='line-number'>45</span>
-<span class='line-number'>46</span>
-<span class='line-number'>47</span>
-<span class='line-number'>48</span>
-<span class='line-number'>49</span>
-<span class='line-number'>50</span>
-<span class='line-number'>51</span>
-<span class='line-number'>52</span>
-<span class='line-number'>53</span>
-<span class='line-number'>54</span>
-<span class='line-number'>55</span>
-<span class='line-number'>56</span>
-<span class='line-number'>57</span>
-<span class='line-number'>58</span>
-<span class='line-number'>59</span>
-<span class='line-number'>60</span>
-<span class='line-number'>61</span>
-<span class='line-number'>62</span>
-<span class='line-number'>63</span>
-</pre></td><td class='code'><pre><code class='json'><span class='line'><span class="p">{</span>
-</span><span class='line'>  <span class="nt">&quot;issuer&quot;</span><span class="p">:</span> <span class="s2">&quot;https://sts.example.com/adfs&quot;</span><span class="p">,</span>
-</span><span class='line'>  <span class="nt">&quot;authorization_endpoint&quot;</span><span class="p">:</span> <span class="s2">&quot;https://sts.example.com/adfs/oauth2/authorize/&quot;</span><span class="p">,</span>
-</span><span class='line'>  <span class="nt">&quot;token_endpoint&quot;</span><span class="p">:</span> <span class="s2">&quot;https://sts.example.com/adfs/oauth2/token/&quot;</span><span class="p">,</span>
-</span><span class='line'>  <span class="nt">&quot;jwks_uri&quot;</span><span class="p">:</span> <span class="s2">&quot;https://sts.example.com/adfs/discovery/keys&quot;</span><span class="p">,</span>
-</span><span class='line'>  <span class="nt">&quot;token_endpoint_auth_methods_supported&quot;</span><span class="p">:</span> <span class="p">[</span>
-</span><span class='line'>    <span class="s2">&quot;client_secret_post&quot;</span><span class="p">,</span>
-</span><span class='line'>    <span class="s2">&quot;client_secret_basic&quot;</span><span class="p">,</span>
-</span><span class='line'>    <span class="s2">&quot;private_key_jwt&quot;</span><span class="p">,</span>
-</span><span class='line'>    <span class="s2">&quot;windows_client_authentication&quot;</span>
-</span><span class='line'>  <span class="p">],</span>
-</span><span class='line'>  <span class="nt">&quot;response_types_supported&quot;</span><span class="p">:</span> <span class="p">[</span>
-</span><span class='line'>    <span class="s2">&quot;code&quot;</span><span class="p">,</span>
-</span><span class='line'>    <span class="s2">&quot;id_token&quot;</span><span class="p">,</span>
-</span><span class='line'>    <span class="s2">&quot;code id_token&quot;</span><span class="p">,</span>
-</span><span class='line'>    <span class="s2">&quot;token id_token&quot;</span>
-</span><span class='line'>  <span class="p">],</span>
-</span><span class='line'>  <span class="nt">&quot;response_modes_supported&quot;</span><span class="p">:</span> <span class="p">[</span>
-</span><span class='line'>    <span class="s2">&quot;query&quot;</span><span class="p">,</span>
-</span><span class='line'>    <span class="s2">&quot;fragment&quot;</span><span class="p">,</span>
-</span><span class='line'>    <span class="s2">&quot;form_post&quot;</span>
-</span><span class='line'>  <span class="p">],</span>
-</span><span class='line'>  <span class="nt">&quot;grant_types_supported&quot;</span><span class="p">:</span> <span class="p">[</span>
-</span><span class='line'>    <span class="s2">&quot;authorization_code&quot;</span><span class="p">,</span>
-</span><span class='line'>    <span class="s2">&quot;refresh_token&quot;</span><span class="p">,</span>
-</span><span class='line'>    <span class="s2">&quot;client_credentials&quot;</span><span class="p">,</span>
-</span><span class='line'>    <span class="s2">&quot;urn:ietf:params:oauth:grant-type:jwt-bearer&quot;</span><span class="p">,</span>
-</span><span class='line'>    <span class="s2">&quot;implicit&quot;</span><span class="p">,</span>
-</span><span class='line'>    <span class="s2">&quot;password&quot;</span><span class="p">,</span>
-</span><span class='line'>    <span class="s2">&quot;srv_challenge&quot;</span>
-</span><span class='line'>  <span class="p">],</span>
-</span><span class='line'>  <span class="nt">&quot;subject_types_supported&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;pairwise&quot;</span><span class="p">],</span>
-</span><span class='line'>  <span class="nt">&quot;scopes_supported&quot;</span><span class="p">:</span> <span class="p">[</span>
-</span><span class='line'>    <span class="s2">&quot;aza&quot;</span><span class="p">,</span>
-</span><span class='line'>    <span class="s2">&quot;vpn_cert&quot;</span><span class="p">,</span>
-</span><span class='line'>    <span class="s2">&quot;user_impersonation&quot;</span><span class="p">,</span>
-</span><span class='line'>    <span class="s2">&quot;openid&quot;</span><span class="p">,</span>
-</span><span class='line'>    <span class="s2">&quot;profile&quot;</span><span class="p">,</span>
-</span><span class='line'>    <span class="s2">&quot;admin-only&quot;</span><span class="p">,</span>
-</span><span class='line'>    <span class="s2">&quot;email&quot;</span><span class="p">,</span>
-</span><span class='line'>    <span class="s2">&quot;logon_cert&quot;</span>
-</span><span class='line'>  <span class="p">],</span>
-</span><span class='line'>  <span class="nt">&quot;id_token_signing_alg_values_supported&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;RS256&quot;</span><span class="p">],</span>
-</span><span class='line'>  <span class="nt">&quot;token_endpoint_auth_signing_alg_values_supported&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;RS256&quot;</span><span class="p">],</span>
-</span><span class='line'>  <span class="nt">&quot;access_token_issuer&quot;</span><span class="p">:</span> <span class="s2">&quot;http://sts.example.com/adfs/services/trust&quot;</span><span class="p">,</span>
-</span><span class='line'>  <span class="nt">&quot;claims_supported&quot;</span><span class="p">:</span> <span class="p">[</span>
-</span><span class='line'>    <span class="s2">&quot;aud&quot;</span><span class="p">,</span>
-</span><span class='line'>    <span class="s2">&quot;iss&quot;</span><span class="p">,</span>
-</span><span class='line'>    <span class="s2">&quot;iat&quot;</span><span class="p">,</span>
-</span><span class='line'>    <span class="s2">&quot;exp&quot;</span><span class="p">,</span>
-</span><span class='line'>    <span class="s2">&quot;auth_time&quot;</span><span class="p">,</span>
-</span><span class='line'>    <span class="s2">&quot;nonce&quot;</span><span class="p">,</span>
-</span><span class='line'>    <span class="s2">&quot;at_hash&quot;</span><span class="p">,</span>
-</span><span class='line'>    <span class="s2">&quot;c_hash&quot;</span><span class="p">,</span>
-</span><span class='line'>    <span class="s2">&quot;sub&quot;</span><span class="p">,</span>
-</span><span class='line'>    <span class="s2">&quot;upn&quot;</span><span class="p">,</span>
-</span><span class='line'>    <span class="s2">&quot;unique_name&quot;</span><span class="p">,</span>
-</span><span class='line'>    <span class="s2">&quot;pwd_url&quot;</span><span class="p">,</span>
-</span><span class='line'>    <span class="s2">&quot;pwd_exp&quot;</span>
-</span><span class='line'>  <span class="p">],</span>
-</span><span class='line'>  <span class="nt">&quot;microsoft_multi_refresh_token&quot;</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
-</span><span class='line'>  <span class="nt">&quot;userinfo_endpoint&quot;</span><span class="p">:</span> <span class="s2">&quot;https://sts.example.com/adfs/userinfo&quot;</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p><code>response_types_supported</code> 見る限り、<code>code token</code> とか <code>code token id_token</code> はサポートされてないですね。なんででしょうね？</p>
-
-<p>まぁ、気にせず進みましょう。</p>
-
-<h2>GET /oauth2/authorize</h2>
-
-<p>取得した OP Config をもとに、Authorization Request を発行します。</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">client</span> <span class="o">=</span> <span class="ss">OpenIDConnect</span><span class="p">:</span><span class="ss">:Client</span><span class="o">.</span><span class="n">new</span><span class="p">(</span>
-</span><span class='line'>  <span class="ss">identifier</span><span class="p">:</span> <span class="s1">&#39;2940bc16-983c-41ca-b373-4c6045278627&#39;</span><span class="p">,</span> <span class="c1"># Native App&#39;s client_id</span>
-</span><span class='line'>  <span class="n">redirect_uri</span><span class="p">:</span> <span class="s1">&#39;custom-schema://foobar&#39;</span><span class="p">,</span>
-</span><span class='line'>  <span class="n">authorization_endpoint</span><span class="p">:</span> <span class="n">config</span><span class="o">.</span><span class="n">authorization_endpoint</span><span class="p">,</span>
-</span><span class='line'>  <span class="n">token_endpoint</span><span class="p">:</span> <span class="n">config</span><span class="o">.</span><span class="n">token_endpoint</span><span class="p">,</span>
-</span><span class='line'>  <span class="n">userinfo_endpoint</span><span class="p">:</span> <span class="n">config</span><span class="o">.</span><span class="n">userinfo_endpoint</span>
-</span><span class='line'><span class="p">)</span>
-</span><span class='line'>
-</span><span class='line'><span class="n">authorization_uri</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">authorization_uri</span><span class="p">(</span>
-</span><span class='line'>  <span class="ss">scope</span><span class="p">:</span> <span class="o">[</span><span class="ss">:openid</span><span class="p">,</span> <span class="ss">:email</span><span class="p">,</span> <span class="ss">:profile</span><span class="o">]</span>
-</span><span class='line'><span class="p">)</span>
-</span><span class='line'><span class="c1"># =&gt; https://sts.example.com/adfs/oauth2/authorize/?</span>
-</span><span class='line'><span class="c1">#            client_id=2940bc16-983c-41ca-b373-4c6045278627&amp;</span>
-</span><span class='line'><span class="c1">#            redirect_uri=custom-schema%3A%2F%2Ffoobar&amp;</span>
-</span><span class='line'><span class="c1">#            response_type=code&amp;</span>
-</span><span class='line'><span class="c1">#            scope=openid+email+profile</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>この URL をブラウザで開くと、ADFS のログイン画面が表示されて、ログインしたら特に同意画面とかはなく <code>custom-schema://foobar</code> にリダイレクトして戻ってきます。</p>
-
-<p>リダイレクト URL の Query には code がついてるので、そいつコピーします。</p>
-
-<h2>GET /oauth2/token</h2>
-
-<p>取得した code を使って、Access Token を取得します。</p>
-
-<p>今回は Native App 向けに <code>response_type=code</code> を指定してるので、client_secret なしで Access Token が取得できます。(ID Token も同時に発行されます)</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">client</span><span class="o">.</span><span class="n">authorization_code</span> <span class="o">=</span> <span class="n">code</span>
-</span><span class='line'><span class="n">token</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">access_token!</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>取得した Access Token は JWT になっているので、Payload を見てみましょう。<code>aud</code> が <code>urn:microsoft:userinfo</code> になっています。
-あと、Authorization Request では <code>openid email profile</code> を指定したはずなのに、ここでは <code>scp</code> (scopes) が <code>openid</code> だけになってますね。</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-</pre></td><td class='code'><pre><code class='json'><span class='line'><span class="p">{</span>
-</span><span class='line'>  <span class="nt">&quot;aud&quot;</span><span class="p">:</span> <span class="s2">&quot;urn:microsoft:userinfo&quot;</span><span class="p">,</span>
-</span><span class='line'>  <span class="nt">&quot;iss&quot;</span><span class="p">:</span> <span class="s2">&quot;http://sts.example.com/adfs/services/trust&quot;</span><span class="p">,</span>
-</span><span class='line'>  <span class="nt">&quot;iat&quot;</span><span class="p">:</span> <span class="mi">1460887152</span><span class="p">,</span>
-</span><span class='line'>  <span class="nt">&quot;exp&quot;</span><span class="p">:</span> <span class="mi">1460890752</span><span class="p">,</span>
-</span><span class='line'>  <span class="nt">&quot;apptype&quot;</span><span class="p">:</span> <span class="s2">&quot;Public&quot;</span><span class="p">,</span>
-</span><span class='line'>  <span class="nt">&quot;appid&quot;</span><span class="p">:</span> <span class="s2">&quot;2940bc16-983c-41ca-b373-4c6045278627&quot;</span><span class="p">,</span>
-</span><span class='line'>  <span class="nt">&quot;authmethod&quot;</span><span class="p">:</span> <span class="s2">&quot;urn:oasis:names:tc:SAML:2.0:ac:classes:PasswordProtectedTransport&quot;</span><span class="p">,</span>
-</span><span class='line'>  <span class="nt">&quot;auth_time&quot;</span><span class="p">:</span> <span class="s2">&quot;2016-04-17T09:37:20.197Z&quot;</span><span class="p">,</span>
-</span><span class='line'>  <span class="nt">&quot;ver&quot;</span><span class="p">:</span> <span class="s2">&quot;1.0&quot;</span><span class="p">,</span>
-</span><span class='line'>  <span class="nt">&quot;scp&quot;</span><span class="p">:</span> <span class="s2">&quot;openid&quot;</span><span class="p">,</span>
-</span><span class='line'>  <span class="nt">&quot;sub&quot;</span><span class="p">:</span> <span class="s2">&quot;BsG1N+rcilM2dnBDB7kyha6YglKD3d9qcwbCixQEGlQ=&quot;</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>GET /userinfo</h2>
-
-<p>では UserInfo を取得します。</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">token</span><span class="o">.</span><span class="n">userinfo!</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p><code>email profile</code> の両 scope がどこかにいってしまったので、案の定 <code>sub</code> しか返ってきませんね。</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='json'><span class='line'><span class="p">{</span>
-</span><span class='line'>  <span class="nt">&quot;sub&quot;</span><span class="p">:</span> <span class="s2">&quot;BsG1N+rcilM2dnBDB7kyha6YglKD3d9qcwbCixQEGlQ=&quot;</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p><code>sub</code> だけなら Access Token にも入ってたし、UserInfo Endpoint いらねんじゃね？とか思いますが、まぁ Windows Server 2016 リリース時にはなんか変わってるかもですね。</p>
-
-<h2>GET /oauth2/token (for Backend API)</h2>
-
-<p>さて、ここまでは普通の OpenID Connect / OAuth2 のフローでしたが、いよいよ Native App の Backend API 用の Access Token を取得します。</p>
-
-<p>先ほど Access Token &amp; ID Token を取得した際に、Refresh Token も取得していたので、この Refresh Token を使って <code>resource</code> パラメータに ADFS に登録しておいた Backend API の Identifer を指定します。</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">client</span><span class="o">.</span><span class="n">refresh_token</span> <span class="o">=</span> <span class="n">token</span><span class="o">.</span><span class="n">refresh_token</span>
-</span><span class='line'><span class="n">token2</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">access_token!</span><span class="p">(</span>
-</span><span class='line'>  <span class="ss">resource</span><span class="p">:</span> <span class="s1">&#39;http://backend.dev&#39;</span>
-</span><span class='line'><span class="p">)</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>すると、また JWT-formatted な Access Token が発行されるので、Payload を確認します。</p>
-
-<p><code>aud</code> が <code>http://backend.dev</code> に変わっていますね。</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-</pre></td><td class='code'><pre><code class='json'><span class='line'><span class="p">{</span>
-</span><span class='line'>  <span class="nt">&quot;aud&quot;</span><span class="p">:</span> <span class="s2">&quot;http://backend.dev&quot;</span><span class="p">,</span>
-</span><span class='line'>  <span class="nt">&quot;iss&quot;</span><span class="p">:</span> <span class="s2">&quot;http://sts.example.com/adfs/services/trust&quot;</span><span class="p">,</span>
-</span><span class='line'>  <span class="nt">&quot;iat&quot;</span><span class="p">:</span> <span class="mi">1460886940</span><span class="p">,</span>
-</span><span class='line'>  <span class="nt">&quot;exp&quot;</span><span class="p">:</span> <span class="mi">1460890540</span><span class="p">,</span>
-</span><span class='line'>  <span class="nt">&quot;apptype&quot;</span><span class="p">:</span> <span class="s2">&quot;Public&quot;</span><span class="p">,</span>
-</span><span class='line'>  <span class="nt">&quot;appid&quot;</span><span class="p">:</span> <span class="s2">&quot;2940bc16-983c-41ca-b373-4c6045278627&quot;</span><span class="p">,</span>
-</span><span class='line'>  <span class="nt">&quot;authmethod&quot;</span><span class="p">:</span> <span class="s2">&quot;urn:oasis:names:tc:SAML:2.0:ac:classes:PasswordProtectedTransport&quot;</span><span class="p">,</span>
-</span><span class='line'>  <span class="nt">&quot;auth_time&quot;</span><span class="p">:</span> <span class="s2">&quot;2016-04-17T09:37:20.197Z&quot;</span><span class="p">,</span>
-</span><span class='line'>  <span class="nt">&quot;ver&quot;</span><span class="p">:</span> <span class="s2">&quot;1.0&quot;</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>Backend API Access</h2>
-
-<p>あとは、Backend API 側では <code>iss=http://sts.example.com/adfs/services/trust</code> かつ <code>aud=http://backend.dev</code> な Access Token を受け入れるだけですね。</p>
-
-<p>Backend API 側では、OP Config の <code>jwks_uri</code> から JWT の署名検証用の公開鍵 (JWK-formatted) を取得して、Access Token の署名を検証するのを忘れずに。</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-</pre></td><td class='code'><pre><code class='json'><span class='line'><span class="err">//</span> <span class="err">https://sts.example.com/adfs/discovery/keys</span>
-</span><span class='line'><span class="p">{</span>
-</span><span class='line'>  <span class="nt">&quot;keys&quot;</span><span class="p">:</span> <span class="p">[{</span>
-</span><span class='line'>    <span class="nt">&quot;kty&quot;</span><span class="p">:</span> <span class="s2">&quot;RSA&quot;</span><span class="p">,</span>
-</span><span class='line'>    <span class="nt">&quot;use&quot;</span><span class="p">:</span> <span class="s2">&quot;sig&quot;</span><span class="p">,</span>
-</span><span class='line'>    <span class="nt">&quot;alg&quot;</span><span class="p">:</span> <span class="s2">&quot;RS256&quot;</span><span class="p">,</span>
-</span><span class='line'>    <span class="nt">&quot;kid&quot;</span><span class="p">:</span> <span class="s2">&quot;B1B8yZ-HAp7g2iz8D6LO3X2gOeI&quot;</span><span class="p">,</span>
-</span><span class='line'>    <span class="nt">&quot;x5t&quot;</span><span class="p">:</span> <span class="s2">&quot;B1B8yZ-HAp7g2iz8D6LO3X2gOeI&quot;</span><span class="p">,</span>
-</span><span class='line'>    <span class="nt">&quot;n&quot;</span><span class="p">:</span> <span class="s2">&quot;1ag4fTO65qrnmUENL4K4ZK8fchrV7BbTNfaHIfwT1nFuIO-4C8lh3VkWykIlUwd0ANWwQsY75Xb5ZC8P67QnXexV8CoXu5jHp2lsHm4Fhq75QEpRql7OpamOKBFqPtWvBneWTZOCnr1SrWR9DjBWnfRhMKr-4Oleaqp--YCIBaIiVaJDx6YqLKmTn5UeFSfcV9LT4y6yjFqgNK2mS6epFnmree9mjVYCyRdCWJRWyrA1xVbSA2xmu6i9z7ZuNaEUFKyL3uTwArzKkipy0aDBSVRsKuhCMV8dFsVBm3EWmyHzsoneT-zGM2aG5EYF7oOUlx2lXafiCDCYQ0YqRRWddQ&quot;</span><span class="p">,</span>
-</span><span class='line'>    <span class="nt">&quot;e&quot;</span><span class="p">:</span> <span class="s2">&quot;AQAB&quot;</span><span class="p">,</span>
-</span><span class='line'>    <span class="nt">&quot;x5c&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;MIIC1jCCAb6gAwIBAgIQFcgeY4EZ65RDuxjfwa+tXDANBgkqhkiG9w0BAQsFADAnMSUwIwYDVQQDExxBREZTIFNpZ25pbmcgLSBzdHMubWF0YWtlLmpwMB4XDTE2MDQxMjExNTU1MloXDTE3MDQxMjExNTU1MlowJzElMCMGA1UEAxMcQURGUyBTaWduaW5nIC0gc3RzLm1hdGFrZS5qcDCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBANWoOH0zuuaq55lBDS+CuGSvH3Ia1ewW0zX2hyH8E9ZxbiDvuAvJYd1ZFspCJVMHdADVsELGO+V2+WQvD+u0J13sVfAqF7uYx6dpbB5uBYau+UBKUapezqWpjigRaj7VrwZ3lk2Tgp69Uq1kfQ4wVp30YTCq\/uDpXmqqfvmAiAWiIlWiQ8emKiypk5+VHhUn3FfS0+MusoxaoDStpkunqRZ5q3nvZo1WAskXQliUVsqwNcVW0gNsZruovc+2bjWhFBSsi97k8AK8ypIqctGgwUlUbCroQjFfHRbFQZtxFpsh87KJ3k\/sxjNmhuRGBe6DlJcdpV2n4ggwmENGKkUVnXUCAwEAATANBgkqhkiG9w0BAQsFAAOCAQEAK0bCMCgF3hfRnV5zwtO8Wzd5XBMkFVQmipOizv\/Llznn12jpe4mk1fKHqp1EuTtbEFQ93YGs9yaJb3bpU9MsSqKaTbcK269NgG\/v1ke1KcGFjL\/BkxABY5pRWG2U0Rpw1SL16DXoZj0gLT91A8gTikm8wTE8mqKBNarC6runStu8qw08iQqadkbg8zU+o7vLduyZlHTOO1sdXpKOcU1O+wirPz0tMtKfaXznF81LMhWhRxwRNOHqju8Vc5a1gcGG9Sj9lS0LaD+k7ybtiHx4DhiZ0tQP14C+OWPZDH1vtudkf6UpyBasxB4kVuOHDTB7sjPnOTqA4zKiKrHekW2jUg==&quot;</span><span class="p">]</span>
-</span><span class='line'>  <span class="p">}]</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>この Backend API 用の scope をどう扱えばいいのかとかは、またそのうち調べて見るかもしれません。</p>
-
-<p>どうせ「同意」とかいう概念がない IdP なんだから、Backend API 用の scope も形骸化しそうな気はするけど。</p>
 ]]></content>
   </entry>
   

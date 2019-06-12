@@ -6,7 +6,7 @@
 	<title>OAuth.jp</title>
     <meta name="author" content="Nov Matake">
     
-	<meta name="description" content="Author: Nov Matake Date: Apr 2nd, 2016 2016年度の Microsoft MVP Award を受賞させていただきました。 これもひとえにあんのパパのおかげです。パパは2007年4月 Microsoft 入社ということなので、僕が新卒になったころからの &hellip;">
+	<meta name="description" content="Author: Nov Matake Date: Apr 17th, 2016 MVP になったことですし、早速 Azure 常に Windows Server 2016 の VM 立ち上げて、次期バージョンの ADFS を動かしてみました。 想定ユースケースは、Native App とその &hellip;">
 	
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
@@ -93,6 +93,65 @@
 <!-- begin toload --> 
     <div id="content" class="inner">
         
+
+
+    <article class="post">
+  <h2 class="title">
+    
+    <a href="/blog/2016/04/17/oidc-on-adfs-2016/">
+    
+      Windows Server 2016 版 ADFS を触ってみた</a>
+  </h2>
+  <div class="entry-content">
+    <div class="meta">
+  <div class="author">
+    Author: <a href="https://matake.jp">Nov Matake</a>
+  </div>
+  <div class="date">Date: 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2016-04-17T19:38:00+09:00" pubdate data-updated="true">Apr 17<span>th</span>, 2016</time></div>
+  
+</div>
+
+    <p>MVP になったことですし、早速 Azure 常に Windows Server 2016 の VM 立ち上げて、次期バージョンの ADFS を動かしてみました。</p>
+
+<p>想定ユースケースは、Native App とその Backend Server があって、Backend Server が Native App 向けに提供している API 用の Access Token も、ADFS が発行するというものです。</p>
+
+<p>まさしく今後エンプラで増えていくであろうパターンですね。</p>
+
+<h2>Setup Hybrid Client on ADFS</h2>
+
+<p>ADFS Manager に &ldquo;Application Groups&rdquo; っていう設定が増えてるんで、そこから &ldquo;Native Application and Web API&rdquo; ってのを選択して、Connect RP (= OAuth Client) を登録します。</p>
+
+<p><img src="/images/posts/adfs/hybrid-client-new.png" alt="New Hybrid Client" /></p>
+
+<p>スクショいっぱい撮るのが面倒なのですっ飛ばしますが、こんな感じで Native App とその Backend Server を ADFS に &ldquo;Application Group&rdquo; として登録しました。</p>
+
+<p><img src="/images/posts/adfs/hybrid-client.png" alt="Registered Hybrid Client" /></p>
+
+<p>ちなみに、この時 Backend には特に Native App と別の client_id が発行されたりはしません。</p>
+
+<p>ここまでで、ADFS 側の準備は完了です。以降、<a href="https://gist.github.com/nov/3f284aa8cec5ed6bc332e9a5c9d93851">こちらの gist</a> に沿って、Step by Step で見ていきます。</p>
+
+
+    
+    <a href="/blog/2016/04/17/oidc-on-adfs-2016/" class="more-link">Read on &rarr;</a>
+  </div>
+
+<div class="meta">
+  
+</div>
+</article>
 
 
     <article class="post">
@@ -316,89 +375,6 @@
 
     
     <a href="/blog/2016/02/24/is-openid-connect-far-from-oauth2/" class="more-link">Read on &rarr;</a>
-  </div>
-
-<div class="meta">
-  
-</div>
-</article>
-
-
-    <article class="post">
-  <h2 class="title">
-    
-    <a href="/blog/2016/01/25/oauth-idp-mix-up-attack-part-ii/">
-    
-      OAuth IdP Mix-up Attack - Part II</a>
-  </h2>
-  <div class="entry-content">
-    <div class="meta">
-  <div class="author">
-    Author: <a href="https://matake.jp">Nov Matake</a>
-  </div>
-  <div class="date">Date: 
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2016-01-25T15:59:00+09:00" pubdate data-updated="true">Jan 25<span>th</span>, 2016</time></div>
-  
-</div>
-
-    <p><a href="/blog/2016/01/12/oauth-idp-mix-up-attack/">OAuth IdP Mix-Up Attack とは？</a> のつづき。</p>
-
-<p>OAuth ML上で、以下のどちらを採用すべきかについての議論が収まる気配のない昨今です。</p>
-
-<ul>
-<li><a href="http://tools.ietf.org/html/draft-jones-oauth-mix-up-mitigation">http://tools.ietf.org/html/draft-jones-oauth-mix-up-mitigation</a></li>
-<li><a href="http://tools.ietf.org/html/draft-sakimura-oauth-meta">http://tools.ietf.org/html/draft-sakimura-oauth-meta</a></li>
-</ul>
-
-
-<p>そんななか、もうちょっとややこしいというか致命的なケースが出て来ました。</p>
-
-<ul>
-<li><a href="http://nat.sakimura.org/2016/01/22/code-phishing-attack-on-oauth-2-0-rfc6749/">Code phishing attack on OAuth 2.0 [RFC6749] | .Nat Zone</a></li>
-</ul>
-
-
-<p>&ldquo;Mix-up Attack&rdquo; っていうやつの話をしてたはずが、いつのまにか &ldquo;Code Phishing Attack&rdquo; って名前になっててもはや2つの違いがよく分かんなくなってきますが、ブログ記事中では「フィッシングメールをRP Developerに送って、Client DeveloperにToken Endpointを書き変えさせる」というパターンが例示されています。</p>
-
-<p>いや、そんなんに騙されるやつおらへんやろ〜、ってのがだいたいの反応かとは思いますし、RP Developerのみなさんがちゃんと注意しれてばそれで十分な話ではあるかと思います。</p>
-
-<p>が、IdP視点でいうと、アホなRPからユーザーさんのTokenとかそのRPのclient_secretとかがだだ漏れになっちゃうとIdPのレピュテーションにひびいたりするので、なかなかつらいところです。</p>
-
-<p>もはやここまで騙されてる状況では、Authorization Response以外何も信用できない訳で、Authorization Endpointにiss含んでも、issに紐付いたIdP Configがstaticにhard-codeされてるなら、そのhard-codeされてるconfig自体信用できないということになります。</p>
-
-<p>「IdPごとに別のredirect_uriを使う」なんてのも、もはや無意味ですね。</p>
-
-<p>response_type=code+id_tokenとして、fragmentについてきたID Tokenをチェックしても、Discovery無しだとダメでしょう。</p>
-
-<p>そのため、IdPが取れる対応策は以下の2つのどちらかになるでしょう。</p>
-
-<ul>
-<li>issを返しつつ、OAuth Discoveryをサポートする</li>
-<li>OAuth MetaのようにToken Endpoint URLをAuthZ Responseに含める</li>
-</ul>
-
-
-<p>前者は <a href="http://tools.ietf.org/html/draft-jones-oauth-mix-up-mitigation">http://tools.ietf.org/html/draft-jones-oauth-mix-up-mitigation</a> をより厳しくしたもので、後者は <a href="http://tools.ietf.org/html/draft-sakimura-oauth-meta">http://tools.ietf.org/html/draft-sakimura-oauth-meta</a> そのものです。</p>
-
-<p>個人的にはOAuth Discoveryが必須になるとHTTP Requestが増えるので、IdP的にはあまり嬉しくないなぁと思います。</p>
-
-<p>ps.</p>
-
-<p>Implicit FlowにおいてResource Endpointが書き換えられていることを想定したケースでは、AuthZ ResponseにResource Endpoint(s) を含めることになって、Code Flowよりさらにややこしい話になるわけですが、それはまた別の機会に&hellip;書く&hellip;かも。</p>
-
-    
-    
   </div>
 
 <div class="meta">
