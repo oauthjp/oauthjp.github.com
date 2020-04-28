@@ -6,7 +6,9 @@
 	<title>OAuth.jp</title>
     <meta name="author" content="Nov Matake">
     
-	<meta name="description" content="Author: Nov Matake Date: Jan 24th, 2012 昨晩、IETF OAuth WG ML で、OAuth 2.0 Core &amp; Bearer の2つの仕様が IETF Last Call に入ったことが通知されました。 http://www.ietf.org &hellip;">
+	<meta name="description" content="Author: Nov Matake Date: Feb 7th, 2012 。登場人物 OAuth 2.0対応してる某ゲームプラットフォーム
+某ゲームプラットフォーム上で占いゲームを運営してる攻撃者
+某ゲームプラットフォーム上で運営されてる農園ゲーム（= 被害アプリ） &hellip;">
 	
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
@@ -93,6 +95,109 @@
 <!-- begin toload --> 
     <div id="content" class="inner">
         
+
+
+    <article class="post">
+  <h2 class="title">
+    
+    <a href="/blog/2012/02/07/oauth-20-implicit-flow/">
+    
+      「OAuth 2.0 (Implicit Flow) でログイン」の被害例</a>
+  </h2>
+  <div class="entry-content">
+    <div class="meta">
+  <div class="author">
+    Author: <a href="https://matake.jp">Nov Matake</a>
+  </div>
+  <div class="date">Date: 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-02-07T00:00:00+09:00" pubdate data-updated="true">Feb 7<span>th</span>, 2012</time></div>
+  
+</div>
+
+    <h3>。登場人物</h3>
+
+
+<ul><li>OAuth 2.0対応してる某ゲームプラットフォーム</li>
+<li>某ゲームプラットフォーム上で占いゲームを運営してる攻撃者</li>
+<li>某ゲームプラットフォーム上で運営されてる農園ゲーム（= 被害アプリ）</li>
+<li>某ゲームプラットフォーム上で無邪気に遊んでる被害ユーザ</li>
+</ul>
+
+
+<p>※ 念のため、今回の話は特にゲームに限った話ではない。</p>
+
+
+<h3>前提</h3>
+
+
+<p>某ゲームプラットフォーム、農園ゲーム共に、XSS とか CSRF とかセッションハイジャックされるような脆弱性はない。</p>
+
+
+<p>農園ゲームはプラットフォームが発行するAccess TokenをOAuth 2.0のImplicit Flowを使って受け取り、同じくプラットフォームが提供するProfile API (GET /me とか) にアクセスして、レスポンスに含まれる user_id をもとにユーザを認証している。</p>
+
+
+<p>攻撃者は占いゲームのDBから任意のAccess Tokenを取得可能。</p>
+
+
+<h3>シナリオ</h3>
+
+
+<ol><li>被害ユーザが占いゲームに登録 (= 占いゲームに対するAccess Tokenが発行される)</li>
+<li>攻撃者が農園ゲームにアクセス、Authorization Flow開始</li>
+<li>攻撃者が某ゲームプラットフォーム -&gt; 農園ゲームへのRedirect Responseを中断させる</li>
+<li>攻撃者がFragment中のAccess Tokenを占いゲームのDBから持ってきた被害者のAccess Tokenに置き換え</li>
+<li>農園ゲームは受け取ったAccess Tokenをもとに、攻撃者を被害ユーザとして認証</li>
+<li>攻撃者が被害ユーザとして農園ゲームで遊ぶ</li>
+</ol>
+
+
+<h3>対策方法</h3>
+
+
+<p>農園ゲームの開発者は、受け取ったAccess Tokenが農園ゲームに対して発行されたものであることを確認すること。占いゲームに対して発行されたAccess Tokenを受け入れないこと。</p>
+
+
+<p>プラットフォームがFacebookの場合なら、以下のリクエストを行うことで、Access Tokenがどのクライアントに発行されたものかを検証可能。</p>
+
+
+<div class="CodeRay">
+  <div class="code"><pre>GET /app
+Authorization: OAuth replace_with_your_access_token</pre></div>
+</div>
+
+
+
+
+<p>急募&#160;: 他のプラットフォームの場合の対応策</p>
+
+
+<h3>参考文献</h3>
+
+
+<ul><li><a href="http://www.sakimura.org/2012/02/1487/">単なる OAuth 2.0 を認証に使うと、車が通れるほどのどでかいセキュリティー・ホールができる</a></li>
+<li><a href="http://d.hatena.ne.jp/ritou/20120206/1328484575">OAuth 2.0 Implicit Flowをユーザー認証に利用する際のリスクと対策方法について #idcon</a></li>
+</ul>
+
+
+    
+    
+  </div>
+
+<div class="meta">
+  
+</div>
+</article>
 
 
     <article class="post">
@@ -432,59 +537,6 @@
 </div>
 </article>
 
-
-    <article class="post">
-  <h2 class="title">
-    
-    <a href="/blog/2011/09/26/openid-foundation-japan-evangelist/">
-    
-      OpenID Foundation Japan の Evangelistになりました</a>
-  </h2>
-  <div class="entry-content">
-    <div class="meta">
-  <div class="author">
-    Author: <a href="https://matake.jp">Nov Matake</a>
-  </div>
-  <div class="date">Date: 
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2011-09-26T00:00:00+09:00" pubdate data-updated="true">Sep 26<span>th</span>, 2011</time></div>
-  
-</div>
-
-    <p>@nov です。</p>
-
-
-<p>この度 OpenID Foundation Japan の Evangelist になりました。</p>
-
-
-<p><a href="http://instagr.am/p/N3Zyv/"><img src="http://distillery.s3.amazonaws.com/media/2011/09/22/b06b412382704a7886fb1cb97f59b491_7.jpg" alt=""/></a></p>
-
-
-<p>今後は今まで以上にいろいろイベントとかで話させていただきます。</p>
-
-
-<p>よろしくお願いします :)</p>
-
-
-    
-    
-  </div>
-
-<div class="meta">
-  
-</div>
-</article>
-
 <nav id="pagenavi">
     
         <a href="/blog/page/16/" class="prev">Prev</a>
@@ -499,7 +551,7 @@
     <footer id="footer">
     <div style="display:inline">
   <p>
-    Copyright &copy; 2019
+    Copyright &copy; 2020
     
       <a href="https://matake.jp">Nov Matake</a> - 技術的な相談等、お仕事依頼は <a href="https://yauth.jp">YAuth.jp</a> まで.
     

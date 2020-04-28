@@ -6,7 +6,9 @@
 	<title>OAuth.jp</title>
     <meta name="author" content="Nov Matake">
     
-	<meta name="description" content="Author: Nov Matake Date: Jun 12th, 2019 Sign in With Apple の特徴分析 (1) のつづき。 文章でつらつら書いても結局わかりづらいもんはわかりづらいんで、もう箇条書きで淡々と。 これだけそろってれば、あと最後の 要調査 &hellip;">
+	<meta name="description" content="Author: Nov Matake Date: Apr 28th, 2020 約一年ぶりの記事ですね。
+みなさん、三密避けて OAuth の勉強に勤しんでおられますでしょうか？
+さて、今朝こんな記事が上がってました。 「Microsoft Teams」にアカウント乗っ取りの脆弱性、 &hellip;">
 	
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
@@ -93,6 +95,65 @@
 <!-- begin toload --> 
     <div id="content" class="inner">
         
+
+
+    <article class="post">
+  <h2 class="title">
+    
+    <a href="/blog/2020/04/28/account-takeover-vulnerability-in-microsoft-teams/">
+    
+      Account Takeover Vulnerability in Microsoft Teams</a>
+  </h2>
+  <div class="entry-content">
+    <div class="meta">
+  <div class="author">
+    Author: <a href="https://matake.jp">Nov Matake</a>
+  </div>
+  <div class="date">Date: 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2020-04-28T15:44:00+09:00" pubdate data-updated="true">Apr 28<span>th</span>, 2020</time></div>
+  
+</div>
+
+    <p>約一年ぶりの記事ですね。<br/>
+みなさん、三密避けて OAuth の勉強に勤しんでおられますでしょうか？<br/>
+さて、今朝こんな記事が上がってました。</p>
+
+<p><a href="https://www.itmedia.co.jp/enterprise/articles/2004/28/news056.html">「Microsoft Teams」にアカウント乗っ取りの脆弱性、画像表示だけで不正侵入 &ndash; ITmedia エンタープライズ</a></p>
+
+<blockquote><p>今回の脆弱性は Teams のデスクトップ版と Web ブラウザ版の両方に影響する。攻撃者は狙った相手に GIF などの画像を送り付けて表示させ、画像が Web ブラウザに読み込まれる過程で認証トークンを盗み出す。被害者の画面には画像が表示されるだけなので、自分が攻撃されたことに気付かない。</p>
+
+<p>攻撃者がこのユーザーになりすまして組織内の他の従業員に不正なGIFを送信すれば、ワームのような形で侵入を広げ、組織全体の Teams アカウントを乗っ取る可能性もある。そうなれば、社外秘情報や会議、カレンダー、パスワードといった重要情報が流出しかねない。</p></blockquote>
+
+<p>GIF 画像貼り付けるだけで Teams アカウント乗っ取れるとか、こんなの読んだら恐ろしくて Teams なんて使えないですね。</p>
+
+<p>この脆弱性が報告されたのが2020年3月20日ということなんですが、Teams の中の人はどんな気持ちで以下の記事を読んでいたのでしょうか。</p>
+
+<p><a href="https://japan.zdnet.com/article/35152041/">マイクロソフト、「Teams」のセキュリティをアピール&mdash;「Zoom」に批判集まる中 &ndash; ZDNet Japan</a></p>
+
+<p>で、ここから本題、今回の Teams の脆弱性の詳細についてです。英語ですが、こちらの記事に詳細が載ってます。</p>
+
+<p><a href="https://www.cyberark.com/threat-research-blog/beware-of-the-gif-account-takeover-vulnerability-in-microsoft-teams/">Beware of the GIF: Account Takeover Vulnerability in Microsoft Teams | CyberArk</a></p>
+
+
+    
+    <a href="/blog/2020/04/28/account-takeover-vulnerability-in-microsoft-teams/" class="more-link">Read on &rarr;</a>
+  </div>
+
+<div class="meta">
+  
+</div>
+</article>
 
 
     <article class="post">
@@ -322,66 +383,6 @@
 </div>
 </article>
 
-
-    <article class="post">
-  <h2 class="title">
-    
-    <a href="/blog/2018/03/02/saml-authentication-bypass-vulnerability/">
-    
-      SAML Authentication Bypass Vulnerability</a>
-  </h2>
-  <div class="entry-content">
-    <div class="meta">
-  <div class="author">
-    Author: <a href="https://matake.jp">Nov Matake</a>
-  </div>
-  <div class="date">Date: 
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2018-03-02T10:42:00+09:00" pubdate data-updated="true">Mar 2<span>nd</span>, 2018</time></div>
-  
-</div>
-
-    <p>脆弱性の内容に関する <a href="http://idmlab.eidentity.jp/2018/03/saml-idp.html">日本語解説はこちら</a>。</p>
-
-<p>で、実際に脆弱性が存在してた実装もみてみると、OneLogin 製の ruby-saml だと、該当の脆弱性はここで修正されてます。</p>
-
-<p><a href="https://github.com/onelogin/ruby-saml/commit/048a544730930f86e46804387a6b6fad50d8176f">Fix vulnerability CVE-2017-11428. Process text of nodes properly, ign… · onelogin/ruby-saml@048a544</a></p>
-
-<p><a href="https://github.com/onelogin/ruby-saml/commit/048a544730930f86e46804387a6b6fad50d8176f#diff-d3e2c1bdc6c1e8b207dd7ded3ae35320R288">この行</a> がまさにメインの修正箇所なんですが、いままで <code>REXML::Element#text</code> 呼んでいたものを、すべて <code>REXML::Element#texts</code> を <code>join</code> するように変更してますね。</p>
-
-<p>でも、そもそもこれ署名検証の部分の修正が含まれてないのはなぜでしょう？</p>
-
-<p><a href="https://github.com/onelogin/ruby-saml/blob/048a544730930f86e46804387a6b6fad50d8176f/lib/xml_security.rb#L271">署名検証してるのはここ</a> なんですが、これ、よくみると <code>REXML</code> じゃなくて <code>Nokogiri</code> 使ってますね。<code>REXML</code> には XML 正規化の機能がなかったから、その部分だけ <code>Nokogiri</code> 使ったんですかね。</p>
-
-<p><strong>なら全部 <code>Nokogiri</code> 使えや。</strong></p>
-
-<p>2つの XML Parser を1つの実装の中で混在させてる時点で、すごいやな香りしますよね。<code>ruby-saml</code> は今回の脆弱性修正でも、その状況は変わってないので、Ruby で SAML 実装するなら <code>libsaml</code> (<a href="https://github.com/digidentity/libsaml">digidentity/libsaml</a>) に移行した方が良さそうですね。</p>
-
-<p>ちなみに、OpenID Connect ならそんなことないのかっていうと、当然あります。<code>ruby-jwt</code> と <code>json-jwt</code> を混在させてる <a href="https://github.com/18F/identity-openidconnect-sinatra/blob/master/Gemfile#L10">NIST の RP サンプル</a> とかね。</p>
-
-<p><code>ruby-jwt</code> に JWK まわりの機能がないから <code>json-jwt</code> を JWK のためだけに使ってて、それ自体はまぁそんな悪い予感しないけど&hellip;</p>
-
-<p><strong>なら全部 <code>json-jwt</code> 使えや。</strong></p>
-
-    
-    
-  </div>
-
-<div class="meta">
-  
-</div>
-</article>
-
 <nav id="pagenavi">
     
     
@@ -394,7 +395,7 @@
     <footer id="footer">
     <div style="display:inline">
   <p>
-    Copyright &copy; 2019
+    Copyright &copy; 2020
     
       <a href="https://matake.jp">Nov Matake</a> - 技術的な相談等、お仕事依頼は <a href="https://yauth.jp">YAuth.jp</a> まで.
     

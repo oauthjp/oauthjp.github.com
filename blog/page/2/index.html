@@ -6,7 +6,7 @@
 	<title>OAuth.jp</title>
     <meta name="author" content="Nov Matake">
     
-	<meta name="description" content="Author: Nov Matake Date: Nov 2nd, 2017 どうも、MS MVP (Enterprise Mobility) の Nov です。 普段もっぱら O365 の SAML 設定をいじって、自作 SAML IdP と Federation する毎日です。 いや、 &hellip;">
+	<meta name="description" content="Author: Nov Matake Date: Mar 2nd, 2018 脆弱性の内容に関する 日本語解説はこちら。 で、実際に脆弱性が存在してた実装もみてみると、OneLogin 製の ruby-saml だと、該当の脆弱性はここで修正されてます。 Fix vulnerability &hellip;">
 	
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
@@ -93,6 +93,66 @@
 <!-- begin toload --> 
     <div id="content" class="inner">
         
+
+
+    <article class="post">
+  <h2 class="title">
+    
+    <a href="/blog/2018/03/02/saml-authentication-bypass-vulnerability/">
+    
+      SAML Authentication Bypass Vulnerability</a>
+  </h2>
+  <div class="entry-content">
+    <div class="meta">
+  <div class="author">
+    Author: <a href="https://matake.jp">Nov Matake</a>
+  </div>
+  <div class="date">Date: 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2018-03-02T10:42:00+09:00" pubdate data-updated="true">Mar 2<span>nd</span>, 2018</time></div>
+  
+</div>
+
+    <p>脆弱性の内容に関する <a href="http://idmlab.eidentity.jp/2018/03/saml-idp.html">日本語解説はこちら</a>。</p>
+
+<p>で、実際に脆弱性が存在してた実装もみてみると、OneLogin 製の ruby-saml だと、該当の脆弱性はここで修正されてます。</p>
+
+<p><a href="https://github.com/onelogin/ruby-saml/commit/048a544730930f86e46804387a6b6fad50d8176f">Fix vulnerability CVE-2017-11428. Process text of nodes properly, ign… · onelogin/ruby-saml@048a544</a></p>
+
+<p><a href="https://github.com/onelogin/ruby-saml/commit/048a544730930f86e46804387a6b6fad50d8176f#diff-d3e2c1bdc6c1e8b207dd7ded3ae35320R288">この行</a> がまさにメインの修正箇所なんですが、いままで <code>REXML::Element#text</code> 呼んでいたものを、すべて <code>REXML::Element#texts</code> を <code>join</code> するように変更してますね。</p>
+
+<p>でも、そもそもこれ署名検証の部分の修正が含まれてないのはなぜでしょう？</p>
+
+<p><a href="https://github.com/onelogin/ruby-saml/blob/048a544730930f86e46804387a6b6fad50d8176f/lib/xml_security.rb#L271">署名検証してるのはここ</a> なんですが、これ、よくみると <code>REXML</code> じゃなくて <code>Nokogiri</code> 使ってますね。<code>REXML</code> には XML 正規化の機能がなかったから、その部分だけ <code>Nokogiri</code> 使ったんですかね。</p>
+
+<p><strong>なら全部 <code>Nokogiri</code> 使えや。</strong></p>
+
+<p>2つの XML Parser を1つの実装の中で混在させてる時点で、すごいやな香りしますよね。<code>ruby-saml</code> は今回の脆弱性修正でも、その状況は変わってないので、Ruby で SAML 実装するなら <code>libsaml</code> (<a href="https://github.com/digidentity/libsaml">digidentity/libsaml</a>) に移行した方が良さそうですね。</p>
+
+<p>ちなみに、OpenID Connect ならそんなことないのかっていうと、当然あります。<code>ruby-jwt</code> と <code>json-jwt</code> を混在させてる <a href="https://github.com/18F/identity-openidconnect-sinatra/blob/master/Gemfile#L10">NIST の RP サンプル</a> とかね。</p>
+
+<p><code>ruby-jwt</code> に JWK まわりの機能がないから <code>json-jwt</code> を JWK のためだけに使ってて、それ自体はまぁそんな悪い予感しないけど&hellip;</p>
+
+<p><strong>なら全部 <code>json-jwt</code> 使えや。</strong></p>
+
+    
+    
+  </div>
+
+<div class="meta">
+  
+</div>
+</article>
 
 
     <article class="post">
@@ -347,89 +407,6 @@
 </div>
 </article>
 
-
-    <article class="post">
-  <h2 class="title">
-    
-    <a href="/blog/2017/04/01/oauth2-in-action/">
-    
-      OAuth2 in Action が Amazon にも</a>
-  </h2>
-  <div class="entry-content">
-    <div class="meta">
-  <div class="author">
-    Author: <a href="https://matake.jp">Nov Matake</a>
-  </div>
-  <div class="date">Date: 
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2017-04-01T16:42:00+09:00" pubdate data-updated="true">Apr 1<span>st</span>, 2017</time></div>
-  
-</div>
-
-    <p>我らが Justin Richer がずっと執筆進めてた <a href="http://amzn.to/2nVbgRV">OAuth2 in Action が Amazon.co.jp に登場</a>してました。</p>
-
-<p>目次はこんな感じ。</p>
-
-<ul>
-<li>Part 1 &ndash; First steps
-
-<ul>
-<li>What is OAuth 2.0 and why should you care?</li>
-<li>The OAuth dance</li>
-</ul>
-</li>
-<li>Part 2 &ndash; Building an OAuth 2 environment
-
-<ul>
-<li>Building a simple OAuth client</li>
-<li>Building a simple OAuth protected resource</li>
-<li>Building a simple OAuth authorization server</li>
-<li>OAuth 2.0 in the real world</li>
-</ul>
-</li>
-<li>Part 3 &ndash; OAuth 2 implementation and vulnerabilities
-
-<ul>
-<li>Common client vulnerabilities</li>
-<li>Common protected resources vulnerabilities</li>
-<li>Common authorization server vulnerabilities</li>
-<li>Common OAuth token vulnerabilities</li>
-</ul>
-</li>
-<li>Part 4 &ndash; Taking OAuth further
-
-<ul>
-<li>OAuth tokens</li>
-<li>Dynamic client registration</li>
-<li>User authentication with OAuth 2.0</li>
-<li>Protocols and profiles using OAuth 2.0</li>
-<li>Beyond bearer tokens</li>
-<li>Summary and conclusions</li>
-</ul>
-</li>
-</ul>
-
-
-
-    
-    <a href="/blog/2017/04/01/oauth2-in-action/" class="more-link">Read on &rarr;</a>
-  </div>
-
-<div class="meta">
-  
-</div>
-</article>
-
 <nav id="pagenavi">
     
         <a href="/" class="prev">Prev</a>
@@ -444,7 +421,7 @@
     <footer id="footer">
     <div style="display:inline">
   <p>
-    Copyright &copy; 2019
+    Copyright &copy; 2020
     
       <a href="https://matake.jp">Nov Matake</a> - 技術的な相談等、お仕事依頼は <a href="https://yauth.jp">YAuth.jp</a> まで.
     

@@ -6,7 +6,7 @@
 	<title>OAuth.jp</title>
     <meta name="author" content="Nov Matake">
     
-	<meta name="description" content="Author: Nov Matake Date: Sep 8th, 2013 先日 JWT &amp; JWS 翻訳プロジェクトスタート &amp; イベント紹介 でお伝えした JWT &amp; JWS 翻訳プロジェクトですが、無事翻訳をリリースできました。 JSON Web Token ( &hellip;">
+	<meta name="description" content="Author: Nov Matake Date: Sep 26th, 2013 今日 @mad_p さんからRT来てたこのツイートに関して、ちょっと調べたのでまとめときます。 Security Issue in Ruby on Rails Could Expose Cookies http:// &hellip;">
 	
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
@@ -93,6 +93,78 @@
 <!-- begin toload --> 
     <div id="content" class="inner">
         
+
+
+    <article class="post">
+  <h2 class="title">
+    
+    <a href="/blog/2013/09/26/rails-session-cookie/">
+    
+      Rails SessionにCookieStore使った時の問題点</a>
+  </h2>
+  <div class="entry-content">
+    <div class="meta">
+  <div class="author">
+    Author: <a href="https://matake.jp">Nov Matake</a>
+  </div>
+  <div class="date">Date: 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-09-26T12:45:00+09:00" pubdate data-updated="true">Sep 26<span>th</span>, 2013</time></div>
+  
+</div>
+
+    <p>今日 @mad_p さんからRT来てたこのツイートに関して、ちょっと調べたのでまとめときます。</p>
+
+<blockquote class="twitter-tweet"><p>Security Issue in Ruby on Rails Could Expose Cookies <a href="http://t.co/JlsXVEn4rZ">http://t.co/JlsXVEn4rZ</a></p>&mdash; Ruby on Rails News (@RubyonRailsNews) <a href="https://twitter.com/RubyonRailsNews/statuses/383002160654336000">September 25, 2013</a></blockquote>
+
+
+<script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+
+<h3>前提条件</h3>
+
+<p>Railsではデフォルトでsessionをcookieにのみ保存して、DBなりmemcacheなりのserver-side storageには何も保存しません。
+これがCookieStoreとか呼ばれてるやつです。</p>
+
+<p>この場合のsession cookieは、Railsのsession object (Hash object) をMarshal.dumpしてそれに署名を付けたtokenです。
+rails 4では署名付ける代わりに暗号化してるけど、ここで述べる問題に関してはsignedなのかencryptedなのかは関係ないのでその点は無視していいです。</p>
+
+<p>「current user identifierを含むSigned JSONをcookieに入れてるのと同じなので、OpenID ConnectのID Tokenがcookieに入ってるようなもんだと思えばいい」と言えば、#idcon に来たり定期的にOAuth.jp読んだりしてる人には通じるだろうと期待します。</p>
+
+<h3>問題点</h3>
+
+<p>server-sideではstate管理しないので、当然remoteでセッションの無効化はできません。
+つまりログアウトしてもsession cookieのtoken自体は無効化されません。</p>
+
+<p>これを確認するには、サイトにログインしてCookie Headerから_foo_cookieってやつ見つけ出してその値をコピーして、CharlesでRequest Cookie Headerの_foo_sessionの値を常にそのコピーした値に書き換えてやるようなRewriteルールを設定してやって、サイトからログアウトしてみるとよいです。
+通常server-sideでsession管理してるサービスだとこれでログアウトされるけど、CookieStoreを使ってる場合はこの条件の元ではログアウトしてもログイン状態のままになります。</p>
+
+<p>でもまぁこれはCookieStoreの仕組み上どうしようもないのです。</p>
+
+<p>問題は、session cookieが無効化できないのに、それが永遠に有効であること。
+FBとかY!Jとかでやってる「パスワード変更したら既存のsessionが無効になる」ってのはRailsは一切面倒見てくれないので、パスワード変えても漏洩したsession cookieは有効なままです。
+なので、ひとたびsession cookieが漏れたら、完全にアウト。
+なにやってもアカウント乗っ取られたまんま。永遠に。</p>
+
+
+    
+    <a href="/blog/2013/09/26/rails-session-cookie/" class="more-link">Read on &rarr;</a>
+  </div>
+
+<div class="meta">
+  
+</div>
+</article>
 
 
     <article class="post">
@@ -307,68 +379,6 @@
 </div>
 </article>
 
-
-    <article class="post">
-  <h2 class="title">
-    
-    <a href="/blog/2013/06/04/login-with-amazon/">
-    
-      Login With Amazon、もう使っても大丈夫！</a>
-  </h2>
-  <div class="entry-content">
-    <div class="meta">
-  <div class="author">
-    Author: <a href="https://matake.jp">Nov Matake</a>
-  </div>
-  <div class="date">Date: 
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-06-04T00:00:00+09:00" pubdate data-updated="true">Jun 4<span>th</span>, 2013</time></div>
-  
-</div>
-
-    <p>先日以下のような記事を書きました。</p>
-
-
-<p><a href="/blog/2013/05/30/login-with-amazon">Login with Amazonを使うと、あなたのサイトのユーザーがアカウントハイジャックされる。</a></p>
-
-
-<p>Login with Amazon 危険ですよ！という記事だったのですが、その後 Login with Amazon のドキュメントに、Token Info API が追加されました。</p>
-
-
-<p>こちらの Step4 Obtain Profile Information のサンプルコードで、Profile API を叩く前に Token 発行先の Client ID が自身の Client ID と一致することを確認する処理が追加されています。</p>
-
-
-<p><a href="http://login.amazon.com/website">Web - Login with Amazon Developer Center</a></p>
-
-
-<p>こちらのより詳細なドキュメントには、Security Considerations の &#8220;Impersonating a Resource Owner in Implicit Flow&#8221; という節で、Token Info API を使わない場合の攻撃例が述べられています。</p>
-
-
-<p><a href="https://images-na.ssl-images-amazon.com/images/G/01/lwa/dev/docs/website-developer-guide._TTH_.pdf">Login with Amazon - Developer Guide for Websites (PDF)</a></p>
-
-
-<p>というわけで、Login with Amazon、ドキュメント通り実装すれば安全です :)</p>
-
-
-    
-    
-  </div>
-
-<div class="meta">
-  
-</div>
-</article>
-
 <nav id="pagenavi">
     
         <a href="/blog/page/9/" class="prev">Prev</a>
@@ -383,7 +393,7 @@
     <footer id="footer">
     <div style="display:inline">
   <p>
-    Copyright &copy; 2019
+    Copyright &copy; 2020
     
       <a href="https://matake.jp">Nov Matake</a> - 技術的な相談等、お仕事依頼は <a href="https://yauth.jp">YAuth.jp</a> まで.
     

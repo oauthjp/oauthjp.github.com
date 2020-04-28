@@ -4,7 +4,7 @@
   <title><![CDATA[OAuth.jp]]></title>
   <link href="https://oauth.jp/atom.xml" rel="self"/>
   <link href="https://oauth.jp/"/>
-  <updated>2019-06-12T17:01:41+09:00</updated>
+  <updated>2020-04-28T17:47:28+09:00</updated>
   <id>https://oauth.jp/</id>
   <author>
     <name><![CDATA[Nov Matake]]></name>
@@ -12,6 +12,148 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Account Takeover Vulnerability in Microsoft Teams]]></title>
+    <link href="https://oauth.jp/blog/2020/04/28/account-takeover-vulnerability-in-microsoft-teams/"/>
+    <updated>2020-04-28T15:44:00+09:00</updated>
+    <id>https://oauth.jp/blog/2020/04/28/account-takeover-vulnerability-in-microsoft-teams</id>
+    <content type="html"><![CDATA[<p>約一年ぶりの記事ですね。<br/>
+みなさん、三密避けて OAuth の勉強に勤しんでおられますでしょうか？<br/>
+さて、今朝こんな記事が上がってました。</p>
+
+<p><a href="https://www.itmedia.co.jp/enterprise/articles/2004/28/news056.html">「Microsoft Teams」にアカウント乗っ取りの脆弱性、画像表示だけで不正侵入 &ndash; ITmedia エンタープライズ</a></p>
+
+<blockquote><p>今回の脆弱性は Teams のデスクトップ版と Web ブラウザ版の両方に影響する。攻撃者は狙った相手に GIF などの画像を送り付けて表示させ、画像が Web ブラウザに読み込まれる過程で認証トークンを盗み出す。被害者の画面には画像が表示されるだけなので、自分が攻撃されたことに気付かない。</p>
+
+<p>攻撃者がこのユーザーになりすまして組織内の他の従業員に不正なGIFを送信すれば、ワームのような形で侵入を広げ、組織全体の Teams アカウントを乗っ取る可能性もある。そうなれば、社外秘情報や会議、カレンダー、パスワードといった重要情報が流出しかねない。</p></blockquote>
+
+<p>GIF 画像貼り付けるだけで Teams アカウント乗っ取れるとか、こんなの読んだら恐ろしくて Teams なんて使えないですね。</p>
+
+<p>この脆弱性が報告されたのが2020年3月20日ということなんですが、Teams の中の人はどんな気持ちで以下の記事を読んでいたのでしょうか。</p>
+
+<p><a href="https://japan.zdnet.com/article/35152041/">マイクロソフト、「Teams」のセキュリティをアピール&mdash;「Zoom」に批判集まる中 &ndash; ZDNet Japan</a></p>
+
+<p>で、ここから本題、今回の Teams の脆弱性の詳細についてです。英語ですが、こちらの記事に詳細が載ってます。</p>
+
+<p><a href="https://www.cyberark.com/threat-research-blog/beware-of-the-gif-account-takeover-vulnerability-in-microsoft-teams/">Beware of the GIF: Account Takeover Vulnerability in Microsoft Teams | CyberArk</a></p>
+
+<!-- more -->
+
+
+<p>まず大前提として、Teams では以下のようなアクセスコントロールがなされていました。</p>
+
+<ul>
+<li>Teams は内部的に以下の2つの JWT Token を利用する。
+
+<ul>
+<li>OAuth2 Access Token
+
+<ul>
+<li>Issuer: &ldquo;<a href="https://sts.windows.net/">https://sts.windows.net/</a>&lt;tenant-id>/&rdquo;</li>
+<li>Audience: &ldquo;<a href="https://api.spaces.skype.com">https://api.spaces.skype.com</a>&rdquo;</li>
+<li>Scope: &ldquo;user_impersonation&rdquo;</li>
+</ul>
+</li>
+<li>Skype Token
+
+<ul>
+<li>Skype ID (= End-user&rsquo;s Object ID) を含んだ独自 JWT Token</li>
+<li>Teams API にアクセスするためにはこちらの Token が必要</li>
+<li>この Token は上記 Access Token を使って取得可能</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Teams にアップロードされた画像はMSが管理するサーバーに置かれ、Teams にログイン中の状態でしか見れない。
+
+<ul>
+<li>この画像へのアクセスには &ldquo;skypetoken_asm&rdquo; という Cookie にセットされた &ldquo;Skype Token&rdquo; を利用</li>
+</ul>
+</li>
+</ul>
+
+
+<p>これだけ見ると、「GIF をアップロードしただけでアカウント乗っ取り可能」というほどクリティカルではなさそうに見えます。</p>
+
+<p>でも、よくよく英語記事の方を読んでみると、以下の3つが組み合わさって、アカウント乗っ取りが可能になっていたようです。</p>
+
+<ul>
+<li>OAuth2 Access Token 自体が Cookie に以下の状態でセットされていた。
+
+<ul>
+<li>Key : &ldquo;authtoken&rdquo;</li>
+<li>Domain : &ldquo;*.teams.microsoft.com&rdquo;</li>
+</ul>
+</li>
+<li>以下2ドメインが Subdomain Takeover 可能であった。
+
+<ul>
+<li>aadsync-test.teams.microsoft.com</li>
+<li>data-dev.teams.microsoft.com</li>
+</ul>
+</li>
+<li>Giphy 投稿時の API Request に (Developer Console とか使えば) 任意の画像 URL を指定可能であった。</li>
+</ul>
+
+
+<p>うん、そりゃ Access Token ダダ漏れしますね。</p>
+
+<p>画像ファイルのアップロード機能が問題だったわけではなく、GiphyコンテンツとしてPOSTされたコンテンツが問題だったのですね。</p>
+
+<p>で、MS側は以下の対応を施した、と。</p>
+
+<ul>
+<li>Subdomain Takeover の脆弱性を修正</li>
+<li>&ldquo;authtoken&rdquo; Cookie を &ldquo;teams.microsoft.com&rdquo; ドメインに限定</li>
+</ul>
+
+
+<p>これでひとまず脆弱性自体は修正されました。</p>
+
+<p>でもそもそも、</p>
+
+<ul>
+<li>&ldquo;user_impersonation&rdquo; Scope さえ持ってれば全 API にアクセス可能可能で</li>
+<li>そのトークンをいろんなサブドメインに投げまくる</li>
+</ul>
+
+
+<p>前提の設計って、どうなんでしょうね。。</p>
+
+<p>Skype Token はいまだにいろんなドメインのいろんな API に以下のように統一感ない形で送られていて</p>
+
+<ul>
+<li>Authorization: skypetoken XXX</li>
+<li>Authorization: skype_token XXX</li>
+<li>x-skypetoken: XXX</li>
+</ul>
+
+
+<p>挙句には Cookie に</p>
+
+<ul>
+<li>&ldquo;skypetoken_asm&rdquo; という Key で</li>
+<li>&ldquo;*.asm.skype.com&rdquo; ドメイン指定で</li>
+</ul>
+
+
+<p>セットされてますし</p>
+
+<ul>
+<li>この Token にも Scope という概念がない (&ldquo;scp=780&rdquo; 固定)</li>
+</ul>
+
+
+<p>ようですし。。</p>
+
+<p>やはり僕らは Google Hangouts だか Hangouts Meet だか Google Meets だかとかいうコロコロ名前とかブランド変わるあのアプリを使うしかないのでしょうか？</p>
+
+<p>ps.<br/>
+2020年4月現在、世界中コロナで大変な時期ですが、次の記事を書く頃には世の中落ち着いているでしょうか？
+そしてそのころ Google Meets はなんていう名前になっているのでしょうか？</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Sign in With Apple の特徴分析 (2)]]></title>
@@ -1016,7 +1158,7 @@
 
 <p>動作確認用のユーザーも作っておきましたので、これが正常に動いてる間はご自由にお使いください。</p>
 
-<p>Username: <a href="&#109;&#x61;&#105;&#x6c;&#x74;&#111;&#58;&#x79;&#111;&#x75;&#x40;&#115;&#x74;&#115;&#x34;&#98;&#x32;&#99;&#x2e;&#x6f;&#x6e;&#x6d;&#x69;&#x63;&#x72;&#x6f;&#115;&#111;&#x66;&#x74;&#46;&#x63;&#x6f;&#x6d;">&#121;&#111;&#x75;&#64;&#115;&#x74;&#x73;&#x34;&#x62;&#50;&#x63;&#x2e;&#111;&#110;&#x6d;&#105;&#99;&#x72;&#x6f;&#x73;&#111;&#102;&#x74;&#46;&#99;&#111;&#109;</a>
+<p>Username: <a href="&#109;&#97;&#105;&#108;&#116;&#111;&#x3a;&#x79;&#x6f;&#x75;&#x40;&#115;&#x74;&#115;&#52;&#x62;&#x32;&#99;&#x2e;&#x6f;&#110;&#109;&#105;&#x63;&#114;&#111;&#x73;&#x6f;&#x66;&#116;&#x2e;&#x63;&#111;&#x6d;">&#121;&#x6f;&#x75;&#x40;&#115;&#116;&#115;&#x34;&#98;&#x32;&#x63;&#46;&#x6f;&#x6e;&#x6d;&#105;&#99;&#x72;&#111;&#115;&#111;&#x66;&#116;&#46;&#99;&#x6f;&#109;</a>
 Password: ]6]yzxXYG7uruM4p</p>
 
 <p>動かなくなったら、あきらめて自分で Azure AD B2C 環境セットアップしてください。</p>
@@ -1169,13 +1311,13 @@ Password: ]6]yzxXYG7uruM4p</p>
 
 <p>あと、Email 指定してもそのメアドのユーザーにログインできるわけでもないです。</p>
 
-<p><a href="&#x6d;&#x61;&#x69;&#108;&#116;&#x6f;&#58;&#x6e;&#111;&#118;&#64;&#x65;&#x78;&#x61;&#x6d;&#112;&#108;&#101;&#x2e;&#99;&#111;&#109;">&#x6e;&#x6f;&#118;&#x40;&#101;&#120;&#x61;&#109;&#112;&#108;&#x65;&#x2e;&#99;&#x6f;&#109;</a> の NameID を持つ SAML Assertion で、<a href="&#x6d;&#x61;&#105;&#x6c;&#x74;&#x6f;&#58;&#110;&#x6f;&#x76;&#64;&#x6d;&#97;&#116;&#x61;&#107;&#x65;&#46;&#106;&#112;">&#x6e;&#111;&#x76;&#x40;&#109;&#x61;&#116;&#x61;&#107;&#101;&#x2e;&#x6a;&#x70;</a> の GitHub アカウントにログインできたりします。</p>
+<p><a href="&#109;&#x61;&#x69;&#108;&#116;&#111;&#58;&#110;&#111;&#x76;&#64;&#x65;&#x78;&#x61;&#109;&#112;&#x6c;&#x65;&#x2e;&#x63;&#111;&#109;">&#x6e;&#111;&#x76;&#x40;&#101;&#120;&#x61;&#109;&#112;&#108;&#x65;&#x2e;&#99;&#x6f;&#x6d;</a> の NameID を持つ SAML Assertion で、<a href="&#109;&#x61;&#x69;&#x6c;&#116;&#111;&#58;&#x6e;&#x6f;&#118;&#64;&#109;&#x61;&#116;&#97;&#107;&#x65;&#46;&#x6a;&#112;">&#110;&#x6f;&#x76;&#64;&#x6d;&#x61;&#x74;&#97;&#107;&#101;&#x2e;&#106;&#112;</a> の GitHub アカウントにログインできたりします。</p>
 
 <p>SAML Federation とか言うてるけど、結局既存の GitHub.com アカウントに SAML IdP 側のアカウントを Link するだけなんですよ。</p>
 
 <p>その紐付けは、SAML での初回ログイン時に GitHub.com 側の ID &amp; Password 入力して行います。</p>
 
-<p>つまり、<a href="&#109;&#97;&#105;&#x6c;&#x74;&#111;&#58;&#110;&#111;&#x76;&#64;&#101;&#120;&#97;&#x6d;&#x70;&#108;&#101;&#46;&#99;&#x6f;&#x6d;">&#x6e;&#x6f;&#x76;&#64;&#x65;&#x78;&#97;&#109;&#112;&#108;&#101;&#46;&#x63;&#x6f;&#109;</a> の NameID を持つ SAML Assertion をどの GitHub アカウントに紐づけるかは、エンドユーザーが決定権を持っています。</p>
+<p>つまり、<a href="&#x6d;&#97;&#105;&#x6c;&#116;&#x6f;&#58;&#x6e;&#111;&#118;&#64;&#101;&#x78;&#97;&#x6d;&#x70;&#108;&#x65;&#46;&#x63;&#111;&#109;">&#x6e;&#111;&#118;&#x40;&#101;&#120;&#x61;&#109;&#112;&#108;&#101;&#46;&#x63;&#x6f;&#109;</a> の NameID を持つ SAML Assertion をどの GitHub アカウントに紐づけるかは、エンドユーザーが決定権を持っています。</p>
 
 <p>情シスじゃないです。</p>
 
@@ -2200,140 +2342,6 @@ Mac から Remote Desktop 経由でいじりたかったんでね。</p>
 <h2>防御策</h2>
 
 <p><code>state</code> をリクエスト先の IdP とも紐づけましょう。</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[FB Message API Callback as an Azure Function]]></title>
-    <link href="https://oauth.jp/blog/2016/04/19/fb-message-callback-with-azure-function/"/>
-    <updated>2016-04-19T10:56:00+09:00</updated>
-    <id>https://oauth.jp/blog/2016/04/19/fb-message-callback-with-azure-function</id>
-    <content type="html"><![CDATA[<p>今日は Azure Function で FB Message API Callback を作ってみます。</p>
-
-<p>Azure Function は、Azure Portal の Marketplace で &ldquo;Function App&rdquo; って検索すると出てきますね。</p>
-
-<p><img src="https://oauth.jp/images/posts/azure/azure-function-in-marketplace.png" alt="Azure Function in Marketplace" /></p>
-
-<p>Function App の Deploy がおわったら、QuickStart から &ldquo;Webhook + API&rdquo; を選びましょう。</p>
-
-<p><img src="https://oauth.jp/images/posts/azure/azure-function-quickstart.png" alt="Azure Function QuickStart" /></p>
-
-<p>以下の様な Node.js のテンプレートアプリが出来上がります。</p>
-
-<p><img src="https://oauth.jp/images/posts/azure/azure-function-template.png" alt="Azure Function Template" /></p>
-
-<p>まずは FB Message の WebHook としてこの Function を登録します。</p>
-
-<!-- more -->
-
-
-<p>Azure Function の <code>Function URL</code> を FB Message API の <code>WebHook Callback URL</code> に登録して、適当な <code>verify_token</code> を設定します。</p>
-
-<p><img src="https://oauth.jp/images/posts/azure/fb-message-callback.png" alt="FB Message API Callback (FB WebHook)" /></p>
-
-<p>WebHook Verification のために、テンプレの Azure Function を以下の様に書き換えます。</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">context</span><span class="p">,</span> <span class="nx">req</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>  <span class="k">if</span> <span class="p">(</span><span class="nx">req</span><span class="p">.</span><span class="nx">query</span><span class="p">[</span><span class="s1">&#39;hub.verify_token&#39;</span><span class="p">]</span> <span class="o">===</span> <span class="s1">&#39;verify-me&#39;</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>    <span class="nx">context</span><span class="p">.</span><span class="nx">res</span> <span class="o">=</span> <span class="p">{</span>
-</span><span class='line'>      <span class="nx">body</span><span class="o">:</span> <span class="nx">req</span><span class="p">.</span><span class="nx">query</span><span class="p">[</span><span class="s1">&#39;hub.challenge&#39;</span><span class="p">]</span>
-</span><span class='line'>    <span class="p">};</span>
-</span><span class='line'>  <span class="p">}</span>
-</span><span class='line'>  <span class="nx">context</span><span class="p">.</span><span class="nx">done</span><span class="p">();</span>
-</span><span class='line'><span class="p">};</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>これで FB 側の <code>Verify and Save</code> ボタンを押せば、WebHook の Verifycation が成功して WebHook の登録が完了します。</p>
-
-<p>では次に、Text Message を Echo するように Azure Function を書き換えましょう。</p>
-
-<p>まずは FB Graph API の Messaging API を叩くために必要な FB Page Token を、Azure Function の <code>Application Setting &gt; App Setting</code> に設定しておきます。</p>
-
-<p>この時に使う FB Page Token は、先ほど WebHook を登録したページ (FB Messenger API の設定ページ) で取得したものを使う様にしてください。そこで取得した FB Page Token は Expire しません。</p>
-
-<p><img src="https://oauth.jp/images/posts/azure/azure-function-env.png" alt="Azure Function Env" /></p>
-
-<p>あとは Azure Function 側を以下の様に書き換えてやれば OK です。</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-<span class='line-number'>32</span>
-</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="kd">var</span> <span class="nx">https</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;https&#39;</span><span class="p">);</span>
-</span><span class='line'>
-</span><span class='line'><span class="kd">var</span> <span class="nx">sendTextMessage</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">sender</span><span class="p">,</span> <span class="nx">text</span><span class="p">,</span> <span class="nx">context</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>  <span class="nx">postData</span> <span class="o">=</span> <span class="nx">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">({</span>
-</span><span class='line'>    <span class="nx">recipient</span><span class="o">:</span> <span class="nx">sender</span><span class="p">,</span>
-</span><span class='line'>    <span class="nx">message</span><span class="o">:</span> <span class="p">{</span><span class="nx">text</span><span class="o">:</span> <span class="nx">text</span><span class="p">}</span>
-</span><span class='line'>  <span class="p">});</span>
-</span><span class='line'>  <span class="kd">var</span> <span class="nx">req</span> <span class="o">=</span> <span class="nx">https</span><span class="p">.</span><span class="nx">request</span><span class="p">({</span>
-</span><span class='line'>    <span class="nx">hostname</span><span class="o">:</span> <span class="s1">&#39;graph.facebook.com&#39;</span><span class="p">,</span>
-</span><span class='line'>    <span class="nx">port</span><span class="o">:</span> <span class="mi">443</span><span class="p">,</span>
-</span><span class='line'>    <span class="nx">path</span><span class="o">:</span> <span class="s1">&#39;/v2.6/me/messages&#39;</span><span class="p">,</span>
-</span><span class='line'>    <span class="nx">method</span><span class="o">:</span> <span class="s1">&#39;POST&#39;</span><span class="p">,</span>
-</span><span class='line'>    <span class="nx">headers</span><span class="o">:</span> <span class="p">{</span>
-</span><span class='line'>      <span class="s1">&#39;Content-Type&#39;</span><span class="o">:</span> <span class="s1">&#39;application/json&#39;</span><span class="p">,</span>
-</span><span class='line'>      <span class="s1">&#39;Authorization&#39;</span><span class="o">:</span> <span class="s1">&#39;Bearer &#39;</span> <span class="o">+</span> <span class="nx">process</span><span class="p">.</span><span class="nx">env</span><span class="p">.</span><span class="nx">APPSETTING_FB_PAGE_TOKEN</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>  <span class="p">});</span>
-</span><span class='line'>  <span class="nx">req</span><span class="p">.</span><span class="nx">write</span><span class="p">(</span><span class="nx">postData</span><span class="p">);</span>
-</span><span class='line'>  <span class="nx">req</span><span class="p">.</span><span class="nx">end</span><span class="p">();</span>
-</span><span class='line'><span class="p">};</span>
-</span><span class='line'>
-</span><span class='line'><span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">context</span><span class="p">,</span> <span class="nx">req</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>  <span class="nx">messaging_evts</span> <span class="o">=</span> <span class="nx">req</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">entry</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">messaging</span><span class="p">;</span>
-</span><span class='line'>  <span class="k">for</span> <span class="p">(</span><span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">messaging_evts</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>    <span class="nx">evt</span> <span class="o">=</span> <span class="nx">req</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">entry</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">messaging</span><span class="p">[</span><span class="nx">i</span><span class="p">];</span>
-</span><span class='line'>    <span class="nx">sender</span> <span class="o">=</span> <span class="nx">evt</span><span class="p">.</span><span class="nx">sender</span><span class="p">;</span>
-</span><span class='line'>    <span class="k">if</span> <span class="p">(</span><span class="nx">evt</span><span class="p">.</span><span class="nx">message</span> <span class="o">&amp;&amp;</span> <span class="nx">evt</span><span class="p">.</span><span class="nx">message</span><span class="p">.</span><span class="nx">text</span><span class="p">,</span> <span class="nx">context</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>      <span class="nx">sendTextMessage</span><span class="p">(</span><span class="nx">sender</span><span class="p">,</span> <span class="nx">evt</span><span class="p">.</span><span class="nx">message</span><span class="p">.</span><span class="nx">text</span><span class="p">,</span> <span class="nx">context</span><span class="p">);</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>  <span class="p">}</span>
-</span><span class='line'>  <span class="nx">context</span><span class="p">.</span><span class="nx">done</span><span class="p">();</span>
-</span><span class='line'><span class="p">};</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>早速該当 FB Page にメッセージを送ってみましょう。Echo が返ってくると思います。</p>
-
-<p>さてと、YAuth.jp の問い合わせ対応 Bot を作ってみるかな。</p>
 ]]></content>
   </entry>
   
