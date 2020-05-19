@@ -6,7 +6,7 @@
 	<title>OAuth.jp</title>
     <meta name="author" content="Nov Matake">
     
-	<meta name="description" content="Author: Nov Matake Date: Mar 30th, 2015 先日の「属性単位のトレーサビリティについて」という記事でも取り上げましたが、個人情報保護法改正案では、第二十五条に「第三者提供に係る記録の作成等」という規定が設けられ、 &hellip;">
+	<meta name="description" content="Author: Nov Matake Date: May 20th, 2015 一気に出ましたね。すでに過去にもいくつかは紹介したり翻訳したりしていますが、それぞれを簡単に紹介しておきます。 JOSE WG RFC 7515 &ndash; JSON Web Signature (JWS) &hellip;">
 	
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
@@ -93,6 +93,115 @@
 <!-- begin toload --> 
     <div id="content" class="inner">
         
+
+
+    <article class="post">
+  <h2 class="title">
+    
+    <a href="/blog/2015/05/20/jose-and-oauth-assertion-rfcs/">
+    
+      IETF JOSE WG と OAuth WG から一気に9本の RFC が！</a>
+  </h2>
+  <div class="entry-content">
+    <div class="meta">
+  <div class="author">
+    Author: <a href="https://matake.jp">Nov Matake</a>
+  </div>
+  <div class="date">Date: 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2015-05-20T21:05:00+09:00" pubdate data-updated="true">May 20<span>th</span>, 2015</time></div>
+  
+</div>
+
+    <p>一気に出ましたね。すでに過去にもいくつかは紹介したり翻訳したりしていますが、それぞれを簡単に紹介しておきます。</p>
+
+<h3>JOSE WG</h3>
+
+<ul>
+<li><a href="http://tools.ietf.org/html/rfc7515">RFC 7515</a> &ndash; JSON Web Signature (JWS)</li>
+<li><a href="http://tools.ietf.org/html/rfc7516">RFC 7516</a> &ndash; JSON Web Encryption (JWE)</li>
+<li><a href="http://tools.ietf.org/html/rfc7517">RFC 7517</a> &ndash; JSON Web Key (JWK)</li>
+<li><a href="http://tools.ietf.org/html/rfc7518">RFC 7518</a> &ndash; JSON Web Algorithms (JWA)</li>
+<li><a href="http://tools.ietf.org/html/rfc7520">RFC 7520</a> &ndash; Examples of Protecting Content Using JSON Object Signing and Encryption (JOSE)</li>
+</ul>
+
+
+<p>JWS は署名付きのデータを JSON (の Base64 URL Encode) 形式で表現するための仕様で、多くの場合は JSON Payload に対して署名するケースで利用されます。JSON じゃないデータに対して署名して、署名結果を JSON (の Base64 URL Encode) 形式で表現することもできますが&hellip;まぁ、細かい話は置いときましょう。OpenID Connect の ID Token とかは、JWS 仕様に従って署名されています。</p>
+
+<p>JWE は暗号化されたデータを JSON (の Base64 URL Encode) 形式で表現するための仕様です。現状では JWS よりは利用頻度低いかとは思いますが、SAML Assertion を暗号化してるようなユースケースを Connect に移行する時なんかには使うでしょう。</p>
+
+<p>JWK は JWS や JWE などで利用する鍵を JSON 形式で表現するための仕様です。上記2つとよくセットで利用されます。OpenID Connect でも、OpenID Connect Discovery をサポートしているような IdP では大体公開鍵を JWK Set 形式で公開していますね。</p>
+
+<p>JWA は、JWS や JWE で利用される各アルゴリズムおよびそれらの識別子を定義している仕様です。JWT, JWS, JWE をライブラリを通じて利用しているケースでは、あまり気にすることはないでしょうが、JOSE ライブラリ作者は読むことになるでしょう。</p>
+
+<p>最後のは、サンプルリストですね。これはまぁライブラリ作者が読むくらいでしょう。</p>
+
+<h3>OAuth WG</h3>
+
+<ul>
+<li><a href="http://tools.ietf.org/html/rfc7519">RFC 7519</a> &ndash; JSON Web Token (JWT)</li>
+<li><a href="http://tools.ietf.org/html/rfc7521">RFC 7521</a> &ndash; Assertion Framework for OAuth 2.0 Client Authentication and Authorization Grants</li>
+<li><a href="http://tools.ietf.org/html/rfc7522">RFC 7522</a> &ndash; Security Assertion Markup Language (SAML) 2.0 Profile for OAuth 2.0 Client Authentication and Authorization Grants</li>
+<li><a href="http://tools.ietf.org/html/rfc7523">RFC 7523</a> &ndash; JSON Web Token (JWT) Profile for OAuth 2.0 Client Authentication and Authorization Grants</li>
+</ul>
+
+
+<p>JWT は JSON (の Base64 URL Encode) 形式で Assertion を生成するための仕様です。OpenID Connect の ID Token などで利用されています。大抵は署名 (= JWS) とセットで利用されるでしょう。</p>
+
+<p>Assertion Framework for OAuth 2.0 (ry) は、任意の Assertion を OAuth 2.0 の Client Authentication で Client Credentials として使ったり、Authorization Grant として利用して Assertion を Access Token と交換するための仕様です。これ単体では利用できず、後の2つのサブ仕様の共通部分を抽象化した仕様になっています。</p>
+
+<p>SAML 2.0 Profile for OAuth 2.0 (ry) は、SAML Assertion を RFC 7521 の Assertion として利用するための仕様です。既存の SAML SP が持っている SAML Assertion を OAuth 2.0 の Access Token と交換して API Access させたいとか、そういう時に使います。「あぁ、それは SAML 単体じゃ無理なんで、ID-WSF 必要ですねぇ〜」って言われたら、多分 ID-WSF 無視してこれ使えば、OAuth 2.0 使えるようになるはずです。</p>
+
+<p>JWT Profile for OAuth 2.0 (ry) は、JWT を RFC 7521 の Assertion として利用するための仕様です。Client Authentication 目的で利用するケースは、ADFS / Azure AD とかであるはずですが、Authorization Grant として利用するケースは&hellip;あったかな？</p>
+
+<h3>Links</h3>
+
+<ul>
+<li><a href="/blog/2012/10/26/json-web-token-jwt/">JSON Web Token (JWT) &ndash; OAuth.jp</a>
+
+<ul>
+<li>もうこの記事書いてから、2年半経ってるんですね〜。感慨深い。</li>
+</ul>
+</li>
+<li><a href="/blog/2015/03/16/common-jws-implementation-vulnerability/">JWS 実装時に作りがちな脆弱性パターン &ndash; OAuth.jp</a>
+
+<ul>
+<li>すでに JOSE ライブラリは大体出揃ってるので、今後新しく作ることはあまりないかもしれませんが、もし自分で JWS 実装する時は、これ注意してくださいね。</li>
+</ul>
+</li>
+<li><a href="http://openid-foundation-japan.github.io">翻訳ドキュメント一覧 &ndash; OpenID Foundation Japan 翻訳 WG</a>
+
+<ul>
+<li>Draft 版の JOSE 仕様群は、こちらに翻訳版あります。</li>
+</ul>
+</li>
+<li><a href="http://www.sakimura.org/2015/05/2997/">JWSとJWTがRFCになりました！ &ndash; @_Nat Zone</a>
+
+<ul>
+<li>Nat さんはじめ、みなさんおつかれさまでした！</li>
+</ul>
+</li>
+</ul>
+
+
+    
+    
+  </div>
+
+<div class="meta">
+  
+</div>
+</article>
 
 
     <article class="post">
@@ -331,72 +440,6 @@
 
     
     <a href="/blog/2015/01/07/google-openid2-termination/" class="more-link">Read on &rarr;</a>
-  </div>
-
-<div class="meta">
-  
-</div>
-</article>
-
-
-    <article class="post">
-  <h2 class="title">
-    
-    <a href="/blog/2015/01/06/oauth2-multiple-response-type/">
-    
-      OAuth 2.0 の Response Type 全パターン</a>
-  </h2>
-  <div class="entry-content">
-    <div class="meta">
-  <div class="author">
-    Author: <a href="https://matake.jp">Nov Matake</a>
-  </div>
-  <div class="date">Date: 
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2015-01-06T20:15:00+09:00" pubdate data-updated="true">Jan 6<span>th</span>, 2015</time></div>
-  
-</div>
-
-    <p>特に新しい話題ではないですが、定期的に質問されてる気がするので記事にしときます。</p>
-
-<p>OAuth 2.0 の Core には、&#8221;code&#8221; と &ldquo;token&rdquo; という2つの response_type が定義されています。</p>
-
-<p>それぞれ &ldquo;Code Grant&rdquo; と &ldquo;Implicit Grant&rdquo; と呼ばれることもありますし、歴史的経緯により &ldquo;Code Flow&rdquo; と &ldquo;Implicit Flow&rdquo; と呼ぶこともあります。</p>
-
-<p>ほとんどのケースでは、この2つの response_type のどちらかを使っているかと思いますが、実はこれ以外にも以下の response_type のパターンが存在します。
-(<a href="http://openid.net/specs/oauth-v2-multiple-response-types-1_0.html">仕様はこちら</a>)</p>
-
-<ul>
-<li>none</li>
-<li>code token</li>
-<li>id_token</li>
-<li>id_token code</li>
-<li>id_token token</li>
-<li>id_token code token</li>
-</ul>
-
-
-<p>id_token ってのが含まれてるのは、OpenID Connect で利用する response_type なので、OAuth 2.0 だけを実装する場合は無視して OK です。</p>
-
-<p>でもこんなにいっぱいあると、Server 側 (OP 側) もどこまで実装したらいいかわかんないし、Client 側 (RP 側) もどれ使うのが一番いいのかわかんないですよね。特に OpenID Connect 使う場合は。</p>
-
-<p>そんなこんなで、「どれ実装したらいいの？」とか、「どれ使えばいいの？」っていう質問を、Server 側の人にも Client 側の人にも、半年に一回くらいされる気がします。</p>
-
-<p>この機会に、それぞれの response_type で想定される Use-Case をまとめておきましょう。</p>
-
-
-    
-    <a href="/blog/2015/01/06/oauth2-multiple-response-type/" class="more-link">Read on &rarr;</a>
   </div>
 
 <div class="meta">

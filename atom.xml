@@ -4,7 +4,7 @@
   <title><![CDATA[OAuth.jp]]></title>
   <link href="https://oauth.jp/atom.xml" rel="self"/>
   <link href="https://oauth.jp/"/>
-  <updated>2020-04-28T18:10:35+09:00</updated>
+  <updated>2020-05-19T13:55:21+09:00</updated>
   <id>https://oauth.jp/</id>
   <author>
     <name><![CDATA[Nov Matake]]></name>
@@ -12,6 +12,113 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Nonce/PKCE Sidestep Attack]]></title>
+    <link href="https://oauth.jp/blog/2020/05/19/nonce-pkce-sidestep-attack/"/>
+    <updated>2020-05-19T13:06:00+09:00</updated>
+    <id>https://oauth.jp/blog/2020/05/19/nonce-pkce-sidestep-attack</id>
+    <content type="html"><![CDATA[<p>OAuth 2.1 で PKCE 必須にするしない議論が盛り上がっておりますが、今日そのスレで新しい攻撃パターンが議題に上がりました。<br/>
+<a href="https://mailarchive.ietf.org/arch/msg/oauth/HZt851AobQlJMBVd6_p8iWSyRS8/">https://mailarchive.ietf.org/arch/msg/oauth/HZt851AobQlJMBVd6_p8iWSyRS8/</a></p>
+
+<p>今のところ &ldquo;Nonce/PKCE Sidestep Attack (仮&rdquo; と名付けられたこの攻撃は、以下のようなシナリオで成立します。</p>
+
+<h3>Nonce/PKCE Sidestep Attack (仮</h3>
+
+<h4>[前提条件]</h4>
+
+<p>ある Client に、アプリケーションコンテキストによって PKCE を使うコンテキストと Nonce を使うコンテキストが共存している。</p>
+
+<h4>[攻撃シナリオ]</h4>
+
+<p>以下、<a href="https://danielfett.de/2020/05/16/pkce-vs-nonce-equivalent-or-not/#noncepkce-sidestep-attack">原文</a> を要約。</p>
+
+<ol>
+<li>攻撃者は何らかの手段により Nonce に紐づいた (= PKCE code_challenge とは紐づいていない) 被害者の Code を詐取する。</li>
+<li>攻撃者は PKCE を使うコンテキストにおいて自らのブラウザで Client に Authorization Request を実行させ、code_challenge だけを抜き去ったものを Authorization Server に送る。</li>
+<li>攻撃者は受け取った Authorization Response 中の Code を Step.1 で取得した Code と差し替え Client に提示する。</li>
+<li>Client は受け取った Code を Step.2 で生成した code_challenge に紐づいた code_verifier を付与して Token Request を実行する。</li>
+<li>Authorization Server は code_challenge と紐づいていない Code を受け取ったので code_verifier は無視して Token Response を返す。</li>
+<li>Client は Nonce を使うコンテキストでもないので Nonce のチェックも行わず、code_verifier が無視されたことも検知できないので成功裏に Token Response を受け取ってしまう。</li>
+</ol>
+
+
+<p>以上により Code 置換攻撃が成立する。</p>
+
+<!-- more -->
+
+
+<p>しかし、ここでひとつ疑問があります。</p>
+
+<p>Authorization Server は、本当に code_challenge と紐づいていない Code を受け取った場合、それに添えられた code_verifier を無視するのでしょうか？</p>
+
+<p>もし無視するとしたら、以下のような攻撃も成立してしまうのではないでしょうか？</p>
+
+<h3>PKCE CSRF Protection Bypass (仮</h3>
+
+<h4>[前提条件]</h4>
+
+<p>ある Client は CSRF 攻撃対策として state ではなく PKCE を使っている。</p>
+
+<h4>[攻撃シナリオ]</h4>
+
+<ol>
+<li>攻撃者は自身のブラウザで Client に Authorization Request を実行させ、code_challenge だけを抜き去ったものを Authorization Server に送る。</li>
+<li>攻撃者は受け取った Authorization Response を一旦保存する。</li>
+<li>攻撃者はフィッシングサイト等を介して被害者のブラウザで被害者に気づかれない形 (hidden iframe etc.) で Authorization Request を実行させつつ Step.2 で受け取った Authorization Response を被害者のブラウザに渡す。</li>
+<li>被害者から Code を受け取った Client は、被害者のブラウザセッションに紐づいた code_verifier を付与して攻撃者の Code を Authorization Server に提示する。</li>
+<li>Authorization Server は code_challenge と紐づいていない Code を受け取ったので code_verifier は無視して Token Response を返す。</li>
+<li>Client は code_verifier が無視されたことも検知できないので成功裏に Token Response を受け取ってしまう。</li>
+</ol>
+
+
+<p>SameSite=Lax がデフォルトでないようなブラウザでは、上記のような攻撃は成立してしまうでしょう。</p>
+
+<p>また以下のようなパターンもありえるかもしれません。</p>
+
+<h3>PKCE Code Injection Protection Bypass (仮</h3>
+
+<h4>[前提条件]</h4>
+
+<p>ある Client は CSRF 攻撃対策としては state を、Code Injection 攻撃対策としては PKCE を使っている。</p>
+
+<p>また Client は redirect_uri が HTTP であったりするなど、Code が漏洩しうる条件も持っている。</p>
+
+<h4>[攻撃シナリオ]</h4>
+
+<ol>
+<li>攻撃者は自身のブラウザで Client に Authorization Request を実行させ、code_challenge だけを抜き去ったものを Authorization Server に送る。</li>
+<li>攻撃者は Authorization Response を受け取り Code を一旦保存する。</li>
+<li>攻撃者は被害者の Code が詐取できるポイントで、被害者の Code を詐取する代わりにそれを Step.2 で受け取った攻撃者の Code に置換する。</li>
+<li>被害者から Code を受け取った Client は、被害者のブラウザセッションに紐づいた code_verifier を付与して攻撃者の Code を Authorization Server に提示する。</li>
+<li>Authorization Server は code_challenge と紐づいていない Code を受け取ったので code_verifier は無視して Token Response を返す。</li>
+<li>Client は code_verifier が無視されたことも検知できないので成功裏に Token Response を受け取ってしまう。</li>
+</ol>
+
+
+<p>う〜ん&hellip; <code>Authorization Server は code_challenge と紐づいていない Code を受け取ったので code_verifier は無視して Token Response を返す。</code> っていう挙動を許してしまうと、PKCE で対策されていたはずだった CSRF 攻撃も Code Injection 攻撃も防げなくなってしまいますね&hellip;</p>
+
+<p>まぁそもそも被害者のブラウザ上で hidden iframe で Authorization Request を実行させたり Code を置換できたりするようなケースはほとんどないとは思いますが&hellip;</p>
+
+<p>PKCE それでいんだっけ？？</p>
+
+<p>ということで、過去の僕の実装を見てみると&hellip;</p>
+
+<p><a href="https://github.com/nov/rack-oauth2/blob/master/lib/rack/oauth2/server/extension/pkce.rb#L28">Rack::OAuth2 Server-side PKCE Implementation</a></p>
+
+<p>やっぱ code_challenge に紐づいてない Code と code_verifier が渡されてきたら、ちゃんとエラーにしてますね。</p>
+
+<p>じゃあ PKCE 採用 Authorization Server として最もメジャーな Google さんはどうでしょう&hellip;</p>
+
+<p><a href="https://gist.github.com/nov/9feba86685bd3b18b4bf7bfb88022046">Google PKCE Client Sample</a></p>
+
+<p>やっぱ code_challenge に紐づいてない Code と code_verifier が渡されてきたら、ちゃんとエラーにしてますね。</p>
+
+<p>う〜ん、このケースでの挙動、<a href="https://tools.ietf.org/html/rfc7636">RFC 7636 &ndash; Proof Key for Code Exchange by OAuth Public Clients</a> では特に触れられてないんですけど、やっぱ普通に考えれば、code_challenge に紐づいてない Code と code_verifier が渡されてきたら、エラーですよね&hellip;</p>
+
+<p>みなさんの実装はいかがでしょうか？</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Account Takeover Vulnerability in Microsoft Teams]]></title>
@@ -1170,7 +1277,7 @@
 
 <p>動作確認用のユーザーも作っておきましたので、これが正常に動いてる間はご自由にお使いください。</p>
 
-<p>Username: <a href="&#109;&#x61;&#105;&#108;&#116;&#111;&#x3a;&#x79;&#x6f;&#x75;&#64;&#115;&#x74;&#115;&#x34;&#x62;&#x32;&#x63;&#x2e;&#111;&#x6e;&#x6d;&#x69;&#99;&#x72;&#111;&#x73;&#111;&#x66;&#x74;&#46;&#99;&#111;&#109;">&#121;&#111;&#117;&#x40;&#x73;&#x74;&#115;&#x34;&#x62;&#50;&#x63;&#46;&#x6f;&#110;&#109;&#105;&#x63;&#x72;&#111;&#115;&#111;&#x66;&#116;&#x2e;&#x63;&#x6f;&#109;</a>
+<p>Username: <a href="&#x6d;&#97;&#105;&#108;&#116;&#x6f;&#58;&#x79;&#111;&#117;&#64;&#x73;&#x74;&#115;&#52;&#x62;&#50;&#99;&#x2e;&#x6f;&#110;&#109;&#x69;&#99;&#114;&#x6f;&#x73;&#x6f;&#102;&#116;&#46;&#x63;&#111;&#109;">&#x79;&#111;&#117;&#x40;&#x73;&#116;&#115;&#x34;&#x62;&#x32;&#99;&#x2e;&#111;&#110;&#x6d;&#x69;&#x63;&#114;&#x6f;&#115;&#111;&#102;&#x74;&#x2e;&#x63;&#x6f;&#109;</a>
 Password: ]6]yzxXYG7uruM4p</p>
 
 <p>動かなくなったら、あきらめて自分で Azure AD B2C 環境セットアップしてください。</p>
@@ -1323,13 +1430,13 @@ Password: ]6]yzxXYG7uruM4p</p>
 
 <p>あと、Email 指定してもそのメアドのユーザーにログインできるわけでもないです。</p>
 
-<p><a href="&#x6d;&#x61;&#x69;&#108;&#x74;&#x6f;&#x3a;&#x6e;&#x6f;&#x76;&#64;&#101;&#120;&#97;&#109;&#112;&#108;&#101;&#46;&#99;&#x6f;&#x6d;">&#110;&#111;&#118;&#64;&#x65;&#x78;&#97;&#109;&#112;&#x6c;&#101;&#x2e;&#99;&#x6f;&#109;</a> の NameID を持つ SAML Assertion で、<a href="&#x6d;&#97;&#x69;&#108;&#x74;&#111;&#58;&#x6e;&#111;&#118;&#x40;&#109;&#97;&#x74;&#97;&#107;&#x65;&#46;&#106;&#112;">&#x6e;&#x6f;&#118;&#x40;&#x6d;&#x61;&#x74;&#97;&#x6b;&#x65;&#x2e;&#x6a;&#x70;</a> の GitHub アカウントにログインできたりします。</p>
+<p><a href="&#109;&#x61;&#x69;&#108;&#x74;&#111;&#x3a;&#x6e;&#x6f;&#118;&#x40;&#101;&#120;&#97;&#109;&#112;&#108;&#101;&#x2e;&#x63;&#x6f;&#109;">&#110;&#x6f;&#x76;&#64;&#x65;&#x78;&#97;&#x6d;&#112;&#108;&#101;&#x2e;&#x63;&#x6f;&#x6d;</a> の NameID を持つ SAML Assertion で、<a href="&#109;&#x61;&#105;&#x6c;&#116;&#x6f;&#x3a;&#x6e;&#x6f;&#x76;&#x40;&#109;&#x61;&#116;&#x61;&#x6b;&#x65;&#46;&#106;&#x70;">&#110;&#x6f;&#x76;&#x40;&#x6d;&#x61;&#116;&#97;&#107;&#x65;&#x2e;&#x6a;&#112;</a> の GitHub アカウントにログインできたりします。</p>
 
 <p>SAML Federation とか言うてるけど、結局既存の GitHub.com アカウントに SAML IdP 側のアカウントを Link するだけなんですよ。</p>
 
 <p>その紐付けは、SAML での初回ログイン時に GitHub.com 側の ID &amp; Password 入力して行います。</p>
 
-<p>つまり、<a href="&#109;&#x61;&#105;&#108;&#116;&#x6f;&#x3a;&#110;&#111;&#x76;&#x40;&#x65;&#x78;&#x61;&#x6d;&#x70;&#x6c;&#x65;&#46;&#99;&#x6f;&#109;">&#x6e;&#111;&#x76;&#x40;&#101;&#120;&#97;&#x6d;&#112;&#x6c;&#101;&#46;&#x63;&#111;&#109;</a> の NameID を持つ SAML Assertion をどの GitHub アカウントに紐づけるかは、エンドユーザーが決定権を持っています。</p>
+<p>つまり、<a href="&#109;&#97;&#x69;&#x6c;&#x74;&#111;&#58;&#x6e;&#x6f;&#118;&#64;&#x65;&#120;&#x61;&#109;&#112;&#x6c;&#x65;&#46;&#99;&#111;&#109;">&#110;&#111;&#118;&#64;&#101;&#x78;&#97;&#x6d;&#112;&#108;&#x65;&#x2e;&#x63;&#x6f;&#x6d;</a> の NameID を持つ SAML Assertion をどの GitHub アカウントに紐づけるかは、エンドユーザーが決定権を持っています。</p>
 
 <p>情シスじゃないです。</p>
 
@@ -2291,69 +2398,6 @@ Mac から Remote Desktop 経由でいじりたかったんでね。</p>
 
 <p>ps.
 本記事執筆にあたっては、<a href="http://idmlab.eidentity.jp">腹違いの兄さんことふぁらおう兄さん</a>に長時間にわたって相談に乗っていただきました。にいさん、いつもありがとうございます！</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[OAuth / Connect における CSRF Attack の新パターン]]></title>
-    <link href="https://oauth.jp/blog/2016/05/06/another-csrf-attack/"/>
-    <updated>2016-05-06T14:19:00+09:00</updated>
-    <id>https://oauth.jp/blog/2016/05/06/another-csrf-attack</id>
-    <content type="html"><![CDATA[<p>昨日こんなのが OAuth ML に流れてました。</p>
-
-<p><a href="https://mailarchive.ietf.org/arch/search/?email_list=oauth&amp;gbt=1&amp;index=G4J3H1BMyIN01FCOLKqLjrx7AZ4">[OAUTH-WG] Another CSRF attack</a></p>
-
-<h2>前提条件</h2>
-
-<p>RP (Relying Party a.k.a. OAuth Client) が2つ以上の IdP (Identity Provider a.k.a. OAuth Server) と連携している状況で、片方の IdP に悪意がある。</p>
-
-<ul>
-<li>悪意ある IdP = AIdP (A は Attacker の略)</li>
-<li>その他の IdP = HIdP (H は Honest の略)</li>
-</ul>
-
-
-<h2>攻撃フロー</h2>
-
-<p><img src="https://www.websequencediagrams.com/cgi-bin/cdraw?lz=YWx0IFZpY3RpbSdzIFNlc3Npb24KICAgAA4HLT5SUDogTG9naW4gdy8gQUlkUAAZBVJQLT4AMQY6ACENQUlkUDogQXV0aFogUmVxIHcvIHN0YXRlLVYAUAVBSWQALwoAIgVlbnRpY2F0ZQA0EgAmC0gAUAZ0dGFja2VyJ3MgY3JlZGVudGlhbHMAgSgFSABTBQB3BmNvZABIBgBfDkhJZFAncwAZBQCBCwsgKHRvIHJlZGlyZWN0X3VyaSBmb3IASgUpAIF2EACBbwlSUDoANglpcyB0aWVkIHRvIHRoZSBzAII7BiwgT0shAIIfCQCBOAYAgQ4JAIEmBlIAgUMOYWNjZXNzX3Rva2VuICYgaWQABQYAglwQIEhlbGxvLCB3aGF0J3MgeW91ciBuYW1lPwCDIhFJJ20Ag1EHCmVsc2UAgjEMAINaDACCTAgAg0wcAIJwCACDCwcAKQkAgw8HAINaEkEAgwgMADUIAINcEgA7DwAgFQCDIQ4AUwYAgScNAIMDE0EAgi1pAIFTCldlbGNvbWUgYmFjaywAhkoHIQplbmQK&amp;s=earth" alt="Another CSRF Attack" /></p>
-
-<ol>
-<li>Victim が AIdP を使って RP へのログインを試みる。</li>
-<li>RP は Authorization Request を AIdP に送る。
-
-<ul>
-<li>AuthZ Req には Browser Session と紐付いた <code>state</code> パラメータをつけている。</li>
-</ul>
-</li>
-<li>AIdP は Victim を認証し、必要に応じて同意を取得する (ふりをする)
-
-<ul>
-<li>同時に AIdP は裏で HIdP から <code>code</code> を取得する。</li>
-<li>HIdP の code は Attacker の HIdP 上のアカウントに紐付いているもの。</li>
-</ul>
-</li>
-<li>AIdP は HIdP から取得した <code>code</code> を、RP の HIdP 用 <code>redirect_uri</code> に返す。
-
-<ul>
-<li>この時 Step2 で RP が発行した <code>state</code> を付与する。</li>
-</ul>
-</li>
-<li>RP は Browser Session と紐付いた <code>state</code> を検証した上で <code>code</code> を HIdP の Token Endpoint に送る。</li>
-<li>HIdP は Attacker のアカウントに紐付いた <code>access_token</code> を返す。</li>
-<li>RP は Victim をログインさせる。
-
-<ul>
-<li>ここで HIdP 上の Attacker アカウントと RP 上の Victim アカウントが紐づけられる。</li>
-</ul>
-</li>
-</ol>
-
-
-<p>そして、Attacker は任意のタイミングで自身の HIdP 上のアカウントを使って、RP 上の Victim のアカウントにログインできる。</p>
-
-<h2>防御策</h2>
-
-<p><code>state</code> をリクエスト先の IdP とも紐づけましょう。</p>
 ]]></content>
   </entry>
   

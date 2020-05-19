@@ -6,7 +6,7 @@
 	<title>OAuth.jp</title>
     <meta name="author" content="Nov Matake">
     
-	<meta name="description" content="Author: Nov Matake Date: Apr 1st, 2017 我らが Justin Richer がずっと執筆進めてた OAuth2 in Action が Amazon.co.jp に登場してました。 目次はこんな感じ。 Part 1 &ndash; First steps &hellip;">
+	<meta name="description" content="Author: Nov Matake Date: May 18th, 2017 Windows 10 で AzureAD Module インポート済の PowerShell を気軽に起動できるようにする方法メモ。 前提条件 前提として、PowerShell に AzureAD アクセスに必要な &hellip;">
 	
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
@@ -93,6 +93,84 @@
 <!-- begin toload --> 
     <div id="content" class="inner">
         
+
+
+    <article class="post">
+  <h2 class="title">
+    
+    <a href="/blog/2017/05/18/powershell-for-azuread/">
+    
+      PowerShell for AzureAD</a>
+  </h2>
+  <div class="entry-content">
+    <div class="meta">
+  <div class="author">
+    Author: <a href="https://matake.jp">Nov Matake</a>
+  </div>
+  <div class="date">Date: 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2017-05-18T14:17:00+09:00" pubdate data-updated="true">May 18<span>th</span>, 2017</time></div>
+  
+</div>
+
+    <p>Windows 10 で AzureAD Module インポート済の PowerShell を気軽に起動できるようにする方法メモ。</p>
+
+<h2>前提条件</h2>
+
+<p>前提として、PowerShell に AzureAD アクセスに必要な Module がインストールされているものとします。</p>
+
+<p>Module インストールは以下のコマンドを Administrator として実行するだけです。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ps1'><span class='line'><span class="n">Install-Module</span> <span class="n">MSOnline</span><span class="p">,</span> <span class="n">AzureAD</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><a href="https://msdn.microsoft.com/ja-jp/library/jj151815.aspx#bkmk_installmodule">こんな ext</a> は別にいらないです。以前はこいつのインストールでいろいろはまったんですが、あれはなんだったんでしょうか&hellip;</p>
+
+<h2>ショートカット作成</h2>
+
+<p>まずは PowerShell 自体のショートカットを作成します。</p>
+
+<p><img src="/images/posts/azure/powershell-for-azure-ad.png" alt="PowerShell for AzureAD" /></p>
+
+<p>そしておもむろに Target のところを下記の PowerShell Script に変更。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ps1'><span class='line'><span class="n">PowerShell</span> <span class="n">-noexit</span> <span class="s2">&quot;Import-Module MSOnline, AzureAD; Connect-MsolService&quot;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>そして Advanced Options の &ldquo;Run as Administrator&rdquo; にチェック。</p>
+
+<p>これで、このショートカットダブルクリックするだけで、自動でログイン画面まで Popup してくれるようになります。</p>
+
+<h2>ショートカット起動</h2>
+
+<p>起動したら自動でこうなります。</p>
+
+<p><img src="/images/posts/azure/powershell-for-azure-ad-launched.png" alt="PowerShell for AzureAD Launched" /></p>
+
+<p>またちょっと Windows 力上がった気がする。</p>
+
+    
+    
+  </div>
+
+<div class="meta">
+  
+</div>
+</article>
 
 
     <article class="post">
@@ -368,88 +446,6 @@
 
     
     <a href="/blog/2017/01/26/myna-on-mac-os-sierra/" class="more-link">Read on &rarr;</a>
-  </div>
-
-<div class="meta">
-  
-</div>
-</article>
-
-
-    <article class="post">
-  <h2 class="title">
-    
-    <a href="/blog/2016/07/27/https-full-url-leaks/">
-    
-      HTTPS でも Full URL が漏れる？OAuth の Code も漏れるんじゃね？？</a>
-  </h2>
-  <div class="entry-content">
-    <div class="meta">
-  <div class="author">
-    Author: <a href="https://matake.jp">Nov Matake</a>
-  </div>
-  <div class="date">Date: 
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2016-07-27T10:48:00+09:00" pubdate data-updated="true">Jul 27<span>th</span>, 2016</time></div>
-  
-</div>
-
-    <p>なんですかこれは！</p>
-
-<p><a href="http://arstechnica.com/security/2016/07/new-attack-that-cripples-https-crypto-works-on-macs-windows-and-linux/">New attack bypasses HTTPS protection on Macs, Windows, and Linux</a></p>
-
-<p>DHCP につなぐと PAC ファイルがダウンロードされて HTTPS であろうとアクセス先の Full URL は漏れるですって？</p>
-
-<p>Web Proxy Autodiscovery ですって？</p>
-
-<p>チョットニホンゴデオネガイシマス</p>
-
-<p>ってことで、まぁこれが実際どれくらい簡単に実現できる攻撃パターンなのかは他のセキュリティ業界の方々に後で聞くとして、この記事でも触れられてる OpenID Connect とか OAuth2 への影響について、ちょっとまとめておきましょうか。</p>
-
-<h2>Authorization Request &amp; Response が漏れる</h2>
-
-<p><code>response_mode=form_post</code> なんていうのも一部ありますが、基本 OAuth2 / OpenID Connect の Authorization Request &amp; Response は GET です。</p>
-
-<p>Implicit Flow の場合は Response Parameter が URL Fragment についてるので、Server に送られる Full URL が漏れたところで特に URL Fragment の内容は漏れないですが、Code Flow の場合は Response の Query についてる Authorization Code は漏れますね。</p>
-
-<p>まぁ Authorization Request に含まれる <code>state</code> とかも漏れますが、今回のケースだと Cookie とかは漏れないんで、<code>state</code> が漏れること自体は大して問題ではないでしょう。</p>
-
-<p>ただ、Redirect URL に HTTPS 使っても <code>code</code> 漏れるってのは、辛そうですね。</p>
-
-<h2>Authorization Code が漏れたらどうなるの？</h2>
-
-<p>Code 置換攻撃 (Code Cut &amp; Paste Attack) が可能になります。</p>
-
-<p>ここに漏れた <code>code</code> があるとしましょう。すると、以下の手順で攻撃者は <code>code</code> 所有者の RP 上のアカウントにログインすることができます。</p>
-
-<ol>
-<li>攻撃者自身のブラウザで Authorization Request 発行</li>
-<li>攻撃者自身の IdP 上のアカウントで IdP にログイン</li>
-<li>Authorization Response を途中で止める</li>
-<li>Authorization Response 中に含まれる <code>code</code> を被害者のものに置換 (<code>state</code> は置換しない)</li>
-<li>Code 置換済の Authorization Response を RP に送る</li>
-</ol>
-
-
-<p>こうすると、RP が <code>state</code> を使った CSRF 対策を行っていても、RP は受け取った <code>code</code> を使って攻撃者を被害者としてログインさせてしまいます。</p>
-
-<p>これが Code 置換攻撃です。</p>
-
-<p>では、これを防ぐ手立てはあるのでしょうか？</p>
-
-
-    
-    <a href="/blog/2016/07/27/https-full-url-leaks/" class="more-link">Read on &rarr;</a>
   </div>
 
 <div class="meta">

@@ -6,9 +6,8 @@
 	<title>OAuth.jp</title>
     <meta name="author" content="Nov Matake">
     
-	<meta name="description" content="Author: Nov Matake Date: Apr 28th, 2020 約一年ぶりの記事ですね。
-みなさん、三密避けて OAuth の勉強に勤しんでおられますでしょうか？
-さて、今朝こんな記事が上がってました。 「Microsoft Teams」にアカウント乗っ取りの脆弱性、 &hellip;">
+	<meta name="description" content="Author: Nov Matake Date: May 19th, 2020 OAuth 2.1 で PKCE 必須にするしない議論が盛り上がっておりますが、今日そのスレで新しい攻撃パターンが議題に上がりました。
+https://mailarchive.ietf.org/arch/msg/ &hellip;">
 	
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
@@ -95,6 +94,72 @@
 <!-- begin toload --> 
     <div id="content" class="inner">
         
+
+
+    <article class="post">
+  <h2 class="title">
+    
+    <a href="/blog/2020/05/19/nonce-pkce-sidestep-attack/">
+    
+      Nonce/PKCE Sidestep Attack</a>
+  </h2>
+  <div class="entry-content">
+    <div class="meta">
+  <div class="author">
+    Author: <a href="https://matake.jp">Nov Matake</a>
+  </div>
+  <div class="date">Date: 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2020-05-19T13:06:00+09:00" pubdate data-updated="true">May 19<span>th</span>, 2020</time></div>
+  
+</div>
+
+    <p>OAuth 2.1 で PKCE 必須にするしない議論が盛り上がっておりますが、今日そのスレで新しい攻撃パターンが議題に上がりました。<br/>
+<a href="https://mailarchive.ietf.org/arch/msg/oauth/HZt851AobQlJMBVd6_p8iWSyRS8/">https://mailarchive.ietf.org/arch/msg/oauth/HZt851AobQlJMBVd6_p8iWSyRS8/</a></p>
+
+<p>今のところ &ldquo;Nonce/PKCE Sidestep Attack (仮&rdquo; と名付けられたこの攻撃は、以下のようなシナリオで成立します。</p>
+
+<h3>Nonce/PKCE Sidestep Attack (仮</h3>
+
+<h4>[前提条件]</h4>
+
+<p>ある Client に、アプリケーションコンテキストによって PKCE を使うコンテキストと Nonce を使うコンテキストが共存している。</p>
+
+<h4>[攻撃シナリオ]</h4>
+
+<p>以下、<a href="https://danielfett.de/2020/05/16/pkce-vs-nonce-equivalent-or-not/#noncepkce-sidestep-attack">原文</a> を要約。</p>
+
+<ol>
+<li>攻撃者は何らかの手段により Nonce に紐づいた (= PKCE code_challenge とは紐づいていない) 被害者の Code を詐取する。</li>
+<li>攻撃者は PKCE を使うコンテキストにおいて自らのブラウザで Client に Authorization Request を実行させ、code_challenge だけを抜き去ったものを Authorization Server に送る。</li>
+<li>攻撃者は受け取った Authorization Response 中の Code を Step.1 で取得した Code と差し替え Client に提示する。</li>
+<li>Client は受け取った Code を Step.2 で生成した code_challenge に紐づいた code_verifier を付与して Token Request を実行する。</li>
+<li>Authorization Server は code_challenge と紐づいていない Code を受け取ったので code_verifier は無視して Token Response を返す。</li>
+<li>Client は Nonce を使うコンテキストでもないので Nonce のチェックも行わず、code_verifier が無視されたことも検知できないので成功裏に Token Response を受け取ってしまう。</li>
+</ol>
+
+
+<p>以上により Code 置換攻撃が成立する。</p>
+
+
+    
+    <a href="/blog/2020/05/19/nonce-pkce-sidestep-attack/" class="more-link">Read on &rarr;</a>
+  </div>
+
+<div class="meta">
+  
+</div>
+</article>
 
 
     <article class="post">
@@ -323,59 +388,6 @@
 
     
     
-  </div>
-
-<div class="meta">
-  
-</div>
-</article>
-
-
-    <article class="post">
-  <h2 class="title">
-    
-    <a href="/blog/2018/03/09/alexa-and-nature-remo/">
-    
-      Alexa と Nature Remo の Account Linking</a>
-  </h2>
-  <div class="entry-content">
-    <div class="meta">
-  <div class="author">
-    Author: <a href="https://matake.jp">Nov Matake</a>
-  </div>
-  <div class="date">Date: 
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2018-03-09T20:24:00+09:00" pubdate data-updated="true">Mar 9<span>th</span>, 2018</time></div>
-  
-</div>
-
-    <p>ついに <a href="http://amzn.to/2HjU7Yp">Amazon Echo Plus</a> の購入券当選通知が来たので、Echo Plus と一緒に <a href="http://amzn.to/2oVl4Ls">Nature Remo</a> を買いました。</p>
-
-<p><a href="https://www.amazon.co.jp/Nature-Inc-Remo-01-Remo/dp/B06XCQFP96/ref=as_li_ss_il?s=aps&ie=UTF8&qid=1520594772&sr=1-1-catcorr&keywords=nature+remo&linkCode=li3&tag=bianca0b-22&linkId=13d9bc61ca409c43ab2dc391c559aa12" target="_blank"><img border="0" src="//ws-fe.amazon-adsystem.com/widgets/q?_encoding=UTF8&ASIN=B06XCQFP96&Format=_SL250_&ID=AsinImage&MarketPlace=JP&ServiceVersion=20070822&WS=1&tag=bianca0b-22" ></a><img src="https://ir-jp.amazon-adsystem.com/e/ir?t=bianca0b-22&l=li3&o=9&a=B06XCQFP96" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" /></p>
-
-<p>エアコン推しですが、テレビのリモコン等、赤外線飛ばすリモコンならなんでも対応できる、素敵な「スマートリモコン」です。</p>
-
-<p>Nature Remo アプリでセットアップして、アプリからリモコンつけたり消したりできるのも素敵ですし、アプリで設定しといたら iPhone が Nature Remo から 30m 以上離れたら自動でエアコン切るルールとか設定しとけるのも素敵です。</p>
-
-<p>が、やはりここは</p>
-
-<p><strong>「Alexa、エアコンをつけて」</strong></p>
-
-<p>ってやりたいですよね。</p>
-
-
-    
-    <a href="/blog/2018/03/09/alexa-and-nature-remo/" class="more-link">Read on &rarr;</a>
   </div>
 
 <div class="meta">

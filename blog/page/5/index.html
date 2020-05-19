@@ -6,7 +6,7 @@
 	<title>OAuth.jp</title>
     <meta name="author" content="Nov Matake">
     
-	<meta name="description" content="Author: Nov Matake Date: Apr 19th, 2016 今日は Azure Function で FB Message API Callback を作ってみます。 Azure Function は、Azure Portal の Marketplace で &ldquo; &hellip;">
+	<meta name="description" content="Author: Nov Matake Date: May 6th, 2016 昨日こんなのが OAuth ML に流れてました。 [OAUTH-WG] Another CSRF attack 前提条件 RP (Relying Party a.k.a. OAuth Client) が2つ以上の &hellip;">
 	
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
@@ -93,6 +93,100 @@
 <!-- begin toload --> 
     <div id="content" class="inner">
         
+
+
+    <article class="post">
+  <h2 class="title">
+    
+    <a href="/blog/2016/05/06/another-csrf-attack/">
+    
+      OAuth / Connect における CSRF Attack の新パターン</a>
+  </h2>
+  <div class="entry-content">
+    <div class="meta">
+  <div class="author">
+    Author: <a href="https://matake.jp">Nov Matake</a>
+  </div>
+  <div class="date">Date: 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2016-05-06T14:19:00+09:00" pubdate data-updated="true">May 6<span>th</span>, 2016</time></div>
+  
+</div>
+
+    <p>昨日こんなのが OAuth ML に流れてました。</p>
+
+<p><a href="https://mailarchive.ietf.org/arch/search/?email_list=oauth&amp;gbt=1&amp;index=G4J3H1BMyIN01FCOLKqLjrx7AZ4">[OAUTH-WG] Another CSRF attack</a></p>
+
+<h2>前提条件</h2>
+
+<p>RP (Relying Party a.k.a. OAuth Client) が2つ以上の IdP (Identity Provider a.k.a. OAuth Server) と連携している状況で、片方の IdP に悪意がある。</p>
+
+<ul>
+<li>悪意ある IdP = AIdP (A は Attacker の略)</li>
+<li>その他の IdP = HIdP (H は Honest の略)</li>
+</ul>
+
+
+<h2>攻撃フロー</h2>
+
+<p><img src="https://www.websequencediagrams.com/cgi-bin/cdraw?lz=YWx0IFZpY3RpbSdzIFNlc3Npb24KICAgAA4HLT5SUDogTG9naW4gdy8gQUlkUAAZBVJQLT4AMQY6ACENQUlkUDogQXV0aFogUmVxIHcvIHN0YXRlLVYAUAVBSWQALwoAIgVlbnRpY2F0ZQA0EgAmC0gAUAZ0dGFja2VyJ3MgY3JlZGVudGlhbHMAgSgFSABTBQB3BmNvZABIBgBfDkhJZFAncwAZBQCBCwsgKHRvIHJlZGlyZWN0X3VyaSBmb3IASgUpAIF2EACBbwlSUDoANglpcyB0aWVkIHRvIHRoZSBzAII7BiwgT0shAIIfCQCBOAYAgQ4JAIEmBlIAgUMOYWNjZXNzX3Rva2VuICYgaWQABQYAglwQIEhlbGxvLCB3aGF0J3MgeW91ciBuYW1lPwCDIhFJJ20Ag1EHCmVsc2UAgjEMAINaDACCTAgAg0wcAIJwCACDCwcAKQkAgw8HAINaEkEAgwgMADUIAINcEgA7DwAgFQCDIQ4AUwYAgScNAIMDE0EAgi1pAIFTCldlbGNvbWUgYmFjaywAhkoHIQplbmQK&amp;s=earth" alt="Another CSRF Attack" /></p>
+
+<ol>
+<li>Victim が AIdP を使って RP へのログインを試みる。</li>
+<li>RP は Authorization Request を AIdP に送る。
+
+<ul>
+<li>AuthZ Req には Browser Session と紐付いた <code>state</code> パラメータをつけている。</li>
+</ul>
+</li>
+<li>AIdP は Victim を認証し、必要に応じて同意を取得する (ふりをする)
+
+<ul>
+<li>同時に AIdP は裏で HIdP から <code>code</code> を取得する。</li>
+<li>HIdP の code は Attacker の HIdP 上のアカウントに紐付いているもの。</li>
+</ul>
+</li>
+<li>AIdP は HIdP から取得した <code>code</code> を、RP の HIdP 用 <code>redirect_uri</code> に返す。
+
+<ul>
+<li>この時 Step2 で RP が発行した <code>state</code> を付与する。</li>
+</ul>
+</li>
+<li>RP は Browser Session と紐付いた <code>state</code> を検証した上で <code>code</code> を HIdP の Token Endpoint に送る。</li>
+<li>HIdP は Attacker のアカウントに紐付いた <code>access_token</code> を返す。</li>
+<li>RP は Victim をログインさせる。
+
+<ul>
+<li>ここで HIdP 上の Attacker アカウントと RP 上の Victim アカウントが紐づけられる。</li>
+</ul>
+</li>
+</ol>
+
+
+<p>そして、Attacker は任意のタイミングで自身の HIdP 上のアカウントを使って、RP 上の Victim のアカウントにログインできる。</p>
+
+<h2>防御策</h2>
+
+<p><code>state</code> をリクエスト先の IdP とも紐づけましょう。</p>
+
+    
+    
+  </div>
+
+<div class="meta">
+  
+</div>
+</article>
 
 
     <article class="post">
@@ -307,64 +401,6 @@
 
     
     <a href="/blog/2016/03/26/yauth-dot-jp-founded/" class="more-link">Read on &rarr;</a>
-  </div>
-
-<div class="meta">
-  
-</div>
-</article>
-
-
-    <article class="post">
-  <h2 class="title">
-    
-    <a href="/blog/2016/02/25/oauth-authentication/">
-    
-      「OAuth 認証」を定義しよう</a>
-  </h2>
-  <div class="entry-content">
-    <div class="meta">
-  <div class="author">
-    Author: <a href="https://matake.jp">Nov Matake</a>
-  </div>
-  <div class="date">Date: 
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2016-02-25T11:27:00+09:00" pubdate data-updated="true">Feb 25<span>th</span>, 2016</time></div>
-  
-</div>
-
-    <p>「OAuth 認証」って言葉が出てくると、「認証と認可は違う」とか言い出す人が出てきて、大体の場合「OAuth 認証」言ってた人たちがやりたいことの話とはズレた議論が始まるので、もういっその事「OAuth 認証」とは何かを定義してみましょうかね。</p>
-
-<h2>「OAuth 認証」で Relying Party (RP) がやりたかったこと</h2>
-
-<p>RP (OAuth Client) は、ブラウザの前にいる人を、認証したかったんですよね？</p>
-
-<p>もう少し正確にいうと、ブラウザの前にいる Entity が、RP 側で把握しているどの Identity と紐付いているか、というのを知りたかったんですよね？</p>
-
-<p>いきなり Entity とか Identity とかいう専門用語が出てきてアレですが、そのあたりのことは先日の OpenID TechNight #13 でもお話ししたので、以下のスライドの Entity・Identity・Authentication・Authorization のあたりのページを見てください。</p>
-
-<iframe src="//www.slideshare.net/slideshow/embed_code/key/Lw5OsZp5n6qwXb" width="595" height="485" frameborder="0" marginwidth="0" marginheight="0" scrolling="no" style="border:1px solid #CCC; border-width:1px; margin-bottom:5px; max-width: 100%;" allowfullscreen> </iframe>
-
-
-<p>で、あるサービスが End-User を認証したいって思った時って、普通は当該サービスが事前に当該 Entity に対して ID と Password を登録させて Identity Record (「サービスアカウント」と言ってもいい) を作成し、後日当該 Entity が当該サービスに訪れた際は登録済みの ID と Password を提示させて当該 Entity に紐づく Identity を確定するわけです。</p>
-
-<p>でも Identity Federation (上記スライドでは「ID 連携」と表現している) という手法を使うと、外部のサービス (Identity Provider, IdP) の Identity を当該サービス (Relying Party, RP)の Identity と紐付けて管理することで、End-User から直接パスワードを預からなくても、ブラウザの前にいる Entity (= End-User) に紐づく IdP 側の Identity に紐付いた RP 側の Identity を確定できるので、結果として End-User に紐づく RP 側の Identity を確定することができます。</p>
-
-<p>で、どうやって IdP と RP がそれぞれに管理している Identity を紐付けるのか、というのが、Federation Protocol の肝なわけですが、「OAuth 認証」というのはその一種です。</p>
-
-
-    
-    <a href="/blog/2016/02/25/oauth-authentication/" class="more-link">Read on &rarr;</a>
   </div>
 
 <div class="meta">
