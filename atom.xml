@@ -4,7 +4,7 @@
   <title><![CDATA[OAuth.jp]]></title>
   <link href="https://oauth.jp/atom.xml" rel="self"/>
   <link href="https://oauth.jp/"/>
-  <updated>2020-06-02T13:28:56+09:00</updated>
+  <updated>2020-06-02T13:52:09+09:00</updated>
   <id>https://oauth.jp/</id>
   <author>
     <name><![CDATA[Nov Matake]]></name>
@@ -28,7 +28,7 @@
 <li>非 Safari ブラウザで、適当な RP にアクセス
 
 <ul>
-<li>e.g.,) <a href="http://signin-with-apple.herokuapp.com/">http://signin-with-apple.herokuapp.com/</a></li>
+<li>e.g.,) <a href="http://signin-with-apple.herokuapp.com/">http://signin-with-apple.herokuapp.com/</a> (Nov SIWA RP)</li>
 <li>Safari だと OS の Native UI が出てきてブラウザ遷移しないので注意</li>
 <li>既に連携済の RP の場合は一度連携解除しておくこと</li>
 </ul>
@@ -72,9 +72,33 @@
 
 <p>ちなみにこの Ajax Call のタイミングで <code>client_id</code> &amp; <code>redirect_uri</code> を通信途中で改竄してやると、別 Client 向けの Code が正規 Client の正規 Redirect URI に返されるなんていう挙動もあります。</p>
 
+<p>具体的には、Nov SIWA RP でログイン開始して、Apple IdP の同意画面で実行される Ajax Call でだけ <code>client_id</code> &amp; <code>redirect_uri</code> を以下のように書き換えてやると&hellip;</p>
+
+<ul>
+<li>client_id
+
+<ul>
+<li>From: jp.yauth.signin.service3 (Nov SIWA RP)</li>
+<li>To: net.zexy.koimusubi.ios.signinwithapple (ゼクシィ恋結び)</li>
+</ul>
+</li>
+<li>redirect_uri
+
+<ul>
+<li>From: <a href="https://signin-with-apple.herokuapp.com/callback">https://signin-with-apple.herokuapp.com/callback</a></li>
+<li>To: <a href="https://zexy-koimusubi.net/web/auth/apple_login/callback">https://zexy-koimusubi.net/web/auth/apple_login/callback</a></li>
+</ul>
+</li>
+</ul>
+
+
+<p>ゼクシィ恋結び向けの <code>id_token</code> および <code>code</code> が Nov SIWA RP の Redirect URI に渡されてきます。</p>
+
 <p>Submit された値に基づいてサーバーサイドで Auto-submit Form なりをレンダリングしてレスポンスを返すのではなく、既に同意画面中に仕込まれた JS とパラメーター値を使ってレスポンス返してるので、Ajax Call 中で書き換えられた <code>email</code> 以外の値はレスポンスを返すべきか否かの判断には使われていないのですね。</p>
 
-<p>まぁそれ自体がそこまで大きな問題かというと、そんな気はしませんが。。。ちょっと設計が微妙というか、フロントエンジニアが勝手に設計したらこうなっちゃったみたいな雰囲気が満載ですね。</p>
+<p>まぁそれ自体がそこまで大きな問題かというと、そんな気はしませんが。。。</p>
+
+<p>ちょっと設計が微妙というか、フロントエンジニアが勝手に設計したらこうなっちゃった、みたいな雰囲気ですね。</p>
 
 <p>ということで、まだ ID Token の <code>aud</code> は別の値にされる可能性は残っているのですが、まぁ普通に <code>code</code> 使ってバックチャネルで ID Token 取れば、<code>aud</code> が書き換えられた ID Token は発行されないんで、そうすればよいです。</p>
 
@@ -1374,7 +1398,7 @@
 
 <p>動作確認用のユーザーも作っておきましたので、これが正常に動いてる間はご自由にお使いください。</p>
 
-<p>Username: <a href="&#109;&#97;&#x69;&#108;&#116;&#111;&#x3a;&#x79;&#111;&#117;&#64;&#115;&#x74;&#115;&#x34;&#98;&#x32;&#99;&#46;&#x6f;&#110;&#109;&#x69;&#99;&#x72;&#x6f;&#115;&#111;&#102;&#x74;&#x2e;&#99;&#111;&#109;">&#x79;&#111;&#x75;&#64;&#x73;&#x74;&#x73;&#52;&#x62;&#50;&#99;&#46;&#111;&#x6e;&#109;&#105;&#99;&#114;&#111;&#x73;&#x6f;&#x66;&#116;&#x2e;&#99;&#x6f;&#x6d;</a>
+<p>Username: <a href="&#109;&#97;&#105;&#108;&#x74;&#x6f;&#x3a;&#x79;&#x6f;&#117;&#64;&#x73;&#116;&#x73;&#52;&#x62;&#50;&#99;&#46;&#111;&#x6e;&#109;&#105;&#x63;&#x72;&#x6f;&#115;&#x6f;&#102;&#116;&#46;&#99;&#111;&#x6d;">&#121;&#x6f;&#117;&#x40;&#115;&#x74;&#115;&#52;&#98;&#50;&#x63;&#x2e;&#111;&#x6e;&#x6d;&#105;&#x63;&#114;&#111;&#x73;&#x6f;&#x66;&#116;&#46;&#99;&#111;&#109;</a>
 Password: ]6]yzxXYG7uruM4p</p>
 
 <p>動かなくなったら、あきらめて自分で Azure AD B2C 環境セットアップしてください。</p>
@@ -1527,13 +1551,13 @@ Password: ]6]yzxXYG7uruM4p</p>
 
 <p>あと、Email 指定してもそのメアドのユーザーにログインできるわけでもないです。</p>
 
-<p><a href="&#x6d;&#x61;&#105;&#108;&#116;&#x6f;&#x3a;&#110;&#x6f;&#x76;&#64;&#x65;&#120;&#97;&#109;&#x70;&#x6c;&#x65;&#x2e;&#x63;&#x6f;&#109;">&#110;&#x6f;&#x76;&#x40;&#x65;&#x78;&#x61;&#x6d;&#x70;&#108;&#101;&#x2e;&#99;&#x6f;&#x6d;</a> の NameID を持つ SAML Assertion で、<a href="&#x6d;&#x61;&#105;&#x6c;&#116;&#111;&#x3a;&#110;&#111;&#118;&#64;&#x6d;&#97;&#x74;&#97;&#107;&#101;&#46;&#x6a;&#x70;">&#x6e;&#111;&#118;&#64;&#x6d;&#97;&#x74;&#x61;&#x6b;&#101;&#46;&#106;&#x70;</a> の GitHub アカウントにログインできたりします。</p>
+<p><a href="&#109;&#x61;&#x69;&#x6c;&#x74;&#111;&#x3a;&#110;&#x6f;&#x76;&#64;&#101;&#120;&#x61;&#109;&#112;&#x6c;&#101;&#46;&#99;&#111;&#109;">&#110;&#111;&#118;&#64;&#x65;&#x78;&#x61;&#109;&#112;&#x6c;&#x65;&#x2e;&#99;&#111;&#x6d;</a> の NameID を持つ SAML Assertion で、<a href="&#x6d;&#x61;&#105;&#108;&#x74;&#111;&#58;&#110;&#x6f;&#118;&#x40;&#x6d;&#97;&#116;&#x61;&#x6b;&#101;&#x2e;&#x6a;&#112;">&#x6e;&#111;&#x76;&#x40;&#109;&#97;&#116;&#x61;&#107;&#101;&#x2e;&#x6a;&#x70;</a> の GitHub アカウントにログインできたりします。</p>
 
 <p>SAML Federation とか言うてるけど、結局既存の GitHub.com アカウントに SAML IdP 側のアカウントを Link するだけなんですよ。</p>
 
 <p>その紐付けは、SAML での初回ログイン時に GitHub.com 側の ID &amp; Password 入力して行います。</p>
 
-<p>つまり、<a href="&#109;&#x61;&#x69;&#108;&#x74;&#111;&#x3a;&#x6e;&#111;&#118;&#x40;&#x65;&#x78;&#x61;&#x6d;&#x70;&#x6c;&#101;&#46;&#x63;&#111;&#x6d;">&#x6e;&#x6f;&#118;&#64;&#101;&#120;&#97;&#109;&#x70;&#108;&#101;&#x2e;&#x63;&#x6f;&#x6d;</a> の NameID を持つ SAML Assertion をどの GitHub アカウントに紐づけるかは、エンドユーザーが決定権を持っています。</p>
+<p>つまり、<a href="&#x6d;&#x61;&#x69;&#108;&#116;&#x6f;&#x3a;&#110;&#x6f;&#118;&#x40;&#x65;&#x78;&#97;&#x6d;&#x70;&#x6c;&#101;&#46;&#x63;&#x6f;&#x6d;">&#x6e;&#111;&#x76;&#64;&#101;&#x78;&#x61;&#109;&#x70;&#x6c;&#x65;&#46;&#x63;&#x6f;&#x6d;</a> の NameID を持つ SAML Assertion をどの GitHub アカウントに紐づけるかは、エンドユーザーが決定権を持っています。</p>
 
 <p>情シスじゃないです。</p>
 

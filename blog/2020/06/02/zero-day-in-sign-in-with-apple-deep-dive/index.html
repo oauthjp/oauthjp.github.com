@@ -125,7 +125,7 @@
 <li>非 Safari ブラウザで、適当な RP にアクセス
 
 <ul>
-<li>e.g.,) <a href="http://signin-with-apple.herokuapp.com/">http://signin-with-apple.herokuapp.com/</a></li>
+<li>e.g.,) <a href="http://signin-with-apple.herokuapp.com/">http://signin-with-apple.herokuapp.com/</a> (Nov SIWA RP)</li>
 <li>Safari だと OS の Native UI が出てきてブラウザ遷移しないので注意</li>
 <li>既に連携済の RP の場合は一度連携解除しておくこと</li>
 </ul>
@@ -169,9 +169,33 @@
 
 <p>ちなみにこの Ajax Call のタイミングで <code>client_id</code> &amp; <code>redirect_uri</code> を通信途中で改竄してやると、別 Client 向けの Code が正規 Client の正規 Redirect URI に返されるなんていう挙動もあります。</p>
 
+<p>具体的には、Nov SIWA RP でログイン開始して、Apple IdP の同意画面で実行される Ajax Call でだけ <code>client_id</code> &amp; <code>redirect_uri</code> を以下のように書き換えてやると&hellip;</p>
+
+<ul>
+<li>client_id
+
+<ul>
+<li>From: jp.yauth.signin.service3 (Nov SIWA RP)</li>
+<li>To: net.zexy.koimusubi.ios.signinwithapple (ゼクシィ恋結び)</li>
+</ul>
+</li>
+<li>redirect_uri
+
+<ul>
+<li>From: <a href="https://signin-with-apple.herokuapp.com/callback">https://signin-with-apple.herokuapp.com/callback</a></li>
+<li>To: <a href="https://zexy-koimusubi.net/web/auth/apple_login/callback">https://zexy-koimusubi.net/web/auth/apple_login/callback</a></li>
+</ul>
+</li>
+</ul>
+
+
+<p>ゼクシィ恋結び向けの <code>id_token</code> および <code>code</code> が Nov SIWA RP の Redirect URI に渡されてきます。</p>
+
 <p>Submit された値に基づいてサーバーサイドで Auto-submit Form なりをレンダリングしてレスポンスを返すのではなく、既に同意画面中に仕込まれた JS とパラメーター値を使ってレスポンス返してるので、Ajax Call 中で書き換えられた <code>email</code> 以外の値はレスポンスを返すべきか否かの判断には使われていないのですね。</p>
 
-<p>まぁそれ自体がそこまで大きな問題かというと、そんな気はしませんが。。。ちょっと設計が微妙というか、フロントエンジニアが勝手に設計したらこうなっちゃったみたいな雰囲気が満載ですね。</p>
+<p>まぁそれ自体がそこまで大きな問題かというと、そんな気はしませんが。。。</p>
+
+<p>ちょっと設計が微妙というか、フロントエンジニアが勝手に設計したらこうなっちゃった、みたいな雰囲気ですね。</p>
 
 <p>ということで、まだ ID Token の <code>aud</code> は別の値にされる可能性は残っているのですが、まぁ普通に <code>code</code> 使ってバックチャネルで ID Token 取れば、<code>aud</code> が書き換えられた ID Token は発行されないんで、そうすればよいです。</p>
 
