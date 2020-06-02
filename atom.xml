@@ -4,7 +4,7 @@
   <title><![CDATA[OAuth.jp]]></title>
   <link href="https://oauth.jp/atom.xml" rel="self"/>
   <link href="https://oauth.jp/"/>
-  <updated>2020-05-20T17:56:57+09:00</updated>
+  <updated>2020-06-02T13:22:27+09:00</updated>
   <id>https://oauth.jp/</id>
   <author>
     <name><![CDATA[Nov Matake]]></name>
@@ -12,6 +12,97 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Zero-day in Sign in with Apple Deep-dive]]></title>
+    <link href="https://oauth.jp/blog/2020/06/02/zero-day-in-sign-in-with-apple-deep-dive/"/>
+    <updated>2020-06-02T12:22:00+09:00</updated>
+    <id>https://oauth.jp/blog/2020/06/02/zero-day-in-sign-in-with-apple-deep-dive</id>
+    <content type="html"><![CDATA[<p>先週末に <a href="https://bhavukjain.com/blog/2020/05/30/zeroday-signin-with-apple/">Zero-day in Sign in with Apple</a> とかいう記事が出ていました。</p>
+
+<p>この記事ではいまいち詳細がわからないんで、ちょっと実際 Apple IdP の挙動調べてみたら、当該 Endpoint 発見しました。</p>
+
+<h3>実際にどこが脆弱だったのか</h3>
+
+<ol>
+<li>非 Safari ブラウザで、適当な RP にアクセス
+
+<ul>
+<li>e.g.,) <a href="http://signin-with-apple.herokuapp.com/">http://signin-with-apple.herokuapp.com/</a></li>
+<li>Safari だと OS の Native UI が出てきてブラウザ遷移しないので注意</li>
+<li>既に連携済の RP の場合は一度連携解除しておくこと</li>
+</ul>
+</li>
+<li>Sign in with Apple のボタンをクリックして Apple AuthZ Endpoint に遷移
+
+<ul>
+<li>AuthZ EP: <a href="https://appleid.apple.com/auth/authorize">https://appleid.apple.com/auth/authorize</a></li>
+</ul>
+</li>
+<li>ログイン後、初回連携時にのみ出てくる同意画面 (メアド選択するところ) に到達
+
+<ul>
+<li><img src="https://oauth.jp/images/posts/apple/siwa-consent.png" width="500" alt="Sign in with Apple Consent Screen" /></li>
+</ul>
+</li>
+<li>ここで「続ける」を押すと内部的に Ajax Call が実行される
+
+<ul>
+<li>Ajax API EP: <a href="https://appleid.apple.com/appleauth/auth/oauth/authorize">https://appleid.apple.com/appleauth/auth/oauth/authorize</a></li>
+<li>選択されたメアドやその他の AuthZ Req Params が一通り JSON で POST される</li>
+<li>レスポンスとしては id_token とか code なんかが含まれた JSON が返ってくる</li>
+<li><img src="https://oauth.jp/images/posts/apple/siwa-consent-ajax-submit.png" width="500" alt="Sign in with Apple Consent Ajax Submit" /></li>
+</ul>
+</li>
+</ol>
+
+
+<p>で、問題は Step.4 で Submit されるメールアドレスが、実際当該 Apple ID に紐づいてないものでも OK だったということですね。</p>
+
+<!-- more -->
+
+
+<p><a href="https://aaronparecki.com/2020/05/31/30/the-real-cause-of-the-sign-in-with-apple-zero-day">The Real Cause of the Sign In with Apple Zero-Day</a> という解説記事では、メールアドレスの値そのものを POST するんではなく <code>real_email</code> / <code>proxy_email</code> という Flag 値のみを POST すべしとか書いてますが、実際には Apple ID には複数のメールアドレスが紐付き Sign in with Apple の同意画面でのメールアドレス選択肢も3つ以上になるケースがあるので、メールアドレスの値そのものを POST することは理にかなっています。</p>
+
+<p>問題は、POST されたメールアドレスが当該アカウントと紐づいてるかを Apple IdP サーバーがチェックしてなかったという点だけですね。</p>
+
+<p>現在はメールアドレスとアカウントの紐付けがサーバーサイドでチェックされているので、変なメールアドレスを投げるとちゃんと 400 が返ってきます。</p>
+
+<h3>Email 以外を書き換えるとどうなる？</h3>
+
+<p>ちなみにこの Ajax Call のタイミングで client_id &amp; redirect_uri を通信途中で改竄してやると、別 Client 向けの Code が正規 Client の正規 Redirect URI に返されるなんていう挙動もあります。</p>
+
+<p>Submit された値に基づいてサーバーサイドで Auto-submit Form なりをレンダリングしてレスポンスを返すのではなく、既に同意画面中に仕込まれた JS とパラメーター値を使ってレスポンス返してるので、Ajax Call 中で書き換えられた email 以外の値はレスポンスを返すべきか否かの判断には使われていないのですね。</p>
+
+<p>まぁそれ自体がそこまで大きな問題かというと、そんな気はしませんが。。。ちょっと設計が微妙というか、フロントエンジニアが勝手に設計したらこうなっちゃったみたいな雰囲気が満載ですね。</p>
+
+<p>ということで、まだ ID Token の <code>aud</code> は別の値にされる可能性は残っているのですが、まぁ普通に <code>code</code> 使ってバックチャネルで ID Token 取れば、<code>aud</code> が書き換えられた ID Token は発行されないんで、そうすればよいです。</p>
+
+<p>Sign in with Apple のフロントチャネルで発行された ID Token は、ガン無視して捨ててやれば良いのです。あれにはまず使い道はありません。</p>
+
+<h3>余談 : OAuth 2.0 Web Message Response Mode (WMRM) 使われてる！</h3>
+
+<p>Sign in with Apple には Popup Mode なるものがあります。</p>
+
+<p>実際以下の URL にアクセスして黒い方のボタンをクリックするとそれが体験できます。<br/>
+<a href="http://signin-with-apple.herokuapp.com/?popup=true">http://signin-with-apple.herokuapp.com/?popup=true</a></p>
+
+<p>ここ、よく見ると <code>response_mode=web_message</code> が使われています。</p>
+
+<p>大昔、<a href="https://twitter.com/zigorou">@zigorou</a> さんと <a href="https://twitter.com/_nat">@_nat</a> さんとノリで Independent  Draft まで書いて、その後放置してるやつですねw</p>
+
+<p>懐かしいですねぇ..</p>
+
+<p><a href="https://tools.ietf.org/html/draft-sakimura-oauth-wmrm-00">OAuth 2.0 Web Message Response Mode</a></p>
+
+<p>Apple さんは redirect_uri に Origin 指定したりとかはしてないんですけどね。</p>
+
+<p>OAuth WMRM、実は Auth0 とか Okta とかも使ってるんですよね。Okta のはなんか変な Prefix ついてるけど。</p>
+
+<p><a href="https://auth0.com/docs/protocols/oauth2#how-response-mode-works">OAuth 2.0 Authorization Framework &ndash; Auth0</a>
+<a href="https://developer.okta.com/docs/reference/api/oidc/#postmessage-data-object">OpenID Connect &amp; OAuth 2.0 API &ndash; Okta</a></p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Nonce/PKCE Sidestep Attack]]></title>
@@ -1282,7 +1373,7 @@
 
 <p>動作確認用のユーザーも作っておきましたので、これが正常に動いてる間はご自由にお使いください。</p>
 
-<p>Username: <a href="&#109;&#x61;&#x69;&#108;&#x74;&#x6f;&#58;&#x79;&#111;&#x75;&#x40;&#x73;&#116;&#x73;&#x34;&#x62;&#x32;&#99;&#46;&#x6f;&#110;&#x6d;&#x69;&#99;&#x72;&#x6f;&#x73;&#x6f;&#x66;&#x74;&#x2e;&#x63;&#111;&#109;">&#x79;&#x6f;&#x75;&#x40;&#x73;&#x74;&#115;&#52;&#x62;&#x32;&#x63;&#46;&#111;&#110;&#109;&#105;&#x63;&#114;&#111;&#x73;&#111;&#x66;&#116;&#x2e;&#99;&#x6f;&#109;</a>
+<p>Username: <a href="&#109;&#x61;&#105;&#108;&#116;&#x6f;&#58;&#121;&#x6f;&#117;&#64;&#115;&#x74;&#115;&#x34;&#98;&#50;&#x63;&#46;&#111;&#110;&#x6d;&#105;&#x63;&#x72;&#111;&#x73;&#x6f;&#x66;&#x74;&#x2e;&#99;&#111;&#x6d;">&#121;&#111;&#x75;&#64;&#115;&#116;&#115;&#52;&#98;&#x32;&#99;&#46;&#x6f;&#110;&#x6d;&#x69;&#99;&#x72;&#111;&#x73;&#111;&#x66;&#x74;&#46;&#99;&#x6f;&#x6d;</a>
 Password: ]6]yzxXYG7uruM4p</p>
 
 <p>動かなくなったら、あきらめて自分で Azure AD B2C 環境セットアップしてください。</p>
@@ -1435,13 +1526,13 @@ Password: ]6]yzxXYG7uruM4p</p>
 
 <p>あと、Email 指定してもそのメアドのユーザーにログインできるわけでもないです。</p>
 
-<p><a href="&#109;&#x61;&#105;&#108;&#x74;&#x6f;&#x3a;&#x6e;&#111;&#118;&#64;&#x65;&#x78;&#x61;&#x6d;&#x70;&#108;&#x65;&#x2e;&#99;&#111;&#x6d;">&#x6e;&#111;&#118;&#x40;&#x65;&#120;&#x61;&#x6d;&#x70;&#x6c;&#101;&#x2e;&#x63;&#x6f;&#109;</a> の NameID を持つ SAML Assertion で、<a href="&#x6d;&#x61;&#x69;&#x6c;&#x74;&#111;&#58;&#110;&#x6f;&#118;&#64;&#109;&#x61;&#x74;&#97;&#x6b;&#101;&#x2e;&#x6a;&#x70;">&#110;&#x6f;&#118;&#x40;&#109;&#x61;&#x74;&#97;&#x6b;&#x65;&#46;&#106;&#112;</a> の GitHub アカウントにログインできたりします。</p>
+<p><a href="&#x6d;&#97;&#105;&#108;&#x74;&#111;&#58;&#110;&#111;&#x76;&#x40;&#101;&#x78;&#x61;&#x6d;&#x70;&#108;&#x65;&#46;&#x63;&#111;&#x6d;">&#110;&#111;&#x76;&#64;&#x65;&#120;&#97;&#109;&#112;&#x6c;&#101;&#46;&#99;&#111;&#109;</a> の NameID を持つ SAML Assertion で、<a href="&#109;&#97;&#x69;&#x6c;&#x74;&#x6f;&#58;&#110;&#111;&#x76;&#x40;&#109;&#97;&#116;&#97;&#x6b;&#101;&#46;&#106;&#112;">&#110;&#111;&#x76;&#64;&#109;&#97;&#x74;&#97;&#107;&#x65;&#46;&#106;&#x70;</a> の GitHub アカウントにログインできたりします。</p>
 
 <p>SAML Federation とか言うてるけど、結局既存の GitHub.com アカウントに SAML IdP 側のアカウントを Link するだけなんですよ。</p>
 
 <p>その紐付けは、SAML での初回ログイン時に GitHub.com 側の ID &amp; Password 入力して行います。</p>
 
-<p>つまり、<a href="&#x6d;&#x61;&#x69;&#x6c;&#116;&#x6f;&#x3a;&#110;&#x6f;&#x76;&#x40;&#101;&#120;&#97;&#109;&#x70;&#108;&#x65;&#x2e;&#x63;&#x6f;&#x6d;">&#110;&#x6f;&#118;&#64;&#101;&#x78;&#97;&#109;&#x70;&#108;&#x65;&#46;&#x63;&#x6f;&#x6d;</a> の NameID を持つ SAML Assertion をどの GitHub アカウントに紐づけるかは、エンドユーザーが決定権を持っています。</p>
+<p>つまり、<a href="&#x6d;&#x61;&#105;&#x6c;&#x74;&#111;&#x3a;&#x6e;&#x6f;&#x76;&#x40;&#x65;&#120;&#97;&#109;&#112;&#108;&#101;&#46;&#99;&#x6f;&#x6d;">&#110;&#111;&#118;&#64;&#101;&#x78;&#97;&#x6d;&#112;&#108;&#101;&#46;&#x63;&#111;&#109;</a> の NameID を持つ SAML Assertion をどの GitHub アカウントに紐づけるかは、エンドユーザーが決定権を持っています。</p>
 
 <p>情シスじゃないです。</p>
 
@@ -2180,229 +2271,6 @@ Mac から Remote Desktop 経由でいじりたかったんでね。</p>
 <li><a href="http://openid-foundation-japan.github.io/rfc7638.ja.html">JSON Web Key (JWK) Thumbprint &ndash; RFC 7638</a></li>
 </ul>
 
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Office 365 SAML implementation vulnerability]]></title>
-    <link href="https://oauth.jp/blog/2016/05/14/office-365-saml-implementation-vulnerability/"/>
-    <updated>2016-05-14T10:32:00+09:00</updated>
-    <id>https://oauth.jp/blog/2016/05/14/office-365-saml-implementation-vulnerability</id>
-    <content type="html"><![CDATA[<p>先日 Office 365 のこんな記事見つけたので、一応まとめておきますかね。</p>
-
-<p><a href="http://www.economyofmechanism.com/office365-authbypass.html">The road to hell is paved with SAML Assertions</a></p>
-
-<p>タイトルだけ見るとまた SAML is DEAD 案件かと思いきや、Office 365 の脆弱性の話です。</p>
-
-<p>SAML 悪く無いです。</p>
-
-<p>SAML isn&rsquo;t vulnerable, just DEAD.</p>
-
-<h2>SAML SP としての Office 365</h2>
-
-<p>Office 365 は SAML Service Provider (SP) として動作するので、みなさんがお持ちの Identity Provider (IdP) を SAML IdP として動作することができれば、みなさんの IdP に登録されてるアカウントを使って Office 365 にログインすることができます。</p>
-
-<p>みなさんの社内の ADFS とか、Ping Federate / Okta / OneLogin &hellip; みたいな IDaaS とか、そういうのは大抵 SAML IdP として動作するので、そういう製品を使ってるなら、みなさんの会社のアカウントでそのまま Office 365 にログインできます。</p>
-
-<p>通常 SAML SP は、IdP から返ってくる SAML Response に含まれる IdP 側のユーザー識別子 (Subject Identifier) と IdP 自身の識別子 (Issuer Identifier) のペアを元に、SP 側のアカウントにログインさせます。</p>
-
-<p>がしかし、Office 365 の場合は、IdP が渡してくる Email アドレスと Office 365 がローカルで持ってる Email アドレスの一致だけを見て Office 365 ローカルのユーザーを認証していたようです。Subject Identifier も Issuer Identifier も無視していた、と。</p>
-
-<p>(実際には、SAML IdP と Office 365 の間に Azure AD が介在しており、SAML Assertion の検証は Azure ADがやるようなアーキテクチャになっていて、Azure AD では Subject Identifier &amp; Issuer Identifier をちゃんと見ているようですが、全体として見ると Office 365 が SAML IdP の Issuer と Subject をガン無視した形になってます。この辺の話しだすとややこしい割に MS 以外の人にはあまり関係無い話になっちゃうので、今回はスルー)</p>
-
-<h2>Office 365 の脆弱性概要</h2>
-
-<p>これで何が起こっていたかというと、<code>nov@victim.example.com</code> という Email アドレスを持つ Office 365 ユーザーのアカウントにログインする際に、<code>attacker.example.com</code> という IdP が <code>nov@victim.example.com</code> という Email アドレスを含んだ SAML Assertion を発行すると、Office 365 がその Assertion を受け入れて <code>nov@victim.example.com</code> の Office 365 アカウントへのログインを許可してしまっていました。</p>
-
-<p>よって、以下の2つのパターンが、どちらも同じ Office 365 アカウントにログイン可能になっていました。</p>
-
-<table>
-<thead>
-<tr>
-<th></th>
-<th> Issuer Identifier    </th>
-<th> Subject Identifier  </th>
-<th> Email Address          </th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td></td>
-<td> attacker.example.com </td>
-<td> 58df3c9b2c32ca86f.. </td>
-<td> <code>nov@victim.example.com</code></td>
-</tr>
-<tr>
-<td></td>
-<td> victim.example.com   </td>
-<td> 20166f0c077c1f6c1.. </td>
-<td> <code>nov@victim.example.com</code></td>
-</tr>
-</tbody>
-</table>
-
-
-<p>うん、これは最悪ですね。</p>
-
-<!-- more -->
-
-
-<h2>Consumer の世界に置き換えると、つまりどういうこと？</h2>
-
-<p>Consumer 分野であれば、Facebook と Google の両方を IdP として使う RP がいる場合、Facebook が返すユーザーの Email アドレスが Gmail だったりすることは普通にあります。</p>
-
-<p>この時、Facebook が <code>nov@gmail.com</code> というメアドを返してきた場合に、RP 側で <code>nov@gmail.com</code> というメアドを持つユーザーを、たとえそのアカウントが Facebook アカウントと紐付いていない状況だったとしても認証してしまう、と、Office 365 がやっていたのは、そういう処理です。</p>
-
-<p>Facebook と Google だけが IdP であれば、どちらも Email 疎通確認等をちゃんとしているという前提があるため、以下の2つの Identity は同一人物に紐づくという前提で設計することもできるでしょう。</p>
-
-<table>
-<thead>
-<tr>
-<th></th>
-<th> Issuer  Identifier </th>
-<th> Subject Identifier  </th>
-<th> Email Address   </th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td></td>
-<td> google.com         </td>
-<td> 58df3c9b2c32ca86f.. </td>
-<td> <code>nov@gmail.com</code></td>
-</tr>
-<tr>
-<td></td>
-<td> facebook.com       </td>
-<td> 58df3c9b2c32ca86f.. </td>
-<td> <code>nov@gmail.com</code></td>
-</tr>
-</tbody>
-</table>
-
-
-<p>しかし、OpenID 2.0 の頃のように、ユーザーが Dynamic に任意の IdP を選択できるとしたらどうでしょう？</p>
-
-<p>以下の3つめのアカウントが、その上の2つと同一人物に紐づくという前提条件は、あっさり崩れてしまいます。</p>
-
-<table>
-<thead>
-<tr>
-<th></th>
-<th> Issuer Identifier    </th>
-<th> Subject Identifier  </th>
-<th> Email Address   </th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td></td>
-<td> google.com           </td>
-<td> 58df3c9b2c32ca86f.. </td>
-<td> <code>nov@gmail.com</code></td>
-</tr>
-<tr>
-<td></td>
-<td> facebook.com         </td>
-<td> 58df3c9b2c32ca86f.. </td>
-<td> <code>nov@gmail.com</code></td>
-</tr>
-<tr>
-<td></td>
-<td> attacker.example.com </td>
-<td> 58df3c9b2c32ca86f.. </td>
-<td> <code>nov@gmail.com</code></td>
-</tr>
-</tbody>
-</table>
-
-
-<p>Office 365 の場合、テナントごとに任意の IdP を指定することができるため、攻撃者が Office 365 にテナント登録してしまいさえすれば、<code>attacker.example.com</code> を IdP として登録できてしまい、上記の3つめのパターンを作り出すことができてしまいます。</p>
-
-<p>そして、OpenID Connect でも「OAuth 認証」でも、同じような脆弱性は発生しそうですね。</p>
-
-<p>SAMLer 以外のみなさんも、気をつけないとですね。</p>
-
-<h2>こういう場合、どうすればいいの？</h2>
-
-<p>まずは基本的には、以下3つのパターンが RP 側では全て異なるアカウントに紐づくように設計することです。</p>
-
-<p>つまり、Subject Identifier と Issuer Identifier のペアごとに、異なるアカウントに紐づくようにする、と。</p>
-
-<table>
-<thead>
-<tr>
-<th></th>
-<th> Issuer Identifier    </th>
-<th> Subject Identifier  </th>
-<th> Email Address   </th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td></td>
-<td> google.com           </td>
-<td> 58df3c9b2c32ca86f.. </td>
-<td> <code>nov@gmail.com</code></td>
-</tr>
-<tr>
-<td></td>
-<td> facebook.com         </td>
-<td> 58df3c9b2c32ca86f.. </td>
-<td> <code>nov@gmail.com</code></td>
-</tr>
-<tr>
-<td></td>
-<td> attacker.example.com </td>
-<td> 58df3c9b2c32ca86f.. </td>
-<td> <code>nov@gmail.com</code></td>
-</tr>
-</tbody>
-</table>
-
-
-<p>その上で、RP 側で Email アドレスがユニークである必要があるのであれば、3つのアカウントを RP 側で一つのアカウントに紐付けるためのフローを RP が頑張って実装するか、IdP から渡される Email アドレスを無視して別の Email アドレスを設定させる等の処理が必要です。</p>
-
-<p>そのあたりの細かい実装方法については&hellip; <a href="http://yauth.jp">YAuth.jp</a> に相談？w</p>
-
-<h2>Office 365 はどういう修正をしたのか？</h2>
-
-<p>これは、元記事にも書いて無いですね。</p>
-
-<p>でも7時間で修正されたって書いてあるので、上記のような解決策ではなくて、以下の1つめのパターンを reject するようにしたのでしょう。</p>
-
-<table>
-<thead>
-<tr>
-<th></th>
-<th> Issuer Identifier    </th>
-<th> Subject Identifier  </th>
-<th> Email Address          </th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td></td>
-<td> attacker.example.com </td>
-<td> 58df3c9b2c32ca86f.. </td>
-<td> <code>nov@victim.example.com</code></td>
-</tr>
-<tr>
-<td></td>
-<td> victim.example.com   </td>
-<td> 58df3c9b2c32ca86f.. </td>
-<td> <code>nov@victim.example.com</code></td>
-</tr>
-</tbody>
-</table>
-
-
-<p>要するに Issuer チェックをするようにしたんでしょうが、SAML IdP と Office 365 の間に Azure AD がいるっていう状態で、具体的にどの箇所でどういう検証をするようにしたのかってのは、よくわからず。</p>
-
-<p>Office 365 の MVP の人とかに聞くとわかるんですかね、こういうのは？</p>
-
-<p>ps.
-本記事執筆にあたっては、<a href="http://idmlab.eidentity.jp">腹違いの兄さんことふぁらおう兄さん</a>に長時間にわたって相談に乗っていただきました。にいさん、いつもありがとうございます！</p>
 ]]></content>
   </entry>
   

@@ -6,8 +6,7 @@
 	<title>OAuth.jp</title>
     <meta name="author" content="Nov Matake">
     
-	<meta name="description" content="Author: Nov Matake Date: May 19th, 2020 OAuth 2.1 で PKCE 必須にするしない議論が盛り上がっておりますが、今日そのスレで新しい攻撃パターンが議題に上がりました。
-https://mailarchive.ietf.org/arch/msg/ &hellip;">
+	<meta name="description" content="Author: Nov Matake Date: Jun 2nd, 2020 先週末に Zero-day in Sign in with Apple とかいう記事が出ていました。 この記事ではいまいち詳細がわからないんで、ちょっと実際 Apple IdP の挙動調べてみたら、当該 &hellip;">
 	
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
@@ -94,6 +93,86 @@ https://mailarchive.ietf.org/arch/msg/ &hellip;">
 <!-- begin toload --> 
     <div id="content" class="inner">
         
+
+
+    <article class="post">
+  <h2 class="title">
+    
+    <a href="/blog/2020/06/02/zero-day-in-sign-in-with-apple-deep-dive/">
+    
+      Zero-day in Sign in With Apple Deep-dive</a>
+  </h2>
+  <div class="entry-content">
+    <div class="meta">
+  <div class="author">
+    Author: <a href="https://matake.jp">Nov Matake</a>
+  </div>
+  <div class="date">Date: 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2020-06-02T12:22:00+09:00" pubdate data-updated="true">Jun 2<span>nd</span>, 2020</time></div>
+  
+</div>
+
+    <p>先週末に <a href="https://bhavukjain.com/blog/2020/05/30/zeroday-signin-with-apple/">Zero-day in Sign in with Apple</a> とかいう記事が出ていました。</p>
+
+<p>この記事ではいまいち詳細がわからないんで、ちょっと実際 Apple IdP の挙動調べてみたら、当該 Endpoint 発見しました。</p>
+
+<h3>実際にどこが脆弱だったのか</h3>
+
+<ol>
+<li>非 Safari ブラウザで、適当な RP にアクセス
+
+<ul>
+<li>e.g.,) <a href="http://signin-with-apple.herokuapp.com/">http://signin-with-apple.herokuapp.com/</a></li>
+<li>Safari だと OS の Native UI が出てきてブラウザ遷移しないので注意</li>
+<li>既に連携済の RP の場合は一度連携解除しておくこと</li>
+</ul>
+</li>
+<li>Sign in with Apple のボタンをクリックして Apple AuthZ Endpoint に遷移
+
+<ul>
+<li>AuthZ EP: <a href="https://appleid.apple.com/auth/authorize">https://appleid.apple.com/auth/authorize</a></li>
+</ul>
+</li>
+<li>ログイン後、初回連携時にのみ出てくる同意画面 (メアド選択するところ) に到達
+
+<ul>
+<li><img src="/images/posts/apple/siwa-consent.png" width="500" alt="Sign in with Apple Consent Screen" /></li>
+</ul>
+</li>
+<li>ここで「続ける」を押すと内部的に Ajax Call が実行される
+
+<ul>
+<li>Ajax API EP: <a href="https://appleid.apple.com/appleauth/auth/oauth/authorize">https://appleid.apple.com/appleauth/auth/oauth/authorize</a></li>
+<li>選択されたメアドやその他の AuthZ Req Params が一通り JSON で POST される</li>
+<li>レスポンスとしては id_token とか code なんかが含まれた JSON が返ってくる</li>
+<li><img src="/images/posts/apple/siwa-consent-ajax-submit.png" width="500" alt="Sign in with Apple Consent Ajax Submit" /></li>
+</ul>
+</li>
+</ol>
+
+
+<p>で、問題は Step.4 で Submit されるメールアドレスが、実際当該 Apple ID に紐づいてないものでも OK だったということですね。</p>
+
+
+    
+    <a href="/blog/2020/06/02/zero-day-in-sign-in-with-apple-deep-dive/" class="more-link">Read on &rarr;</a>
+  </div>
+
+<div class="meta">
+  
+</div>
+</article>
 
 
     <article class="post">
@@ -327,67 +406,6 @@ https://mailarchive.ietf.org/arch/msg/ &hellip;">
 
     
     <a href="/blog/2019/06/08/sign-in-with-apple-analysis/" class="more-link">Read on &rarr;</a>
-  </div>
-
-<div class="meta">
-  
-</div>
-</article>
-
-
-    <article class="post">
-  <h2 class="title">
-    
-    <a href="/blog/2019/06/04/sign-in-with-apple/">
-    
-      Rubygem for Sign in With Apple & Rails Sample App</a>
-  </h2>
-  <div class="entry-content">
-    <div class="meta">
-  <div class="author">
-    Author: <a href="https://matake.jp">Nov Matake</a>
-  </div>
-  <div class="date">Date: 
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2019-06-04T22:38:00+09:00" pubdate data-updated="true">Jun 4<span>th</span>, 2019</time></div>
-  
-</div>
-
-    <p>iOS App に Apple ID でログインできたらいいのになぁ〜と思い続けてはや数年、ついにそんな時代がやってきましたね！</p>
-
-<p>ということで、FB Connect 登場時の fb_graph gem リリース以来のスピード感で、Sign in with Apple 用の ruby gem をリリースしてみました。</p>
-
-<p><a href="https://github.com/nov/apple_id">github.com/nov/apple_id</a></p>
-
-<p>ついでに Rails のサンプルアプリも。</p>
-
-<p><a href="https://github.com/nov/signin-with-apple">github.com/nov/signin-with-apple</a></p>
-
-<p>このサンプルアプリはこちらで動かしてるので、試したい方はどうぞ。</p>
-
-<p><a href="https://signin-with-apple.herokuapp.com/">signin-with-apple.herokuapp.com</a></p>
-
-<p>Sign in with Apple は OpenID Connect を採用してるんですが、現状では Native SDK でしか email や fullName は取れないようです。</p>
-
-<p>そのうち UserInfo API が出てくると思うんで、出てきたら apple_id gem でもサポートしようかと思います。</p>
-
-<p>ps.<br/>
-とりあえず Terminal で動かすだけでいいよって方はこちらのサンプルをどうぞ。</p>
-
-<p><a href="https://gist.github.com/nov/993a303aa6badd8447f7b96fb952088e">https://gist.github.com/nov/993a303aa6badd8447f7b96fb952088e</a></p>
-
-    
-    
   </div>
 
 <div class="meta">

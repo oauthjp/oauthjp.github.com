@@ -6,7 +6,8 @@
 	<title>OAuth.jp</title>
     <meta name="author" content="Nov Matake">
     
-	<meta name="description" content="Author: Nov Matake Date: May 18th, 2017 Windows 10 で AzureAD Module インポート済の PowerShell を気軽に起動できるようにする方法メモ。 前提条件 前提として、PowerShell に AzureAD アクセスに必要な &hellip;">
+	<meta name="description" content="Author: Nov Matake Date: Jun 9th, 2017 どうも、iPhone ユーザーの Nov です。 Android OS の進化は素晴らしいと思います。
+個人的には、普段使いのスマホじゃなければ Android 一択です。 Chrome の進化も素晴らしいと思います &hellip;">
 	
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
@@ -93,6 +94,73 @@
 <!-- begin toload --> 
     <div id="content" class="inner">
         
+
+
+    <article class="post">
+  <h2 class="title">
+    
+    <a href="/blog/2017/06/09/android-o-autofill-framework/">
+    
+      Android O AutoFill Framework</a>
+  </h2>
+  <div class="entry-content">
+    <div class="meta">
+  <div class="author">
+    Author: <a href="https://matake.jp">Nov Matake</a>
+  </div>
+  <div class="date">Date: 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2017-06-09T12:47:00+09:00" pubdate data-updated="true">Jun 9<span>th</span>, 2017</time></div>
+  
+</div>
+
+    <p>どうも、iPhone ユーザーの Nov です。</p>
+
+<p>Android OS の進化は素晴らしいと思います。<br/>
+個人的には、普段使いのスマホじゃなければ Android 一択です。</p>
+
+<p>Chrome の進化も素晴らしいと思います。<br/>
+個人的には、普段使いの (ry</p>
+
+<p>最近は Android O から登場した <a href="https://developer.android.com/preview/features/autofill.html">Autofill Framework</a> ってのが気になってます。</p>
+
+<p>Developer Document で <em>&ldquo;Apps that use standard views work with the Autofill Framework out of the box&rdquo;</em> とか言われてるんで、Android App で普通にログインフォーム作れば、勝手に ID &amp; Password が Autofill されるっぽいですね。</p>
+
+<p>え？ID &amp; Password 以外にも、住所やクレカ番号も Autofill されるって？</p>
+
+<p><strong>でしょうね。</strong></p>
+
+<h2>Autofill Framework Sample App 動かしてみよう</h2>
+
+<p>ということで、<a href="https://www.google.com/android/beta">Android O Beta</a> 入れて、<a href="https://github.com/googlesamples/android-AutofillFramework">Autofill Framework Sample</a> 動かしてみましょう。</p>
+
+<p><a href="https://developer.android.com/studio/preview/index.html">Android Studio 3.0 Preview</a> とかいうのもダウンロード必要なようです。</p>
+
+<p>なんかいろいろ足りねぇとかエラー出るけど Java も Kotlin も Android Studio もよぉわからんので、まぁポチポチしていろいろインストールします。</p>
+
+<p>で、Android O Beta をインストールした Nexus 5X (普段使いではない) をターゲットにしてアプリをビルド&hellip;</p>
+
+<p>ジャジャーン！！</p>
+
+
+    
+    <a href="/blog/2017/06/09/android-o-autofill-framework/" class="more-link">Read on &rarr;</a>
+  </div>
+
+<div class="meta">
+  
+</div>
+</article>
 
 
     <article class="post">
@@ -389,63 +457,6 @@
 
     
     <a href="/blog/2017/03/07/github-support-saml-and-scim/" class="more-link">Read on &rarr;</a>
-  </div>
-
-<div class="meta">
-  
-</div>
-</article>
-
-
-    <article class="post">
-  <h2 class="title">
-    
-    <a href="/blog/2017/01/26/myna-on-mac-os-sierra/">
-    
-      MacOS Sierra (10.12.x) でマイナポータルにログイン</a>
-  </h2>
-  <div class="entry-content">
-    <div class="meta">
-  <div class="author">
-    Author: <a href="https://matake.jp">Nov Matake</a>
-  </div>
-  <div class="date">Date: 
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2017-01-26T21:37:00+09:00" pubdate data-updated="true">Jan 26<span>th</span>, 2017</time></div>
-  
-</div>
-
-    <p>お久しぶりです、nov です。</p>
-
-<p>おかげで無事12月末で <a href="http://yauth.jp">YAuth.jp</a> も初年度を終え、2期目に突入しております。</p>
-
-<p>MVP は意気込み送ってこいや的なメールが来ており、いいかげんそろそろ Windows 10 でドメインジョイン (正直 UX とかよくわかってない) せんとなぁとか思いつつ、今日は MacOS です。</p>
-
-<p>MacOS でマイナポータルにログインするお話です。</p>
-
-<p>みなさん、知ってましたか？マイナポータルって OpenID Connect の IdP なんですよ！もしかしたら Access Token とか払い出しちゃう機能なんかもあるんですよ！</p>
-
-<p>ということで、まぁその辺を調べるにも、ログインせんことには何も始まりません。</p>
-
-<p><strong>え？マイナンバーカード持ってないだって？？んなやつぁしらん！！！</strong></p>
-
-<p>そんな人は <a href="https://openid-foundation-japan.github.io/800-63-3/index.ja.html">NIST SP 800-63-3 翻訳版</a> でも読んで、Identity Proofing とかハードウェアトークンとかに思いをはせつつ市役所いって取って来てください。</p>
-
-<p>マイナンバーカード取る時、NIST SP 800-63-3 の3ページ目テストに出ますからね。</p>
-
-
-    
-    <a href="/blog/2017/01/26/myna-on-mac-os-sierra/" class="more-link">Read on &rarr;</a>
   </div>
 
 <div class="meta">

@@ -1,0 +1,286 @@
+
+<!DOCTYPE HTML>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Zero-day in Sign in with Apple Deep-dive - OAuth.jp</title>
+    <meta name="author" content="Nov Matake">
+    
+	<meta name="description" content="Author: Nov Matake Date: Jun 2nd, 2020 先週末に Zero-day in Sign in with Apple とかいう記事が出ていました。 この記事ではいまいち詳細がわからないんで、ちょっと実際 Apple IdP の挙動調べてみたら、当該 &hellip;">
+	
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+	<link href="/atom.xml" rel="alternate" title="OAuth.jp" type="application/atom+xml">
+	<link rel="canonical" href="">
+	<link href="/favicon.ico" rel="shortcut icon">
+    <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+
+    <link href='https://fonts.googleapis.com/css?family=Slackey' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Fjalla+One' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Amethysta' rel='stylesheet' type='text/css'>
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+    <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+
+    <script type="text/javascript" src="/javascripts/jquery-tapir.js"></script>
+
+    <!-- remove or comment it to disable ajaxification -->
+    <!-- <script src="/javascripts/ajaxify.js"></script> -->
+
+    
+    
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-55348-17', 'auto');
+  ga('send', 'pageview');
+</script>
+
+</head>
+
+
+<body>
+    <div id="wrapper">
+    <header id="header" class="inner"><!-- for more effects see _animate.scss -->
+<h1 class="animated bounceInDown">
+  <a href='/'>
+    <div id="headerbg">
+      OAuth.jp
+    </div>
+  </a>
+</h1>
+<br>
+
+<ul id="social-links" style="text-align:center">
+  
+  <!-- Facebook -->
+  <li>
+  <a href="https://www.facebook.com/oauth.jp" class="facebook" title="Facebook"></a>
+  </li>
+  
+  
+  <!-- Twitter -->
+  <li>
+  <a href="https://www.twitter.com/oauthjp" class="twitter" title="Twitter"></a>
+  </li>
+  
+  
+  <!-- GitHub -->
+  <li>
+  <a href="https://github.com/nov" class="github" title="Github"></a>
+  </li>
+  
+  
+  
+  
+  
+  
+</ul>
+
+
+<!-- use full url including 'index.html' for navigation bar if you are using ajax -->
+<ul id="nav">
+  
+</ul>
+
+
+
+
+</header>
+
+<div id="toload">
+<!-- begin toload --> 
+    <div id="content" class="inner">
+        <article class="post">
+  <h2 class="title">Zero-day in Sign in With Apple Deep-dive</h2>
+  <div class="entry-content">
+    <div class="meta">
+  <div class="author">
+    Author: <a href="https://matake.jp">Nov Matake</a>
+  </div>
+  <div class="date">Date: 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2020-06-02T12:22:00+09:00" pubdate data-updated="true">Jun 2<span>nd</span>, 2020</time></div>
+  
+</div>
+
+    <p>先週末に <a href="https://bhavukjain.com/blog/2020/05/30/zeroday-signin-with-apple/">Zero-day in Sign in with Apple</a> とかいう記事が出ていました。</p>
+
+<p>この記事ではいまいち詳細がわからないんで、ちょっと実際 Apple IdP の挙動調べてみたら、当該 Endpoint 発見しました。</p>
+
+<h3>実際にどこが脆弱だったのか</h3>
+
+<ol>
+<li>非 Safari ブラウザで、適当な RP にアクセス
+
+<ul>
+<li>e.g.,) <a href="http://signin-with-apple.herokuapp.com/">http://signin-with-apple.herokuapp.com/</a></li>
+<li>Safari だと OS の Native UI が出てきてブラウザ遷移しないので注意</li>
+<li>既に連携済の RP の場合は一度連携解除しておくこと</li>
+</ul>
+</li>
+<li>Sign in with Apple のボタンをクリックして Apple AuthZ Endpoint に遷移
+
+<ul>
+<li>AuthZ EP: <a href="https://appleid.apple.com/auth/authorize">https://appleid.apple.com/auth/authorize</a></li>
+</ul>
+</li>
+<li>ログイン後、初回連携時にのみ出てくる同意画面 (メアド選択するところ) に到達
+
+<ul>
+<li><img src="/images/posts/apple/siwa-consent.png" width="500" alt="Sign in with Apple Consent Screen" /></li>
+</ul>
+</li>
+<li>ここで「続ける」を押すと内部的に Ajax Call が実行される
+
+<ul>
+<li>Ajax API EP: <a href="https://appleid.apple.com/appleauth/auth/oauth/authorize">https://appleid.apple.com/appleauth/auth/oauth/authorize</a></li>
+<li>選択されたメアドやその他の AuthZ Req Params が一通り JSON で POST される</li>
+<li>レスポンスとしては id_token とか code なんかが含まれた JSON が返ってくる</li>
+<li><img src="/images/posts/apple/siwa-consent-ajax-submit.png" width="500" alt="Sign in with Apple Consent Ajax Submit" /></li>
+</ul>
+</li>
+</ol>
+
+
+<p>で、問題は Step.4 で Submit されるメールアドレスが、実際当該 Apple ID に紐づいてないものでも OK だったということですね。</p>
+
+<!-- more -->
+
+
+<p><a href="https://aaronparecki.com/2020/05/31/30/the-real-cause-of-the-sign-in-with-apple-zero-day">The Real Cause of the Sign In with Apple Zero-Day</a> という解説記事では、メールアドレスの値そのものを POST するんではなく <code>real_email</code> / <code>proxy_email</code> という Flag 値のみを POST すべしとか書いてますが、実際には Apple ID には複数のメールアドレスが紐付き Sign in with Apple の同意画面でのメールアドレス選択肢も3つ以上になるケースがあるので、メールアドレスの値そのものを POST することは理にかなっています。</p>
+
+<p>問題は、POST されたメールアドレスが当該アカウントと紐づいてるかを Apple IdP サーバーがチェックしてなかったという点だけですね。</p>
+
+<p>現在はメールアドレスとアカウントの紐付けがサーバーサイドでチェックされているので、変なメールアドレスを投げるとちゃんと 400 が返ってきます。</p>
+
+<h3>Email 以外を書き換えるとどうなる？</h3>
+
+<p>ちなみにこの Ajax Call のタイミングで client_id &amp; redirect_uri を通信途中で改竄してやると、別 Client 向けの Code が正規 Client の正規 Redirect URI に返されるなんていう挙動もあります。</p>
+
+<p>Submit された値に基づいてサーバーサイドで Auto-submit Form なりをレンダリングしてレスポンスを返すのではなく、既に同意画面中に仕込まれた JS とパラメーター値を使ってレスポンス返してるので、Ajax Call 中で書き換えられた email 以外の値はレスポンスを返すべきか否かの判断には使われていないのですね。</p>
+
+<p>まぁそれ自体がそこまで大きな問題かというと、そんな気はしませんが。。。ちょっと設計が微妙というか、フロントエンジニアが勝手に設計したらこうなっちゃったみたいな雰囲気が満載ですね。</p>
+
+<p>ということで、まだ ID Token の <code>aud</code> は別の値にされる可能性は残っているのですが、まぁ普通に <code>code</code> 使ってバックチャネルで ID Token 取れば、<code>aud</code> が書き換えられた ID Token は発行されないんで、そうすればよいです。</p>
+
+<p>Sign in with Apple のフロントチャネルで発行された ID Token は、ガン無視して捨ててやれば良いのです。あれにはまず使い道はありません。</p>
+
+<h3>余談 : OAuth 2.0 Web Message Response Mode (WMRM) 使われてる！</h3>
+
+<p>Sign in with Apple には Popup Mode なるものがあります。</p>
+
+<p>実際以下の URL にアクセスして黒い方のボタンをクリックするとそれが体験できます。<br/>
+<a href="http://signin-with-apple.herokuapp.com/?popup=true">http://signin-with-apple.herokuapp.com/?popup=true</a></p>
+
+<p>ここ、よく見ると <code>response_mode=web_message</code> が使われています。</p>
+
+<p>大昔、<a href="https://twitter.com/zigorou">@zigorou</a> さんと <a href="https://twitter.com/_nat">@_nat</a> さんとノリで Independent  Draft まで書いて、その後放置してるやつですねw</p>
+
+<p>懐かしいですねぇ..</p>
+
+<p><a href="https://tools.ietf.org/html/draft-sakimura-oauth-wmrm-00">OAuth 2.0 Web Message Response Mode</a></p>
+
+<p>Apple さんは redirect_uri に Origin 指定したりとかはしてないんですけどね。</p>
+
+<p>OAuth WMRM、実は Auth0 とか Okta とかも使ってるんですよね。Okta のはなんか変な Prefix ついてるけど。</p>
+
+<p><a href="https://auth0.com/docs/protocols/oauth2#how-response-mode-works">OAuth 2.0 Authorization Framework &ndash; Auth0</a>
+<a href="https://developer.okta.com/docs/reference/api/oidc/#postmessage-data-object">OpenID Connect &amp; OAuth 2.0 API &ndash; Okta</a></p>
+
+  </div>
+
+<div class="meta">
+  
+</div>
+</article>
+
+	<div class="share">
+	<div class="addthis_toolbox addthis_default_style ">
+	
+	<a class="addthis_button_facebook_like" fb:like:layout="button_count"></a>
+	
+	
+	<a class="addthis_button_tweet"></a>
+	
+	
+	</div>
+  <script type="text/javascript" src="https://s7.addthis.com/js/250/addthis_widget.js#pubid="></script>
+</div>
+
+
+
+<section id="comment">
+    <h2 class="title">Comments</h2>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+</section>
+
+    </div>
+    <footer id="footer">
+    <div style="display:inline">
+  <p>
+    Copyright &copy; 2020
+    
+      <a href="https://matake.jp">Nov Matake</a> - 技術的な相談等、お仕事依頼は <a href="https://yauth.jp">YAuth.jp</a> まで.
+    
+  </p>
+  <p>
+    Powered by <a href="http://octopress.org">Octopress</a>.
+    Theme <a href="https://github.com/panks/fabric">fabric</a> by <a href="http://panks.me">Pankaj Kumar</a>
+  </p>
+</div>
+
+
+    </footer>
+    <script src="/javascripts/fabric.js"></script>
+<script src="/javascripts/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+	$('.fancybox').fancybox();
+})(jQuery);
+</script> <!-- Delete or comment this line to disable Fancybox -->
+
+
+<script type="text/javascript">
+      var disqus_shortname = 'oauthjp';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'https://oauth.jp/blog/2020/06/02/zero-day-in-sign-in-with-apple-deep-dive/';
+        var disqus_url = 'https://oauth.jp/blog/2020/06/02/zero-day-in-sign-in-with-apple-deep-dive/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'https://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+<!-- end toload --> 
+</div>
+</div>
+<script src="/javascripts/jquery.ui.totop.js" type="text/javascript"></script>
+<script type="text/javascript">
+/*<![CDATA[*/
+;(function($){$().UItoTop({easingType:'easeOutCirc'});})(jQuery); 
+/*]]>*/
+</script><!-- remove it to remove the scroll to top button -->
+</body>
+</html>
