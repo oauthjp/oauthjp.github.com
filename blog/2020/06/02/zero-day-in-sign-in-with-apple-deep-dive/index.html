@@ -177,14 +177,14 @@
 
 <p>Sign in with Apple のフロントチャネルで発行された ID Token は、ガン無視して捨ててやれば良いのです。あれにはまず使い道はありません。</p>
 
-<h3>余談 : OAuth 2.0 Web Message Response Mode (WMRM) 使われてる！</h3>
+<h3>余談 : OAuth 2.0 WMRM 使われてる！</h3>
 
 <p>Sign in with Apple には Popup Mode なるものがあります。</p>
 
 <p>実際以下の URL にアクセスして黒い方のボタンをクリックするとそれが体験できます。<br/>
 <a href="http://signin-with-apple.herokuapp.com/?popup=true">http://signin-with-apple.herokuapp.com/?popup=true</a></p>
 
-<p>ここ、よく見ると <code>response_mode=web_message</code> が使われています。</p>
+<p>ここ、よく見ると OAuth 2.0 Web Message Response Mode (WMRM, <code>response_mode=web_message</code>) が使われています。</p>
 
 <p>大昔、<a href="https://twitter.com/zigorou">@zigorou</a> さんと <a href="https://twitter.com/_nat">@_nat</a> さんとノリで Independent  Draft まで書いて、その後放置してるやつですねw</p>
 
