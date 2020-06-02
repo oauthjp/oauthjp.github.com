@@ -147,7 +147,7 @@
 <ul>
 <li>Ajax API EP: <a href="https://appleid.apple.com/appleauth/auth/oauth/authorize">https://appleid.apple.com/appleauth/auth/oauth/authorize</a></li>
 <li>選択されたメアドやその他の AuthZ Req Params が一通り JSON で POST される</li>
-<li>レスポンスとしては id_token とか code なんかが含まれた JSON が返ってくる</li>
+<li>レスポンスとしては <code>id_token</code> とか <code>code</code> なんかが含まれた JSON が返ってくる</li>
 <li><img src="/images/posts/apple/siwa-consent-ajax-submit.png" width="500" alt="Sign in with Apple Consent Ajax Submit" /></li>
 </ul>
 </li>
@@ -167,9 +167,9 @@
 
 <h3>Email 以外を書き換えるとどうなる？</h3>
 
-<p>ちなみにこの Ajax Call のタイミングで client_id &amp; redirect_uri を通信途中で改竄してやると、別 Client 向けの Code が正規 Client の正規 Redirect URI に返されるなんていう挙動もあります。</p>
+<p>ちなみにこの Ajax Call のタイミングで <code>client_id</code> &amp; <code>redirect_uri</code> を通信途中で改竄してやると、別 Client 向けの Code が正規 Client の正規 Redirect URI に返されるなんていう挙動もあります。</p>
 
-<p>Submit された値に基づいてサーバーサイドで Auto-submit Form なりをレンダリングしてレスポンスを返すのではなく、既に同意画面中に仕込まれた JS とパラメーター値を使ってレスポンス返してるので、Ajax Call 中で書き換えられた email 以外の値はレスポンスを返すべきか否かの判断には使われていないのですね。</p>
+<p>Submit された値に基づいてサーバーサイドで Auto-submit Form なりをレンダリングしてレスポンスを返すのではなく、既に同意画面中に仕込まれた JS とパラメーター値を使ってレスポンス返してるので、Ajax Call 中で書き換えられた <code>email</code> 以外の値はレスポンスを返すべきか否かの判断には使われていないのですね。</p>
 
 <p>まぁそれ自体がそこまで大きな問題かというと、そんな気はしませんが。。。ちょっと設計が微妙というか、フロントエンジニアが勝手に設計したらこうなっちゃったみたいな雰囲気が満載ですね。</p>
 
@@ -192,7 +192,7 @@
 
 <p><a href="https://tools.ietf.org/html/draft-sakimura-oauth-wmrm-00">OAuth 2.0 Web Message Response Mode</a></p>
 
-<p>Apple さんは redirect_uri に Origin 指定したりとかはしてないんですけどね。</p>
+<p>Apple さんは <code>redirect_uri</code> に Origin 指定したりとかはしてないんですけどね。</p>
 
 <p>OAuth WMRM、実は Auth0 とか Okta とかも使ってるんですよね。Okta のはなんか変な Prefix ついてるけど。</p>
 
