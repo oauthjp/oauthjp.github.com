@@ -4,7 +4,7 @@
   <title><![CDATA[OAuth.jp]]></title>
   <link href="https://oauth.jp/atom.xml" rel="self"/>
   <link href="https://oauth.jp/"/>
-  <updated>2020-06-02T13:26:52+09:00</updated>
+  <updated>2020-06-02T13:28:56+09:00</updated>
   <id>https://oauth.jp/</id>
   <author>
     <name><![CDATA[Nov Matake]]></name>
@@ -89,9 +89,7 @@
 
 <p>ここ、よく見ると OAuth 2.0 Web Message Response Mode (WMRM, <code>response_mode=web_message</code>) が使われています。</p>
 
-<p>大昔、<a href="https://twitter.com/zigorou">@zigorou</a> さんと <a href="https://twitter.com/_nat">@_nat</a> さんとノリで Independent  Draft まで書いて、その後放置してるやつですねw</p>
-
-<p>懐かしいですねぇ..</p>
+<p>大昔、<a href="https://twitter.com/zigorou">@zigorou</a> さんと <a href="https://twitter.com/_nat">@_nat</a> さんとノリで Independent  Draft まで書いて、その後放置してるやつですね。懐かしいですねぇ.. #遠い目</p>
 
 <p><a href="https://tools.ietf.org/html/draft-sakimura-oauth-wmrm-00">OAuth 2.0 Web Message Response Mode</a></p>
 
@@ -99,8 +97,11 @@
 
 <p>OAuth WMRM、実は Auth0 とか Okta とかも使ってるんですよね。Okta のはなんか変な Prefix ついてるけど。</p>
 
-<p><a href="https://auth0.com/docs/protocols/oauth2#how-response-mode-works">OAuth 2.0 Authorization Framework &ndash; Auth0</a>
-<a href="https://developer.okta.com/docs/reference/api/oidc/#postmessage-data-object">OpenID Connect &amp; OAuth 2.0 API &ndash; Okta</a></p>
+<ul>
+<li><a href="https://auth0.com/docs/protocols/oauth2#how-response-mode-works">OAuth 2.0 Authorization Framework &ndash; Auth0</a></li>
+<li><a href="https://developer.okta.com/docs/reference/api/oidc/#postmessage-data-object">OpenID Connect &amp; OAuth 2.0 API &ndash; Okta</a></li>
+</ul>
+
 ]]></content>
   </entry>
   
@@ -1373,7 +1374,7 @@
 
 <p>動作確認用のユーザーも作っておきましたので、これが正常に動いてる間はご自由にお使いください。</p>
 
-<p>Username: <a href="&#x6d;&#x61;&#x69;&#x6c;&#x74;&#111;&#58;&#121;&#111;&#117;&#x40;&#x73;&#116;&#x73;&#x34;&#x62;&#x32;&#x63;&#46;&#111;&#x6e;&#x6d;&#x69;&#99;&#114;&#x6f;&#x73;&#x6f;&#x66;&#x74;&#46;&#99;&#111;&#109;">&#121;&#111;&#117;&#64;&#115;&#x74;&#x73;&#52;&#98;&#x32;&#x63;&#46;&#111;&#x6e;&#x6d;&#105;&#x63;&#114;&#x6f;&#115;&#111;&#x66;&#x74;&#x2e;&#x63;&#x6f;&#109;</a>
+<p>Username: <a href="&#109;&#97;&#x69;&#108;&#116;&#111;&#x3a;&#x79;&#111;&#117;&#64;&#115;&#x74;&#115;&#x34;&#98;&#x32;&#99;&#46;&#x6f;&#110;&#109;&#x69;&#99;&#x72;&#x6f;&#115;&#111;&#102;&#x74;&#x2e;&#99;&#111;&#109;">&#x79;&#111;&#x75;&#64;&#x73;&#x74;&#x73;&#52;&#x62;&#50;&#99;&#46;&#111;&#x6e;&#109;&#105;&#99;&#114;&#111;&#x73;&#x6f;&#x66;&#116;&#x2e;&#99;&#x6f;&#x6d;</a>
 Password: ]6]yzxXYG7uruM4p</p>
 
 <p>動かなくなったら、あきらめて自分で Azure AD B2C 環境セットアップしてください。</p>
@@ -1526,13 +1527,13 @@ Password: ]6]yzxXYG7uruM4p</p>
 
 <p>あと、Email 指定してもそのメアドのユーザーにログインできるわけでもないです。</p>
 
-<p><a href="&#109;&#x61;&#105;&#108;&#x74;&#x6f;&#x3a;&#x6e;&#x6f;&#x76;&#64;&#x65;&#120;&#x61;&#x6d;&#112;&#108;&#101;&#46;&#x63;&#111;&#x6d;">&#110;&#111;&#x76;&#64;&#101;&#x78;&#97;&#109;&#x70;&#108;&#x65;&#x2e;&#x63;&#111;&#109;</a> の NameID を持つ SAML Assertion で、<a href="&#109;&#x61;&#105;&#x6c;&#116;&#x6f;&#x3a;&#x6e;&#111;&#118;&#x40;&#109;&#97;&#116;&#97;&#x6b;&#x65;&#x2e;&#106;&#x70;">&#x6e;&#x6f;&#x76;&#x40;&#109;&#x61;&#116;&#x61;&#107;&#x65;&#x2e;&#x6a;&#112;</a> の GitHub アカウントにログインできたりします。</p>
+<p><a href="&#x6d;&#x61;&#105;&#108;&#116;&#x6f;&#x3a;&#110;&#x6f;&#x76;&#64;&#x65;&#120;&#97;&#109;&#x70;&#x6c;&#x65;&#x2e;&#x63;&#x6f;&#109;">&#110;&#x6f;&#x76;&#x40;&#x65;&#x78;&#x61;&#x6d;&#x70;&#108;&#101;&#x2e;&#99;&#x6f;&#x6d;</a> の NameID を持つ SAML Assertion で、<a href="&#x6d;&#x61;&#105;&#x6c;&#116;&#111;&#x3a;&#110;&#111;&#118;&#64;&#x6d;&#97;&#x74;&#97;&#107;&#101;&#46;&#x6a;&#x70;">&#x6e;&#111;&#118;&#64;&#x6d;&#97;&#x74;&#x61;&#x6b;&#101;&#46;&#106;&#x70;</a> の GitHub アカウントにログインできたりします。</p>
 
 <p>SAML Federation とか言うてるけど、結局既存の GitHub.com アカウントに SAML IdP 側のアカウントを Link するだけなんですよ。</p>
 
 <p>その紐付けは、SAML での初回ログイン時に GitHub.com 側の ID &amp; Password 入力して行います。</p>
 
-<p>つまり、<a href="&#x6d;&#97;&#105;&#108;&#116;&#x6f;&#58;&#110;&#111;&#118;&#64;&#x65;&#x78;&#x61;&#109;&#112;&#x6c;&#x65;&#x2e;&#99;&#111;&#x6d;">&#110;&#x6f;&#x76;&#x40;&#101;&#120;&#97;&#x6d;&#x70;&#108;&#x65;&#x2e;&#99;&#x6f;&#x6d;</a> の NameID を持つ SAML Assertion をどの GitHub アカウントに紐づけるかは、エンドユーザーが決定権を持っています。</p>
+<p>つまり、<a href="&#109;&#x61;&#x69;&#108;&#x74;&#111;&#x3a;&#x6e;&#111;&#118;&#x40;&#x65;&#x78;&#x61;&#x6d;&#x70;&#x6c;&#101;&#46;&#x63;&#111;&#x6d;">&#x6e;&#x6f;&#118;&#64;&#101;&#120;&#97;&#109;&#x70;&#108;&#101;&#x2e;&#x63;&#x6f;&#x6d;</a> の NameID を持つ SAML Assertion をどの GitHub アカウントに紐づけるかは、エンドユーザーが決定権を持っています。</p>
 
 <p>情シスじゃないです。</p>
 
