@@ -165,43 +165,36 @@
 
 <p>現在はメールアドレスとアカウントの紐付けがサーバーサイドでチェックされているので、変なメールアドレスを投げるとちゃんと 400 が返ってきます。</p>
 
-<h3>Email 以外を書き換えるとどうなる？</h3>
+<!--
+### Email 以外を書き換えるとどうなる？
 
-<p>ちなみにこの Ajax Call のタイミングで <code>client_id</code> &amp; <code>redirect_uri</code> を通信途中で改竄してやると、別 Client 向けの Code が正規 Client の正規 Redirect URI に返されるなんていう挙動もあります。</p>
+ちなみにこの Ajax Call のタイミングで `client_id` & `redirect_uri` を通信途中で改竄してやると、別 Client 向けの Code が正規 Client の正規 Redirect URI に返されるなんていう挙動もあります。
 
-<p>具体的には、Nov SIWA RP でログイン開始して、Apple IdP の同意画面で実行される Ajax Call でだけ <code>client_id</code> &amp; <code>redirect_uri</code> を以下のように書き換えてやると&hellip;</p>
+具体的には、Nov SIWA RP でログイン開始して、Apple IdP の同意画面で実行される Ajax Call でだけ `client_id` & `redirect_uri` を以下のように書き換えてやると...
 
-<ul>
-<li>client_id
+* client_id
+    * From: jp.yauth.signin.service3 (Nov SIWA RP)
+    * To: net.zexy.koimusubi.ios.signinwithapple (ゼクシィ恋結び)
+* redirect_uri
+    * From: https://signin-with-apple.herokuapp.com/callback
+    * To: https://zexy-koimusubi.net/web/auth/apple_login/callback
 
-<ul>
-<li>From: jp.yauth.signin.service3 (Nov SIWA RP)</li>
-<li>To: net.zexy.koimusubi.ios.signinwithapple (ゼクシィ恋結び)</li>
-</ul>
-</li>
-<li>redirect_uri
+ゼクシィ恋結び向けの `id_token` および `code` が Nov SIWA RP の Redirect URI に渡されてきます。
 
-<ul>
-<li>From: <a href="https://signin-with-apple.herokuapp.com/callback">https://signin-with-apple.herokuapp.com/callback</a></li>
-<li>To: <a href="https://zexy-koimusubi.net/web/auth/apple_login/callback">https://zexy-koimusubi.net/web/auth/apple_login/callback</a></li>
-</ul>
-</li>
-</ul>
+Submit された値に基づいてサーバーサイドで Auto-submit Form なりをレンダリングしてレスポンスを返すのではなく、既に同意画面中に仕込まれた JS とパラメーター値を使ってレスポンス返してるので、Ajax Call 中で書き換えられた `email` 以外の値はレスポンスを返すべきか否かの判断には使われていないのですね。
 
+まぁそれ自体がそこまで大きな問題かというと、そんな気はしませんが。。。
 
-<p>ゼクシィ恋結び向けの <code>id_token</code> および <code>code</code> が Nov SIWA RP の Redirect URI に渡されてきます。</p>
+ちょっと設計が微妙というか、フロントエンジニアが勝手に設計したらこうなっちゃった、みたいな雰囲気ですね。
 
-<p>Submit された値に基づいてサーバーサイドで Auto-submit Form なりをレンダリングしてレスポンスを返すのではなく、既に同意画面中に仕込まれた JS とパラメーター値を使ってレスポンス返してるので、Ajax Call 中で書き換えられた <code>email</code> 以外の値はレスポンスを返すべきか否かの判断には使われていないのですね。</p>
+ということで、まだ ID Token の `aud` は別の値にされる可能性は残っているのですが、まぁ普通に `code` 使ってバックチャネルで ID Token 取れば、`aud` が書き換えられた ID Token は発行されないんで、そうすればよいです。
 
-<p>まぁそれ自体がそこまで大きな問題かというと、そんな気はしませんが。。。</p>
+Sign in with Apple のフロントチャネルで発行された ID Token は、ガン無視して捨ててやれば良いのです。あれにはまず使い道はありません。
 
-<p>ちょっと設計が微妙というか、フロントエンジニアが勝手に設計したらこうなっちゃった、みたいな雰囲気ですね。</p>
+ちなみに、既婚者はゼクシィ恋結びを利用してはなりませんし、嫁にゼクシィ恋結びと連携済の Apple IdP の画面なんかみられた日にゃ血の雨が降りますので、これを試したら即連携解除必須です。
 
-<p>ということで、まだ ID Token の <code>aud</code> は別の値にされる可能性は残っているのですが、まぁ普通に <code>code</code> 使ってバックチャネルで ID Token 取れば、<code>aud</code> が書き換えられた ID Token は発行されないんで、そうすればよいです。</p>
+-->
 
-<p>Sign in with Apple のフロントチャネルで発行された ID Token は、ガン無視して捨ててやれば良いのです。あれにはまず使い道はありません。</p>
-
-<p>ちなみに、既婚者はゼクシィ恋結びを利用してはなりませんし、嫁にゼクシィ恋結びと連携済の Apple IdP の画面なんかみられた日にゃ血の雨が降りますので、これを試したら即連携解除必須です。</p>
 
 <h3>余談 : OAuth 2.0 WMRM 使われてる！</h3>
 

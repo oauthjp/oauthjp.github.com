@@ -4,7 +4,7 @@
   <title><![CDATA[OAuth.jp]]></title>
   <link href="https://oauth.jp/atom.xml" rel="self"/>
   <link href="https://oauth.jp/"/>
-  <updated>2020-06-02T13:53:27+09:00</updated>
+  <updated>2020-06-06T09:34:50+09:00</updated>
   <id>https://oauth.jp/</id>
   <author>
     <name><![CDATA[Nov Matake]]></name>
@@ -68,43 +68,36 @@
 
 <p>現在はメールアドレスとアカウントの紐付けがサーバーサイドでチェックされているので、変なメールアドレスを投げるとちゃんと 400 が返ってきます。</p>
 
-<h3>Email 以外を書き換えるとどうなる？</h3>
+<!--
+### Email 以外を書き換えるとどうなる？
 
-<p>ちなみにこの Ajax Call のタイミングで <code>client_id</code> &amp; <code>redirect_uri</code> を通信途中で改竄してやると、別 Client 向けの Code が正規 Client の正規 Redirect URI に返されるなんていう挙動もあります。</p>
+ちなみにこの Ajax Call のタイミングで `client_id` & `redirect_uri` を通信途中で改竄してやると、別 Client 向けの Code が正規 Client の正規 Redirect URI に返されるなんていう挙動もあります。
 
-<p>具体的には、Nov SIWA RP でログイン開始して、Apple IdP の同意画面で実行される Ajax Call でだけ <code>client_id</code> &amp; <code>redirect_uri</code> を以下のように書き換えてやると&hellip;</p>
+具体的には、Nov SIWA RP でログイン開始して、Apple IdP の同意画面で実行される Ajax Call でだけ `client_id` & `redirect_uri` を以下のように書き換えてやると...
 
-<ul>
-<li>client_id
+* client_id
+    * From: jp.yauth.signin.service3 (Nov SIWA RP)
+    * To: net.zexy.koimusubi.ios.signinwithapple (ゼクシィ恋結び)
+* redirect_uri
+    * From: https://signin-with-apple.herokuapp.com/callback
+    * To: https://zexy-koimusubi.net/web/auth/apple_login/callback
 
-<ul>
-<li>From: jp.yauth.signin.service3 (Nov SIWA RP)</li>
-<li>To: net.zexy.koimusubi.ios.signinwithapple (ゼクシィ恋結び)</li>
-</ul>
-</li>
-<li>redirect_uri
+ゼクシィ恋結び向けの `id_token` および `code` が Nov SIWA RP の Redirect URI に渡されてきます。
 
-<ul>
-<li>From: <a href="https://signin-with-apple.herokuapp.com/callback">https://signin-with-apple.herokuapp.com/callback</a></li>
-<li>To: <a href="https://zexy-koimusubi.net/web/auth/apple_login/callback">https://zexy-koimusubi.net/web/auth/apple_login/callback</a></li>
-</ul>
-</li>
-</ul>
+Submit された値に基づいてサーバーサイドで Auto-submit Form なりをレンダリングしてレスポンスを返すのではなく、既に同意画面中に仕込まれた JS とパラメーター値を使ってレスポンス返してるので、Ajax Call 中で書き換えられた `email` 以外の値はレスポンスを返すべきか否かの判断には使われていないのですね。
 
+まぁそれ自体がそこまで大きな問題かというと、そんな気はしませんが。。。
 
-<p>ゼクシィ恋結び向けの <code>id_token</code> および <code>code</code> が Nov SIWA RP の Redirect URI に渡されてきます。</p>
+ちょっと設計が微妙というか、フロントエンジニアが勝手に設計したらこうなっちゃった、みたいな雰囲気ですね。
 
-<p>Submit された値に基づいてサーバーサイドで Auto-submit Form なりをレンダリングしてレスポンスを返すのではなく、既に同意画面中に仕込まれた JS とパラメーター値を使ってレスポンス返してるので、Ajax Call 中で書き換えられた <code>email</code> 以外の値はレスポンスを返すべきか否かの判断には使われていないのですね。</p>
+ということで、まだ ID Token の `aud` は別の値にされる可能性は残っているのですが、まぁ普通に `code` 使ってバックチャネルで ID Token 取れば、`aud` が書き換えられた ID Token は発行されないんで、そうすればよいです。
 
-<p>まぁそれ自体がそこまで大きな問題かというと、そんな気はしませんが。。。</p>
+Sign in with Apple のフロントチャネルで発行された ID Token は、ガン無視して捨ててやれば良いのです。あれにはまず使い道はありません。
 
-<p>ちょっと設計が微妙というか、フロントエンジニアが勝手に設計したらこうなっちゃった、みたいな雰囲気ですね。</p>
+ちなみに、既婚者はゼクシィ恋結びを利用してはなりませんし、嫁にゼクシィ恋結びと連携済の Apple IdP の画面なんかみられた日にゃ血の雨が降りますので、これを試したら即連携解除必須です。
 
-<p>ということで、まだ ID Token の <code>aud</code> は別の値にされる可能性は残っているのですが、まぁ普通に <code>code</code> 使ってバックチャネルで ID Token 取れば、<code>aud</code> が書き換えられた ID Token は発行されないんで、そうすればよいです。</p>
+-->
 
-<p>Sign in with Apple のフロントチャネルで発行された ID Token は、ガン無視して捨ててやれば良いのです。あれにはまず使い道はありません。</p>
-
-<p>ちなみに、既婚者はゼクシィ恋結びを利用してはなりませんし、嫁にゼクシィ恋結びと連携済の Apple IdP の画面なんかみられた日にゃ血の雨が降りますので、これを試したら即連携解除必須です。</p>
 
 <h3>余談 : OAuth 2.0 WMRM 使われてる！</h3>
 
@@ -1400,7 +1393,7 @@
 
 <p>動作確認用のユーザーも作っておきましたので、これが正常に動いてる間はご自由にお使いください。</p>
 
-<p>Username: <a href="&#x6d;&#97;&#105;&#x6c;&#x74;&#111;&#58;&#x79;&#x6f;&#x75;&#64;&#x73;&#116;&#x73;&#52;&#98;&#x32;&#99;&#x2e;&#x6f;&#110;&#109;&#105;&#99;&#114;&#x6f;&#115;&#111;&#102;&#x74;&#x2e;&#x63;&#x6f;&#109;">&#121;&#x6f;&#117;&#64;&#115;&#116;&#115;&#52;&#x62;&#50;&#x63;&#46;&#111;&#110;&#109;&#105;&#x63;&#114;&#111;&#x73;&#111;&#102;&#116;&#x2e;&#99;&#111;&#109;</a>
+<p>Username: <a href="&#109;&#97;&#105;&#108;&#116;&#111;&#x3a;&#121;&#x6f;&#117;&#x40;&#x73;&#116;&#x73;&#x34;&#98;&#x32;&#99;&#46;&#111;&#110;&#x6d;&#x69;&#99;&#114;&#111;&#x73;&#x6f;&#102;&#116;&#46;&#99;&#111;&#109;">&#121;&#x6f;&#117;&#x40;&#x73;&#116;&#x73;&#52;&#x62;&#x32;&#99;&#46;&#111;&#x6e;&#109;&#105;&#99;&#114;&#x6f;&#x73;&#x6f;&#x66;&#116;&#46;&#99;&#111;&#x6d;</a>
 Password: ]6]yzxXYG7uruM4p</p>
 
 <p>動かなくなったら、あきらめて自分で Azure AD B2C 環境セットアップしてください。</p>
@@ -1553,13 +1546,13 @@ Password: ]6]yzxXYG7uruM4p</p>
 
 <p>あと、Email 指定してもそのメアドのユーザーにログインできるわけでもないです。</p>
 
-<p><a href="&#x6d;&#97;&#x69;&#x6c;&#x74;&#111;&#x3a;&#x6e;&#111;&#118;&#64;&#x65;&#x78;&#x61;&#109;&#x70;&#x6c;&#101;&#46;&#x63;&#x6f;&#x6d;">&#110;&#x6f;&#x76;&#64;&#101;&#x78;&#97;&#x6d;&#x70;&#x6c;&#x65;&#46;&#99;&#x6f;&#109;</a> の NameID を持つ SAML Assertion で、<a href="&#109;&#97;&#x69;&#108;&#x74;&#111;&#x3a;&#110;&#111;&#118;&#x40;&#109;&#97;&#116;&#97;&#107;&#x65;&#x2e;&#x6a;&#x70;">&#x6e;&#111;&#x76;&#64;&#109;&#97;&#116;&#97;&#x6b;&#x65;&#x2e;&#x6a;&#x70;</a> の GitHub アカウントにログインできたりします。</p>
+<p><a href="&#x6d;&#x61;&#105;&#x6c;&#116;&#x6f;&#58;&#110;&#x6f;&#118;&#x40;&#101;&#120;&#97;&#x6d;&#x70;&#x6c;&#x65;&#46;&#99;&#x6f;&#109;">&#x6e;&#x6f;&#x76;&#64;&#x65;&#x78;&#97;&#x6d;&#x70;&#x6c;&#101;&#x2e;&#99;&#111;&#x6d;</a> の NameID を持つ SAML Assertion で、<a href="&#x6d;&#97;&#105;&#x6c;&#116;&#111;&#x3a;&#110;&#111;&#x76;&#x40;&#x6d;&#x61;&#x74;&#x61;&#x6b;&#101;&#46;&#106;&#112;">&#110;&#111;&#118;&#x40;&#x6d;&#x61;&#x74;&#x61;&#107;&#x65;&#46;&#x6a;&#112;</a> の GitHub アカウントにログインできたりします。</p>
 
 <p>SAML Federation とか言うてるけど、結局既存の GitHub.com アカウントに SAML IdP 側のアカウントを Link するだけなんですよ。</p>
 
 <p>その紐付けは、SAML での初回ログイン時に GitHub.com 側の ID &amp; Password 入力して行います。</p>
 
-<p>つまり、<a href="&#109;&#x61;&#105;&#108;&#116;&#111;&#58;&#x6e;&#x6f;&#118;&#x40;&#101;&#120;&#x61;&#x6d;&#x70;&#x6c;&#101;&#x2e;&#x63;&#x6f;&#x6d;">&#x6e;&#x6f;&#x76;&#64;&#101;&#120;&#x61;&#x6d;&#112;&#x6c;&#101;&#46;&#x63;&#x6f;&#x6d;</a> の NameID を持つ SAML Assertion をどの GitHub アカウントに紐づけるかは、エンドユーザーが決定権を持っています。</p>
+<p>つまり、<a href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#x6e;&#x6f;&#118;&#64;&#101;&#x78;&#97;&#x6d;&#x70;&#108;&#x65;&#x2e;&#99;&#111;&#109;">&#110;&#x6f;&#x76;&#x40;&#x65;&#x78;&#x61;&#109;&#x70;&#x6c;&#x65;&#x2e;&#x63;&#x6f;&#x6d;</a> の NameID を持つ SAML Assertion をどの GitHub アカウントに紐づけるかは、エンドユーザーが決定権を持っています。</p>
 
 <p>情シスじゃないです。</p>
 
