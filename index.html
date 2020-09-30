@@ -6,7 +6,8 @@
 	<title>OAuth.jp</title>
     <meta name="author" content="Nov Matake">
     
-	<meta name="description" content="Author: Nov Matake Date: Jun 2nd, 2020 先週末に Zero-day in Sign in with Apple とかいう記事が出ていました。 この記事ではいまいち詳細がわからないんで、ちょっと実際 Apple IdP の挙動調べてみたら、当該 &hellip;">
+	<meta name="description" content="Author: Nov Matake Date: Sep 30th, 2020 忘れそうなので一旦メモ。 ドコモ口座の問題って、こういうことでしょ？ 銀行側のAALが1を満たさないので銀行側が銀行口座を保護できない
+銀行側のAALが1を満たさないので「銀行にKYCを依拠する」 &hellip;">
 	
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
@@ -93,6 +94,96 @@
 <!-- begin toload --> 
     <div id="content" class="inner">
         
+
+
+    <article class="post">
+  <h2 class="title">
+    
+    <a href="/blog/2020/09/30/docomo-kouza-kyc/">
+    
+      ドコモ口座問題</a>
+  </h2>
+  <div class="entry-content">
+    <div class="meta">
+  <div class="author">
+    Author: <a href="https://matake.jp">Nov Matake</a>
+  </div>
+  <div class="date">Date: 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2020-09-30T11:40:00+09:00" pubdate data-updated="true">Sep 30<span>th</span>, 2020</time></div>
+  
+</div>
+
+    <p>忘れそうなので一旦メモ。</p>
+
+<p>ドコモ口座の問題って、こういうことでしょ？</p>
+
+<ol>
+<li>銀行側のAALが1を満たさないので銀行側が銀行口座を保護できない</li>
+<li>銀行側のAALが1を満たさないので「銀行にKYCを依拠する」というサービスのLoAが1を満たさずサービスとして成り立っていない
+
+<ul>
+<li>結果としてドコモ口座のIALは1 (= dアカウント登録直後と同等) のまま</li>
+</ul>
+</li>
+<li>「銀行口座名義とドコモ口座名義の一致確認」と「銀行にKYCを依拠」が同時に発生してしまっている結果「銀行口座名義とドコモ口座名義の一致確認」が実質なされていない
+
+<ul>
+<li>参考) <a href="https://gist.github.com/nov/b8be7b50db48862784b470c1ae6c1718">https://gist.github.com/nov/b8be7b50db48862784b470c1ae6c1718</a></li>
+</ul>
+</li>
+<li>口座の一致確認が行われていないためドコモも銀行口座を保護できない
+
+<ul>
+<li>ドコモ口座側のAALは1を満たすのでドコモがドコモ口座を保護することは可能</li>
+</ul>
+</li>
+<li>結果として銀行口座は保護されない</li>
+</ol>
+
+
+<p>そして、責任分界点はこのあたりで、</p>
+
+<ul>
+<li>銀行預金に対する金銭被害の責任は銀行に帰し</li>
+<li>その預金が反社に渡る責任はドコモに帰する</li>
+</ul>
+
+
+<p>eKYC文脈ではこのあたりが論点で、</p>
+
+<ul>
+<li>上記2をサービスとして成り立たせるためのAAL, FAL要件に関する合意</li>
+<li>上記2がサービスとして成り立ったとしても上記3が実質なされていないことには代わりがないので、それを良しとするのかどうか</li>
+</ul>
+
+
+<p>金融文脈ではこの辺りが論点になるのかなと。</p>
+
+<ul>
+<li>銀行側のAALが1を満たさない場合でも規約上の免責事項に該当することを良しとするか</li>
+<li>銀行側のAALが1を満たさない場合でも「送金先による口座名義確認とセットでは結果として銀行口座が保護される」ことを良しとするか</li>
+</ul>
+
+
+    
+    
+  </div>
+
+<div class="meta">
+  
+</div>
+</article>
 
 
     <article class="post">
@@ -339,73 +430,6 @@
 
     
     <a href="/blog/2019/06/12/sign-in-with-apple-analysis-2/" class="more-link">Read on &rarr;</a>
-  </div>
-
-<div class="meta">
-  
-</div>
-</article>
-
-
-    <article class="post">
-  <h2 class="title">
-    
-    <a href="/blog/2019/06/08/sign-in-with-apple-analysis/">
-    
-      Sign in With Apple の特徴分析 (1)</a>
-  </h2>
-  <div class="entry-content">
-    <div class="meta">
-  <div class="author">
-    Author: <a href="https://matake.jp">Nov Matake</a>
-  </div>
-  <div class="date">Date: 
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2019-06-08T21:04:00+09:00" pubdate data-updated="true">Jun 8<span>th</span>, 2019</time></div>
-  
-</div>
-
-    <p><a href="https://oauth.jp/blog/2019/06/04/sign-in-with-apple/">前記事</a> で書いたように、ここ数日 Sign in with Apple 用の RubyGem 作りながら、Sign in with Apple の特徴というか、他の IdP との違いみたいなところいろいろ調査したので、現時点での Sign in with Apple に対する雑感をまとめておきます。</p>
-
-<h2>Client ID と Team ID および App ID との関係</h2>
-
-<p>個人として Apple Developer Account 使ったことしかないんで、会社として Developer 登録してる時の Team の扱いとかよくわかってないんですが、Apple Developer Account 登録すると Team ID ってのが割り振られます。個人だと 1 Developer Account に 1 Team ID。</p>
-
-<p>この1つの Team ID の下に、複数の子 App ID が登録可能です。1 iOS App についき 1 App ID。</p>
-
-<p>さらに、App ID には &ldquo;Primary&rdquo; という概念もあり、1つの Primary App ID の下に複数の App ID を登録することができます。</p>
-
-<p>ここまでは、お仕事で実際に iOS App 作ってる人たちにはきっと当たり前な話なんだと思います。</p>
-
-<p>そして、Primary App ID の下に App ID の代わりに Service ID っていうのが登録できます。</p>
-
-<p>Service ID っての設定画面には Sign in with Apple 関連の設定項目しかないから、これは今回初めて出てきたものなのかもしれませんね。</p>
-
-<p>で、iOS App で Sign in with Apple 使う場合は App ID というのが OAuth Client に該当し、Web とか Android とかで Sign in with Apple 使う時は、 Service ID というのが OAuth Client に該当するようです。</p>
-
-<p>1 Team ID の下に複数 App ID が登録され、1 App ID の下に複数の子 App ID と Service ID が登録され、iOS/Mac Native の世界では App ID が、それ以外では Service ID が OAuth Client となる。</p>
-
-<p>ここまではいいですね？いや、正直間違ってるかもしれんけどw</p>
-
-<p>そして、Client の鍵 (Client Secret を生成する為の秘密鍵、詳しくは後述) を別途生成するのですが、この鍵は Primary App ID 毎に登録することになります。</p>
-
-<p>鍵は Key Rotation のことも考慮してか、1 Primary App ID に複数同時に登録できます。</p>
-
-<p>ただ、1 OAuth Client に 1 Private Key、という単位ではないので、鍵管理のやり方は普通の OAuth Client の場合と異なるやり方が必要になる Developer さんもいるかもしれませんね。</p>
-
-
-    
-    <a href="/blog/2019/06/08/sign-in-with-apple-analysis/" class="more-link">Read on &rarr;</a>
   </div>
 
 <div class="meta">

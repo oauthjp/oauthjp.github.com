@@ -6,7 +6,7 @@
 	<title>OAuth.jp</title>
     <meta name="author" content="Nov Matake">
     
-	<meta name="description" content="Author: Nov Matake Date: Mar 26th, 2016 昨日を最終出社日として、GREE 正社員生活を終えました。4月からは独り会社作って独立します。 転職じゃなくて独立で、契約形態変えて GREE さんともお仕事する可能性十分あるので、 &hellip;">
+	<meta name="description" content="Author: Nov Matake Date: Apr 2nd, 2016 2016年度の Microsoft MVP Award を受賞させていただきました。 これもひとえにあんのパパのおかげです。パパは2007年4月 Microsoft 入社ということなので、僕が新卒になったころからの &hellip;">
 	
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
@@ -93,6 +93,63 @@
 <!-- begin toload --> 
     <div id="content" class="inner">
         
+
+
+    <article class="post">
+  <h2 class="title">
+    
+    <a href="/blog/2016/04/02/microsoft-mvp/">
+    
+      Microsoft MVP Award を受賞しました</a>
+  </h2>
+  <div class="entry-content">
+    <div class="meta">
+  <div class="author">
+    Author: <a href="https://matake.jp">Nov Matake</a>
+  </div>
+  <div class="date">Date: 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2016-04-02T18:02:00+09:00" pubdate data-updated="true">Apr 2<span>nd</span>, 2016</time></div>
+  
+</div>
+
+    <p>2016年度の Microsoft MVP Award を受賞させていただきました。</p>
+
+<p>これもひとえにあんのパパのおかげです。パパは<a href="https://blogs.technet.microsoft.com/junichia/2016/04/01/%E5%98%98%E3%81%AE%E3%82%88%E3%81%86%E3%81%AA%E6%9C%AA%E6%9D%A5%E3%81%AE%E5%A7%8B%E3%81%BE%E3%82%8A%E3%81%A7%E3%81%99%EF%BC%81/">2007年4月 Microsoft 入社</a>ということなので、僕が新卒になったころからの MS エバンジェリストってことっすよ。</p>
+
+<p>通常であればにいさんと呼びたいところですが、今回新たな MVP も産んだことですし、Identity 業界の慣習にならって積極的にパパ呼ばわりしていきたいとおもいます。</p>
+
+<p>また、<a href="https://mvp.microsoft.com/ja-jp/pages/mvp-award-update">Award のカテゴリー</a>は &ldquo;Microsoft Azure&rdquo; ってなってたので、<a href="http://idmlab.eidentity.jp">ふぁらおぅにぃさん</a>が腹ちがいのにぃさんになった感じですかね、きっと。</p>
+
+<p>どこまで今回の MVP Award のカテゴリーにマッチしてるのかはよくわかってないんですが、僕がいま興味あるエリアは AzureAD &amp; ADFS の Connect サポート、Graph API、Windows 10 の FIDO サポートあたりなんで、その辺りでいろいろ遊びながらこのブログとかで記事書いていければいいなと思います。</p>
+
+<p>もちろんエディタは <a href="https://code.visualstudio.com/">Visual Studio Code</a> で。(まじこいつ起動はえー！Atom より圧倒的に起動はえー！！)</p>
+
+<p>とりあえず Microsoft Edge の FIDO 実装で遊ぶためにも、Surface Pro4 を買わないとですね！</p>
+
+<p>ということで、つい先日 Windows Server 上で新規ファイル作成すらできなくてがく然とした Windows 音痴な僕ですが、今後ともよろしくお願い致しますm<em> </em>m</p>
+
+<p>ps.<br>
+新規ファイル作成は、右クリックじゃなく、メモ帳開いて <code>[Ctrl] + [S]</code> な。</p>
+
+    
+    
+  </div>
+
+<div class="meta">
+  
+</div>
+</article>
 
 
     <article class="post">
@@ -342,82 +399,6 @@
 
     
     
-  </div>
-
-<div class="meta">
-  
-</div>
-</article>
-
-
-    <article class="post">
-  <h2 class="title">
-    
-    <a href="/blog/2016/01/12/oauth-idp-mix-up-attack/">
-    
-      OAuth IdP Mix-Up Attack とは？</a>
-  </h2>
-  <div class="entry-content">
-    <div class="meta">
-  <div class="author">
-    Author: <a href="https://matake.jp">Nov Matake</a>
-  </div>
-  <div class="date">Date: 
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2016-01-12T15:51:00+09:00" pubdate data-updated="true">Jan 12<span>th</span>, 2016</time></div>
-  
-</div>
-
-    <p>成人式を迎えられたID厨の皆様におかれましては、大変おめでとうございます。成人前からID厨とか、キモカワですね。</p>
-
-<p>さて、今日は、成人式直前にOAuth MLに投下された以下のpostで「OAuth 2.0の脆弱性」として紹介されている &ldquo;IdP Mix-Up Attack&rdquo; について紹介します。</p>
-
-<p><a href="https://mailarchive.ietf.org/arch/msg/oauth/JIVxFBGsJBVtm7ljwJhPUm3Fr-w">[OAUTH-WG] OAuth Security Advisory: Authorization Server Mix-Up</a></p>
-
-<h2>前提条件</h2>
-
-<ul>
-<li>End-UserとRPの間の (TLS-protectedでない) HTTP Request/ResponseをAttackerがproxy可能。</li>
-<li>RPが2つ以上のOAuth Server (IdP) と接続しており、そのいずれかが攻撃者の管理下にある。(IdPの中の人が実は攻撃者だった etc.)</li>
-<li>RPは複数のIdPに対して共通のredirect_uriを利用しており、そこへのcallbackを受け取った時にstate値を元にIdPを特定する。
-
-<ul>
-<li>ただしIdP側のredirect_uri検証が「事前登録済の値との完全一致」でない場合は、この通りではない。</li>
-</ul>
-</li>
-</ul>
-
-
-<h2>攻撃フロー</h2>
-
-<p>以下、Attackerの管理下にあるIdPをAIdP (Attacker IdP)、その他の悪意ないIdPをHIdP (Honest IdP) と呼ぶことにします。</p>
-
-<p><img src="/images/posts/oauth-idp-mixup.png" alt="OAuth IdP Mix-Up Attack" /></p>
-
-<ol>
-<li>End-UserはRPの任意のページから「HIdPでログイン」ボタンをクリック。</li>
-<li>Browser->RPへの (TLS-protectedでない) リクエストをProxyしたAttackerは、RPに「AIdPでログイン」するリクエストを送信し、AIdPのAuthorization EndpointへのRedirect Responseを受け取る。</li>
-<li>AttackerはBrowserにHIdPのAuthorization EndpointへのRedirect Responseを返す。ただしstate値は2で受け取った「AIdP向けのAuthorization Requestとひもづいた」値を利用する。(これ以降全リクエストはTLS-protectedであるためAttackerのProxyは介入不可)</li>
-<li>End-UserはHIdPでApproveボタンをクリック。</li>
-<li>HIdPはstateとcode/tokenをquery/fragmentにつけた状態で、End-UserをRPのredirect_uriに戻す。</li>
-<li>code/tokenを受け取ったRPは、state値を元に受け取ったAuthorization ResponseがAIdPからのものだと判断する。</li>
-<li>RPはAIdPのToken EndpointやAPI Endpointにcodeやtokenを送りつけてしまい、HIdPのcodeやtokenがAIdP (攻撃者) の手に渡る。</li>
-</ol>
-
-
-
-    
-    <a href="/blog/2016/01/12/oauth-idp-mix-up-attack/" class="more-link">Read on &rarr;</a>
   </div>
 
 <div class="meta">

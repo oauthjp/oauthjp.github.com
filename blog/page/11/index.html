@@ -6,9 +6,7 @@
 	<title>OAuth.jp</title>
     <meta name="author" content="Nov Matake">
     
-	<meta name="description" content="Author: Nov Matake Date: Aug 17th, 2013 先週から, JWxファミリーの以下の3つの仕様書の翻訳を始めています. JSON Web Token (JWT)
-JSON Web Signature (JWS)
-JOSE UseCases 翻訳資料の公開は &hellip;">
+	<meta name="description" content="Author: Nov Matake Date: Aug 30th, 2013 エンプラ、よく分かりません。 エンプラグレード、逆に不安です。 と、まぁそんな内輪ネタはさておき、最近はエンプラで OAuth 2.0 使う事例も増えてるようです。 Google Apps とか導入してたら、 &hellip;">
 	
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
@@ -95,6 +93,63 @@ JOSE UseCases 翻訳資料の公開は &hellip;">
 <!-- begin toload --> 
     <div id="content" class="inner">
         
+
+
+    <article class="post">
+  <h2 class="title">
+    
+    <a href="/blog/2013/08/30/enterprise-grade-oauth2/">
+    
+      エンプラグレード OAuth 2.0</a>
+  </h2>
+  <div class="entry-content">
+    <div class="meta">
+  <div class="author">
+    Author: <a href="https://matake.jp">Nov Matake</a>
+  </div>
+  <div class="date">Date: 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-08-30T00:27:00+09:00" pubdate data-updated="true">Aug 30<span>th</span>, 2013</time></div>
+  
+</div>
+
+    <p>エンプラ、よく分かりません。</p>
+
+<p>エンプラグレード、逆に不安です。</p>
+
+<p>と、まぁそんな内輪ネタはさておき、最近はエンプラで OAuth 2.0 使う事例も増えてるようです。</p>
+
+<p>Google Apps とか導入してたら、OAuth 2.0 とか G+ Sign-in (= OpenID Connect) も使うでしょうし、そんな時にエンプラだと特定のアプリにだけ特定の API へのアクセスを許可したい、なんてこともあるんでしょう。</p>
+
+<p>で、今日それっぽい事例をちょっと見かけたので、response_type=code ってなってるとこを response_type=token に書き換えてやったんですが&hellip;</p>
+
+<p>しっかり access_token 取れて、自分で書いたスクリプトからも API アクセスできましたよ！</p>
+
+<p>特定アプリに限定したつもりでも、別に自分のアカウントと紐づいた access_token 取るだけなら client_secret いらなかったりするのは、当然っちゃ当然なのですが、これがエンプラの世界では許容されるのかされないのかがよく分かんないです。</p>
+
+<p>もし許容されないのだとしたら、特定のアプリに限定するってなら response_typ=code に限定するとかもしないとダメなんでしょうねぇ。</p>
+
+<p>と、Octopress に移行して断然ブログ書きやすくなったので、つらつら書いてみました。</p>
+
+
+    
+    <a href="/blog/2013/08/30/enterprise-grade-oauth2/" class="more-link">Read on &rarr;</a>
+  </div>
+
+<div class="meta">
+  
+</div>
+</article>
 
 
     <article class="post">
@@ -334,69 +389,6 @@ JOSE UseCases 翻訳資料の公開は &hellip;">
 
 
 <p><a href="/blog/2013/06/04/login-with-amazon">Login with Amazon、もう使っても大丈夫！</a></p>
-
-
-    
-    
-  </div>
-
-<div class="meta">
-  
-</div>
-</article>
-
-
-    <article class="post">
-  <h2 class="title">
-    
-    <a href="/blog/2013/01/23/oauth-20-core-bearer-spec-rfc-rfc-6749-rfc-67/">
-    
-      OAuth 2.0 Core & Bearer Spec (RFC 6749 & RFC 6750) 翻訳公開！</a>
-  </h2>
-  <div class="entry-content">
-    <div class="meta">
-  <div class="author">
-    Author: <a href="https://matake.jp">Nov Matake</a>
-  </div>
-  <div class="date">Date: 
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-01-23T00:00:00+09:00" pubdate data-updated="true">Jan 23<span>rd</span>, 2013</time></div>
-  
-</div>
-
-    <p>ずいぶん前に「<a href="/blog/2011/11/29/oauth-20-core-bearer-spec-76993">OAuth 2.0 Core &amp; Bearer Spec 翻訳公開！</a>」で紹介したように、OAuth 2.0 Core &amp; Bearerは、OpenID Foundation Japanの翻訳WGで翻訳を公開していましたが、2012年に両specがRFC化されたのを受け、今回RFC版も翻訳しました。</p>
-
-
-<ul><li><a href="http://openid-foundation-japan.github.com/rfc6749.ja.html">The OAuth 2.0 Authorization Framework (RFC 6749)</a></li>
-<li><a href="http://openid-foundation-japan.github.com/rfc6750.ja.html">The OAuth 2.0 Authorization Framework: Bearer Token Usage (RFC 6750)</a></li>
-</ul>
-
-
-<p>前回翻訳したdraft版から仕様自体に大きな変更はありませんが、特に</p>
-
-
-<ul><li>まだdraft版も読んだことが無い人</li>
-<li>自社のAPIドキュメントからdraft版の翻訳にリンクしている人</li>
-</ul>
-
-
-<p>などは、RFC版を参照していただければと思います。</p>
-
-
-<p>いまこれらとは別に、”<a href="http://openid-foundation-japan.github.com/rfc6819.ja.html">OAuth 2.0 Threat Model and Security Considerations (RFC 6819)</a>” という、OAuth 2.0の利用に際して注意すべきセキュリティ上の特徴・注意点などについてまとめたドキュメントを翻訳中です。こちらも翻訳完了次第公開予定。(追記: 2013.01.25 翻訳公開済)</p>
-
-
-<p>最後に、2/1に東京ミッドタウンのYahoo! Japanオフィスで <a href="http://idcon.doorkeeper.jp/events/2448">#idcon 15th ~ YConnect &amp; Future of Authentication ~</a> というイベントをやります。OAuth 2.0ベースのOpenID次世代仕様であるOpenID Connectについて、世界で初めてOpenID Connect対応API (YConnect) を一般公開したYahoo! Japanの担当者の方の話も聞けるので、興味あったら参加してください :)</p>
 
 
     
