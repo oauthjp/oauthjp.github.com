@@ -6,8 +6,7 @@
 	<title>OAuth.jp</title>
     <meta name="author" content="Nov Matake">
     
-	<meta name="description" content="Author: Nov Matake Date: Sep 30th, 2020 忘れそうなので一旦メモ。 ドコモ口座の問題って、こういうことでしょ？ 銀行側のAALが1を満たさないので銀行側が銀行口座を保護できない
-銀行側のAALが1を満たさないので「銀行にKYCを依拠する」 &hellip;">
+	<meta name="description" content="Author: Nov Matake Date: Oct 28th, 2020 いままで Mix-up Attack は Client が AS 毎に redirect_uri を使い分けていれば防げると信じられてきましたが、それじゃ防げないケースもあるよってのが OAuth ML &hellip;">
 	
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
@@ -94,6 +93,56 @@
 <!-- begin toload --> 
     <div id="content" class="inner">
         
+
+
+    <article class="post">
+  <h2 class="title">
+    
+    <a href="/blog/2020/10/28/mix-up-cant-be-mitigated-by-per-as-redirect-uri/">
+    
+      Mix-up Attack は Per-AS Redirect_uri では防げない</a>
+  </h2>
+  <div class="entry-content">
+    <div class="meta">
+  <div class="author">
+    Author: <a href="https://matake.jp">Nov Matake</a>
+  </div>
+  <div class="date">Date: 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2020-10-28T23:05:00+09:00" pubdate data-updated="true">Oct 28<span>th</span>, 2020</time></div>
+  
+</div>
+
+    <p>いままで Mix-up Attack は Client が AS 毎に redirect_uri を使い分けていれば防げると信じられてきましたが、それじゃ防げないケースもあるよってのが <a href="https://mailarchive.ietf.org/arch/msg/oauth/RjbSwFRmLsk0EgAY2Ter-nw66EY/">OAuth ML に投稿</a>されました。</p>
+
+<p>細かい解説は英語読んでもらうとして、シーケンスにするとこういうことです。</p>
+
+<p><img src="/images/posts/oauth-idp-mixup-rev2.png" alt="OAuth IdP Mix-Up Attack rev.2" /></p>
+
+<p>Attacker AS が (Display Name やロゴ等を通じて) 一見 Honest Client に見えるような Client (Attacker Client) を Honest AS に登録しておく必要があります。</p>
+
+<p>User が Attacker AS 選んでるのに Honest AS に飛んで Approve してしまってる部分も、<a href="/blog/2016/01/12/oauth-idp-mix-up-attack/">Attacker Proxy</a> が利用可能な状況 (e.g., Client が HTTP なエンドポイントで Honest AS のログインボタン等を表示している) であればもっと違和感のないフローになるでしょう。</p>
+
+<p>で、解決策として AuthZ Response に &ldquo;iss&rdquo; を含めることが提案されているのですが、「<a href="/blog/2016/01/12/oauth-idp-mix-up-attack/">悪意のある可能性があるIdPを採用しない</a>」ってのが一番の解決策であることに代わりはありません。</p>
+
+    
+    
+  </div>
+
+<div class="meta">
+  
+</div>
+</article>
 
 
     <article class="post">
@@ -383,53 +432,6 @@
 
     
     <a href="/blog/2020/04/28/account-takeover-vulnerability-in-microsoft-teams/" class="more-link">Read on &rarr;</a>
-  </div>
-
-<div class="meta">
-  
-</div>
-</article>
-
-
-    <article class="post">
-  <h2 class="title">
-    
-    <a href="/blog/2019/06/12/sign-in-with-apple-analysis-2/">
-    
-      Sign in With Apple の特徴分析 (2)</a>
-  </h2>
-  <div class="entry-content">
-    <div class="meta">
-  <div class="author">
-    Author: <a href="https://matake.jp">Nov Matake</a>
-  </div>
-  <div class="date">Date: 
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2019-06-12T15:14:00+09:00" pubdate data-updated="true">Jun 12<span>th</span>, 2019</time></div>
-  
-</div>
-
-    <p><a href="/blog/2019/06/08/sign-in-with-apple-analysis/">Sign in With Apple の特徴分析 (1)</a> のつづき。</p>
-
-<p>文章でつらつら書いても結局わかりづらいもんはわかりづらいんで、もう箇条書きで淡々と。</p>
-
-<p>これだけそろってれば、あと最後の <strong><em>要調査</em></strong> ってとこを各自必要に応じて調べるなり、誰かがこの記事にコメントしてくれるなりすれば、一通りみなさんのサービスの設計に落とせるんでは無いかと思います。</p>
-
-<p>※ 落とせない人は <a href="https://yauth.jp">僕 (= YAuth.jp 合同会社) に仕事を依頼する</a> という手もありますw</p>
-
-
-    
-    <a href="/blog/2019/06/12/sign-in-with-apple-analysis-2/" class="more-link">Read on &rarr;</a>
   </div>
 
 <div class="meta">

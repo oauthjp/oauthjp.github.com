@@ -439,8 +439,14 @@
         <lastmod>2020-09-30T11:56:54+09:00</lastmod>
     </url>
     <url>
+        <loc>
+            https://oauth.jp/blog/2020/10/28/mix-up-cant-be-mitigated-by-per-as-redirect-uri/
+        </loc>
+        <lastmod>2020-10-28T23:33:59+09:00</lastmod>
+    </url>
+    <url>
         <loc>https://oauth.jp/</loc>
-        <lastmod>2020-09-30T11:56:54+09:00</lastmod>
+        <lastmod>2020-10-28T23:33:59+09:00</lastmod>
     </url>
     <url>
         <loc>https://oauth.jp/404.html</loc>
@@ -448,6 +454,6 @@
     </url>
     <url>
         <loc>https://oauth.jp/blog/archives/</loc>
-        <lastmod>2020-09-30T11:56:54+09:00</lastmod>
+        <lastmod>2020-10-28T23:33:59+09:00</lastmod>
     </url>
 </urlset>

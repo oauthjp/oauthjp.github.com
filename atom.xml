@@ -4,7 +4,7 @@
   <title><![CDATA[OAuth.jp]]></title>
   <link href="https://oauth.jp/atom.xml" rel="self"/>
   <link href="https://oauth.jp/"/>
-  <updated>2020-09-30T11:58:01+09:00</updated>
+  <updated>2020-10-28T23:34:29+09:00</updated>
   <id>https://oauth.jp/</id>
   <author>
     <name><![CDATA[Nov Matake]]></name>
@@ -12,6 +12,25 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Mix-up Attack は Per-AS redirect_uri では防げない]]></title>
+    <link href="https://oauth.jp/blog/2020/10/28/mix-up-cant-be-mitigated-by-per-as-redirect-uri/"/>
+    <updated>2020-10-28T23:05:00+09:00</updated>
+    <id>https://oauth.jp/blog/2020/10/28/mix-up-cant-be-mitigated-by-per-as-redirect-uri</id>
+    <content type="html"><![CDATA[<p>いままで Mix-up Attack は Client が AS 毎に redirect_uri を使い分けていれば防げると信じられてきましたが、それじゃ防げないケースもあるよってのが <a href="https://mailarchive.ietf.org/arch/msg/oauth/RjbSwFRmLsk0EgAY2Ter-nw66EY/">OAuth ML に投稿</a>されました。</p>
+
+<p>細かい解説は英語読んでもらうとして、シーケンスにするとこういうことです。</p>
+
+<p><img src="https://oauth.jp/images/posts/oauth-idp-mixup-rev2.png" alt="OAuth IdP Mix-Up Attack rev.2" /></p>
+
+<p>Attacker AS が (Display Name やロゴ等を通じて) 一見 Honest Client に見えるような Client (Attacker Client) を Honest AS に登録しておく必要があります。</p>
+
+<p>User が Attacker AS 選んでるのに Honest AS に飛んで Approve してしまってる部分も、<a href="https://oauth.jp/blog/2016/01/12/oauth-idp-mix-up-attack/">Attacker Proxy</a> が利用可能な状況 (e.g., Client が HTTP なエンドポイントで Honest AS のログインボタン等を表示している) であればもっと違和感のないフローになるでしょう。</p>
+
+<p>で、解決策として AuthZ Response に &ldquo;iss&rdquo; を含めることが提案されているのですが、「<a href="https://oauth.jp/blog/2016/01/12/oauth-idp-mix-up-attack/">悪意のある可能性があるIdPを採用しない</a>」ってのが一番の解決策であることに代わりはありません。</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[ドコモ口座問題]]></title>
@@ -1452,7 +1471,7 @@ Sign in with Apple のフロントチャネルで発行された ID Token は、
 
 <p>動作確認用のユーザーも作っておきましたので、これが正常に動いてる間はご自由にお使いください。</p>
 
-<p>Username: <a href="&#x6d;&#97;&#105;&#x6c;&#116;&#x6f;&#58;&#x79;&#111;&#x75;&#64;&#115;&#116;&#x73;&#x34;&#98;&#50;&#99;&#x2e;&#111;&#110;&#109;&#105;&#x63;&#x72;&#111;&#x73;&#111;&#x66;&#116;&#x2e;&#99;&#x6f;&#x6d;">&#121;&#x6f;&#x75;&#64;&#115;&#x74;&#x73;&#52;&#98;&#50;&#99;&#x2e;&#111;&#110;&#x6d;&#105;&#x63;&#x72;&#111;&#x73;&#x6f;&#x66;&#x74;&#46;&#x63;&#111;&#x6d;</a>
+<p>Username: <a href="&#109;&#x61;&#x69;&#x6c;&#x74;&#x6f;&#x3a;&#x79;&#x6f;&#x75;&#64;&#x73;&#116;&#115;&#52;&#x62;&#50;&#x63;&#46;&#x6f;&#110;&#109;&#x69;&#99;&#114;&#x6f;&#115;&#x6f;&#102;&#116;&#46;&#99;&#x6f;&#x6d;">&#x79;&#x6f;&#117;&#64;&#115;&#x74;&#115;&#52;&#98;&#50;&#x63;&#46;&#x6f;&#x6e;&#109;&#x69;&#99;&#114;&#x6f;&#x73;&#111;&#x66;&#116;&#46;&#99;&#x6f;&#109;</a>
 Password: ]6]yzxXYG7uruM4p</p>
 
 <p>動かなくなったら、あきらめて自分で Azure AD B2C 環境セットアップしてください。</p>
@@ -1605,13 +1624,13 @@ Password: ]6]yzxXYG7uruM4p</p>
 
 <p>あと、Email 指定してもそのメアドのユーザーにログインできるわけでもないです。</p>
 
-<p><a href="&#x6d;&#x61;&#x69;&#108;&#116;&#x6f;&#x3a;&#110;&#111;&#118;&#x40;&#101;&#120;&#x61;&#x6d;&#112;&#108;&#x65;&#x2e;&#x63;&#x6f;&#109;">&#110;&#x6f;&#x76;&#x40;&#x65;&#120;&#x61;&#x6d;&#112;&#108;&#101;&#x2e;&#x63;&#x6f;&#109;</a> の NameID を持つ SAML Assertion で、<a href="&#109;&#x61;&#x69;&#108;&#x74;&#x6f;&#58;&#110;&#111;&#118;&#64;&#x6d;&#97;&#x74;&#97;&#107;&#x65;&#x2e;&#x6a;&#x70;">&#x6e;&#x6f;&#118;&#64;&#x6d;&#x61;&#x74;&#x61;&#107;&#101;&#x2e;&#106;&#x70;</a> の GitHub アカウントにログインできたりします。</p>
+<p><a href="&#109;&#x61;&#x69;&#x6c;&#x74;&#111;&#58;&#x6e;&#x6f;&#118;&#64;&#x65;&#x78;&#97;&#x6d;&#112;&#x6c;&#x65;&#x2e;&#99;&#111;&#109;">&#x6e;&#x6f;&#118;&#x40;&#x65;&#x78;&#x61;&#109;&#x70;&#x6c;&#101;&#x2e;&#99;&#x6f;&#x6d;</a> の NameID を持つ SAML Assertion で、<a href="&#109;&#97;&#105;&#x6c;&#116;&#x6f;&#58;&#x6e;&#x6f;&#x76;&#64;&#109;&#97;&#x74;&#x61;&#107;&#101;&#46;&#106;&#112;">&#110;&#111;&#x76;&#64;&#x6d;&#97;&#116;&#97;&#x6b;&#101;&#x2e;&#x6a;&#112;</a> の GitHub アカウントにログインできたりします。</p>
 
 <p>SAML Federation とか言うてるけど、結局既存の GitHub.com アカウントに SAML IdP 側のアカウントを Link するだけなんですよ。</p>
 
 <p>その紐付けは、SAML での初回ログイン時に GitHub.com 側の ID &amp; Password 入力して行います。</p>
 
-<p>つまり、<a href="&#109;&#97;&#105;&#x6c;&#x74;&#111;&#x3a;&#x6e;&#111;&#118;&#x40;&#x65;&#x78;&#x61;&#x6d;&#112;&#108;&#101;&#x2e;&#x63;&#111;&#109;">&#x6e;&#x6f;&#x76;&#64;&#x65;&#x78;&#x61;&#x6d;&#112;&#108;&#101;&#x2e;&#x63;&#x6f;&#x6d;</a> の NameID を持つ SAML Assertion をどの GitHub アカウントに紐づけるかは、エンドユーザーが決定権を持っています。</p>
+<p>つまり、<a href="&#109;&#97;&#x69;&#x6c;&#x74;&#111;&#58;&#110;&#111;&#x76;&#64;&#x65;&#120;&#97;&#109;&#112;&#108;&#101;&#46;&#99;&#x6f;&#x6d;">&#110;&#x6f;&#x76;&#64;&#101;&#x78;&#97;&#109;&#112;&#108;&#101;&#x2e;&#x63;&#x6f;&#x6d;</a> の NameID を持つ SAML Assertion をどの GitHub アカウントに紐づけるかは、エンドユーザーが決定権を持っています。</p>
 
 <p>情シスじゃないです。</p>
 
@@ -2085,150 +2104,6 @@ Password: ]6]yzxXYG7uruM4p</p>
 <p>応募方法は <a href="https://www.facebook.com/OpenIDTrans/posts/1226159194083566">翻訳 WG の Facebook Page</a> をご覧ください。</p>
 
 <p>じっくりドキュメントを読み込みたい方には、翻訳とかいい機会だと思いますよ！</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Office 365 と外部 SAML IdP との連携設定]]></title>
-    <link href="https://oauth.jp/blog/2016/07/01/o365-saml-federation/"/>
-    <updated>2016-07-01T11:03:00+09:00</updated>
-    <id>https://oauth.jp/blog/2016/07/01/o365-saml-federation</id>
-    <content type="html"><![CDATA[<p>どうも、事務局長の Nov です。</p>
-
-<p>どうも、ジムキョクチョのノブです。</p>
-
-<p>どうも、ノブキョクチョです。</p>
-
-<p>どうも、のぶチョです。</p>
-
-<p>そう、のぶ千代です。</p>
-
-<p>最近歳のせいか、Rails で SAML IdP とか作ってます。</p>
-
-<p>今日は自作 SAML IdP を Office 365 と連携させてみたので、その格闘の記録を残しておきます。</p>
-
-<p>Office 365 の制約とか Azure AD の制約とか全く前提知識なしに格闘した記録なんで、そういうのいいから手っ取り早くやり方教えろやって人は我らがふぁらおぅ兄さんのこちらの連載をご覧ください。</p>
-
-<ul>
-<li><a href="http://idmlab.eidentity.jp/2014/11/office365azureadopenamid.html">Office365/AzureAD &ndash; OpenAMとのID連携 (1)</a></li>
-<li><a href="http://idmlab.eidentity.jp/2014/12/office365azureadopenamid.html">Office365/AzureAD &ndash; OpenAMとのID連携 (2)</a></li>
-<li><a href="http://idmlab.eidentity.jp/2014/12/office365azureadopenamid_25.html">Office365/AzureAD &ndash; OpenAMとのID連携 (3)</a></li>
-</ul>
-
-
-<p>あとはこの本もおすすめ。</p>
-
-<p><a href="https://www.amazon.co.jp/%E8%84%B1%E3%82%AA%E3%83%B3%E3%83%97%E3%83%AC%E3%83%9F%E3%82%B9-%E3%82%AF%E3%83%A9%E3%82%A6%E3%83%89%E6%99%82%E4%BB%A3%E3%81%AE%E8%AA%8D%E8%A8%BC%E5%9F%BA%E7%9B%A4-Active-Directory-%E3%83%9E%E3%82%A4%E3%82%AF%E3%83%AD%E3%82%BD%E3%83%95%E3%83%88%E9%96%A2%E9%80%A3%E6%9B%B8-ebook/dp/B01IB6Q79W/ref=as_li_ss_il?ie=UTF8&qid=1491030816&sr=8-7&keywords=azure&linkCode=li3&tag=bianca0b-22&linkId=6d34dacc7b28dbb8de4dc560a0ad084f" target="_blank"><img border="0" src="https://oauth.jp//ws-fe.amazon-adsystem.com/widgets/q?_encoding=UTF8&ASIN=B01IB6Q79W&Format=_SL250_&ID=AsinImage&MarketPlace=JP&ServiceVersion=20070822&WS=1&tag=bianca0b-22" ></a><img src="https://ir-jp.amazon-adsystem.com/e/ir?t=bianca0b-22&l=li3&o=9&a=B01IB6Q79W" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" /></p>
-
-<!-- more -->
-
-
-<h2>Office 365 &amp; Azure AD のドメインが違う問題</h2>
-
-<p>僕、最初に Azure AD に YAuth.jp のディレクトリ (<code>yauth.onmicrosoft.com</code>) 作成して、そのあと別の機会に Office 365 の Subscription (<code>yauthjp.onmicrosoft.com</code>) を開始したんで、それら2つが別ディレクトリになっておりまして、前者に <code>yauth.jp</code> ドメインを紐付けてたんで、Office 365 側に <code>yauth.jp</code> ドメインを紐付けられなかったんですね。</p>
-
-<p>で、二つを Merge しようとして <a href="http://ebi.dyndns.biz/windowsadmin/2016/04/07/azure%E3%82%B5%E3%83%96%E3%82%B9%E3%82%AF%E3%83%AA%E3%83%97%E3%82%B7%E3%83%A7%E3%83%B3%E3%81%AE%E6%97%A2%E5%AE%9A%E3%81%AE%E3%83%87%E3%82%A3%E3%83%AC%E3%82%AF%E3%83%88%E3%83%AA%E3%82%92o365%E3%81%A7/">Azureサブスクリプションの既定のディレクトリをO365で利用しているAzure Active Directoryに変更する方法</a> ってのを教えてもらったんで、やってみようとしたんですが&hellip;</p>
-
-<p>よくみたら Merge じゃなかったっていうね。</p>
-
-<p>で、まぁ Azure AD 側の <code>yauth.onmicrosoft.com</code> はもうあきらめて消しちゃえってことで消そうとしたら、ユーザーいるから消せねーだの、アプリが登録されてるから消せねーだの言われて、ちまちま消した挙句、<code>Office 365 Management APIs</code> ってのが最後どうしても消せず&hellip;</p>
-
-<p>こうなった。</p>
-
-<p><img src="https://oauth.jp/images/posts/azure/azure-ad-directories.png" alt="Azure AD Directories" /></p>
-
-<p>消せないけどいらん <code>yauth.onmicrosoft.com</code> 側のディレクトリを &ldquo;remove-me&rdquo; にリネームして、そっちから <code>yauth.jp</code> の紐付け解除して <code>yauthjp.onmicrosoft.com</code> 側のディレクトリに紐付け直した。</p>
-
-<p>しょっぱなから解決してないですね。</p>
-
-<p>でも結論から言いますと、これ、たぶん SAML 連携とは全く関係なかったんだろうなって、いまでは思います。</p>
-
-<h2>PowerShell 必須問題</h2>
-
-<p>なんか Azure AD の管理画面には SAML IdP 追加する箇所ないんですよ。</p>
-
-<p>SAML IdP の登録に必要なパラメータなんてせいぜい5-6個やのに、PowerShell ってやつが必須なんですよ。</p>
-
-<p>で、どうも Google 先生がいうには、Mac では PowerShell 使えないっていうじゃないですか。</p>
-
-<p>で、立ち上げましたよ、Windows 10 の VM。<br/>
-Mac から Remote Desktop 経由でいじりたかったんでね。</p>
-
-<p>また Surface Pro4 使う機会逃しましたよ。</p>
-
-<p>そしてまた Windows 10 に最初っから入ってる PowerShell じゃ、Azure AD には繋げないんですよ、これが。</p>
-
-<p>いろいろ Google 先生に聞いて出てくるやつかたっぱしから試しても、なんかずっと謎のエラーでつづけてて、あぁ〜、これが MS 流のエラーってやつかぁとか思いながら、最終的にはこれにしたがってエラーなくなりました。</p>
-
-<p><a href="https://technet.microsoft.com/en-ca/library/jj151815.aspx#bkmk_installmodule">Azure Active Directory Cmdlets &ndash; Install the Azure AD Module</a></p>
-
-<p>でもここももう一回ゼロからやり直せって言われたら、またはまる自信ありまくり。</p>
-
-<p>うん、ここもまた解決してない。</p>
-
-<h2>PowerShell 経由で SAML IdP 登録</h2>
-
-<p>これは <a href="http://idmlab.eidentity.jp/2014/12/office365azureadopenamid.html">Office365/AzureAD &ndash; OpenAMとのID連携 (2)</a> にしたがって <code>Set-MsolDomainAuthentication</code> っての走らせたらすんなり完了。</p>
-
-<h2>Federated Domain は Primary にできない制約</h2>
-
-<p>しらんかったよ、Federated Domain は Primary にできないなんて。</p>
-
-<p>MS さん、<code>Failed to change primary domain.</code> しか言ってくれないしさ。</p>
-
-<p>Primary Domain にできないと、そのドメインのメアド持ったユーザー作れないじゃないですか。</p>
-
-<p>SAML IdP 登録したのに Federation できないじゃないですか。</p>
-
-<p>なんか無駄に DNS 設定変えてみたりして、DNS 浸透待ちしまくったよ。</p>
-
-<p>結果、Google 先生に「Federated Domain は Primary にできない」って教えられたよ。</p>
-
-<h2>User の Immutable ID 61文字までしか入れられない制約</h2>
-
-<p>Federated Domain は Primary にできないんで、Azure AD 管理画面からは Federated Domain のユーザーを追加できないんですね。(いや、別にできてもいいとおもうねんけど、なんかそういう制約があるんです)</p>
-
-<p>つまり、ここでも PowerShell 必要なんですよ。</p>
-
-<p>そして、Google 先生に導かれたのがこの PowerShell コマンドです。</p>
-
-<p><a href="https://technet.microsoft.com/en-ca/library/dn194096">New-MsolUser</a></p>
-
-<p>でもまた謎のエラーで、しばらく経ってからやり直せとか言われる。</p>
-
-<p>どんだけまっても同じエラーで、これはしばらく経ってもラチあかねんんじゃね？ってなって&hellip;</p>
-
-<p>結果、Google 先生に「<a href="https://www.gittprogram.com/question/80283_new-msoluser-immutableid-max-length-error.html">Immutable ID には61文字までしか入れられない</a>」って教えられたよ。</p>
-
-<p>こっちは64文字だよ&hellip;</p>
-
-<p>うん、とりあえず SHA1 取った。</p>
-
-<p>解決&hellip;なのか？w</p>
-
-<h2>SAML Request スカスカやのに SAML Response への制約は多い</h2>
-
-<p>SAML Response に関する制約はこちらにまとまってる通りで、それはまぁ SAML IdP 自作できてればそんな対応大変じゃないんですけども&hellip;</p>
-
-<p><a href="https://msdn.microsoft.com/ja-jp/library/azure/dn641269.aspx">シングル サインオンを実装するための SAML 2.0 ID プロバイダーの使用</a></p>
-
-<p>SAML Request スカスカなくせに Response に対する制約多くないすか？</p>
-
-<p>SAML Request に <code>ProtocolBinding</code> とかつけてくれないんすか？ <code>AssertionConsumerServiceURL</code> は？</p>
-
-<p>まぁその辺 OAuth でも省略しても動いたりすることありますけど、そこ省略するとライブラリとかが大変ですよね。</p>
-
-<p>いや、ライブラリそんなないし、O365 対応できないライブラリなんてニーズないんでしょうから、別にいいんですけどね。</p>
-
-<p>でもまぁ、その辺って、センスですよね。</p>
-
-<h2>おわりに</h2>
-
-<p>と、まぁなんだかんだあったけども、無事 O365 にログインできました！</p>
-
-<p>大人の階段のぼってるわぁ〜</p>
-
-<p>プロ千代なってまうわぁ〜</p>
 ]]></content>
   </entry>
   
